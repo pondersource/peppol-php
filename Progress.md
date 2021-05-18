@@ -15,3 +15,7 @@ The Soap methods will be added probably at input- output packages.
 
 # Next step
 Implement the basic architecture in python / continue the research
+
+# General requirements 
+
+Sender and receiver must both have an account at peppol(certified companies)
