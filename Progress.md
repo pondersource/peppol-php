@@ -2,7 +2,7 @@
 
 The goal is a clear design with easily modifiable code. Each method/class must have a few functions as possible.
 
-Thinking for 5 packages with the use of object-oriented python:
+Thinking for 5 packages with the use of object-oriented python
 
 # packages
 sender - receiver - sender_functions - receiver_functions - invoice
