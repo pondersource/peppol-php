@@ -1,4 +1,4 @@
-#design
+# design
 
 The goal is a clear design with easily modifiable code. Each method/class must have a few functions as possible.
 
@@ -12,4 +12,4 @@ Initially, we will implement our application in a local network.
 
 The Soap methods will be added probably at sender_functions - receiver_functions packages.
 
-#Next step: Implement the basic architecture in python / continue the research
+# Next step: Implement the basic architecture in python / continue the research
