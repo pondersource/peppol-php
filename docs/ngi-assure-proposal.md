@@ -1,14 +1,14 @@
 https://nlnet.nl/propose/
 
 # Basics
-Thematic call: NGI Assure
-Your name: Michiel de Jong
-Email address: michiel@pondersource.com
-Phone numbers: ...
-Organisation: Stichting Ponder Source
-Country: The Netherlands
-Project name: Self-hosted e-invoicing with decentralized identities
-Website / wiki: https://github.com/pondersource/peppol-python
+* Thematic call: NGI Assure
+* Your name: Michiel de Jong
+* Email address: michiel@pondersource.com
+* Phone numbers: ...
+* Organisation: Stichting Ponder Source
+* Country: The Netherlands
+* Project name: Self-hosted e-invoicing with decentralized identities
+* Website / wiki: https://github.com/pondersource/peppol-python
 
 # Abstract: Can you explain the whole project and its expected outcome(s).
 In Federated Bookkeeping, we use the internet and open protocols to interconnect (open source) bookkeeping systems. The need for Federated Bookkeeping is enormous, since everybody needs a bookkeeping system, and at the same time it's very privacy-sensitive for especially one-person businesses, it involves business secrets for almost everyone, and there is a large risk risk of dominant players who want to extract data.
@@ -87,6 +87,6 @@ In the future we plan to monetize this software project, which will be part of o
 Milestone 5 would be a collaboration with the M-ld project, but they are not funding us, nor are we funding them.
 
 # Compare your own project with existing or historical efforts.
-We reached out to all open source Peppol implementations we could find, and found that Odoo supports the XML-based message format UBL in general, but not Peppol-Billing 3.0 in particular, and also not the transport protocol AS4. There is an open source implementation of Peppol-Billing 3.0 in Python and we spoke to the author; he agreed to open source it but said it was an ad-hoc patch inside a one-off project, and would not be very useful to us beyond serving as an inspiration.
+We reached out to all Python-based open source Peppol implementations we could find, and found that Odoo supports the XML-based message format UBL in general, but not Peppol-Billing 3.0 in particular, and also not the transport protocol AS4. There is an open source implementation of Peppol-Billing 3.0 in Python and we spoke to the author; he agreed to open source it but said it was an ad-hoc patch inside a one-off project, and would not be very useful to us beyond serving as an inspiration.
 
 See https://github.com/pondersource/peppol-python/issues/7 for more info.
