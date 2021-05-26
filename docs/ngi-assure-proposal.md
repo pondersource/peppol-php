@@ -13,25 +13,16 @@ https://nlnet.nl/propose/
 # Abstract: Can you explain the whole project and its expected outcome(s).
 Every organisation has a bookkeeping system, and it always contains sensitive data about both business and humans. The market for bookkeeping software is dominated by large commercial players who build silos, and especially when sending invoices, there is a large risk of closed networks and data extraction by intermediates.
 
-In the young research field of "Federated Bookkeeping", we therefore use the internet and open protocols to interconnect (open source, self-hosted) bookkeeping systems, so that each system can be "connected, but sovereign".
-
-To make Federated Bookkeeping a reality, we propose an open source implementation of the popular EU-backed Peppol standard, integrated directly with popular open source bookkeeping systems, and extended to allow participants self-host their public key information.
-
-Peppol is a new successful e-Invoicing network, driven by the EU to unite government procurement processes. It can be used to send invoices from any legal person to any other legal person in any of the participating countries.
+We propose an open source implementation of the popular EU-backed Peppol standard, integrated directly with popular open source bookkeeping systems, and extended to allow participants self-host their public key information.
 
 Just like home internet users need to use an Internet Service Provider to get onto the main global tcp/ip network that we call internet, bookkeeping systems need to go through a certified Peppol gateway server to get onto the main global Peppol network. The sending gateway certifies the identity of the sender (looking at their legal entity in the country where they are registered) by signing the invoice as it passes through. The receiving gateway checks the sending gateway's signature before delivering it to the final recipient. This is called the four-corner model (sender -> sending gateway -> receiving gateway -> recipient).
 
-What is not possible today is to send and receive Peppol-compatible invoices where the sender and/or the receiver:
-* is not able or willing to pay the significant monthly fee for the services of a Peppol gateway service
-* does not want a gateway to proxy (i.e. potentially read and potentially edit) their outgoing/incoming invoices, or
-* is not a legal entity (e.g. is a human being, or an unregistered group of people)
+Peppol is a great solution, except if the sender/receiver may not able or willing to pay the significant monthly fee for the services of a Peppol gateway service, may not want a gateway to proxy (i.e. potentially read and potentially edit) their outgoing/incoming invoices, or may not be a legal entity (e.g. is a human being, or an unregistered group of people).
 
 We aim to fix this by:
 * implementing AS4 in Python (see https://peppol.eu/downloads/peppolimplementations/ for the existing Java/CS#-based ones)
 * plugging this functionality straight into existing open source bookkeeping systems (in particular Odoo and ERPNext, which are both in Python)
 * adding a public key discovery scheme which allows users to self-host their identity on their own domain name.
-
-For instance, if you receive an invoice which purports to be from https://sender.com/#peppol, you would retrieve that URL as a public JSON-LD document, extract the public key information, and check the signature on the invoice. If your addressbook shows you already do business with the company whose website is https://sender.com then you know you have a reason to trust this sender, even though both sender and receiver avoided the need for access to the official EU-based Peppol network.
 
 # Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?
 Yes. I (Michiel de Jong) recently founded Stichting Ponder Source which is a non-profit startup aimed at open source software development and promoting open protocols in the world of bookkeeping. We now have two employees (Triantafullenia Doumani and myself).
@@ -89,6 +80,9 @@ The XML, the SOAP calls, and the PKI certificates and signatures are all non-tri
 Peppol is based on Java-oriented protocols like XML and SOAP. Although we have already checked that there are sufficient building blocks available in Python through pip/PyPI, the IDE tooling around things like XSD will not be as good in Python as it would be in a Java-oriented IDE.
 The UBL syntax of a Peppol invoice is quite verbose, and it will probably be a lot of work to implement that from scratch in Python. We'll start with a subset and then expand.
 
+Regarding our innovative addition to the Peppol protocol stack, namely self-hosted identities, we think we have a pretty good idea of how to build this, and ample experience in building similar constructs in the past. For instance, if you receive an invoice which purports to be from https://sender.com/#peppol, you would retrieve that URL as a public JSON-LD document, extract the public key information, and check the signature on the invoice. If your addressbook shows you already do business with the company whose website is https://sender.com then you know you have a reason to trust this sender, even though both sender and receiver avoided the need for access to the official EU-based Peppol network.
+
+Regarding milestone 5, we already discussed with George Svarovsky that it would probably be a mistake to try to do this in Python at the first try, and better to do it in JavaScript first, where we have m-ld available. This part of the project is more experimental than the other parts, and may fail if we run into fundamental obstacles to applying CRDTs in a Federated Bookkeeping use case. In this case, we will find a way to work around the limitation and document why our original design didn't work out as expected. At the same time, our project of collaborative invoice composition will serve as a use-case study and beta-user of George's NLNet-funded project.
 
 # Describe the ecosystem of the project, and how you will engage with relevant actors and promote the outcomes?
 Most importantly, we will submit our open source Peppol implementation to https://peppol.eu/downloads/peppolimplementations/ as the sixth entry in the official list there. This will give our project, as well as Ponder Source as a new startup, important visibility within the Peppol community.
