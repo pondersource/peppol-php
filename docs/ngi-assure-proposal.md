@@ -7,11 +7,13 @@ https://nlnet.nl/propose/
 * Phone numbers: ...
 * Organisation: Stichting Ponder Source
 * Country: The Netherlands
-* Project name: Self-hosted e-invoicing with decentralized identities
+* Project name: "Peppol to the People!" - self-hosted e-invoicing with decentralized identities
 * Website / wiki: https://github.com/pondersource/peppol-python
 
 # Abstract: Can you explain the whole project and its expected outcome(s).
-In Federated Bookkeeping, we use the internet and open protocols to interconnect (open source) bookkeeping systems. The need for Federated Bookkeeping is enormous, since everybody needs a bookkeeping system, and at the same time it's very privacy-sensitive for especially one-person businesses, it involves business secrets for almost everyone, and there is a large risk risk of dominant players who want to extract data.
+Every organisation has a bookkeeping system, and it always contains sensitive data about both business and humans. The market for bookkeeping software is dominated by large commercial players who build silos, and especially when sending invoices, there is a large risk of closed networks and data extraction by intermediates.
+
+In the young research field of "Federated Bookkeeping", we therefore use the internet and open protocols to interconnect (open source, self-hosted) bookkeeping systems, so that each system can be "connected, but sovereign".
 
 To make Federated Bookkeeping a reality, we propose an open source implementation of the popular EU-backed Peppol standard, integrated directly with popular open source bookkeeping systems, and extended to allow participants self-host their public key information.
 
@@ -42,17 +44,17 @@ We looked at the landscape of open source bookkeeping systems (https://github.co
 There are four open source implementations of Peppol's current AS4 transport protocol in Java, and one in C#.
 
 # Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?
-Yes. I recently founded Stichting Ponder Source which is a non-profit startup aimed at open source software development and promoting open protocols in the world of bookkeeping. We now have two employees (Triantafullenia Doumani and myself).
+Yes. I (Michiel de Jong) recently founded Stichting Ponder Source which is a non-profit startup aimed at open source software development and promoting open protocols in the world of bookkeeping. We now have two employees (Triantafullenia Doumani and myself).
 
 Triantafullenia is an exceptionally bright, fast learning, and talented software engineer who is finalizing a Master's Degree in Computer Science, and who is permanently relocating from Greece to Utrecht to work on this project.
 
-I (Michiel de Jong) recently founded the Federated Bookkeeping community which ties together related projects in credit network protocols, e-invoicing protocols, and everything in between, and which now regularly active in https://gitter.im/federatedbookkeeping/community chat and a weekly videocall with usually 4 or 5 attendees so far.
+I also recently founded the Federated Bookkeeping community which ties together related projects in credit network protocols, e-invoicing protocols, and everything in between, and which is now regularly active in https://gitter.im/federatedbookkeeping/community chat and a weekly videocall with usually 4 or 5 attendees so far.
 
 Regarding fintech and decentralized finance, in the past, I worked on credit network protocols as the inventor of LedgerLoops, as an employee at Ripple, in the Interledger team, and more recently working on Web Monetization as a Grant for the Web grantee.
 
 Regarding personal data on the web, in 2010 I founded the Unhosted project which received numerous NLNet grants over the years, worked on Firefox OS at Mozilla, and I am now an active member of the Solid project alongside Sir Tim Berners-Lee, including the recent NLNet-funded Solid-Nextcloud integration. I also co-founded the "Terms of Service; Didn't Read" project which received wide-spread coverage in the mainstream press.
 
-I wrote the test suite for Open Cloud Mesh and Stichting Ponder Source is now a sub-contractor of the ScienceMesh project, where we implement the cs3 protocol in Nextcloud.
+I wrote the test suite for both Solid and Open Cloud Mesh, and Stichting Ponder Source is now a sub-contractor of the ScienceMesh project, where we implement the new EU-funded CS3 protocol in Nextcloud.
 
 I am an advisory board member for NGI-DAPSI and recently gave a keynote speech about Federated Bookkeeping at Surf Research Week.
 
@@ -75,7 +77,7 @@ Five milestones:
   * based on existing code from https://github.com/OCA/edi 
 4. Peppol-Invoice parser
   * based on existing code from https://github.com/OCA/edi 
-5. Proof-of-Concept of CRDT-based collaborative invoice composition (joint with George Svarovsky's "Securing Shared Decentralised Live Information with m-ld" project, which was already funded through NGI-Assure).
+5. Proof-of-Concept of CRDT-based collaborative invoice composition (joint with George Svarovsky's "Securing Shared Decentralised Live Information with m-ld" project, which was already funded through NGI-Assure). This part will be done in JavaScript as a stand-alone piece of code, since it's only a proof-of-concept, and m-ld is not available in Python yet.
 
 # Does the project have other funding sources, both past and present?
 # (If you want, you can in addition attach a budget at the bottom of the form)
@@ -90,3 +92,18 @@ Milestone 5 would be a collaboration with the M-ld project, but they are not fun
 We reached out to all Python-based open source Peppol implementations we could find, and found that Odoo supports the XML-based message format UBL in general, but not Peppol-Billing 3.0 in particular, and also not the transport protocol AS4. There is an open source implementation of Peppol-Billing 3.0 in Python and we spoke to the author; he agreed to open source it but said it was an ad-hoc patch inside a one-off project, and would not be very useful to us beyond serving as an inspiration.
 
 See https://github.com/pondersource/peppol-python/issues/7 for more info.
+
+# What are significant technical challenges you expect to solve during the project, if any?
+Although the documentation of Peppol AS4 (the transport protocol) and Peppol Billing (the data format) is quite length and spread with cross-references between peppol.eu and OASIS specs that it is based on, we can use existing implementations and test suites to guide us, if we take it step-by-step, doing only core functionality first and then expanding incrementally, it should be doable.
+The XML, the SOAP calls, and the PKI certificates and signatures are all non-trivial tasks to develop, but we feel we have the right team in place to work through it.
+Peppol is based on Java-oriented protocols like XML and SOAP. Although we have already checked that there are sufficient building blocks available in Python through pip/PyPI, the IDE tooling around things like XSD will not be as good in Python as it would be in a Java-oriented IDE.
+The UBL syntax of a Peppol invoice is quite verbose, and it will probably be a lot of work to implement that from scratch in Python. We'll start with a subset and then expand.
+
+
+# Describe the ecosystem of the project, and how you will engage with relevant actors and promote the outcomes?
+Most importantly, we will submit our open source Peppol implementation to https://peppol.eu/downloads/peppolimplementations/ as the sixth entry in the official list there. This will give our project, as well as Ponder Source as a new startup, important visibility within the Peppol community.
+We also have some open business development conversations with potential resellers of a hosted instance of our Peppol implementation.
+As a follow-up project, will complete the integration with Odoo's internal data formats, package our code as an Odoo app, and submit it to https://apps.odoo.com/apps.
+We also aim to submit it to ERPNext.
+We actively collaborate with George Svarovsky from https://nlnet.nl/project/m-ld/.
+Stichting Ponder Source is an active driver of the Federated Bookkeeping community, and we will disseminate our work through our website and when speaking at conferences.
