@@ -17,13 +17,9 @@ In the young research field of "Federated Bookkeeping", we therefore use the int
 
 To make Federated Bookkeeping a reality, we propose an open source implementation of the popular EU-backed Peppol standard, integrated directly with popular open source bookkeeping systems, and extended to allow participants self-host their public key information.
 
-Peppol is a new successful e-Invoicing network, driven by the EU to unite government procurement processes. It can be used to send purchase orders and invoices from any legal person to any other legal person in any of the participating countries.
+Peppol is a new successful e-Invoicing network, driven by the EU to unite government procurement processes. It can be used to send invoices from any legal person to any other legal person in any of the participating countries.
 
-Peppol uses a four-corner model, where every document sent goes from the sender (1) via the sending gateway (2) to the receiving gateway (3) to the recipient (4). This is similar to how home internet works: your home router is not directly connected to the internet, your ISP acts as your gateway. Both the sender and the receiver are at arm's length from the core network, via an access point service. This service validates and vouches for the identity of all senders and receivers.
-
-For many electronic invoices, both the sender and the recipient are legal entities in a European country. With a little bit of effort, and sometimes even zero cost, a legal entity can obtain a Peppol ID at one of the many existing Peppol gateways. The sender can then pay their gateway to relay outgoing invoices from them, and the recipient can pay their gateway to relay incoming invoices to them. Often, both the sending gateway service and the receiving gateway service, come as part of a package deal for those who use SaaS closed-source bookkeeping software providers.
-
-For legal entities that use open-source bookkeeping software (Odoo, Dolibarr, ERPNext), it is usually a bit harder but still not impossible to send and receive invoices via Peppol: they can set up an SMTP connection or a custom webhook between their bookkeeping system and a commercial Peppol gateway service like StoreCove or one of the many others. This would probably require them to pay a monthly subscription fee, which can be hundreds of euros per month, and most gateways only operate in some specific countries, so there are some hurdles, but it's technically feasible today.
+Just like home internet users need to use an Internet Service Provider to get onto the main global tcp/ip network that we call internet, bookkeeping systems need to go through a certified Peppol gateway server to get onto the main global Peppol network. The sending gateway certifies the identity of the sender (looking at their legal entity in the country where they are registered) by signing the invoice as it passes through. The receiving gateway checks the sending gateway's signature before delivering it to the final recipient. This is called the four-corner model (sender -> sending gateway -> receiving gateway -> recipient).
 
 What is not possible today is to send and receive Peppol-compatible invoices where the sender and/or the receiver:
 * is not able or willing to pay the significant monthly fee for the services of a Peppol gateway service
@@ -35,13 +31,7 @@ We aim to fix this by:
 * plugging this functionality straight into existing open source bookkeeping systems (in particular Odoo and ERPNext, which are both in Python)
 * adding a public key discovery scheme which allows users to self-host their identity on their own domain name.
 
-In order to increase the impact of e-Invoicing on humanity, we want to enable direct sender-to-receiver document sending as well as the gateway-verified path. In this case, the receiver will not be able to rely on identity verification by a sending gateway, nor on the signature checking carried out by the receiving gateway, so the sender needs to publish their own public key information (for instance using WebID or other established https-based mechanisms), and the receiver needs to discover the sender's public key from the addressbook entry they have.
-
 For instance, if you receive an invoice which purports to be from https://sender.com/#peppol, you would retrieve that URL as a public JSON-LD document, extract the public key information, and check the signature on the invoice. If your addressbook shows you already do business with the company whose website is https://sender.com then you know you have a reason to trust this sender, even though both sender and receiver avoided the need for access to the official EU-based Peppol network.
-
-We looked at the landscape of open source bookkeeping systems (https://github.com/federatedbookkeeping/research/blob/main/open-source-erp.md#accounting-and-erp), measuring their activity by number of unique monthly code contributors on GitHub. The top three is Odoo (Python), Dolibarr (PHP), ERPNext (Python).
-
-There are four open source implementations of Peppol's current AS4 transport protocol in Java, and one in C#.
 
 # Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?
 Yes. I (Michiel de Jong) recently founded Stichting Ponder Source which is a non-profit startup aimed at open source software development and promoting open protocols in the world of bookkeeping. We now have two employees (Triantafullenia Doumani and myself).
