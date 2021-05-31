@@ -19,15 +19,15 @@ This has obvious drawbacks:
 * these gateways often charge hundreds of euros per month for a connection
 * they can see and alter the unencrypted contents of all your incoming and outgoing invoices
 
-We propose a hybrid system, implementing all of standard Peppol, but additionally supporting self-hosted identities. If the sender and/or the receiver is a standard Peppol node, standard Peppol will be used as usual:
+We propose a hybrid system, implementing all of standard Peppol, but additionally supporting self-hosted identities. If the sender and/or the receiver is a standard Peppol node, Peppol will be used as usual:
 
 sender (c1) -> sendingGateway (c2) -> receivingGateway (c3) -> receiver (c4)
 
-But if both the sender and the receiver are hybrid nodes, and the sender is a trusted supplier of the receiver, the invoice can be sent directly over end-to-end encrypted https:
+But if both the sender and the receiver are hybrid nodes, and the invoice sender is a trusted supplier of the receiver, the invoice can be sent directly over end-to-end encrypted https:
 
 sender (c1) -(https)-> receiver (c4)
 
-Our implementation will allow both the sender and the receiver to publish their identity at a well-known URL (on their company domain names, as linked in the XML invoice).
+Our implementation will allow both the sender and the receiver to publish their identity at a well-known URL (checking with the company domain names linked in the XML invoice).
 
 # Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?
 Yes. I (Michiel de Jong) recently founded Stichting Ponder Source which is a non-profit startup aimed at open source software development and promoting open protocols in the world of bookkeeping. We now have two employees (Triantafullenia Doumani and myself).
