@@ -30,10 +30,6 @@ sender (c1) --------------------(https)----------------------> receiver (c4)
 
 Our implementation will allow both the sender and the receiver to publish their identity at a well-known https-secured URL on their own webserver (the domain name should match the machine-readable one in the XML invoice).
 
-Although open source implementations of Peppol exist in Java and C#, we will implement it in Python so that it can be either run stand-alone, or integrated into Odoo, which nowadays is the leading open source self-hostable bookkeeping system.
-
-Stichting Ponder Source is a young earn-to-give startup, and although the result of this project will be completely open source, well documented, and free to use, we aim to provide bespoke consultancy around it, and offer hosted instances at a service fee. All the profit Stichting Ponder Source makes will be either spent on in-house research around Federated Bookkeeping, or donated to other open source projects.
-
 # Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?
 Yes. I (Michiel de Jong) recently founded Stichting Ponder Source which is a non-profit startup aimed at open source software development and promoting open protocols in the world of bookkeeping. We now have two employees (Triantafullenia Doumani and myself).
 
@@ -81,7 +77,9 @@ Five milestones:
 # Does the project have other funding sources, both past and present?
 # (If you want, you can in addition attach a budget at the bottom of the form)
 
-Stichting Ponder Source was only just created and this will be one of our two launching projects (the other one being our participation in the prestigious Sciencemesh project), so in this early phase we heavily rely on outside funding to bootstrap our existence.
+Stichting Ponder Source is a young earn-to-give startup that was only just created, and this will be one of our two launching projects (the other one being our participation in the prestigious Sciencemesh project), so in this early phase we heavily rely on outside funding to bootstrap our existence.
+
+Although the result of this project will be completely open source, well documented, and free to use, we aim to provide bespoke consultancy around it, and offer hosted instances at a service fee. All the profit Stichting Ponder Source makes will be either spent on in-house research around Federated Bookkeeping, or donated to other open source projects.
 
 In the future we plan to monetize this software project, which will be part of our business model. One option would be running a Peppol gateway ourselves, with reseller agreements, another would be software consultancy (but always keeping the entire code base open source, so no "enterprise edition").
 
@@ -93,6 +91,8 @@ We reached out to all Python-based open source Peppol implementations we could f
 See https://github.com/pondersource/peppol-python/issues/7 for more info.
 
 # What are significant technical challenges you expect to solve during the project, if any?
+Although open source implementations of Peppol exist in Java and C#, we will implement it in Python so that it can be either run stand-alone, or integrated into Odoo, which nowadays is the leading open source self-hostable bookkeeping system.
+
 Although the documentation of Peppol AS4 (the transport protocol) and Peppol Billing (the data format) is quite length and spread with cross-references between peppol.eu and OASIS specs that it is based on, we can use existing implementations and test suites to guide us, and if we take it step-by-step, doing only core functionality first and then expanding incrementally, it should be doable.
 The XML, the SOAP calls, and the PKI certificates and signatures are all non-trivial tasks to develop, but we feel we have the right team in place to work through it.
 Peppol is based on Java-oriented protocols like XML and SOAP. Although we have already checked that there are sufficient building blocks available in Python through pip/PyPI, the IDE tooling around things like XSD will not be as good in Python as it would be in a Java-oriented IDE.
@@ -107,7 +107,8 @@ Most importantly, we will submit our open source Peppol implementation to https:
 
 We also have some open business development conversations with potential resellers of a hosted instance of our Peppol implementation.
 
-As a follow-up project, will complete the integration with Odoo's internal data formats, package our code as an Odoo app, and submit it to https://apps.odoo.com/apps.
+The presence in the Odoo app store will also give us visibility.
+
 We also aim to submit it to ERPNext at a later stage, but their code eco-system seems to be more centralized than the Odoo eco-system (no concept of apps/plugins, apparently), so we probably rely on the acceptance of upstream pull request in the main codebase there.
 
 Although our team only consists of two people so far, we actively collaborate with George Svarovsky from existing NGI Assure grantee https://nlnet.nl/project/m-ld/ and with Yvo Brevoort from https://www.muze.nl/ and we will speak about the vision of Federated Bookkeeping at open source (hacker) conferences, as well as promoting the benefits of open source self-hostable software at Peppol-related networking events.
