@@ -74,7 +74,7 @@ Five milestones:
 
 4. Re-signing gateway
   * forwards an invoice from a whitelisted sender, replacing the sender signature with a sending-gateway signature, thus making the invoice Peppol-compliant if the sending gateway's cryptographic key pair is officially certified.
-  * Know-Your-Customer implementation, show ability to checking sender identity against two or three different national company registries.
+  * Know-Your-Customer implementation, show ability to check sender identity against two or three different national company registries.
   * re-signs and forwards SMP registrations on behalf of whitelisted receivers.
 
 5. Odoo integration
@@ -108,7 +108,7 @@ Peppol is based on Java-oriented protocols like XML and SOAP. Although we have a
 
 The UBL syntax of a Peppol invoice is quite verbose, and it will probably be a lot of work to implement that from scratch in Python. We'll start with a subset, based on what UBL functionality we can find in the Odoo and ERPNext open source communities, and then expand.
 
-Regarding our innovative addition to the Peppol protocol stack, namely self-hosted identities, we think we have a pretty good idea of how to build this, and ample experience in building similar constructs in the past. For instance, if you receive an invoice which purports to be from https://sender.com/#peppol, you would retrieve that URL as a public JSON-LD document, extract the public key information, and check the signature on the invoice. If your addressbook shows you already do business with the company whose website is https://sender.com then you know you have a reason to trust this sender, even though both sender and receiver avoided the need for access to the official EU-based Peppol network.
+Regarding our innovative addition to the Peppol protocol stack, namely self-hosted identities, we think we have a pretty good idea of how to build this, and ample experience in building similar constructs in the past. For instance, if you receive an invoice which purports to be from https://sender.com/#peppol, you would retrieve that URL as a public JSON-LD document, extract the public key information, and check the signature on the invoice. If your address book shows you already do business with the company whose website is https://sender.com then you know you have a reason to trust this sender, even though both sender and receiver avoided the need for access to the official EU-based Peppol network.
 
 For the implementation of the Know-Your-Customer system, we will look at the well-documented acme challenge protocols that were developed by the LetsEncrypt project, who disrupted the world of TLS certificates in much the same way as we intend to disrupt the world of e-invoicing now.
 
