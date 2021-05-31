@@ -4,7 +4,7 @@
 
 An implementation of Peppol in Python
 
-## The Plan
+## Peppol for the masses!
 The popular EU-backed e-invoicing network "Peppol" requires both the sender and the receiver to connect through a licensed gateway.
 
 This has obvious drawbacks:
