@@ -17,23 +17,22 @@ This has obvious drawbacks:
 * only registered legal entities from the 39 participating governments can currently benefit from Peppol
 * identity management is top-down and in the hands of the certified gateways
 * these gateways often charge hundreds of euros per month for a connection
-* they can see (and even edit) the unencrypted contents of all your incoming invoices
-* they can see (and even edit) the unencrypted contents of all your outgoing invoices
+* they can see and alter the unencrypted contents of all your incoming and outgoing invoices
 
-We propose a hybrid system, implementing all of standard Peppol, but additionally supporting self-hosted identities. If either the sender or the receiver is a standard Peppol node, Peppol will be used as usual:
+We propose a hybrid system, implementing all of standard Peppol, but additionally supporting self-hosted identities. If the sender and/or the receiver is a standard Peppol node, standard Peppol will be used as usual:
 
 sender (c1) -> sendingGateway (c2) -> receivingGateway (c3) -> receiver (c4)
 
-But if both the sender and the receiver are hybrid nodes, and the sender is a known supplier of the receiver, the invoice can be sent directly, server-to-server and securely end-to-end encrypted with https:
+But if both the sender and the receiver are hybrid nodes, and the sender is a trusted supplier of the receiver, the invoice can be sent directly over end-to-end encrypted https:
 
 sender (c1) --------------------(https)----------------------> receiver (c4)
 
-Our implementation will allow both the sender and the receiver to publish their identity at a well-known https-secured URL on their own webserver (the domain name should match the machine-readable one in the XML invoice).
+Our implementation will allow both the sender and the receiver to publish their identity at a well-known URL.
 
 # Have you been involved with projects or organisations relevant to this project before? And if so, can you tell us a bit about your contributions?
 Yes. I (Michiel de Jong) recently founded Stichting Ponder Source which is a non-profit startup aimed at open source software development and promoting open protocols in the world of bookkeeping. We now have two employees (Triantafullenia Doumani and myself).
 
-I also recently founded the Federated Bookkeeping community which ties together related projects in credit network protocols, e-invoicing protocols, and everything in between, and which is now regularly active in https://gitter.im/federatedbookkeeping/community chat and a weekly videocall with usually 4 or 5 attendees so far.
+I also recently founded the Federated Bookkeeping community which ties together related projects in credit network protocols, e-invoicing protocols, and everything in between, and which is now regularly active in the https://gitter.im/federatedbookkeeping/community chat, with a weekly videocall of usually 4 or 5 attendees so far.
 
 Regarding fintech and decentralized finance, in the past, I worked on credit network protocols as the inventor of LedgerLoops, as an employee at Ripple, in the Interledger team, and more recently working on Web Monetization as a Grant for the Web grantee.
 
