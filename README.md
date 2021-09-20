@@ -53,7 +53,9 @@ Our implementation will allow both the sender and the receiver to publish their 
    - Purchase Prder
    - Simple message
  * Each message includes:
-   - Receipient: From the contact list or by entering a WebID/ PeppolID address  
+   - Receipient:
+       -  Contact
+       -  New WebID/ PeppolID address  
    - Subject   : The subject of the message
    - Body      : Simple Text 
    - XML file  : Uploload Invoice or Purchase order (if required) 
