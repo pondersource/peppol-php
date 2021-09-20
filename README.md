@@ -6,15 +6,15 @@
 
 An implementation of Peppol in PHP
 
-## Peppol for the masses!
+# Peppol for the masses!
 
-### Summary
+## Summary
 Peppol is an EU-backed e-Invoicing network which uses a top-down certification infrastructure to establish trust between the sender and the receiver of an invoice.
 In the "Peppol for the Masses!" project, we will implement Peppol in PHP (so far only Java and C# implementations are available), and package its core components (the AS4 sender and the AS4 receiver) as a Nextcloud app, so that users of the popular Nextcloud personal cloud server can send and receive invoices over AS4 directly into their self-hosted server.
 Due to the top-down nature of Peppol's trust infrastructure, it's not possible to self-host a node in the Peppol network unless you go through a reasonably heavy certification process. Therefore, we will extend our implementation with support for self-hosted identities, using the "WebID" identity pattern which was popularized by the Solid project. We will also develop a re-signing gateway which replaces the signature on an AS4-Direct invoice with a Peppol-certified signature. In a follow-up project, we will also host an instance of this re-signing gateway and make it available free of charge, similar to how the LetsEncrypt project has made TLS certificates available free of charge.
 This project will lower the (cost) barrier for machine-readable cryptographically-signed e-Invoicing messages, and at the same time increase the sovereignty of end-users, towards a human-centric internet of business documents.
 
-### How it works
+## How it works
 The popular EU-backed e-invoicing network "Peppol" requires both the sender and the receiver to connect through a licensed gateway.
 
 This has obvious drawbacks:
@@ -33,8 +33,8 @@ sender (c1) -(https)-> receiver (c4)
 
 Our implementation will allow both the sender and the receiver to publish their identity at a well-known URL, under the company domain names as linked in the XML invoice.
 
-## The Milestones
-# 1. Trust User Interface for both sender and receiver
+# The Milestones
+## 1. Trust User Interface for both sender and receiver
 
   ### Network of Trust
   
@@ -85,25 +85,25 @@ Our implementation will allow both the sender and the receiver to publish their 
   * Custom icons exists for each terminology
   * Q&A
   
-# 2. Hybrid sender, including:
+## 2. Hybrid sender, including:
   * AS4 client (based on generic SOAP client library)
   * Recipient details discovery (Peppol ID directory lookup)
   * Passing the official AS4 compliance tests for sending
   * Option to send to self-hosted non-Peppol recipient identities
 
-# 3. Hybrid receiver, including:
+## 3. Hybrid receiver, including:
   * AS4 server (based on generic SOAP server library)
   * Service Metadata Publisher, to announce the endpoint details for a Peppol ID.
   * Passing the official AS4 compliance tests for receiving
   * Option to receive from self-hosted non-Peppol sender identities
   * Sender identity / signature verification for Peppol ID's and self-hosted ID's
 
-# 4. Re-signing gateway
+## 4. Re-signing gateway
   * forwards an invoice from a whitelisted sender, replacing the sender signature with a sending-gateway signature, thus making the invoice Peppol-compliant if the sending gateway's cryptographic key pair is officially certified.
   * Know-Your-Customer implementation, showing ability to check sender identity against two or three different national company registries.
   * re-signs and forwards SMP registrations on behalf of whitelisted receivers.
 
-# 5. Nextcloud integration
+## 5. Nextcloud integration
   * the leading open source self-hostable personal cloud system Nextcloud does not yet support sending and receiving them via Peppol's SOAP-based AS4 protocol.
   * we will package the sender and the receiver modules as a Nextcloud app, directly installable for existing Nextcloud self-hosters from the Nextcloud app store.
   * demo the integration and the full sender-to-receiver flow in a screencast.
