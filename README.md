@@ -61,7 +61,7 @@ Our implementation will allow both the sender and the receiver to publish their 
    - XML File  :
        -  Invoice 
        -  Purchase order
-       -  Nada 
+       -  Null
    - Type      : The type of the XML File
    - Shipping method: 
        - Peppol classic 
