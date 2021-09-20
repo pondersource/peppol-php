@@ -53,7 +53,7 @@ Our implementation will allow both the sender and the receiver to publish their 
    - Purchase order
    - Simple message
  * Each message includes:
-   - Receipient:
+   - Recipient:
        -  Contact
        -  New WebID/ PeppolID address  
    - Subject   : The subject of the message
@@ -73,17 +73,17 @@ Our implementation will allow both the sender and the receiver to publish their 
   ### Send a new message out the Network of Trust 
   
   #### Invoice
-   * The Receipient will be asked if he trust the Sender as a supplier or not
+   * The Recipient will be asked if he trust the Sender as a supplier or not
      - ACCEPT : Sender marked as a supplier and added into the Network(respectively for the sender)
      - REJECT : Keep the Sender as 'unkown' 
 
   #### Purchase Order
-   * The Receipient will be asked if he trust the Sender as a costumer or not
+   * The Recipient will be asked if he trust the Sender as a costumer or not
      - ACCEPT : Sender marked as a costumer and added into the Network(respectively for the sender)
      - REJECT : Keep the Sender as 'unkown' 
   
   #### Simple Message
-  * The Receipient will just receive a new contact request
+  * The Recipient will just receive a new contact request
      - ACCEPT : Sender added into the Network(respectively for the sender)
      - REJECT : Keep the Sender as 'unkown' 
   
