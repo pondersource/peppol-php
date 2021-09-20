@@ -50,7 +50,7 @@ Our implementation will allow both the sender and the receiver to publish their 
  * Users can exchange messages
  * Each message can be:
    - Invoice
-   - Purchase Prder
+   - Purchase Order
    - Simple message
  * Each message includes:
    - Receipient:
