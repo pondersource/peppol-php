@@ -35,13 +35,56 @@ Our implementation will allow both the sender and the receiver to publish their 
 
 ## The Milestones
 1. Trust User Interface for both sender and receiver
-  * sender can safely pick a recipient from a list of known and verified contacts
-  * if relaying through a gateway was necessary (e.g. the recipient has no self-hosted verifiable identity), these will be clearly indicated to both sender and receiver
-  * invoices from non-trusted senders will be marked as spam and hidden from the inbox
-  * in the inbox, recipient can clearly see the credentials of the sender
-    - self-hosted or gateway-certified
-    - backed by a government's company registry or not
 
+  ### Network of Trust
+  
+  * Users can create a Network of Trust 
+    - How?  By sending and receiving contact requests
+  * Each contact can be:
+    - Supplier
+    - Costumer
+    - Simple contact 
+
+ ### Messages
+ 
+ * Users can exchange messages
+ * Each message can be:
+   - Invoice
+   - Purchase Prder
+   - Simple message
+ * Each message includes:
+   - Receipient: From the contact list or by entering a WebID/ PeppolID address  
+   - Subject   : The subject of the message
+   - Body      : Simple Text 
+   - XML file  : Uploload Invoice or Purchase order (if required) 
+   - Type      : The type of the message ( Invoice/ Purchase order/ Simple message) to inform the receipient 
+   - Shipping method: Through Peppol classic or AS4  
+ * Recipient can clearly see the credentials of the sender
+   - Self-hosted or gateway-certified
+   - Backed by a government's company registry or not
+ 
+  ### Send a new message out the Network of Trust 
+  
+  #### Invoice
+   * The Receipient will be asked if he trust the Sender as a supplier or not
+     - ACCEPT : Sender marked as a supplier and added into the Network(respectively for the sender)
+     - REJECT : Keep the Sender as 'unkown' 
+
+  #### Purchase Order
+   * The Receipient will be asked if he trust the Sender as a costumer or not
+     - ACCEPT : Sender marked as a costumer and added into the Network(respectively for the sender)
+     - REJECT : Keep the Sender as 'unkown' 
+  
+  #### Simple Message
+  * The Receipient will just receive a new contact request
+     - ACCEPT : Sender added into the Network(respectively for the sender)
+     - REJECT : Keep the Sender as 'unkown' 
+  
+  ### UI
+  
+  * Custom icons exists for each terminology
+  * Q&A
+  
 2. Hybrid sender, including:
   * AS4 client (based on generic SOAP client library)
   * Recipient details discovery (Peppol ID directory lookup)
