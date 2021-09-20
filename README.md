@@ -1,10 +1,10 @@
-# peppol-python
+# peppol-php
 
-[![Join the chat at https://gitter.im/pondersource/peppol-python](https://badges.gitter.im/pondersource/peppol-python.svg)](https://gitter.im/pondersource/peppol-python?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/pondersource/peppol-php](https://badges.gitter.im/pondersource/peppol-php.svg)](https://gitter.im/pondersource/peppol-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 *** UNDER CONSTRUCTION ***
 
-An implementation of Peppol in Python
+An implementation of Peppol in PHP
 
 ## Peppol for the masses!
 The popular EU-backed e-invoicing network "Peppol" requires both the sender and the receiver to connect through a licensed gateway.
@@ -52,8 +52,8 @@ Our implementation will allow both the sender and the receiver to publish their 
   * Know-Your-Customer implementation, showing ability to check sender identity against two or three different national company registries.
   * re-signs and forwards SMP registrations on behalf of whitelisted receivers.
 
-5. Odoo integration
-  * the leading open source self-hostable bookkeeping system Odoo already supports composing and parsing machine-readable UBL (Peppol-like) invoices, but it does not yet support sending and receiving them via Peppol's SOAP-based AS4 protocol.
-  * we will package the sender and the receiver modules as Odoo modules, directly installable for existing Odoo self-hosters from the Odoo app store.
+5. Nextcloud integration
+  * the leading open source self-hostable personal cloud system Nextcloud does not yet support sending and receiving them via Peppol's SOAP-based AS4 protocol.
+  * we will package the sender and the receiver modules as a Nextcloud app, directly installable for existing Nextcloud self-hosters from the Nextcloud app store.
   * demo the integration and the full sender-to-receiver flow in a screencast.
 
