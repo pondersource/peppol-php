@@ -58,9 +58,14 @@ Our implementation will allow both the sender and the receiver to publish their 
        -  New WebID/ PeppolID address  
    - Subject   : The subject of the message
    - Body      : Simple Text 
-   - XML file  : Uploload Invoice or Purchase order (if required) 
-   - Type      : The type of the message ( Invoice/ Purchase order/ Simple message) to inform the receipient 
-   - Shipping method: Through Peppol classic or AS4  
+   - XML File  :
+       -  Invoice 
+       -  Purchase order
+       -  Nada 
+   - Type      : The type of the XML File
+   - Shipping method: 
+       - Peppol classic 
+       - AS4  
  * Recipient can clearly see the credentials of the sender
    - Self-hosted or gateway-certified
    - Backed by a government's company registry or not
