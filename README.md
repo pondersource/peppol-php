@@ -5,7 +5,7 @@
 
 # Peppol for the masses!
 
-<img src="https://github.com/pondersource/peppol-php/blob/main/docs/connectyoutbooks.png?raw=true" width="500"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/connectyoutbooks.png?raw=true" width="500"/>
 
 ## Summary
 Peppol is an EU-backed e-Invoicing network which uses a top-down certification infrastructure to establish trust between the sender and the receiver of an invoice.
