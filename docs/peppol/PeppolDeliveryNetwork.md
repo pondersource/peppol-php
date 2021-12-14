@@ -6,6 +6,7 @@ Peppol uses the eDelivery Network to connect different eProcurement systems by e
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/peppol-delivery.png?raw=true"/>
 
+* [What is PEPPOL?](https://www.youtube.com/watch?v=1qsFFRHOus4)
 * [Peppol Delivery Network documentation](https://eufordigital.eu/steeringcommittee2/images/resources/Day_5_-_Afternoon_side_event_-_OpenPeppol.pdf)
 * [Peppol Continuous Transaction Controls](https://peppol.eu/wp-content/uploads/2021/09/Peppol-CTC-Reference-Document-v1.0.pdf)
 
