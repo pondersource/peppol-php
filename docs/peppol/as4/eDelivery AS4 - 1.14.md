@@ -14,8 +14,9 @@
 
 <img src="https://github.com/pondersource/peppol-php/blob/AS4-eDelivery/docs/pics/ebMS-3.0.AS4.png?raw=true" width="500" />
 
-### Why AS4 is secure?
- 
- * Combinations of XML Digital Signature and XML Encryption X.509 security tokens for signing and encrypting as primary means for authenticating messages
+## Messaging Model of the AS4 profile
 
+The Model constrains the channel bindings of message exchanges between two AS4 MSHs.
+
+<img src="https://github.com/pondersource/peppol-php/blob/AS4-eDelivery/docs/pics/as4-messaging-model.png?raw=true" width="500"/>
 
