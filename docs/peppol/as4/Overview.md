@@ -14,6 +14,7 @@ OpenPEPPOL took the decision to mandate the shift to AS4 in order to be better a
 ## AS4 technical specification
 
 AS4 offers a secure exchange protocol for use over the Internet that leverages the MIME envelope structure to transport arbitrary payloads. Support for Message Security is provided by AS4 via ebMS 3.0 and the WS-Security 1.1 and 1.1.1. specifications. This includes combinations of XML Digital Signature and XML Encryption X.509 security tokens for signing and encrypting as primary means for authenticating messages, ensuring privacy, and guaranteeing safe data transmission. Additionally, AS4 supports the use username/password tokens as access control to message pull channels.
+
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/user.png?raw=true"/>
 
 * [What is AS4?](https://ecosio.com/en/blog/peppol-access-points-now-required-to-be-as4-compliant)
