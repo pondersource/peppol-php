@@ -1,17 +1,16 @@
 
 # BIS: Business Interoperability Specification
 
-The purpose of this document is to describe a common format for the invoice response message in the European market, and to facilitate an efficient implementation and increased use of electronic collaboration regarding invoice responses based on this format.
+THis is a common format for the invoice response message in the European market.
 
-
-# Invoice Response message in general
+## Invoice Response message in general
 
 <img src="https://github.com/pondersource/peppol-php/blob/AS4-eDelivery/docs/pics/Invoice%20Response%20message%20in%20general.jpg?raw=true" width="800">
 
-# Parties and roles
+## Parties and roles
 <img src="https://github.com/pondersource/peppol-php/blob/AS4-eDelivery/docs/pics/parties_and_roles_invoice.png?raw=true" width="800">
 
-# Invoicing use cases
+## Invoicing use cases
 
 * Invoice in process.
 * Invoice is in process with additional reference data.
@@ -27,13 +26,19 @@ The purpose of this document is to describe a common format for the invoice resp
 * Invoice payment has been initiated.
 * Invoice is accepted by a third party acting on behalf of the Buyer.
 
-# Code lists
+## Syntax
+
+* Basic syntax of [PEPPOL Invoice Response transaction 3.1 (T111)](https://test-docs.peppol.eu/poacc/upgrade-3/syntax/InvoiceResponse/tree/)
+
+## Rules 
+
+* Basic rules for [PEPPOL Invoice Response transaction3.1 (T111)](https://testdocs.peppol.eu/poacc/upgrade-3/rules/T111-basic/)
+
+## Code lists
 
 * [Party identifiers and party legal registration identifier scheme](https://docs.peppol.eu/poacc/upgrade-3/codelist/ICD/)
 
 * [Electronic address identifier scheme identifier](https://docs.peppol.eu/poacc/upgrade-3/codelist/eas/)
-
-### 
 
 ## Resources 
 
