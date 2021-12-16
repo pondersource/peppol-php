@@ -17,6 +17,13 @@ AS4 offers a secure exchange protocol for use over the Internet that leverages t
 
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/user.png?raw=true"/>
 
+## Messaging Model
+
+The Messaging Model of the AS4 profile constrains the channel bindings of message exchanges between two AS4 MSHs. The following diagram shows the AS4 Messaging Model, various actors and operations in message exchange.
+Business applications or middleware, acting as Producer, Submit message content and metadata to the Sending MSH, which packages this content and Sends it to the Receiving MSH of the business partner, which Receives it and in turn Delivers the message to another business application or middleware that Consumes the message
+
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/message.png?raw=true"/>
+
 * [What is AS4?](https://ecosio.com/en/blog/peppol-access-points-now-required-to-be-as4-compliant)
 * [AS4 migration Webinar](https://www.youtube.com/watch?v=hO4r_778Ebo&t=620s)
 * [PEPPOL AS4 Profile](https://docs.peppol.eu/edelivery/as4/specification/)
