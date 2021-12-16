@@ -1,9 +1,8 @@
 # BIS-Invoice-Response-3.1.md
 
-BIS = Business Interoperability Specification
+BIS = Business Interoperability Specification.
 
-The purpose of this document is to describe a common format for the invoice response message in the European market, and to facilitate an efficient implementation and increased use of electronic collaboration regarding invoice responses based on this format.
-
+This is an overview of a common format for the invoice response message in the European market.
 
 # Invoice Response message in general
 
