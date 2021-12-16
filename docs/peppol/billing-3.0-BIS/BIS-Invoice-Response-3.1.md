@@ -3,11 +3,12 @@
 
 The purpose of this document is to describe a common format for the invoice response message in the European market, and to facilitate an efficient implementation and increased use of electronic collaboration regarding invoice responses based on this format.
 
+
 # Invoice Response message in general
 
 <img src="https://github.com/pondersource/peppol-php/blob/AS4-eDelivery/docs/pics/Invoice%20Response%20message%20in%20general.jpg?raw=true" width="800">
 
-# Process of Invoice Response message
+# Parties and roles
 <img src="https://github.com/pondersource/peppol-php/blob/AS4-eDelivery/docs/pics/parties_and_roles_invoice.png?raw=true" width="800">
 
 # Invoicing use cases
@@ -25,6 +26,14 @@ The purpose of this document is to describe a common format for the invoice resp
 * Invoice is in under query because of wrong details, partial credit note requested.
 * Invoice payment has been initiated.
 * Invoice is accepted by a third party acting on behalf of the Buyer.
+
+# Code lists
+
+* [Party identifiers and party legal registration identifier scheme](https://docs.peppol.eu/poacc/upgrade-3/codelist/ICD/)
+
+* [Electronic address identifier scheme identifier](https://docs.peppol.eu/poacc/upgrade-3/codelist/eas/)
+
+### 
 
 ## Resources 
 
