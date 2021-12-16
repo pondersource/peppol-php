@@ -28,6 +28,10 @@ The purpose of this document is to describe a common format for the invoice resp
 
 ## Resources 
 
+[BIS Invoice Response 3.1](https://docs.peppol.eu/poacc/upgrade-3/profiles/63-invoiceresponse/)
+
+[Main documentation site](https://docs.peppol.eu/poacc/upgrade-3/)
+
 [PEPPOL BIS Billing 3.0](https://docs.peppol.eu/poacc/billing/3.0/)
 
 [PEPPOL BIS version 3](https://test-docs.peppol.eu/poacc/upgrade-3/)
@@ -38,4 +42,4 @@ The purpose of this document is to describe a common format for the invoice resp
 
 [OpenPEPPOL/peppol-bis-invoice-3 GITHUB](https://github.com/OpenPEPPOL/peppol-bis-invoice-3)
 
-[BIS Invoice Response 3.1](https://docs.peppol.eu/poacc/upgrade-3/profiles/63-invoiceresponse/)
+
