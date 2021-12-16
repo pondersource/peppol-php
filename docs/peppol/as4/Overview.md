@@ -6,6 +6,11 @@ AS4 was developed for ebXML messaging services by OASIS (the Organisation for th
 
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/test.png?raw=true"/>
 
+## Why is Peppol requiring AS4 compliance?
+
+OpenPEPPOL took the decision to mandate the shift to AS4 in order to be better aligned with international requirements. The European Commision is generally in favor of using AS4 as well as the governments of Australia and New Zealand. Since AS4 is also a well renowned OASIS standard and provides a high level of flexibility, it was chosen in favor of AS2.
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/as4-profile.png?raw=true"/>
+
 * [What is AS4?](https://ecosio.com/en/blog/peppol-access-points-now-required-to-be-as4-compliant)
 * [AS4 migration Webinar](https://www.youtube.com/watch?v=hO4r_778Ebo&t=620s)
 * [PEPPOL AS4 Profile](https://docs.peppol.eu/edelivery/as4/specification/)
