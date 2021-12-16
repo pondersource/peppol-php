@@ -4,25 +4,25 @@
 Applicability Statement 4 (more commonly known as AS4) is a communication protocol that is used for B2B and B2G document exchange. 
 AS4 was developed for ebXML messaging services by OASIS (the Organisation for the Advancement of Structured Information Standards). It is based on SOAP/WSDL and uses HTTP as its communication protocol. As AS4 utilises the HTTP protocol, document exchange can be secured via Transport Layer Security (TLS). In the context of Peppol the exchange format of choice will remain the well established and accepted UBL (Universal Business Language) format.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/test.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/test.png?raw=true"/>
 
 ## Why is Peppol requiring AS4 compliance?
 
 OpenPEPPOL took the decision to mandate the shift to AS4 in order to be better aligned with international requirements. The European Commision is generally in favor of using AS4 as well as the governments of Australia and New Zealand. Since AS4 is also a well renowned OASIS standard and provides a high level of flexibility, it was chosen in favor of AS2.
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/as4-profile.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/as4-profile.png?raw=true"/>
 
 ## AS4 technical specification
 
 AS4 offers a secure exchange protocol for use over the Internet that leverages the MIME envelope structure to transport arbitrary payloads. Support for Message Security is provided by AS4 via ebMS 3.0 and the WS-Security 1.1 and 1.1.1. specifications. This includes combinations of XML Digital Signature and XML Encryption X.509 security tokens for signing and encrypting as primary means for authenticating messages, ensuring privacy, and guaranteeing safe data transmission. Additionally, AS4 supports the use username/password tokens as access control to message pull channels.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/user.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/user.png?raw=true"/>
 
 ## Messaging Model
 
 The Messaging Model of the AS4 profile constrains the channel bindings of message exchanges between two AS4 MSHs. The following diagram shows the AS4 Messaging Model, various actors and operations in message exchange.
 Business applications or middleware, acting as Producer, Submit message content and metadata to the Sending MSH, which packages this content and Sends it to the Receiving MSH of the business partner, which Receives it and in turn Delivers the message to another business application or middleware that Consumes the message
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/message.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/message.png?raw=true"/>
 
 * [What is AS4?](https://ecosio.com/en/blog/peppol-access-points-now-required-to-be-as4-compliant)
 * [AS4 migration Webinar](https://www.youtube.com/watch?v=hO4r_778Ebo&t=620s)
