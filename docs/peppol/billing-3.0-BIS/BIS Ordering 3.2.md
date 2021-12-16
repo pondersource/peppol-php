@@ -5,6 +5,8 @@ Overview of a common format for the order response message in the European marke
 
 # Interoperability
 
+This PEPPOL BIS applies the Framework as follows:
+
 * Legal Interoperability
 * Organizational interoperability
 * Semantic interoperability
@@ -15,7 +17,7 @@ Overview of a common format for the order response message in the European marke
 
 <img src="https://github.com/pondersource/peppol-php/blob/AS4-eDelivery/docs/pics/BIS-Ordering-3.2-Parties-&-Roles.png?raw=true" widht="500">
 
-# Use cases 
+# Ordering use cases 
 
 * Ordering of numbered items/articles
 * Ordering of free text articles
@@ -25,4 +27,10 @@ Overview of a common format for the order response message in the European marke
 
 # Code lists 
 
-* [identifiers and party legal registration identifier scheme](https://docs.peppol.eu/poacc/upgrade-3/codelist/ICD/)
+* [Party identifiers and party legal registration identifier scheme](https://docs.peppol.eu/poacc/upgrade-3/codelist/ICD/)
+* [Electronic address identifier scheme identifier](https://docs.peppol.eu/poacc/upgrade-3/codelist/eas/)
+
+
+# Resources 
+
+[https://docs.peppol.eu/poacc/upgrade-3/profiles/28-ordering/](https://docs.peppol.eu/poacc/upgrade-3/profiles/28-ordering/)
