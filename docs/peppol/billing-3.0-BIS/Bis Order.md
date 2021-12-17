@@ -29,6 +29,14 @@ Only limited support is in scope for transport related information, but it is re
 
 Supporting inventory management is not in scope, but structured orders based on catalogues can be used to automate picking at supplier warehouses.
 
+## Parties and roles
+
+The **customer** is the legal person or organization who is in demand of a product or service.Examples of customer roles: buyer, consignee, delivery partu, debtor, contracting authority, originator.
+
+The **supplier** is the legal person or organization who provides a product or service. Examples of supplier roles: seller, consignor, creditor, economic operator.
+
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/order-roles.png?raw=true"/>
+
 ## References
 * [BIS Order only 3.2](https://docs.peppol.eu/poacc/upgrade-3/profiles/3-order-only/)    
 
