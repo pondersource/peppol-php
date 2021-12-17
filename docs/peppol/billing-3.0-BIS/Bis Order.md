@@ -87,6 +87,8 @@ The buyer and the seller have reached an agreement.
 The delivery party has received the ordered items.
 If the invoice has an order reference, the invoice can be matched automatically.
 
+**XML example file**
+* [Use case Example file](https://github.com/pondersource/peppol-php/blob/as4-testing-1/rules/use-case-examples/order/UC-Order.xml)
 
 ## References
 * [BIS Order only 3.2](https://docs.peppol.eu/poacc/upgrade-3/profiles/3-order-only/)    
