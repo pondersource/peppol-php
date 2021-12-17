@@ -11,9 +11,10 @@ AS4 was developed for ebXML messaging services by OASIS (the Organisation for th
 OpenPEPPOL took the decision to mandate the shift to AS4 in order to be better aligned with international requirements. The European Commision is generally in favor of using AS4 as well as the governments of Australia and New Zealand. Since AS4 is also a well renowned OASIS standard and provides a high level of flexibility, it was chosen in favor of AS2.
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/as4-profile.png?raw=true"/>
 
-## AS4 technical specification
+## AS4 technical specification(Message Structure and UserMessage)
 
 AS4 offers a secure exchange protocol for use over the Internet that leverages the MIME envelope structure to transport arbitrary payloads. Support for Message Security is provided by AS4 via ebMS 3.0 and the WS-Security 1.1 and 1.1.1. specifications. This includes combinations of XML Digital Signature and XML Encryption X.509 security tokens for signing and encrypting as primary means for authenticating messages, ensuring privacy, and guaranteeing safe data transmission. Additionally, AS4 supports the use username/password tokens as access control to message pull channels.
+The AS4 Message Structure  provides a standard message header that addresses common data exchange requirements and offers a flexible packaging mechanism based on SOAP and MIME enveloping. Dashed line style is used for optional message components.
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/user.png?raw=true"/>
 
