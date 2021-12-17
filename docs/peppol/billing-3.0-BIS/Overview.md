@@ -4,7 +4,7 @@
 
 This PEPPOL BIS provides a set of specifications for implementing a PEPPOL business process.The purpose of this document is to facilitate an efficient implementation and increased use of electronic collaboration regarding the billing process.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/introduction.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/introduction.png?raw=true"/>
 
 
 ## The invoice and credit note
@@ -41,7 +41,7 @@ One to whom a debt is owe. The party that claims the payment and is responsible 
 
 One who owes debt. The party responsible for making settlement relating to a purchase. The party that receives the invoice or credit note. Also known as invoicee, accounts payable, or buyer.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/roles.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/roles.png?raw=true"/>
 
 ## General invoicing process
 
@@ -61,7 +61,7 @@ An invoice may also refer to a contract or a frame agreement. The invoice may sp
 
 - The customer disputes parts of the invoice, contacts the supplier and requests a credit note and a new invoice.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/process.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/process.png?raw=true"/>
 
 ## Invoice functionality
 
@@ -77,7 +77,7 @@ An invoice may support functions related to a number of related (internal) busin
 
 * Payment
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/functionality.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/functionality.png?raw=true"/>
 
 
 
