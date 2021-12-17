@@ -19,7 +19,7 @@ This PEPPOL BIS applies the Framework as follows:
 
 ## Ordering use cases 
 
-* Ordering of numbered items/articles
+* Ordering of numbered items/articless
 * Ordering of free text articles
 * Ordering of services
 * Complex ordering
