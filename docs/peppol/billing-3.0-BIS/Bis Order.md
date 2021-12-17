@@ -47,7 +47,7 @@ The Order process flow can be described as follows:
 
 - An Order may contain items (goods or services) with item identifiers or items with free text description.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/bpmn-legend_1.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/bpmn-legend_2.png?raw=true"/>
 
 ## References
 * [BIS Order only 3.2](https://docs.peppol.eu/poacc/upgrade-3/profiles/3-order-only/)    
