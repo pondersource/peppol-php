@@ -58,6 +58,36 @@ The Order process flow can be described as follows:
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/bmpn.PNG?raw=true"/>
 
+## Ordering including consignee and delivery party
+
+An order for numbered items with allowance and charges both on order level, line level and price.
+
+**Parties involved**
+- Buyer
+- Seller
+- Consignee
+- Delivery party
+
+**Assumptions**
+ 	
+The buyer has a catalogue or list of products to order.
+The catalogue contains the item numbers, names and type of unit of measure.
+
+**The flow**
+
+The buyer creates an order with 3 different lines and items.
+The seller receives the order.
+At time for delivery the seller packs all items, print goods labels which are put on and all packages and a transport label put on the plastic wrapping that holds all the packages.
+The wrapped packages are delivered to and unloaded at the location of the consignee.
+The packages are reloaded and delivered by internal transport to the delivery party.
+
+**Result**
+
+The buyer and the seller have reached an agreement.
+The delivery party has received the ordered items.
+If the invoice has an order reference, the invoice can be matched automatically.
+
+
 ## References
 * [BIS Order only 3.2](https://docs.peppol.eu/poacc/upgrade-3/profiles/3-order-only/)    
 * [Universal Business Language Version 2.1](http://docs.oasis-open.org/ubl/UBL-2.1.html)
