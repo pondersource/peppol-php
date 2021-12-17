@@ -7,7 +7,7 @@ This PEPPOL BIS provides a set of specifications for implementing a PEPPOL busin
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/introduction.png?raw=true"/>
 
 
-## The invoice and credit note provides
+## The invoice and credit note
 
 The invoice and credit note provides simple support for complex invoicing, where there is a need for credit note in addition to an invoice. Other potential benefits are, among others:
 
