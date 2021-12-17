@@ -16,3 +16,9 @@ The invoice and credit note provides simple support for complex invoicing, where
 - Procurement agencies can use them as basis for moving all invoices into electronic form. The flexibility of the specifications allows the buyers to automate processing of invoices gradually, based on different sets of identifiers or references, based on a cost/benefit approach.
 
 - SME can offer their trading partners the option of exchanging standardised documents in a uniform way and thereby move all invoices/credit notes into electronic form.
+
+## Parties and roles
+
+The diagram below shows the roles involved in the invoice and credit note transactions. The customer and invoice receiver is the same entity, as is the supplier and the invoice sender.
+
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/roles.png?raw=true"/>
