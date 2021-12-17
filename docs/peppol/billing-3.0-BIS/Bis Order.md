@@ -35,7 +35,7 @@ The **customer** is the legal person or organization who is in demand of a produ
 
 The **supplier** is the legal person or organization who provides a product or service. Examples of supplier roles: seller, consignor, creditor, economic operator.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/order-roles.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/order-roles_1.png?raw=true"/>
 
 ## References
 * [BIS Order only 3.2](https://docs.peppol.eu/poacc/upgrade-3/profiles/3-order-only/)    
