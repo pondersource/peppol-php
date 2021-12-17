@@ -22,3 +22,23 @@ The invoice and credit note provides simple support for complex invoicing, where
 The diagram below shows the roles involved in the invoice and credit note transactions. The customer and invoice receiver is the same entity, as is the supplier and the invoice sender.
 
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/roles.png?raw=true"/>
+
+## Parties
+
+** Customer ** 
+
+The customer is the legal person or organisation who is in demand of a product or service. Examples of customer roles: buyer, consignee, debtor, contracting authority.
+
+** Supplier ** 
+
+The supplier is the legal person or organisation who provides a product or service.
+
+## Roles
+
+** Creditor **
+
+One to whom a debt is owe. The party that claims the payment and is responsible for resolving billing issues and arranging settlement. The party that sends the invoice or credit note. Also known as invoice issuer, accounts receivable or seller.
+
+** Debtor ** 
+
+One who owes debt. The party responsible for making settlement relating to a purchase. The party that receives the invoice or credit note. Also known as invoicee, accounts payable, or buyer.
