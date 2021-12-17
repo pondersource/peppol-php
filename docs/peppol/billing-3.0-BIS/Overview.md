@@ -21,9 +21,7 @@ The invoice and credit note provides simple support for complex invoicing, where
 
 The diagram below shows the roles involved in the invoice and credit note transactions. The customer and invoice receiver is the same entity, as is the supplier and the invoice sender.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/roles.png?raw=true"/>
-
-## Parties
+### Parties
 
 **Customer** 
 
@@ -42,3 +40,5 @@ One to whom a debt is owe. The party that claims the payment and is responsible 
 **Debtor** 
 
 One who owes debt. The party responsible for making settlement relating to a purchase. The party that receives the invoice or credit note. Also known as invoicee, accounts payable, or buyer.
+
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/roles.png?raw=true"/>
