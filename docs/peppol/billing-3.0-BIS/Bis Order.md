@@ -37,6 +37,15 @@ The **supplier** is the legal person or organization who provides a product or s
 
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/order-bis-1.PNG?raw=true"/>
 
+## Benefit
+
+Based on success with automation of invoicing, there is a growing interest in automation of ordering also. This approach has two dimensions: Support further automation of invoicing and using structured catalogues as basis for ordering. Implementing this BIS is an important step for many companies and government agencies towards full procurement automation.
+
+For the sellers, the approval, picking and invoicing can be automated significantly.
+
+For the procuring agency, approval and accounting of invoices can be automated and ordering can be structured by use of catalogues.
+
+
 ## Process flow
 
 The Order process flow can be described as follows:
