@@ -63,4 +63,22 @@ An invoice may also refer to a contract or a frame agreement. The invoice may sp
 
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/process.png?raw=true"/>
 
+## Invoice functionality
+
+An invoice may support functions related to a number of related (internal) business processes. This PEPPOL BIS shall support the following functions:
+
+* Accounting
+
+* Invoice verification against the contract, the purchase order and the goods and service delivered
+
+* VAT reporting
+
+* Auditing
+
+* Payment
+
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/functionality.png?raw=true"/>
+
+
+
 
