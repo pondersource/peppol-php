@@ -5,7 +5,7 @@
 This BIS describes a process comprising a Buyer to issue an electronic order without an order confirmation by the Seller.
 The main activities supported by this profile are:
 
-**Structured Ordering**
+***Structured Ordering***
 
 The Order transaction should support the structured ordering of goods or services, using free text or use of identifiers. 
 
