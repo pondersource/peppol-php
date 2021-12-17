@@ -61,4 +61,6 @@ An invoice may also refer to a contract or a frame agreement. The invoice may sp
 
 - The customer disputes parts of the invoice, contacts the supplier and requests a credit note and a new invoice.
 
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/process.png?raw=true"/>
+
 
