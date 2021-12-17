@@ -35,7 +35,7 @@ The **customer** is the legal person or organization who is in demand of a produ
 
 The **supplier** is the legal person or organization who provides a product or service. Examples of supplier roles: seller, consignor, creditor, economic operator.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/order-bis-1.PNG?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/order-bis-1.PNG?raw=true"/>
 
 ## Benefit
 
@@ -56,7 +56,7 @@ The Order process flow can be described as follows:
 
 - An Order may contain items (goods or services) with item identifiers or items with free text description.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/bmpn.PNG?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/bmpn.PNG?raw=true"/>
 
 ## References
 * [BIS Order only 3.2](https://docs.peppol.eu/poacc/upgrade-3/profiles/3-order-only/)    
