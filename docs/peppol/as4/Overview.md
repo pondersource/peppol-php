@@ -29,7 +29,7 @@ Business applications or middleware, acting as Producer, Submit message content 
 
 The One-Way/Push MEP specifies a situation when a Sending MSH which has agreed to use the One-Way/Push MEP sends a message to a Receiving MSH which has agreed to use One-Way/Push MEP as well. After the successful reception of the message, the receiving MSH returns a non-user message (i.e. a signal message) to the sending MSH to confirm the reception. Different user messages do not have any reference to each other, except possibly if they are part of the same conversation.
 
-<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/as4_push.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/as4_push.png?raw=true"/>
 
 * [What is AS4?](https://ecosio.com/en/blog/peppol-access-points-now-required-to-be-as4-compliant)
 * [AS4 migration Webinar](https://www.youtube.com/watch?v=hO4r_778Ebo&t=620s)
