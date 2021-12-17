@@ -11,9 +11,10 @@ AS4 was developed for ebXML messaging services by OASIS (the Organisation for th
 OpenPEPPOL took the decision to mandate the shift to AS4 in order to be better aligned with international requirements. The European Commision is generally in favor of using AS4 as well as the governments of Australia and New Zealand. Since AS4 is also a well renowned OASIS standard and provides a high level of flexibility, it was chosen in favor of AS2.
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/as4-profile.png?raw=true"/>
 
-## AS4 technical specification
+## AS4 technical specification(Message Structure and UserMessage)
 
 AS4 offers a secure exchange protocol for use over the Internet that leverages the MIME envelope structure to transport arbitrary payloads. Support for Message Security is provided by AS4 via ebMS 3.0 and the WS-Security 1.1 and 1.1.1. specifications. This includes combinations of XML Digital Signature and XML Encryption X.509 security tokens for signing and encrypting as primary means for authenticating messages, ensuring privacy, and guaranteeing safe data transmission. Additionally, AS4 supports the use username/password tokens as access control to message pull channels.
+The AS4 Message Structure  provides a standard message header that addresses common data exchange requirements and offers a flexible packaging mechanism based on SOAP and MIME enveloping. Dashed line style is used for optional message components.
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/user.png?raw=true"/>
 
@@ -23,6 +24,12 @@ The Messaging Model of the AS4 profile constrains the channel bindings of messag
 Business applications or middleware, acting as Producer, Submit message content and metadata to the Sending MSH, which packages this content and Sends it to the Receiving MSH of the business partner, which Receives it and in turn Delivers the message to another business application or middleware that Consumes the message
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/message.png?raw=true"/>
+
+## The One-Way/Push MEP
+
+The One-Way/Push MEP specifies a situation when a Sending MSH which has agreed to use the One-Way/Push MEP sends a message to a Receiving MSH which has agreed to use One-Way/Push MEP as well. After the successful reception of the message, the receiving MSH returns a non-user message (i.e. a signal message) to the sending MSH to confirm the reception. Different user messages do not have any reference to each other, except possibly if they are part of the same conversation.
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/as4_push.png?raw=true"/>
 
 * [What is AS4?](https://ecosio.com/en/blog/peppol-access-points-now-required-to-be-as4-compliant)
 * [AS4 migration Webinar](https://www.youtube.com/watch?v=hO4r_778Ebo&t=620s)
