@@ -25,20 +25,20 @@ The diagram below shows the roles involved in the invoice and credit note transa
 
 ## Parties
 
-** Customer ** 
+**Customer** 
 
 The customer is the legal person or organisation who is in demand of a product or service. Examples of customer roles: buyer, consignee, debtor, contracting authority.
 
-** Supplier ** 
+**Supplier** 
 
 The supplier is the legal person or organisation who provides a product or service.
 
 ## Roles
 
-** Creditor **
+**Creditor**
 
 One to whom a debt is owe. The party that claims the payment and is responsible for resolving billing issues and arranging settlement. The party that sends the invoice or credit note. Also known as invoice issuer, accounts receivable or seller.
 
-** Debtor ** 
+**Debtor** 
 
 One who owes debt. The party responsible for making settlement relating to a purchase. The party that receives the invoice or credit note. Also known as invoicee, accounts payable, or buyer.
