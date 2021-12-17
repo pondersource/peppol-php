@@ -74,10 +74,5 @@ The following list give a general overview of the changes made to the specificat
 
 - Validation on elements values and calculations aligned with EN.
 
-
-
-
-
-
-    Allowance and charge classes aligned in terms of use of percentage, reason code and VAT.
+- Allowance and charge classes aligned in terms of use of percentage, reason code and VAT.
 
