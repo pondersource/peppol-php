@@ -42,3 +42,23 @@ One to whom a debt is owe. The party that claims the payment and is responsible 
 One who owes debt. The party responsible for making settlement relating to a purchase. The party that receives the invoice or credit note. Also known as invoicee, accounts payable, or buyer.
 
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/roles.png?raw=true"/>
+
+## General invoicing process
+
+The invoicing process includes issuing and sending the invoice and the credit note from the supplier to the customer and the reception and handling of the same at the customer’s site.
+
+The invoicing process is shown in this work flow:
+
+* A supplier issues and sends an invoice to a customer. The invoice refers to one order and a specification of delivered goods and services.
+
+An invoice may also refer to a contract or a frame agreement. The invoice may specify articles (goods and services) with article number or article description.
+
+1) The customer receives the invoice and processes it in the invoice control system leading to one of the following results:
+
+- The customer fully approves the invoice, posts it in the accounting system and passes it on to be paid.
+
+- The customer completely rejects the invoice, contacts the supplier and requests a credit note.
+
+- The customer disputes parts of the invoice, contacts the supplier and requests a credit note and a new invoice.
+
+
