@@ -37,6 +37,18 @@ The **supplier** is the legal person or organization who provides a product or s
 
 <img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/order-roles_1.png?raw=true"/>
 
+## Process flow
+
+The Order process flow can be described as follows:
+
+- A Buyer submits an Order to the Seller requesting for delivery of goods or services
+
+- An Order may refer to a framework agreement for its terms and conditions; otherwise the Buyer’s terms and conditions apply.
+
+- An Order may contain items (goods or services) with item identifiers or items with free text description.
+
+<img src="https://github.com/pondersource/peppol-php/blob/as4-testing-1/docs/pics/bpmn-legend.png?raw=true"/>
+
 ## References
 * [BIS Order only 3.2](https://docs.peppol.eu/poacc/upgrade-3/profiles/3-order-only/)    
 
