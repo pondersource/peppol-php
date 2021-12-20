@@ -42,4 +42,4 @@ This PEPPOL BIS applies the Framework as follows:
 
 ## Resources 
 
-[https://docs.peppol.eu/poacc/upgrade-3/profiles/28-ordering/](https://docs.peppol.eu/poacc/upgrade-3/profiles/28-ordering/)
+[Ordering](https://docs.peppol.eu/poacc/upgrade-3/profiles/28-ordering/)

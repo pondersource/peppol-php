@@ -79,6 +79,63 @@ An invoice may support functions related to a number of related (internal) busin
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/functionality.png?raw=true"/>
 
+## Accounting
+
+Recording a business transaction into the financial accounts of an organization is one of the main objectives of the invoice. According to financial accounting best practice and VAT rules every Taxable person shall keep accounts in sufficient detail for VAT to be applied and its application checked by the tax authorities.
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/accounting.PNG?raw=true"/>
+
+- [Accounting](https://docs.peppol.eu/poacc/billing/3.0/bis/#_accounting)
+
+## Invoice verification
+
+This process forms part of the Buyer’s internal business controls. The invoice shall refer to an authentic commercial transaction. Support for invoice verification is a key function of an invoice. An invoice should also contain sufficient information that allows the received invoice to be transferred to a responsible authority, person or department, for verification and approval.
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/invoice-verification.PNG?raw=true"/>
+
+- [Invoice verification](https://docs.peppol.eu/poacc/billing/3.0/bis/#_invoice_verification)
+
+## Auditing
+
+Companies audit themselves as means of internal control or they may be audited by external parties as part of a legal obligation. Invoices, conformant to this PEPPOL BIS support the auditing process by providing sufficient information for:
+
+- identification of the relevant Buyer and Seller
+
+- identification of the products and services traded, including description, value and quantity
+
+- information for connecting the invoice to its payment
+
+- information for connecting the invoice to relevant documents such as a contract and a purchase order
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/auditing.PNG?raw=true"/>
+
+- [Auditing](https://docs.peppol.eu/poacc/billing/3.0/bis/#_auditing)
+
+## VAT Reporting
+
+The invoice is used to carry VAT related information from the Seller to the Buyer to enable the Buyer and Seller to correctly handle VAT booking and reporting. 
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/vat-reporting.PNG?raw=true"/>
+
+- [Vat Reporting](https://docs.peppol.eu/poacc/billing/3.0/bis/#_vat_reporting)
+
+## Payment
+
+An invoice represents a claim for payment. The issuance of an invoice may take place either before or after the payment is carried out. When an invoice is issued before payment it represents a request to the Buyer to pay, in which case the invoice commonly contains information that enables the Buyer, in the role of a debtor, to correctly initiate the transfer of the payment, unless that information is already agreed in prior contracts or by means of payment instructions separately lodged with the Buyer.
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/payment.PNG?raw=true"/>
+
+- [Payment](https://docs.peppol.eu/poacc/billing/3.0/bis/#_payment)
+
+
+## Resources 
+
+- [PEPPOL BIS Billing](https://docs.peppol.eu/poacc/billing/3.0/bis/)
+
+- [Vat Reporting(Directive 2006/112/EC)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=LEGISSUM:l31057)
+
+
+
 
 
 
