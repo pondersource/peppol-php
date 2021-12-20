@@ -85,11 +85,15 @@ Recording a business transaction into the financial accounts of an organization 
 
 <img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/accounting.PNG?raw=true"/>
 
+- [Accounting](https://docs.peppol.eu/poacc/billing/3.0/bis/#_accounting)
+
 ## Invoice verification
 
 This process forms part of the Buyer’s internal business controls. The invoice shall refer to an authentic commercial transaction. Support for invoice verification is a key function of an invoice. An invoice should also contain sufficient information that allows the received invoice to be transferred to a responsible authority, person or department, for verification and approval.
 
 <img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/invoice-verification.PNG?raw=true"/>
+
+- [Invoice verification](https://docs.peppol.eu/poacc/billing/3.0/bis/#_invoice_verification)
 
 ## Auditing
 
@@ -105,11 +109,15 @@ Companies audit themselves as means of internal control or they may be audited b
 
 <img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/auditing.PNG?raw=true"/>
 
+- [Auditing](https://docs.peppol.eu/poacc/billing/3.0/bis/#_auditing)
+
 ## VAT Reporting
 
 The invoice is used to carry VAT related information from the Seller to the Buyer to enable the Buyer and Seller to correctly handle VAT booking and reporting. 
 
 <img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/vat-reporting.PNG?raw=true"/>
+
+- [Vat Reporting](https://docs.peppol.eu/poacc/billing/3.0/bis/#_vat_reporting)
 
 ## Resources 
 
