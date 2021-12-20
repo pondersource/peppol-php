@@ -119,6 +119,15 @@ The invoice is used to carry VAT related information from the Seller to the Buye
 
 - [Vat Reporting](https://docs.peppol.eu/poacc/billing/3.0/bis/#_vat_reporting)
 
+## Payment
+
+An invoice represents a claim for payment. The issuance of an invoice may take place either before or after the payment is carried out. When an invoice is issued before payment it represents a request to the Buyer to pay, in which case the invoice commonly contains information that enables the Buyer, in the role of a debtor, to correctly initiate the transfer of the payment, unless that information is already agreed in prior contracts or by means of payment instructions separately lodged with the Buyer.
+
+<img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/payment.PNG?raw=true"/>
+
+- [Payment](https://docs.peppol.eu/poacc/billing/3.0/bis/#_payment)
+
+
 ## Resources 
 
 - [PEPPOL BIS Billing](https://docs.peppol.eu/poacc/billing/3.0/bis/)
