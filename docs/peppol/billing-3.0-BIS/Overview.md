@@ -109,10 +109,13 @@ Companies audit themselves as means of internal control or they may be audited b
 
 The invoice is used to carry VAT related information from the Seller to the Buyer to enable the Buyer and Seller to correctly handle VAT booking and reporting. 
 
+<img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/var-reporting.PNG?raw=true"/>
+
 ## Resources 
 
-[PEPPOL BIS Billing](https://docs.peppol.eu/poacc/billing/3.0/bis/)
-[Vat Reporting(Directive 2006/112/EC)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=LEGISSUM:l31057)
+- [PEPPOL BIS Billing](https://docs.peppol.eu/poacc/billing/3.0/bis/)
+
+- [Vat Reporting(Directive 2006/112/EC)](https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=LEGISSUM:l31057)
 
 
 
