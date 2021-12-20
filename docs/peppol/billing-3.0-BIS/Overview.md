@@ -91,6 +91,22 @@ This process forms part of the Buyer’s internal business controls. The invoice
 
 <img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/invoice-verification.PNG?raw=true"/>
 
+## Auditing
+
+Companies audit themselves as means of internal control or they may be audited by external parties as part of a legal obligation. Invoices, conformant to this PEPPOL BIS support the auditing process by providing sufficient information for:
+
+- identification of the relevant Buyer and Seller
+
+- identification of the products and services traded, including description, value and quantity
+
+- information for connecting the invoice to its payment
+
+- information for connecting the invoice to relevant documents such as a contract and a purchase order
+
+<img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/auditing.PNG?raw=true"/>
+
+
+
 
 
 
