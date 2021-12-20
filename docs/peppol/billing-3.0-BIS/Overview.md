@@ -85,6 +85,12 @@ Recording a business transaction into the financial accounts of an organization 
 
 <img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/accounting.PNG?raw=true"/>
 
+## Invoice verification
+
+This process forms part of the Buyer’s internal business controls. The invoice shall refer to an authentic commercial transaction. Support for invoice verification is a key function of an invoice. An invoice should also contain sufficient information that allows the received invoice to be transferred to a responsible authority, person or department, for verification and approval.
+
+<img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/invoice-verification.PNG?raw=true"/>
+
 
 
 
