@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions name="CToF"
+             targetNamespace="urn:CToF"
+             xmlns:tns="urn:CToF"
+             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+             xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+             xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+             xmlns="http://schemas.xmlsoap.org/wsdl/">
+
+    <message name="FahrenheitRequest">
+        <part name="celsius" type="xsd:string"/>
+    </message>
+
+    <message name="FahrenheitResponse">
+        <part name="result" type="xsd:string"/>
+    </message>
+
+    <portType name="FahrenheitPort">
+        <operation name="celsiusToFahrenheit">
+            <input message="tns:FahrenheitRequest"/>
+            <output message="tns:FahrenheitResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="FahrenheitBinding" type="tns:FahrenheitPort">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="celsiusToFahrenheit">
+            <soap:operation soapAction="urn:FahrenheitAction"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:CToF" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:CToF" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+
+    <service name="WSDLService">
+        <port name="FahrenheitPort" binding="tns:FahrenheitBinding">
+            <soap:address location="http://localhost/server2/soap-create-soapserver.php"/>
+        </port>
+    </service>
+</definitions>
