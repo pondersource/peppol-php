@@ -79,6 +79,12 @@ An invoice may support functions related to a number of related (internal) busin
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/functionality.png?raw=true"/>
 
+## Accounting
+
+Recording a business transaction into the financial accounts of an organization is one of the main objectives of the invoice. According to financial accounting best practice and VAT rules every Taxable person shall keep accounts in sufficient detail for VAT to be applied and its application checked by the tax authorities.
+
+<img src="https://github.com/pondersource/peppol-php/blob/billing-invoice/docs/pics/accounting.PNG?raw=true"/>
+
 
 
 
