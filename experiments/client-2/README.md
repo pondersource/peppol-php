@@ -7,7 +7,7 @@ sudo apt-get install php-soap
 sudo apt-get install php7.3 
 ````
 
-###### 2) Go to the folder first
+###### 2) Go to the folder first or be sure that you are in the client-2 folder
 ````
 cd /var/www/peppol-php/experiments/client-2
 ````
