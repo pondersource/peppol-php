@@ -13,7 +13,7 @@ try {
     );
     $context = stream_context_create($opts);
 
-    $wsdlUrl = 'http://localhost/server2/ctof.wsdl';
+    $wsdlUrl = 'http://localhost:8081/ctof.wsdl';
     $soapClientOptions = array(
         'stream_context' => $context,
         'cache_wsdl' => WSDL_CACHE_NONE,

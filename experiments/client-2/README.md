@@ -1,29 +1,34 @@
-# Soap Client and Server
+# Soap Client
 
-###### 1) Do you have install apache if not you can do?
-
-````
-sudo apt install apache2
-````
-
-###### 2) On your ubuntu machine you can see the folder with file open it 
-````
-sudo nano /etc/apache2/sites-available/000-default.conf
-```` 
-
-###### 3) You can just change your path to working your localhost that will work 
-````
-/var/www/peppol-php/experiments/
-```` 
-
-###### 3) Go to the browser and run it will return the information celsiusToFahrenheit
+###### 1) Do you have install php and php-soap for Soap Working
 
 ````
-http://localhost/client2/soap-client.php
+sudo apt-get install php-soap
+sudo apt-get install php7.3 
 ````
 
-###### 4) Go to the browser and run another example to get chek vat information
+###### 2) Go to the folder first
+````
+cd /var/www/peppol-php/experiments/client-2
+````
+
+###### 3) And run this
 
 ````
-http://localhost/client2/soap-client-external.php
+php -S localhost:8080
+````
+
+###### 4) Before go to the browswer check README file server2 section
+
+
+###### 5) Go to the browser and run it will return the information celsiusToFahrenheit
+
+````
+http://localhost:8080/soap-client.php
+````
+
+###### 6) Go to the browser and run another example to get chek vat information
+
+````
+http://localhost:8080/soap-client-external.php
 ````
