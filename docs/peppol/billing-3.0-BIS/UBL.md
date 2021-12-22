@@ -35,6 +35,12 @@ The international standard ISO/IEC 14662 formally describes the Open-edi referen
 
 <img src="https://github.com/pondersource/peppol-php/blob/ubl/docs/pics/ubl-4.png?raw=true"/>
 
+## Two-phase UBL document validation 
+
+The semantic business objects of UBL describe the abstract information bundles of the business operational view of eBusiness. This describes the composition, granularity and cardinality of the information needed to be exchanged to effect the business relationship. The UBL schema XSD validation artefacts and other constraints formally describe the functional implementation of the user data representing the information bundles.The XSD schemas are the only normative validation artefacts, and by design they only address the structural (elements) and lexical (text characters) constraints of expressing the business objects in XML. As a service to the UBL community, the UBL TC includes a sample set of value constraints in the form of an XSLT stylesheet created from the XML expressions of code lists (using OASIS genericode files) and the XML expression of the application of code lists to a document (using an OASIS CVA file). In the following data flow diagram this XSLT (2) is run against the document being validated after the XSD (1) has been used to check the document. The UBL appendix on two-phase validation includes the following diagram.
+
+<img src="https://github.com/pondersource/peppol-php/blob/ubl/docs/pics/ubl-5.png?raw=true"/>
+
 ## Resources
 
 * [What is UBL?](https://www.xml.com/articles/2017/01/01/what-is-ubl/)
