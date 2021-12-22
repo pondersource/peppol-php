@@ -21,7 +21,7 @@ For a document format, the OASIS Universal Business Language (UBL) is an open an
 
 A real-world example of a simple request/response exchange for transportation status messages is seen in the US Department of Transportation Electronic Freight Management (EFM) project shipping Victoria's Secret clothing from a supplier in China to a buyer in Cincinnati. There were 11 different parties involved in the handling of a single shipment from source to target, including transportation, customs and warehousing. Each party has their own business practices, data models and applications. The project's work product was a single aggregation application able to report shipment status information in HTML to a user. The application requests each party to respond with a UBL Transportation Status message with details of the desired shipment as known only to the party being asked. Those who received the request and could respond to it returned the information in a UBL-schema-valid XML document. 
 
-<img src="https://github.com/pondersource/peppol-php/blob/ubl/docs/pics/ubl-3.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/ubl-3.png?raw=true"/>
 
 ## The governance of UBL
 
@@ -33,13 +33,19 @@ UBL can be held up as an example of how XML interchange documents are developed.
 
 The international standard ISO/IEC 14662 formally describes the Open-edi reference model. This model distinguishes at a high level the business semantic perspective of an eBusiness relationship from the functional services perspective of its implementation.
 
-<img src="https://github.com/pondersource/peppol-php/blob/ubl/docs/pics/ubl-4.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/ubl-4.png?raw=true"/>
 
 ## Two-phase UBL document validation 
 
 The semantic business objects of UBL describe the abstract information bundles of the business operational view of eBusiness. This describes the composition, granularity and cardinality of the information needed to be exchanged to effect the business relationship. The UBL schema XSD validation artefacts and other constraints formally describe the functional implementation of the user data representing the information bundles.The XSD schemas are the only normative validation artefacts, and by design they only address the structural (elements) and lexical (text characters) constraints of expressing the business objects in XML. As a service to the UBL community, the UBL TC includes a sample set of value constraints in the form of an XSLT stylesheet created from the XML expressions of code lists (using OASIS genericode files) and the XML expression of the application of code lists to a document (using an OASIS CVA file). In the following data flow diagram this XSLT (2) is run against the document being validated after the XSD (1) has been used to check the document. The UBL appendix on two-phase validation includes the following diagram.
 
-<img src="https://github.com/pondersource/peppol-php/blob/ubl/docs/pics/ubl-5.png?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/ubl-5.png?raw=true"/>
+
+## Planning to deploy UBL
+
+The impact of implementing UBL is going to affect your particular environment in two areas: the transfer of the content of the XML document from and to your existing application, and the communication of that document with your trading partner. They will have the same impacts on their end. This can be seen overlaid on the earlier diagram illustrating the differences between the sender and receiver systems and practices.In regard to the transfer of the XML content, two approaches are available based on whether the application currently supports XML or not. Consider first an application that does not have its own XML ingestion process.
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/docs/pics/ubl-6.png?raw=true"/>
 
 ## Resources
 
