@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions name="Library"
+                  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                  targetNamespace="Library"
+                  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+                  xmlns:tns="Library"
+                  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <xsd:documentation></xsd:documentation>
+
+    <wsdl:types>
+        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="Library">
+            <xsd:complexType name="book">
+                <xsd:sequence>
+                    <xsd:element name="name" type="xsd:string"></xsd:element>
+                    <xsd:element name="year" type="xsd:integer"></xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="bookYearRequest">
+        <wsdl:part name="book" type="tns:book"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="bookYearResponse">
+        <wsdl:part name="year" type="xsd:integer"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:portType name="Library">
+        <wsdl:operation name="bookYear">
+            <wsdl:input message="tns:bookYearRequest"/>
+            <wsdl:output message="tns:bookYearResponse"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="Library" type="tns:Library">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="bookYear">
+            <soap:operation soapAction="http://localhost/server.php"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="Library"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" namespace="Library"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="Library">
+        <wsdl:port binding="tns:Library" name="BookLibrary">
+            <soap:address location="http://localhost/server.php"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>
