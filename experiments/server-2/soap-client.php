@@ -17,7 +17,7 @@ try {
     $soapClientOptions = array(
         'stream_context' => $context,
         'cache_wsdl' => WSDL_CACHE_NONE,
-		'trace' => true, 
+		'trace' => true,
 		'keep_alive' => true,
 		'connection_timeout' => 5000,
 		//'cache_wsdl' => WSDL_CACHE_NONE,

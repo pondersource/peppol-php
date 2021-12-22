@@ -38,7 +38,7 @@
 
     <service name="WSDLService">
         <port name="FahrenheitPort" binding="tns:FahrenheitBinding">
-            <soap:address location="http://localhost/server2/soap-create-soapserver.php"/>
+            <soap:address location="http://localhost:8081/soap-create-soapserver.php"/>
         </port>
     </service>
 </definitions>
