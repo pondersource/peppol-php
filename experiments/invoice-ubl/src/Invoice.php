@@ -1,9 +1,13 @@
 <?php
 
 class Invoice {
+
     private $customazionID;
     private $profileID;
     private $ID;
+    private $issueDate;
+    private $dueDate;
+    private $currencyCode = 'EUR';
     
     /**
      * get Customazation ID
@@ -49,4 +53,53 @@ class Invoice {
         $this->profileID = $profileID;
         return $this;
     }
+
+    /**
+     * Set issue Date
+    */
+    public function setIssueDate($issueDate) {
+        $this->issueDate = $issueDate;
+        return $this;
+    }
+    
+    /**
+     * get issue date
+     */
+    public function getIssueDate() {
+        return $this->issueDate;
+    }
+
+    /**
+     * Set due date  
+     */
+    public function setDueDate($dueDate)
+    {
+        $this->dueDate = $dueDate;
+        return $this;
+    }
+
+     /**
+     * Get due date  
+     */
+    public function getDueDate() {
+        return $this->dueDate;
+    }
+
+    /**
+     * Set Currency
+     */
+    public function setCurrencyCode($currencyCode = 'EUR')
+    {
+        $this->currencyCode = $currencyCode;
+        return $this;
+    }
+
+     /**
+     * Get Currency
+     */
+    public function getCurrencyCode() 
+    {
+       return $this->currencyCode;
+    }
+
 }
