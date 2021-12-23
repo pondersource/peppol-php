@@ -3,8 +3,40 @@
 	<SOAP-ENV:Header>
  		<eb:Messaging xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/" xsi:schemaLocation="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/core/ebms-header-3_0-200704.xsd">
 		 	<eb:UserMessage>
-				<eb:MessageInfo></eb:MessageInfo>
-				<eb:PayloadInfo></eb:PayloadInfo>
+				<eb:MessageInfo>
+					<eb:Timestamp>
+					2021-12-23T13:12:42
+					</eb:Timestamp>
+					<eb:MessageId>
+					1234@example.net
+					</eb:MessageId>
+				</eb:MessageInfo>
+				<eb:PartyInfo>
+					<eb:From>
+						<eb:PartyId type="urn:oasis:names:tc:ebxml-cppa:partyid-type:duns">
+				 		123456789
+						</eb:PartyId>
+						<eb:Role>
+						http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultRole
+						</eb:Role>
+					</eb:From>
+					<eb:To>
+						<eb:PartyId type="urn:oasis:names:tc:ebxml-cppa:partyid-type:duns">
+				 		123456789
+						</eb:PartyId>
+						<eb:Role>
+						http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/defaultRole
+						</eb:Role>
+					</eb:To>
+				</eb:PartyInfo>
+				<eb:CollaborationInfo>
+					<eb:Service>urn:example.org:services:Invoice</eb:Service>
+					<eb:Action>NewInvoice</eb:Action>
+					<eb:ConversationId>A-VERY-UNIQUE-IDENTIFIER</eb:ConversationId>
+				</eb:CollaborationInfo>
+				<eb:PayloadInfo>
+					<eb:PartInfo/>
+				</eb:PayloadInfo>
 			</eb:UserMessage>
 		</eb:Messaging>
 	</SOAP-ENV:Header>

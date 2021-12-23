@@ -1,0 +1,2 @@
+Bad Request: Error validating incoming AS4 message with the profile Peppol
+ Following errors are present: [MessageProperties is missing but 'originalSender' and 'finalRecipient' properties are required, PartyInfo/From[0]/@type must be 'urn:fdc:peppol.eu:2017:identifiers:ap' instead of 'urn:oasis:names:tc:ebxml-cppa:partyid-type:duns', PartyInfo/To[0]/@type must be 'urn:fdc:peppol.eu:2017:identifiers:ap' instead of 'urn:oasis:names:tc:ebxml-cppa:partyid-type:duns', CollaborationInfo/AgreementRef is missing]
