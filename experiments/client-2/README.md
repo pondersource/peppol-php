@@ -32,3 +32,10 @@ http://localhost:8080/soap-client.php
 ````
 http://localhost:8080/soap-client-external.php
 ````
+
+###### 7) Go to the browser and run another example
+
+````
+http://localhost:8080/client.php
+````
+
