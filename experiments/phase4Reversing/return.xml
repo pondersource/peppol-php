@@ -1,1 +1,18 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><S11:Envelope xmlns:S11="http://schemas.xmlsoap.org/soap/envelope/"><S11:Header><eb:Messaging xmlns:S12="http://www.w3.org/2003/05/soap-envelope" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/" xmlns:ebbp="http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" wsu:Id="phase4-msg-6bcf1774-16d8-4dda-bc82-c9289ff50798"><eb:SignalMessage><eb:MessageInfo><eb:Timestamp>2021-12-23T11:36:18.255+01:00</eb:Timestamp><eb:MessageId>89a9fb00-a85f-464f-b842-53b4c3f9abd3@phase4</eb:MessageId></eb:MessageInfo><eb:Error category="Content" errorCode="EBMS:0001" severity="failure" shortDescription="ValueNotRecognized"><eb:Description xml:lang="en">ValueNotRecognized</eb:Description><eb:ErrorDetail>Although the message document is well formed and schema valid, some element/attribute contains a value that could not be recognized and therefore could not be used by the MSH.</eb:ErrorDetail></eb:Error></eb:SignalMessage></eb:Messaging></S11:Header><S11:Body/></S11:Envelope>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<S11:Envelope xmlns:S11="http://schemas.xmlsoap.org/soap/envelope/">
+  <S11:Header>
+    <eb:Messaging xmlns:S12="http://www.w3.org/2003/05/soap-envelope" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/" xmlns:ebbp="http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" wsu:Id="phase4-msg-cf081e17-fc61-43c8-b993-ebc3bc4da131">
+      <eb:SignalMessage>
+        <eb:MessageInfo>
+          <eb:Timestamp>2021-12-23T13:14:26.394+01:00</eb:Timestamp>
+          <eb:MessageId>ef38dc1d-fd0d-4261-8606-d8c9f070b1e4@phase4</eb:MessageId>
+        </eb:MessageInfo>
+        <eb:Error category="Unpackaging" errorCode="EBMS:0009" severity="failure" shortDescription="InvalidHeader">
+          <eb:Description xml:lang="en">InvalidHeader</eb:Description>
+          <eb:ErrorDetail>The ebMS header is either not well formed as an XML document, or does not conform to the ebMS packaging rules.</eb:ErrorDetail>
+        </eb:Error>
+      </eb:SignalMessage>
+    </eb:Messaging>
+  </S11:Header>
+  <S11:Body/>
+</S11:Envelope>
