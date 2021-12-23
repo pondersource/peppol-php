@@ -17,6 +17,7 @@ class Invoice {
      */
     public function setCustomazationID($customazionID) {
         $this->customazionID = $customazionID;
+        return $this;
     }
 
       /**
@@ -31,6 +32,7 @@ class Invoice {
      */
     public function setprofileID($ID) {
         $this->ID = $ID;
+        return $this;
     }
 
       /**
@@ -45,5 +47,6 @@ class Invoice {
      */
     public function setID($profileID) {
         $this->profileID = $profileID;
+        return $this;
     }
 }
