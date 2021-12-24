@@ -1,25 +1,42 @@
 <?php
 
 class Invoice {
-
+    private $UBLVersionID = '2.1';
     private $customazionID;
     private $profileID;
-    private $ID;
+    private $id;
     private $issueDate;
     private $dueDate;
     private $currencyCode = 'EUR';
     
     /**
+     * get UBL version ID
+     */
+    public function getUBLVersionID(): ?string
+    {
+        return $this->UBLVersionID;
+    }
+
+    /**
+     * Set UBL version ID
+     */
+    public function setUBLVersionID(?string $UBLVersionID)
+    {
+        $this->UBLVersionID = $UBLVersionID;
+        return $this;
+    }
+
+    /**
      * get Customazation ID
      */
-    public function getCustomazationID() {
+    public function getCustomazationID(): ?string {
         return $this->customazionID;
     }
 
     /**
      * Set ID
      */
-    public function setCustomazationID($customazionID) {
+    public function setCustomazationID(?string $customazionID) {
         $this->customazionID = $customazionID;
         return $this;
     }
@@ -27,30 +44,30 @@ class Invoice {
       /**
      * get Customazation ID
      */
-    public function getprofileID() {
-        return $this->ID;
-    }
-
-    /**
-     * Set ID
-     */
-    public function setprofileID($ID) {
-        $this->ID = $ID;
-        return $this;
-    }
-
-      /**
-     * get Customazation ID
-     */
-    public function getId() {
+    public function getProfileID(): ?string {
         return $this->profileID;
     }
 
     /**
+     * Set Profile ID
+     */
+    public function setProfileID(?string $profileID) {
+        $this->profileID = $profileID;
+        return $this;
+    }
+
+      /**
+     * get ID
+     */
+    public function getId(): ?string {
+        return $this->id;
+    }
+
+    /**
      * Set ID
      */
-    public function setID($profileID) {
-        $this->profileID = $profileID;
+    public function setID(?string $id) {
+        $this->id = $id;
         return $this;
     }
 
