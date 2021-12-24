@@ -1,6 +1,7 @@
 <?php
 
 use Exception;
+use InvalidArgumentException;
 
 class Attachment {
     private $filePath;
@@ -28,5 +29,19 @@ class Attachment {
      */
     public function setFilePath(?string $filePath): Attachment {
         $this->filepath = $filePath;
+    }
+
+    /**
+     * the validate function when xml will be serialize
+     * missing file path and attachment does not exist
+     */
+    public function validate() {
+        if ($this->filePath === null) {
+            throw new InvalidArgumentException('Missing filePath');
+        }
+
+        if (file_exists($this->filePath) === false) {
+            throw new InvalidArgumentException('Attachment at filePath does not exist');
+        }
     }
 }
