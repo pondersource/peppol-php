@@ -22,4 +22,11 @@ class Attachment {
     public function getFilePath(): ?string {
         return $this->filePath;
     }
+
+    /**
+     * Set File Path
+     */
+    public function setFilePath(?string $filePath): Attachment {
+        $this->filepath = $filePath;
+    }
 }
