@@ -54,16 +54,18 @@ While implementations must support XML and XML namespaces, and while use of the 
 </Signature>
 ```
 
-* The required `SignedInfo` element contains the information that is actually signed:
-* The required `CanonicalizationMethod` element defines the algorithm used to canonicalize the SignedInfo element before it is signed or validated.
-* The required `SignatureMethod` element defines the digital signature algorithm used to generate the signature
-* The optional `Transforms` element contains a list of one or more Transform elements, each of which describes a transformation algorithm used to transform the data before it is digested
-* The required `DigestMethod` element defines the algorithm used to digest the data
-* The required `DigestValue` element contains the actual base64-encoded digested value.
-* Each `Reference` element identifies the data via a URI
-* The required `SignatureValue` element contains the base64-encoded signature value of the signature over the SignedInfo element.
-* The optional `KeyInfo` element contains information about the key that is needed to validate the signature:
-* The `KeyValue` element contains a single public key that may be useful in validating the signature
+| ELEMENTS      | 	REQUIRED | FUNCTIONALLITY     |
+| :---        |    :----:   |          ---: |
+| SignedInfo      | YES     |  Contains the information that is actually signed   |
+|CanonicalizationMethod   | YES        |  Defines the algorithm used to canonicalize the SignedInfo element before it is signed or validated     |
+| SignatureMethod | YES | Defines the digital signature algorithm used to generate the signature|
+| Transforms | NO | Contains a list of one or more Transform elements, each of which describes a transformation algorithm used to transform the data before it is digested |
+|DigestMethod | YES | Defines the algorithm used to digest the data|
+| DigestValue | YES | Contains the actual base64-encoded digested value |
+| Reference | YES 1..n | Identifies the data via a URI |
+| SignatureValue | YES | Contains the actual base64-encoded digested value|
+| KeyInfo | NO | Contains information about the key that is needed to validate the signature|
+| KeyValue | NO | Contains a single public key that may be useful in validating the signature|
 
 ### Must see
 
@@ -75,4 +77,4 @@ While implementations must support XML and XML namespaces, and while use of the 
 
 [Example of an XML Signature](https://docs.oracle.com/cd/E17802_01/webservices/webservices/docs/1.6/tutorial/doc/XMLDigitalSignatureAPI7.html)
 
-[An Introduction to XML Digital Signatures](https://www.xml.com/pub/a/2001/08/08/xmldsig.html#key)
+[An Introduction to XML Digital Signatures](https://www.xml.com/pub/a/2001/08/08/xmldsig.html)
