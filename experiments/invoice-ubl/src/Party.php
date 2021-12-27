@@ -63,6 +63,23 @@ class Party {
         return $this->postalAddress;
     }
 
+      /**
+     * get Party tax scheme
+     */
+    public function getPartyTaxScheme(): ?PartyTaxScheme
+    {
+        return $this->partyTaxScheme;
+    }
+
+    /**
+     * Set party tax Sheme
+     */
+    public function setPartyTaxScheme(PartyTaxScheme $partyTaxScheme)
+    {
+        $this->partyTaxScheme = $partyTaxScheme;
+        return $this;
+    }
+
     /**
      * set postal address
      */
