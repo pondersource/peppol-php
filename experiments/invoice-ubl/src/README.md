@@ -17,4 +17,4 @@ A code specifying the functional type of the Invoice. The base value for send in
 
 ### UBL Party TaxScheme->PartyTaxScheme->Party, LegalEntity->Party, Contact->Party, PostalAddress->Party
 
-<img src="https://github.com/pondersource/peppol-php/blob/ubl-invoice/experiments/invoice-ubl/src/pics/ubl-party.PNG?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-party.PNG?raw=true"/>
