@@ -1,5 +1,8 @@
 ## UBL Invoice
 
+## Country->Address and Attachment->AdditionalDocument
+## Contact and Scheme
+
 <img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/diagram_ubl_start.PNG?raw=true"/>
 
 ### Unit Code 
