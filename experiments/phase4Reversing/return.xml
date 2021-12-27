@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<S11:Envelope xmlns:S11="http://schemas.xmlsoap.org/soap/envelope/">
+  <S11:Header>
+    <eb:Messaging xmlns:S12="http://www.w3.org/2003/05/soap-envelope" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/" xmlns:ebbp="http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xlink="http://www.w3.org/1999/xlink" wsu:Id="phase4-msg-b1c0994b-3e50-4ccd-84c2-5051c5716d1c">
+      <eb:SignalMessage>
+        <eb:MessageInfo>
+          <eb:Timestamp>2021-12-23T14:25:36.513+01:00</eb:Timestamp>
+          <eb:MessageId>e5fbd9a6-9683-44b9-b15d-fe6dfbd67786@phase4</eb:MessageId>
+          <eb:RefToMessageId>					1235@example.net					</eb:RefToMessageId>
+        </eb:MessageInfo>
+        <eb:Error category="Content" errorCode="EBMS:0004" refToMessageInError="&#9;&#9;&#9;&#9;&#9;1235@example.net&#9;&#9;&#9;&#9;&#9;" severity="failure" shortDescription="Other">
+          <eb:Description xml:lang="en">Invoked AS4 message processor SPI com.helger.phase4.peppol.servlet.Phase4PeppolServletMessageProcessorSPI@28c375cf on '					1235@example.net					' returned a failure: In Peppol exactly one payload attachment is expected. This request has 0 attachments</eb:Description>
+          <eb:ErrorDetail>An undefined error occurred.</eb:ErrorDetail>
+        </eb:Error>
+      </eb:SignalMessage>
+    </eb:Messaging>
+  </S11:Header>
+  <S11:Body/>
+</S11:Envelope>
