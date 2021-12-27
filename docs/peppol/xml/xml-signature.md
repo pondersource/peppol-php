@@ -4,7 +4,10 @@
 
 An XML signature is a digital signature represented in XML syntax.
 
+![digitan signature](https://github.com/pondersource/peppol-php/blob/xml-signature/docs/pics/digital-signature.png?raw=true)
+
 Each XML signature can sign more than one type of resource. For example, a single XML signature might cover character-encoded data (HTML), binary-encoded data (a JPG), XML-encoded data, and a specific section of an XML file.
+
 
 ### [XML Signature Syntax and Processing Version 1.1](https://www.w3.org/TR/xmldsig-core/)
  (based on W3C Recommendatio,  11 April 2013)
