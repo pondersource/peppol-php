@@ -6,7 +6,24 @@ class PostalAddress {
     private $cityName;
     private $postalZone;
     private $country;
-    private $builderName;
+    private $buildingNumber;
+
+     /**
+     * get Building Name
+     */
+    public function getBuildingNumber(): ?string
+    {
+        return $this->buildingNumber;
+    }
+
+    /**
+     * Set Building Name
+     */
+    public function setBuildingNumber(?string $buildingNumber): PostalAddress
+    {
+        $this->buildingNumber = $buildingNumber;
+        return $this;
+    }
 
     /**
      * Get street name
