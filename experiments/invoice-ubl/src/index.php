@@ -8,6 +8,7 @@ require 'LegalMonetaryTotal.php';
 require 'TaxScheme.php';
 require 'FinancialInstitutionBranch.php';
 require 'PayeeFinancialAccount.php';
+require 'PaymentMeans.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -32,6 +33,10 @@ $payeeFinancialAccount = (new PayeeFinancialAccount())
                ->setFinancialInstitutionBranch($financialInstitutionBranch)
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
+$paymentMeans = (new PaymentMeans())
+                ->setPayeeFinancialAccount($payeeFinancialAccount)
+                ->setPaymentMeansCode(31, [])
+                ->setPaymentId('our invoice 1234');
 
 // Supplier company node
  $supplierCompany = (new Party())
