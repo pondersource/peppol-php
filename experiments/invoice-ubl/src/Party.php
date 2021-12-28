@@ -2,6 +2,7 @@
 
 class Party {
     private $endpointID;
+    private $endpointID_schemeID;
     private $partyIdentification;
     private $partyName;
     private $postalAddress;
@@ -21,8 +22,9 @@ class Party {
     /**
      * Set End Point ID
      */
-    public function setEndPointId(?string $endpointID): Party {
+    public function setEndPointId(?string $endpointID, ?string $endpointID_schemeID): Party {
         $this->endpointID = $endpointID;
+        $this->endpointID_schemeID = $endpointID_schemeID;
         return $this;
     }
 
