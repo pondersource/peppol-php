@@ -36,4 +36,19 @@ class CardAccount {
         $this->networkID = $networkID;
         return $this;
     }
+
+    /**
+     * Payment card holder name
+     */
+    public function getPaymentCardHolder(): ?string {
+        return $this->holderName;
+    }
+
+    /**
+     * set payment card holder
+     */
+    public function setPaymentCardHolder(?string $holderName): CardAccount {
+        $this->holderName = $holderName;
+        return $this;
+    }
 }
