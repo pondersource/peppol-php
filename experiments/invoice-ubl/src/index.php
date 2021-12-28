@@ -32,8 +32,6 @@ $payeeFinancialAccount = (new PayeeFinancialAccount())
                ->setFinancialInstitutionBranch($financialInstitutionBranch)
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
-var_dump($payeeFinancialAccount);
-exit;
 
 // Supplier company node
  $supplierCompany = (new Party())
