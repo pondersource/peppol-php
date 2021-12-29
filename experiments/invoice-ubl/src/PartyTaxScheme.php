@@ -1,6 +1,6 @@
 <?php
 
-use InvalidArgumentException;
+use InvalidArgumentException as InvalidArgumentException;
 
 class PartyTaxScheme {
     private $companyId;

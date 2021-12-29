@@ -3,12 +3,16 @@
 require 'Country.php';
 require 'PostalAddress.php';
 require 'Party.php';
+require 'PartyTaxScheme.php';
 require 'Contact.php';
 require 'LegalMonetaryTotal.php';
 require 'TaxScheme.php';
 require 'FinancialInstitutionBranch.php';
 require 'PayeeFinancialAccount.php';
 require 'PaymentMeans.php';
+require 'LegalEntity.php';
+require 'ClassifiedTaxCategory.php';
+require 'Item.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -38,26 +42,52 @@ $paymentMeans = (new PaymentMeans())
                 ->setPaymentMeansCode(31, [])
                 ->setPaymentId('our invoice 1234');
 
-// Supplier company node
- $supplierCompany = (new Party())
-            ->setPartyName('Ponder Source')
-            ->setPhysicalLocation($address)
-            ->setPostalAddress($address);
+ // Supplier company node
+ $supplierLegalEntity = (new LegalEntity())
+ ->setRegistrationNumber('PonderSource')
+ ->setCompanyId('NL123456789');
 
-        // Client contact node
-$clientContact = (new Contact())
-            ->setName('Ismoil')
-            ->setElectronicMail('ismail94.94@mail.ru')
-            ->setTelephone('908 99 74 74')
-            ->setTelefax('1234 1234 1267');
+$supplierPartyTaxScheme = (new PartyTaxScheme())
+ ->setTaxScheme($taxScheme)
+ ->setCompanyId('NL123456789');
 
-        // Client company node
+$supplierCompany = (new Party())
+ ->setPartyName('PonderSource')
+ ->setLegalEntity($supplierLegalEntity)
+ ->setPartyTaxScheme($supplierPartyTaxScheme)
+ ->setPostalAddress($address);
+
+
+
+// Client company node
+$clientLegalEntity = (new LegalEntity())
+ ->setRegistrationNumber('Client Company Name')
+ ->setCompanyId('Client Company Registration');
+
+$clientPartyTaxScheme = (new PartyTaxScheme())
+ ->setTaxScheme($taxScheme)
+ ->setCompanyId('BE123456789');
+
 $clientCompany = (new Party())
-            ->setPartyName('Ismoil')
-            ->setPostalAddress($address)
-            ->setContact($clientContact);
-       
+ ->setPartyName('Client Company Name')
+ ->setLegalEntity($clientLegalEntity)
+ ->setPartyTaxScheme($clientPartyTaxScheme)
+ ->setPostalAddress($address);
+
 $legalMonetaryTotal = (new LegalMonetaryTotal())
-            ->setPayableAmount(10 + 2)
-            ->setAllowanceTotalAmount(0);
-       
+ ->setPayableAmount(10 + 2.1)
+ ->setAllowanceTotalAmount(0)
+ ->setTaxInclusiveAmount(10 + 2.1)
+ ->setLineExtensionAmount(10)
+ ->setTaxExclusiveAmount(10);
+
+ $classifiedTaxCategory = (new ClassifiedTaxCategory())
+ ->setId('S')
+ ->setPercent(21.00)
+ ->setTaxScheme($taxScheme);
+
+  // Product
+  $productItem = (new Item())
+  ->setName('Product Name')
+  ->setClassifiedTaxCategory($classifiedTaxCategory)
+  ->setDescription('Product Description');

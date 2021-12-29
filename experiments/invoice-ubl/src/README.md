@@ -1,7 +1,6 @@
 ## UBL Invoice
 
-## UBL Country->Address and Attachment->AdditionalDocument
-## UBL Contact and Scheme
+### UBL Address and Attachment
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/diagram_ubl_start.PNG?raw=true"/>
 
@@ -15,6 +14,13 @@ A code specifying the functional type of the Invoice. The base value for send in
 
 - [Invoice Type Code](https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1001-inv/)
 
-### UBL Party TaxScheme->PartyTaxScheme->Party, LegalEntity->Party, Contact->Party, PostalAddress->Party
+### UBL Party
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-party.PNG?raw=true"/>
+
+### UBL Payments
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-payment.PNG?raw=true"/>
+
+### Duty or tax or fee category code(Subset of UNCL5305)
+- [Vat Categrory Code](https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL5305/)

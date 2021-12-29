@@ -17,7 +17,8 @@ class LegalEntity {
      * Set seller name;
      */
     public function setRegistrationNumber(?string $registrationName): LegalEntity {
-       return $this->registrationName;
+       $this->registrationName = $registrationName;
+       return $this;
     }
 
     /**
