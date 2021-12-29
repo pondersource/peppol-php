@@ -6,7 +6,7 @@ Algorithms are identified by URIs that appear as an attribute to the element tha
 
 ### Algorithms
 
-* [Digest](https://www.w3.org/TR/xmldsig-core1/#Digest)
-* [Transform](https://www.w3.org/TR/xmldsig-core1/#Transform)
-* [Signature](https://www.w3.org/TR/xmldsig-core1/#Signature)
-* [Canonicalization](https://www.w3.org/TR/xmldsig-core1/#Canonicalization)
+* [Digest](https://www.w3.org/TR/xmldsig-core1/#sec-MessageDigests)
+* [Transform](https://www.w3.org/TR/xmldsig-core1#secTransformAlg)
+* [Signature](https://www.w3.org/TR/xmldsig-core1/#sec-SignatureAlg)
+* [Canonicalization](https://www.w3.org/TR/xmldsig-core1/#sec-c14nAlg)
