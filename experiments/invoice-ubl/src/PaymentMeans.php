@@ -25,7 +25,7 @@ class PaymentMeans {
      */
     public function setPaymentMeansCode(?int $paymentMeansCode, $attributes = null): PaymentMeans {
         $this->paymentMeansCode = $paymentMeansCode;
-        if($this->attributes !== null) {
+        if(isset($attributes)) {
             $this->paymentMeansCodeAttributes = $attributes;
         }
         return $this;

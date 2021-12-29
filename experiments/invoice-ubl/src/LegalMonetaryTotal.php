@@ -53,6 +53,7 @@ class LegalMonetaryTotal {
      */
     public function setTaxInclusiveAmount(?float $taxInclusiveAmount): LegalMonetaryTotal {
         $this->taxInclusiveAmount = $taxInclusiveAmount;
+        return $this;
     }
 
     /**
