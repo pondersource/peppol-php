@@ -3,7 +3,9 @@
 class Contact {
     private $name;
     private $telephone;
+    private $telefax;
     private $electronicMail;
+    
 
     /**
      * Get Name
@@ -25,6 +27,24 @@ class Contact {
      */
     public function getTelephone(): ?string {
         return $this->telephone;
+    }
+
+
+    /**
+     * get telefax
+     */
+    public function getTelefax(): ?string
+    {
+        return $this->telefax;
+    }
+
+    /**
+     * set telefax
+     */
+    public function setTelefax(?string $telefax): Contact
+    {
+        $this->telefax = $telefax;
+        return $this;
     }
 
     /**
