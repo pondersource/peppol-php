@@ -79,6 +79,13 @@ Algorithms are identified by URIs that appear as an attribute to the element tha
 * [Signature](https://www.w3.org/TR/xmldsig-core1/#sec-SignatureAlg)
 * [Canonicalization](https://www.w3.org/TR/xmldsig-core1/#sec-c14nAlg)
 
+### XSD Schema
+
+* [XML Signature Core Schema Instance](https://www.w3.org/TR/2008/REC-xmldsig-core-20080610/xmldsig-core-schema.xsd)
+
+* [XML Signature 1.1 Schema Instance](https://www.w3.org/TR/xmldsig-core1/xmldsig11-schema.xsd)
+* [XML Signature 1.1 Schema Driver](https://www.w3.org/TR/xmldsig-core1/xmldsig1-schema.xsd)
+
 ### Must see
 
 [Definitions](https://www.w3.org/TR/2013/REC-xmldsig-core1-20130411/#Definitions)
