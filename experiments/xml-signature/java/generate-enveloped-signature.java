@@ -3,32 +3,37 @@ import javax.xml.crypto.dsig.*;
 import javax.xml.crypto.dom.*;
 import javax.xml.crypto.dsig.dom.DOMSignContext;
 import javax.xml.crypto.dsig.keyinfo.*;
-import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
+import javax.xml.crypto.dsig.spec.*;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.security.*;
 import java.util.Collections;
+import java.util.Iterator;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
-<<<<<<< HEAD
-=======
 /**
- * This is a simple example of generating a Detached XML
+ * This is a simple example of generating an Enveloped XML
  * Signature using the JSR 105 API. The resulting signature will look
  * like (key and signature values will be different):
  *
  * <pre><code>
+ *<Envelope xmlns="urn:envelope">
  * <Signature xmlns="http://www.w3.org/2000/09/xmldsig#">
  *   <SignedInfo>
- *     <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/>
+ *     <CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n
+-20010315"/>
  *     <SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#dsa-sha1"/>
- *     <Reference URI="http://www.w3.org/TR/xml-stylesheet">
+ *     <Reference URI="">
+ *       <Transforms>
+ *         <Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/>
+ *       </Transforms>
  *       <DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/>
- *       <DigestValue>60NvZvtdTB+7UnlLp/H24p7h4bs=</DigestValue>
+ *       <DigestValue>K8M/lPbKnuMDsO0Uzuj75lQtzQI=<DigestValue>
  *     </Reference>
  *   </SignedInfo>
  *   <SignatureValue>
@@ -59,34 +64,42 @@ import org.w3c.dom.Document;
  *     </KeyValue>
  *   </KeyInfo>
  * </Signature>
+ *</Envelope>
  * </code></pre>
  */
->>>>>>> generate and validate XML signatures in java
-public class GenDetached {
+public class GenEnveloped {
 
     //
-    // Synopsis: java GenDetached [output]
+    // Synopsis: java GenEnveloped [document] [output]
     //
-    // where output is the name of the file that will contain the detached
-    // signature. If not specified, standard output is used.
+    //    where "document" is the name of a file containing the XML document
+    //    to be signed, and "output" is the name of the file to store the
+    //    signed document. The 2nd argument is optional - if not specified,
+    //    standard output will be used.
     //
     public static void main(String[] args) throws Exception {
 
-        // First, create a DOM XMLSignatureFactory that will be used to
-        // generate the XMLSignature and marshal it to DOM.
+        // Create a DOM XMLSignatureFactory that will be used to generate the
+        // enveloped signature
         XMLSignatureFactory fac = XMLSignatureFactory.getInstance("DOM");
 
-        // Create a Reference to an external URI that will be digested
-        // using the SHA1 digest algorithm
-        Reference ref = fac.newReference("http://www.w3.org/TR/xml-stylesheet",             fac.newDigestMethod(DigestMethod.SHA1, null));
+        // Create a Reference to the enveloped document (in this case we are
+        // signing the whole document, so a URI of "" signifies that) and
+        // also specify the SHA1 digest algorithm and the ENVELOPED Transform.
+        Reference ref = fac.newReference
+            ("", fac.newDigestMethod(DigestMethod.SHA1, null),
+             Collections.singletonList
+              (fac.newTransform
+                (Transform.ENVELOPED, (TransformParameterSpec) null)),
+             null, null);
 
         // Create the SignedInfo
-        SignedInfo si = fac.newSignedInfo(
-            fac.newCanonicalizationMethod
-                (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
-                 (C14NMethodParameterSpec) null),
-            fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
-            Collections.singletonList(ref));
+        SignedInfo si = fac.newSignedInfo
+            (fac.newCanonicalizationMethod
+             (CanonicalizationMethod.INCLUSIVE_WITH_COMMENTS,
+              (C14NMethodParameterSpec) null),
+             fac.newSignatureMethod(SignatureMethod.DSA_SHA1, null),
+             Collections.singletonList(ref));
 
         // Create a DSA KeyPair
         KeyPairGenerator kpg = KeyPairGenerator.getInstance("DSA");
@@ -100,28 +113,27 @@ public class GenDetached {
         // Create a KeyInfo and add the KeyValue to it
         KeyInfo ki = kif.newKeyInfo(Collections.singletonList(kv));
 
+        // Instantiate the document to be signed
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        dbf.setNamespaceAware(true);
+        Document doc =
+            dbf.newDocumentBuilder().parse(new FileInputStream(args[0]));
+
+        // Create a DOMSignContext and specify the DSA PrivateKey and
+        // location of the resulting XMLSignature's parent element
+        DOMSignContext dsc = new DOMSignContext
+            (kp.getPrivate(), doc.getDocumentElement());
+
         // Create the XMLSignature (but don't sign it yet)
         XMLSignature signature = fac.newXMLSignature(si, ki);
 
-        // Create the Document that will hold the resulting XMLSignature
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        dbf.setNamespaceAware(true); // must be set
-        Document doc = dbf.newDocumentBuilder().newDocument();
-
-        // Create a DOMSignContext and set the signing Key to the DSA
-        // PrivateKey and specify where the XMLSignature should be inserted
-        // in the target document (in this case, the document root)
-        DOMSignContext signContext = new DOMSignContext(kp.getPrivate(), doc);
-
-        // Marshal, generate (and sign) the detached XMLSignature. The DOM
-        // Document will contain the XML Signature if this method returns
-        // successfully.
-        signature.sign(signContext);
+        // Marshal, generate (and sign) the enveloped signature
+        signature.sign(dsc);
 
         // output the resulting document
         OutputStream os;
-        if (args.length > 0) {
-           os = new FileOutputStream(args[0]);
+        if (args.length > 1) {
+           os = new FileOutputStream(args[1]);
         } else {
            os = System.out;
         }
