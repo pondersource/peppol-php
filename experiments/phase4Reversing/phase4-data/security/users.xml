@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This file was generated automatically - do NOT modify!
+Written at Dec 29, 2021, 10:16:20 AM Z-->
+<root>
+  <item id="admin" creationldt="2021-12-29T11:16:10.409915" desiredlocale="en_US" logincount="0" consecutivefailedlogincount="0" disabled="false">
+    <loginname>Admin</loginname>
+    <emailaddress>admin@helger.com</emailaddress>
+    <passwordhash algorithm="PBKDF2_1000_48" salt="45fbe732553cc2d33309f49c25f78a5c1bbdd255bf413ff31c3de5d177ce38e0">b7ce4e645263bfb1b8c75b6227288321be8c229903bbbc0a51a1e7b129fb1828589e9e7446818bb89ad108e6eef1d9ab</passwordhash>
+    <firstname>Admin</firstname>
+    <lastname>istrator</lastname>
+  </item>
+</root>
