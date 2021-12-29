@@ -1,5 +1,7 @@
 <?php
 
+use InvalidArgumentException as InvalidArgumentException;
+
 class ClassifiedTaxCategory {
     private $id;
     private $percent;
@@ -62,5 +64,19 @@ class ClassifiedTaxCategory {
     public function setTaxScheme(?TaxScheme $taxScheme): ClassifiedTaxCategory {
         $this->taxScheme = $taxScheme;
         return $this;
+    }
+
+    /**
+     * Validation for missing taxcategory id and percent
+     */
+    public function validate()
+    {
+        if ($this->getId() === null) {
+            throw new InvalidArgumentException('Missing taxcategory id');
+        }
+
+        if ($this->getPercent() === null) {
+            throw new InvalidArgumentException('Missing taxcategory percent');
+        }
     }
 }
