@@ -18,8 +18,6 @@ import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
-<<<<<<< HEAD
-=======
 /**
  * This is a simple example of generating an Enveloping XML
  * Signature using the JSR 105 API. The signature in this case references a
@@ -66,7 +64,6 @@ import org.w3c.dom.Node;
  *
  * </code></pre>
  */
->>>>>>> generate and validate XML signatures in java
 public class GenEnveloping {
 
     //

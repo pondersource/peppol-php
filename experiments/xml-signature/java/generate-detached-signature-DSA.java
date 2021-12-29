@@ -14,8 +14,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 
-<<<<<<< HEAD
-=======
 /**
  * This is a simple example of generating a Detached XML
  * Signature using the JSR 105 API. The resulting signature will look
@@ -61,7 +59,6 @@ import org.w3c.dom.Document;
  * </Signature>
  * </code></pre>
  */
->>>>>>> generate and validate XML signatures in java
 public class GenDetached {
 
     //
