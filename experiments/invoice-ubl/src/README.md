@@ -21,3 +21,6 @@ A code specifying the functional type of the Invoice. The base value for send in
 ### UBL Payments
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-payment.PNG?raw=true"/>
+
+### Duty or tax or fee category code(Subset of UNCL5305)
+- [Vat Categrory Code](https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL5305/)
