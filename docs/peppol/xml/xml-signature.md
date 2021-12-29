@@ -56,6 +56,7 @@ While implementations must support XML and XML namespaces, and while use of the 
 
 | ELEMENTS      | 	REQUIRED | FUNCTIONALLITY     |
 | :---        |    :----:   |          ---: |
+|Signature| YES | The Signature element has been inserted inside the content that it is signing|
 | SignedInfo      | YES     |  Contains the information that is actually signed   |
 |CanonicalizationMethod   | YES        |  Defines the algorithm used to canonicalize the SignedInfo element before it is signed or validated     |
 | SignatureMethod | YES | Defines the digital signature algorithm used to generate the signature|
@@ -70,6 +71,32 @@ While implementations must support XML and XML namespaces, and while use of the 
 ### Must see
 
 [Definitions](https://www.w3.org/TR/2013/REC-xmldsig-core1-20130411/#Definitions)
+
+### XML Signature libraries:
+
+#### Python
+
+* [signxml](https://github.com/XML-Security/signxml)
+* [python-saml](https://github.com/onelogin/python-saml)
+
+#### PHP
+
+* [php-XmlDigitalSignature](https://github.com/marcelxyz/php-XmlDigitalSignature)
+* [xmlseclibs](https://github.com/robrichards/xmlseclibs)
+* [https://github.com/onelogin/php-saml](https://github.com/onelogin/php-saml)
+
+#### C
+
+* [xmlsec](https://github.com/lsh123/xmlsec)
+
+#### JAVA
+
+* [xmlsignverify-core-java](https://github.com/Mastercard/xmlsignverify-core-java)
+
+#### Go
+
+* [gosaml2](https://github.com/russellhaering/gosaml2)
+* [goxmldsig](https://github.com/russellhaering/goxmldsig)
 
 ### Resources
 
