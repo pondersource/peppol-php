@@ -12,6 +12,7 @@ require 'PayeeFinancialAccount.php';
 require 'PaymentMeans.php';
 require 'LegalEntity.php';
 require 'ClassifiedTaxCategory.php';
+require 'Item.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -79,7 +80,14 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
  ->setTaxInclusiveAmount(10 + 2.1)
  ->setLineExtensionAmount(10)
  ->setTaxExclusiveAmount(10);
+
  $classifiedTaxCategory = (new ClassifiedTaxCategory())
  ->setId('S')
  ->setPercent(21.00)
  ->setTaxScheme($taxScheme);
+
+  // Product
+  $productItem = (new Item())
+  ->setName('Product Name')
+  ->setClassifiedTaxCategory($classifiedTaxCategory)
+  ->setDescription('Product Description');
