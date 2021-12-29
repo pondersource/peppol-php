@@ -2,7 +2,6 @@
 
 In this example we are using this [Java XML Digital Signature API](https://docs.oracle.com/javase/8/docs/technotes/guides/security/xmldsig/XMLDigitalSignature.html) to generate and validate XML Signatures.
 
-<<<<<<< HEAD
 ### Run example
 
 * Validate XML
@@ -29,8 +28,6 @@ Validate the generated enveloped signature
 $ java Validate envelopedSignature.xml
 
 ```
-=======
->>>>>>> generate and validate XML signatures in java
 ## Packages
 
 
@@ -53,7 +50,6 @@ Contains interfaces and classes representing input parameters for the digest, si
 Contains DOM-specific classes for the javax.xml.crypto and javax.xml.crypto.dsig packages, respectively. Only developers and users who are creating or using a DOM-based XMLSignatureFactory or KeyInfoFactory implementation will need to make direct use of these packages.
 
 * [javax.xml.crypto.dom](https://docs.oracle.com/javase/8/docs/api/javax/xml/crypto/dom/package-summary.html) and [javax.xml.crypto.dsig.dom](https://docs.oracle.com/javase/8/docs/api/javax/xml/crypto/dsig/dom/package-summary.html)
-<<<<<<< HEAD
 
 ## Resources
 
@@ -61,4 +57,3 @@ Contains DOM-specific classes for the javax.xml.crypto and javax.xml.crypto.dsig
 
 [XML Digital Signature API Overview and Tutorial](https://docs.oracle.com/en/java/javase/17/security/java-xml-digital-signature-api-overview-and-tutorial.html)
 =======
->>>>>>> generate and validate XML signatures in java
