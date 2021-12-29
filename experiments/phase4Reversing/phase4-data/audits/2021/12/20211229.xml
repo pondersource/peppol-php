@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This file was generated automatically - do NOT modify!
+Written at Dec 29, 2021, 10:16:11 AM Z-->
+<items>
+  <item ldt="2021-12-29T11:16:10.313621" user="$GUEST$" type="execute" success="true">{"audit-initialized":[]}</item>
+  <item ldt="2021-12-29T11:16:10.478104" user="$GUEST$" type="create" success="true">{"user":["admin","predefined-user","Admin","admin@helger.com","Admin","istrator",null,"en_US",null,false]}</item>
+</items>
