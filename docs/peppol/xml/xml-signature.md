@@ -68,6 +68,17 @@ While implementations must support XML and XML namespaces, and while use of the 
 | KeyInfo | NO | Contains information about the key that is needed to validate the signature|
 | KeyValue | NO | Contains a single public key that may be useful in validating the signature|
 
+## What signature algorithms are?
+
+Algorithms are identified by URIs that appear as an attribute to the element that identifies the algorithms' role
+
+### Algorithms
+
+* [Digest](https://www.w3.org/TR/xmldsig-core1/#sec-MessageDigests)
+* [Transform](https://www.w3.org/TR/xmldsig-core1#secTransformAlg)
+* [Signature](https://www.w3.org/TR/xmldsig-core1/#sec-SignatureAlg)
+* [Canonicalization](https://www.w3.org/TR/xmldsig-core1/#sec-c14nAlg)
+
 ### Must see
 
 [Definitions](https://www.w3.org/TR/2013/REC-xmldsig-core1-20130411/#Definitions)
