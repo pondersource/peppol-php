@@ -1,7 +1,7 @@
 <?php
 
 class VatCategoryCode {
-    const VAT_REVERSE_CHANEGE = 'AE';
+    const VAT_REVERSE_CHANGE = 'AE';
     const EXEMPT_FROM_TAX = 'E';
     const STANDART_RATE = 'S';
     const ZERO_RATE_GOODS = 'Z';
