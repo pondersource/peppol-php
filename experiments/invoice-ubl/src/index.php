@@ -13,6 +13,8 @@ require 'PaymentMeans.php';
 require 'LegalEntity.php';
 require 'ClassifiedTaxCategory.php';
 require 'Item.php';
+require 'UnitCode.php';
+require 'Price.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -91,3 +93,9 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
   ->setName('Product Name')
   ->setClassifiedTaxCategory($classifiedTaxCategory)
   ->setDescription('Product Description');
+
+// Price
+ $price = (new Price())
+       ->setBaseQuantity(1)
+       ->setUnitCode(UnitCode::UNIT)
+       ->setPriceAmount(10);
