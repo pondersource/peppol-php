@@ -13,6 +13,13 @@ require 'PaymentMeans.php';
 require 'LegalEntity.php';
 require 'ClassifiedTaxCategory.php';
 require 'Item.php';
+require 'UnitCode.php';
+require 'Price.php';
+require 'TaxTotal.php';
+require 'TaxSubTotal.php';
+require 'TaxCategory.php';
+require 'InvoicePeriod.php';
+require 'InvoiceLine.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -91,3 +98,42 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
   ->setName('Product Name')
   ->setClassifiedTaxCategory($classifiedTaxCategory)
   ->setDescription('Product Description');
+
+// Price
+ $price = (new Price())
+       ->setBaseQuantity(1)
+       ->setUnitCode(UnitCode::UNIT)
+       ->setPriceAmount(10);
+
+// Invoice Line tax totals
+$lineTaxTotal = (new TaxTotal())
+            ->setTaxAmount(2.1);
+
+// InvoicePeriod
+$invoicePeriod = (new InvoicePeriod())
+->setStartDate(new \DateTime());
+
+// Invoice Line(s)
+$invoiceLine = (new InvoiceLine())
+->setId(0)
+->setItem($productItem)
+->setPrice($price)
+->setInvoicePeriod($invoicePeriod)
+->setLinesExtensionAmount(10)
+->setInvoiceQuantity(1);
+
+$taxCategory = (new TaxCategory())
+            ->setId('S', [])
+            ->setPercent(21.00)
+            ->setTaxScheme($taxScheme);
+
+ $taxSubTotal = (new TaxSubTotal())
+            ->setTaxableAmount(10)
+            ->setTaxAmount(2.1)
+            ->setTaxCategory($taxCategory);
+
+
+$taxTotal = (new TaxTotal())
+            ->setTaxSubtotal($taxSubTotal)
+            ->setTaxAmount(2.1);
+var_dump($taxTotal);
