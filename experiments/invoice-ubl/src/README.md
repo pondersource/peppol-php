@@ -27,4 +27,4 @@ A code specifying the functional type of the Invoice. The base value for send in
 
 ### UBL Item with classified tax
 
-<img src="https://github.com/pondersource/peppol-php/blob/ubl-invoice/experiments/invoice-ubl/src/pics/item-ubl.PNG?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/item-ubl.PNG?raw=true"/>
