@@ -14,7 +14,45 @@ class TaxCategory extends ServiceTax {
     /**
      * Document level allowance or charge VAT category code
      */
-    public function getId() {
+    public function getId(): ?string {
        return $this->id;
+    }
+
+    /**
+     * Set Vat category code
+     */
+    public function setId(?string $id): TaxCategory {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     *  Document level allowance or charge VAT rate
+     */
+    public function getPercent(): ?float {
+        return $this->percent;
+    }
+
+    /**
+     * Set Percent
+     */
+    public function setPercent(?float $percent): TaxCategory {
+        $this->percent = $percent;
+        return $this;
+    }
+    
+    /**
+     * TAX SCHEME
+     */
+    public function setTaxScheme(?TaxScheme $taxScheme): TaxCategory {
+         $this->taxScheme = $taxScheme;
+         return $this;
+    }
+
+    /**
+     * get tax scheme
+     */
+    public function getTaxScheme(): ?TaxScheme {
+        return $this->taxScheme;
     }
 }
