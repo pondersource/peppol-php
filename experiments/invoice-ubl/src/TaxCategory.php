@@ -8,6 +8,8 @@ class TaxCategory extends ServiceTax {
     ];
     private $percent;
     private $taxScheme;
+    private $taxExemptionReason;
+    private $taxExemptionReasonCode;
 
     public const UNCL5305 = 'UNCL5305';
 
@@ -54,6 +56,41 @@ class TaxCategory extends ServiceTax {
      */
     public function getTaxScheme(): ?TaxScheme {
         return $this->taxScheme;
+    }
+
+     /**
+     * A textual statement of the reason why the amount is exempted from VAT or why no VAT is being charged
+     */
+    public function getTaxExemptionReason(): ?string
+    {
+        return $this->taxExemptionReason;
+    }
+
+    /**
+     * Set exemption reason
+     * Example value: Reason
+     */
+    public function setTaxExemptionReason(?string $taxExemptionReason): TaxCategory
+    {
+        $this->taxExemptionReason = $taxExemptionReason;
+        return $this;
+    }
+
+    /**
+     * A coded statement of the reason for why the amount is exempted from VAT
+     */
+    public function getTaxExemptionReasonCode(): ?string
+    {
+        return $this->taxExemptionReasonCode;
+    }
+
+    /**
+     * Set tax exemption reason code
+     */
+    public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode): TaxCategory
+    {
+        $this->taxExemptionReasonCode = $taxExemptionReasonCode;
+        return $this;
     }
 
     /**
