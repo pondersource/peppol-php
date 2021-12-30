@@ -55,4 +55,18 @@ class TaxCategory extends ServiceTax {
     public function getTaxScheme(): ?TaxScheme {
         return $this->taxScheme;
     }
+
+    /**
+     * Validation for missing taxcategory id and percent
+     */
+    public function validate()
+    {
+        if ($this->getId() === null) {
+            throw new InvalidArgumentException('Missing taxcategory id');
+        }
+
+        if ($this->getPercent() === null) {
+            throw new InvalidArgumentException('Missing taxcategory percent');
+        }
+    }
 }
