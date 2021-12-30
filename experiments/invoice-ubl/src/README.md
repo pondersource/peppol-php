@@ -31,4 +31,4 @@ A code specifying the functional type of the Invoice. The base value for send in
 
 ### UBL Tax
 
-<img src="https://github.com/pondersource/peppol-php/blob/ubl-invoice/experiments/invoice-ubl/src/pics/ubl-tax.PNG?raw=true"/>
+<img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-tax.PNG?raw=true"/>
