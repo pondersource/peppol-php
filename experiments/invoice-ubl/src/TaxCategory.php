@@ -1,5 +1,7 @@
 <?php
 
+use InvalidArgumentException as InvalidArgumentException;
+
 class TaxCategory extends ServiceTax {
     private $id;
     private $idAttributes = [
@@ -23,8 +25,11 @@ class TaxCategory extends ServiceTax {
     /**
      * Set Vat category code
      */
-    public function setId(?string $id): TaxCategory {
+    public function setId(?string $id, $attributes = null): TaxCategory {
         $this->id = $id;
+        if (isset($attributes)) {
+            $this->idAttributes = $attributes;
+        }
         return $this;
     }
 
