@@ -2,7 +2,7 @@
 
 use InvalidArgumentException as InvalidArgumentException;
 
-class TaxCategory extends ServiceTax {
+class TaxCategory {
     private $id;
     private $idAttributes = [
         'schemeID' => TaxCategory::UNCL5305,
