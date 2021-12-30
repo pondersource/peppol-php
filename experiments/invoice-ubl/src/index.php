@@ -18,6 +18,7 @@ require 'Price.php';
 require 'TaxTotal.php';
 require 'TaxSubTotal.php';
 require 'TaxCategory.php';
+require 'InvoicePeriod.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -107,7 +108,10 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
 $lineTaxTotal = (new TaxTotal())
             ->setTaxAmount(2.1);
 
-//Invoice Line Period need?
+
+// InvoicePeriod
+$invoicePeriod = (new InvoicePeriod())
+->setStartDate(new \DateTime());
 
 $taxCategory = (new TaxCategory())
             ->setId('S', [])
