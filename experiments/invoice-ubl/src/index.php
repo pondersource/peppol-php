@@ -21,6 +21,7 @@ require 'TaxCategory.php';
 require 'InvoicePeriod.php';
 require 'InvoiceLine.php';
 require 'PaymentTerms.php';
+require 'Delivery.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -143,3 +144,7 @@ $paymentTerms = (new PaymentTerms())
 // Delivery
 $deliveryLocation = (new PostalAddress())
   ->setCountry($country);
+
+$delivery = (new Delivery())
+  ->setActualDeliveryDate(new \DateTime())
+  ->setDeliveryLocation($deliveryLocation);
