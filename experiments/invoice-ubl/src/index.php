@@ -22,6 +22,7 @@ require 'InvoicePeriod.php';
 require 'InvoiceLine.php';
 require 'PaymentTerms.php';
 require 'Delivery.php';
+require 'OrderReference.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -148,3 +149,7 @@ $deliveryLocation = (new PostalAddress())
 $delivery = (new Delivery())
   ->setActualDeliveryDate(new \DateTime())
   ->setDeliveryLocation($deliveryLocation);
+
+$orderReference = (new OrderReference())
+  ->setId('5009567')
+  ->setSalesOrderId('tRST-tKhM');
