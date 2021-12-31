@@ -101,7 +101,7 @@ Algorithms are identified by URIs that appear as an attribute to the element tha
 
 * [php-XmlDigitalSignature](https://github.com/marcelxyz/php-XmlDigitalSignature)
 * [xmlseclibs](https://github.com/robrichards/xmlseclibs)
-* [https://github.com/onelogin/php-saml](https://github.com/onelogin/php-saml)
+* [php-saml](https://github.com/onelogin/php-saml)
 
 #### C
 
