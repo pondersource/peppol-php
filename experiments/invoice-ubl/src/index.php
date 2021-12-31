@@ -20,6 +20,11 @@ require 'TaxSubTotal.php';
 require 'TaxCategory.php';
 require 'InvoicePeriod.php';
 require 'InvoiceLine.php';
+require 'PaymentTerms.php';
+require 'Delivery.php';
+require 'OrderReference.php';
+require 'Invoice.php';
+
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -136,4 +141,37 @@ $taxCategory = (new TaxCategory())
 $taxTotal = (new TaxTotal())
             ->setTaxSubtotal($taxSubTotal)
             ->setTaxAmount(2.1);
-var_dump($taxTotal);
+   // Payment Terms
+$paymentTerms = (new PaymentTerms())
+   ->setNote('30 days net');
+// Delivery
+$deliveryLocation = (new PostalAddress())
+  ->setCountry($country);
+
+$delivery = (new Delivery())
+  ->setActualDeliveryDate(new \DateTime())
+  ->setDeliveryLocation($deliveryLocation);
+
+$orderReference = (new OrderReference())
+  ->setId('5009567')
+  ->setSalesOrderId('tRST-tKhM');
+
+   // Invoice object
+   $invoice = (new Invoice())
+   ->setCustomazationID('urn:cen.eu:en16931:2017')
+   ->setId(1234)
+   ->setIssueDate(new \DateTime())
+   ->setNote('invoice note')
+   ->setDelivery($delivery)
+   ->setAccountingSupplierParty($supplierCompany)
+   ->setAccountingCustomerParty($clientCompany)
+   ->setInvoiceLines($invoiceLine)
+   ->setLegalMonetaryTotal($legalMonetaryTotal)
+   ->setPaymentTerms($paymentTerms)
+   ->setInvoicePeriod($invoicePeriod)
+   ->setPaymentMeans($paymentMeans)
+   ->setByerReference('BUYER_REF')
+   ->setOrderReference($orderReference)
+   ->setTaxTotal($taxTotal);
+   var_dump($invoice);
+   exit;
