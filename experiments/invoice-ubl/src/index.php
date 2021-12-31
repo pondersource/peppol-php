@@ -20,6 +20,7 @@ require 'TaxSubTotal.php';
 require 'TaxCategory.php';
 require 'InvoicePeriod.php';
 require 'InvoiceLine.php';
+require 'PaymentTerms.php';
 
 $url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
  // Tax scheme
@@ -136,4 +137,9 @@ $taxCategory = (new TaxCategory())
 $taxTotal = (new TaxTotal())
             ->setTaxSubtotal($taxSubTotal)
             ->setTaxAmount(2.1);
-var_dump($taxTotal);
+   // Payment Terms
+$paymentTerms = (new PaymentTerms())
+   ->setNote('30 days net');
+// Delivery
+$deliveryLocation = (new PostalAddress())
+  ->setCountry($country);
