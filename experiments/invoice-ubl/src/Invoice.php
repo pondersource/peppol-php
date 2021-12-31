@@ -1,6 +1,7 @@
 <?php
 
-use Datetime;
+use DateTime as DateTime;
+require 'InvoiceTypeCode.php';
 
 class Invoice {
     private $UBLVersionID = '2.1';
@@ -14,7 +15,22 @@ class Invoice {
     private $copyIndicator;
     private $note;
     private $taxPointDate;
-  
+    private $paymentTerms;
+    private $accountingSupplierParty;
+    private $accountingCustomerParty;
+    private $supplierAssignedAccountID;
+    private $paymentMeans;
+    private $taxTotal;
+    private $legalMonetaryTotal;
+    private $invoiceLines;
+    private $allowanceCharges;
+    private $additionalDocumentReferences;
+    private $byerReference;
+    private $accountingCostCode;
+    private $invoicePeriod;
+    private $delivery;
+    private $orderReference;
+    private $contractDocumentReference;
     
     /**
      * get UBL version ID
@@ -142,7 +158,7 @@ class Invoice {
     /**
      * Set invoice type code
      */
-    public function setInvoiceTypeCode(?string $invoiceTypeCode): Invoice {
+    public function setInvoiceTypeCode(string $invoiceTypeCode): Invoice {
         $this->invoiceTypeCode = $invoiceTypeCode;
         return $this;
     }
@@ -189,8 +205,254 @@ class Invoice {
     /**
      * Set tax point date
      */
-    public function setTaxPointDate(?Datetime $taxPointDate): Invoice {
+    public function setTaxPointDate(Datetime $taxPointDate): Invoice {
         $this->taxPointDate = $taxPointDate;
+        return $this;
+    }
+
+    /**
+     * get Payment Terms
+     */
+    public function getPaymentTerms(): ?PaymentTerms {
+        return $this->paymentTerms;
+    }
+
+    /**
+     * set payment terms
+     */
+    public function setPaymentTerms(PaymentTerms $paymentTerms): Invoice {
+        $this->paymentTerms = $paymentTerms;
+        return $this;
+    }
+
+    /**
+     * Seller
+     */
+    public function getAccountingSupplierParty(): ?Party {
+        return $this->accountingSupplierParty;
+    }
+
+    /**
+     * Set accounting supplier
+     */
+    public function setAccountingSupplierParty(?Party $accountingSupplierParty): Invoice {
+        $this->accountingSupplierParty = $accountingSupplierParty;
+        return $this;
+    }
+
+    /**
+     * Byer
+     */
+    public function getAccountingCustomerParty(): ?Party {
+        return $this->accountingCustomerParty;
+    }
+
+    /**
+     * Set accounting supplier
+     */
+    public function setAccountingCustomerParty(?Party $accountingCustomerParty): Invoice {
+        $this->accountingCustomerParty = $accountingCustomerParty;
+        return $this;
+    }
+
+    /**
+     * get Supplier Assigned Account ID
+     */
+    public function getSupplierAssignedAccountID(): ?string
+    {
+        return $this->supplierAssignedAccountID;
+    }
+
+    /**
+     * Set Supplier Assigned Account ID
+     */
+    public function setSupplierAssignedAccountID(string $supplierAssignedAccountID): Invoice
+    {
+        $this->supplierAssignedAccountID = $supplierAssignedAccountID;
+        return $this;
+    }
+
+    /**
+     * get payment means 
+     */
+    public function getPaymentMeans(): ?PaymentMeans {
+        return $this->paymentMeans;
+    }
+
+    /**
+     * set payment means
+     */
+    public function setPaymentMeans(PaymentMeans $paymentMeans): Invoice {
+        $this->paymentMeans = $paymentMeans;
+        return $this;
+    }
+
+    /**
+     * get tax total
+     */
+    public function getTaxtTotal(): ?TaxtTotal {
+        return $this->taxTotal;
+    }
+
+    /**
+     * Set tax total
+     */
+    public function setTaxTotal(TaxTotal $taxTotal): Invoice {
+        $this->taxTotal = $taxTotal;
+        return $this;
+    }
+
+    /**
+     * get legal Monetary Total
+     */
+    public function getLegalMonetaryTotal(): ?LegalMonetaryTotal {
+        return $this->legalMonetaryTotal;
+    }
+
+    /**
+     * set legal Monetary Total
+     */
+    public function setLegalMonetaryTotal(LegalMonetaryTotal $legalMonetaryTotal): Invoice {
+        $this->legalMonetaryTotal = $legalMonetaryTotal;
+        return $this;
+    }
+
+     /**
+     * get invoice lines
+     */
+    public function getInvoiceLines(): InvoiceLine {
+        return $this->invoiceLines;
+    }
+
+    /**
+     * Set invoice lines
+     */
+    public function setInvoiceLines(InvoiceLine $invoiceLines): Invoice {
+         $this->invoiceLines = $invoiceLines;
+         return $this;
+    }
+
+    /**
+     * get allowance chanrges
+     */
+    public function getAllowanceCharges(): ?array
+    {
+        return $this->allowanceCharges;
+    }
+
+    /**
+     * set allowance charges
+     */
+    public function setAllowanceCharges(array $allowanceCharges): Invoice
+    {
+        $this->allowanceCharges = $allowanceCharges;
+        return $this;
+    }
+
+    /**
+     * get additional document reference
+     */
+    public function getAdditionalDocumentReference(): ?AdditionalDocumentReference
+    {
+        return $this->additionalDocumentReferences;
+    }
+
+    /**
+     * set addional document reference
+     */
+    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
+    {
+        $this->additionalDocumentReference = $additionalDocumentReference;
+        return $this;
+    }
+
+    /**
+     * get byer reference
+     */
+    public function getByerReference(): ?string {
+        return $this->byerReference;
+    }
+
+    /**
+     * set byer reference
+     */
+    public function setByerReference(string $byerReference) {
+        $this->byerReference = $byerReference;
+        return $this;
+    }
+
+    /**
+     * get accounting cost code
+     */
+    public function getAccountingCostCode(): ?string {
+        return $this->accountingCostCode;
+    }
+
+    /**
+     * set account cost code
+     */
+    public function setAccountingCostCode(string $accountingCostCode) {
+        $this->accountingCostCode = $accountingCostCode;
+        return $this;
+    }
+
+    /**
+     * get invoice period
+     */
+    public function getInvoicePeriod(): InvoicePeriod {
+        return $this->invoicePeriod;
+    }
+
+    /**
+     * Set invoice period
+     */
+    public function setInvoicePeriod(InvoicePeriod $invoicePeriod): Invoice {
+         $this->invoicePeriod = $invoicePeriod;
+         return $this;
+    }
+
+    /**
+     * get Delivery
+     */
+    public function getDelivery(): ?Delivery {
+        return $this->delivery;
+    }
+
+    /**
+     * set delivery
+     */
+    public function setDelivery(Delivery $delivery) {
+        $this->delivery = $delivery;
+        return $this;
+    }
+
+    /**
+     * get order reference
+     */
+    public function getOrderReference(): ?OrderReference {
+        return $this->orderReference;
+    }
+
+    /**
+     * set order reference
+     */
+    public function setOrderReference(OrderReference $orderReference): Invoice {
+        $this->orderReference = $orderReference;
+        return $this;
+    }
+
+    /**
+     * get contact document reference
+     */
+    public function getContactDocumentReference(): ?ContractDocumentReference {
+        return $this->contractDocumentReference;
+    }
+
+    /**
+     * set contact document reference
+     */
+    public function setContactDocumentReference(ContractDocumentReference $contractDocumentReference): Invoice {
+        $this->contractDocumentReference = $contractDocumentReference;
         return $this;
     }
 }
