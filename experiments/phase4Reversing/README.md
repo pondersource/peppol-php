@@ -179,8 +179,12 @@ Content-Description: Attachment
 Content-ID: <phase4-att-b6c46176-2a7b-4fc4-9fa5-019659d9f377@cid>
 ```
 ## binary data encoding ubl-invoice.xml
->TODO: figure out exact encoding of binary data
+probably something along the lines of 
+```php
+openssl_encrypt(gzcompress($data),"aes-128-gcm",$key)
 ```
+
+```http
 [...snip binary blob]
 ------=_Part_0_1471949830.1640773679747--
 ```
