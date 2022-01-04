@@ -1,6 +1,11 @@
 <?php
 
-class FinancialInstitutionBranch {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+//require 'Schema.php';
+
+class FinancialInstitutionBranch implements XmlSerializable {
     private $id;
 
     /**
@@ -18,4 +23,10 @@ class FinancialInstitutionBranch {
         $this->id = $id;
         return $this;
     }
+
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+           Schema::CBC . 'ID' => $this->id
+        ]);
+     }
 }
