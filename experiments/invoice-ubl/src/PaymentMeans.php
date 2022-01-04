@@ -1,6 +1,9 @@
 <?php
 
-class PaymentMeans {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class PaymentMeans implements XmlSerializable {
     private $paymentMeansCode = 1;
     private $paymentMeansCodeAttributes = [
         'listID' => 'UN/ECE 4461',
@@ -91,5 +94,27 @@ class PaymentMeans {
     public function setPaymentMandate(?PaymentMandate $paymentMandate): PaymentMeans {
         $this->paymentMandate = $paymentMandate;
         return $this;
+    }
+    /**
+     * Serialize XML Payment Means
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+            'name' => Schema::CBC . 'PaymentMeansCode',
+            'value' => $this->paymentMeansCode,
+            'attributes' => $this->paymentMeansCodeAttributes
+        ]);
+
+        if ($this->getPaymentId() !== null) {
+            $writer->write([
+                Schema::CBC . 'PaymentID' => $this->getPaymentId()
+            ]);
+        }
+
+        if ($this->getPayeeFinancialAccount() !== null) {
+            $writer->write([
+                Schema::CAC . 'PayeeFinancialAccount' => $this->getPayeeFinancialAccount()
+            ]);
+        }
     }
 }
