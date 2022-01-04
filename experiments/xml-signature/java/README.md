@@ -2,6 +2,32 @@
 
 In this example we are using this [Java XML Digital Signature API](https://docs.oracle.com/javase/8/docs/technotes/guides/security/xmldsig/XMLDigitalSignature.html) to generate and validate XML Signatures.
 
+### Run example
+
+* Validate XML
+
+Validate signature.xml
+
+```
+$ javac Validate.java
+$ java Validate signature.xml
+```
+
+* Generate enveloped signature
+
+Generate enveloped signature of the document in the file envelope.xml and store it in the file envelopedSignature.xml in the current working directory.
+
+```
+$ javac GenEnveloped.java
+$ java GenEnveloped envelope.xml envelopedSignature.xml
+```
+
+Validate the generated enveloped signature
+
+```
+$ java Validate envelopedSignature.xml
+
+```
 ## Packages
 
 
