@@ -24,7 +24,7 @@ require 'PaymentTerms.php';
 require 'Delivery.php';
 require 'OrderReference.php';
 require 'Invoice.php';
-require 'Generator1.php';
+require 'GenerateInvoice.php';
 
 
 
@@ -51,15 +51,15 @@ $payeeFinancialAccount = (new PayeeFinancialAccount())
                ->setFinancialInstitutionBranch($financialInstitutionBranch)
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
-                $generator = new Generator1();
+                $generateInvoice = new GenerateInvoice();
 
 $paymentMeans = (new PaymentMeans())
                 ->setPayeeFinancialAccount($payeeFinancialAccount)
                 ->setPaymentMeansCode(31, [])
                 ->setPaymentId('our invoice 1234');
-                $outputXMLString = $generator->invoice($paymentMeans);
-                var_dump($outputXMLString);
-                exit;
+$outputXMLString = $generateInvoice->invoice($paymentMeans);
+var_dump($outputXMLString);
+exit;
  // Supplier company node
  $supplierLegalEntity = (new LegalEntity())
  ->setRegistrationNumber('PonderSource')

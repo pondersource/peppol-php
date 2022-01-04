@@ -2,7 +2,7 @@
 
 use Sabre\Xml\Service;
 
-class Generator1
+class GenerateInvoice
 {
     public static $currencyID;
 
