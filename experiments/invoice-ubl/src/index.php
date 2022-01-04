@@ -42,10 +42,8 @@ $address = (new PostalAddress())
                 ->setCityName('Utreht')
                 ->setPostalZone('3521')
                 ->setCountry($country);
-$generator = new Generator1();
-$outputXMLString = $generator->invoice($address);
-var_dump($outputXMLString);
-exit;
+
+
 $financialInstitutionBranch = (new FinancialInstitutionBranch())
                 ->setId('RABONL2U');
     
@@ -53,6 +51,10 @@ $payeeFinancialAccount = (new PayeeFinancialAccount())
                ->setFinancialInstitutionBranch($financialInstitutionBranch)
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
+                $generator = new Generator1();
+$outputXMLString = $generator->invoice($payeeFinancialAccount);
+var_dump($outputXMLString);
+exit;
 $paymentMeans = (new PaymentMeans())
                 ->setPayeeFinancialAccount($payeeFinancialAccount)
                 ->setPaymentMeansCode(31, [])
