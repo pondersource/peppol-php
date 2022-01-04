@@ -22,6 +22,9 @@ class TaxScheme implements XmlSerializable {
         return $this;
     }
 
+    /**
+     * Serialize XML Tax Scheme
+     */
     public function xmlSerialize(Writer $writer) {
        $writer->write([
           Schema::CBC . 'ID' => $this->id

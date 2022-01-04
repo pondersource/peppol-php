@@ -52,14 +52,14 @@ $payeeFinancialAccount = (new PayeeFinancialAccount())
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
                 $generator = new Generator1();
-$outputXMLString = $generator->invoice($payeeFinancialAccount);
-var_dump($outputXMLString);
-exit;
+
 $paymentMeans = (new PaymentMeans())
                 ->setPayeeFinancialAccount($payeeFinancialAccount)
                 ->setPaymentMeansCode(31, [])
                 ->setPaymentId('our invoice 1234');
-
+                $outputXMLString = $generator->invoice($paymentMeans);
+                var_dump($outputXMLString);
+                exit;
  // Supplier company node
  $supplierLegalEntity = (new LegalEntity())
  ->setRegistrationNumber('PonderSource')
