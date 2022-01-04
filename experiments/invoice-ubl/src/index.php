@@ -1,5 +1,5 @@
 <?php
-
+include 'vendor/autoload.php';
 require 'Country.php';
 require 'PostalAddress.php';
 require 'Party.php';
@@ -24,9 +24,10 @@ require 'PaymentTerms.php';
 require 'Delivery.php';
 require 'OrderReference.php';
 require 'Invoice.php';
+require 'Generator1.php';
 
 
-$url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+
  // Tax scheme
  $taxScheme = (new TaxScheme())
  ->setId('VAT');
@@ -41,7 +42,10 @@ $address = (new PostalAddress())
                 ->setCityName('Utreht')
                 ->setPostalZone('3521')
                 ->setCountry($country);
-
+$generator = new Generator1();
+$outputXMLString = $generator->invoice($address);
+var_dump($outputXMLString);
+exit;
 $financialInstitutionBranch = (new FinancialInstitutionBranch())
                 ->setId('RABONL2U');
     
@@ -173,5 +177,5 @@ $orderReference = (new OrderReference())
    ->setByerReference('BUYER_REF')
    ->setOrderReference($orderReference)
    ->setTaxTotal($taxTotal);
-   var_dump($invoice);
-   exit;
+   //$generator = new Generator1();
+   //$outputXMLString = $generator->invoice($invoice);
