@@ -77,6 +77,7 @@ Algorithms are identified by URIs that appear as an attribute to the element tha
 ### Must see
 
 [Definitions](https://www.w3.org/TR/2013/REC-xmldsig-core1-20130411/#Definitions)
+[xml digital signature core schema](https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd#)
 
 ### XML Signature libraries:
 
