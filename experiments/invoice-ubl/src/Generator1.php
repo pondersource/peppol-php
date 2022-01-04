@@ -6,7 +6,7 @@ class Generator1
 {
     public static $currencyID;
 
-    public static function invoice(PostalAddress $address, $currencyId = 'EUR')
+    public static function invoice(PayeeFinancialAccount $address, $currencyId = 'EUR')
     {
         self::$currencyID = $currencyId;
 
@@ -18,7 +18,7 @@ class Generator1
             'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2' => 'cac'
         ];
 
-        return $xmlService->write('PostalAddress', [
+        return $xmlService->write('PayeeFinancialAccount', [
             $address
         ]);
     }
