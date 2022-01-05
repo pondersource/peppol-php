@@ -134,10 +134,7 @@ $invoiceLine = (new InvoiceLine())
 ->setInvoicePeriod($invoicePeriod)
 ->setLinesExtensionAmount(10)
 ->setInvoiceQuantity(1);
-$generateInvoice = new GenerateInvoice();
-$outputXMLString = $generateInvoice->invoice($invoiceLine);
-var_dump($outputXMLString);
- exit;
+
 $taxCategory = (new TaxCategory())
             ->setId('S', [])
             ->setPercent(21.00)
@@ -147,7 +144,10 @@ $taxCategory = (new TaxCategory())
             ->setTaxableAmount(10)
             ->setTaxAmount(2.1)
             ->setTaxCategory($taxCategory);
-
+            $generateInvoice = new GenerateInvoice();
+            $outputXMLString = $generateInvoice->invoice($taxSubTotal);
+                        var_dump($outputXMLString);
+                        exit;
 
 $taxTotal = (new TaxTotal())
             ->setTaxSubtotal($taxSubTotal)

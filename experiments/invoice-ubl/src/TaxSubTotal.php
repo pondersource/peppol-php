@@ -1,8 +1,10 @@
 <?php
 
 use InvalidArgumentException as InvalidArgumentException;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
 
-class TaxSubTotal {
+class TaxSubTotal implements XmlSerializable {
     private $taxableAmount;
     private $taxAmount;
     private $taxCategory;
@@ -83,5 +85,39 @@ class TaxSubTotal {
         if($this->taxCategory === null) {
             throw new InvalidArgumentException('Missing tax category');
         }
+    }
+
+    /**
+     * Serialize TaxSubtotal
+     */
+    public function xmlSerialize(Writer $writer) {
+        $this->validate();
+
+        $writer->write([
+            [
+                'name' => Schema::CBC . 'TaxableAmount',
+                'value' => number_format($this->taxableAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => GenerateInvoice::$currencyID
+                ]
+            ],
+            [
+                'name' => Schema::CBC . 'TaxAmount',
+                'value' => number_format($this->taxAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => GenerateInvoice::$currencyID
+                ]
+            ]
+        ]);
+
+        if($this->percent !== null) {
+            $writer->write([
+                Schema::CBC . 'Percent' => $this->percent
+            ]);
+        }
+
+        $writer->write([
+            Schema::CAC . 'TaxCategory' => $this->taxCategory
+        ]);
     }
 }

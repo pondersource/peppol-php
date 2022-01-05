@@ -1,8 +1,10 @@
 <?php
 
 use InvalidArgumentException as InvalidArgumentException;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
 
-class TaxCategory {
+class TaxCategory implements XmlSerializable {
     private $id;
     private $idAttributes = [
         'schemeID' => TaxCategory::UNCL5305,
@@ -109,6 +111,51 @@ class TaxCategory {
 
         if ($this->getPercent() === null) {
             throw new InvalidArgumentException('Missing taxcategory percent');
+        }
+    }
+
+    /**
+     * Serialize Tax Category
+     */
+    public function xmlSerialize(Writer $writer)
+    {
+        $this->validate();
+
+        $writer->write([
+            [
+                'name' => Schema::CBC . 'ID',
+                'value' => $this->getId(),
+                'attributes' => $this->idAttributes,
+            ],
+        ]);
+
+        if ($this->name !== null) {
+            $writer->write([
+                Schema::CBC . 'Name' => $this->name,
+            ]);
+        }
+        $writer->write([
+            Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
+        ]);
+
+        if ($this->taxExemptionReasonCode !== null) {
+            $writer->write([
+                Schema::CBC . 'TaxExemptionReasonCode' => $this->taxExemptionReasonCode,
+            ]);
+        }
+
+        if ($this->taxExemptionReason !== null) {
+            $writer->write([
+                Schema::CBC . 'TaxExemptionReason' => $this->taxExemptionReason,
+            ]);
+        }
+
+        if ($this->taxScheme !== null) {
+            $writer->write([Schema::CAC . 'TaxScheme' => $this->taxScheme]);
+        } else {
+            $writer->write([
+                Schema::CAC . 'TaxScheme' => null,
+            ]);
         }
     }
 }
