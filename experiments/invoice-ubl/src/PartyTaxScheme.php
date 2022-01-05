@@ -2,7 +2,10 @@
 
 use InvalidArgumentException as InvalidArgumentException;
 
-class PartyTaxScheme {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class PartyTaxScheme implements XmlSerializable {
     private $companyId;
     private $taxScheme;
 
@@ -41,8 +44,22 @@ class PartyTaxScheme {
      * Validation for taxScheme is not empty
      */
     public function validate() {
-        if($this->taxScheme !== null) {
+        if($this->taxScheme === null) {
             throw new InvalidArgumentException('Missing TaxScheme');
         }
+    }
+
+    /**
+     * Serialize Party Tax Scheme
+     */
+    public function xmlSerialize(Writer $writer) {
+        if ($this->companyId !== null) {
+            $writer->write([
+                Schema::CBC . 'CompanyID' => $this->companyId
+            ]);
+        }
+        $writer->write([
+            Schema::CAC . 'TaxScheme' => $this->taxScheme
+        ]);
     }
 }
