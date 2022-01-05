@@ -6,7 +6,7 @@ class GenerateInvoice
 {
     public static $currencyID;
 
-    public static function invoice(Item $party, $currencyId = 'EUR')
+    public static function invoice(OrderReference $order, $currencyId = 'EUR')
     {
         self::$currencyID = $currencyId;
 
@@ -18,8 +18,8 @@ class GenerateInvoice
             'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2' => 'cac'
         ];
 
-        return $xmlService->write('Item', [
-            $party
+        return $xmlService->write('OrderReference', [
+            $order
         ]);
     }
 }

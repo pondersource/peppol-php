@@ -2,9 +2,13 @@
 
 use InvalidArgumentException as InvalidArgumentException;
 
-class TaxTotal {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+
+class TaxTotal implements XmlSerializable {
     private $taxAmount;
-    private $taxSubtotals = [];
+    private $taxSubTotals = [];
 
     /**
      * Invoice total VAT amount, Invoice total VAT amount in accounting currency
@@ -25,14 +29,14 @@ class TaxTotal {
      *  VAT BREAKDOWN
      */
     public function getTaxSubtotal(): array  {
-        return $this->taxSubtotals;
+        return $this->taxSubTotals;
     }
 
     /**
      * Set tax subtotal
      */
-    public function setTaxSubtotal(TaxSubTotal $taxSubTotal): TaxTotal {
-        $this->taxSubTotals[] = $taxSubTotal;
+    public function setTaxSubtotal(TaxSubTotal $taxSubTotals): TaxTotal {
+        $this->taxSubTotals[] = $taxSubTotals;
         return $this;
     }
 
@@ -42,6 +46,23 @@ class TaxTotal {
     public function validate() {
         if($this->taxAmount === null) {
             throw new InvalidArgumentException('Missing taxtotal tax amount');
+        }
+    }
+
+    /**
+     * Serialize TaxtTotal
+     */
+    public function xmlSerialize(Writer $writer): void {
+        $writer->write([
+            'name' => Schema::CBC . 'TaxAmount',
+            'value' => number_format($this->taxAmount, 2, '.',''),
+            'attributes' => [
+                'currencyID' => GenerateInvoice::$currencyID
+            ]
+        ]);
+
+        foreach($this->taxSubTotals as $taxSubTotal) {
+            $writer->write([ Schema::CAC . 'TaxSubtotal' => $taxSubTotal]);
         }
     }
 }

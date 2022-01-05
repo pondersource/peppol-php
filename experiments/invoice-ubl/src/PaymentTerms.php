@@ -1,6 +1,9 @@
 <?php
 
-class PaymentTerms {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class PaymentTerms implements XmlSerializable {
     private $note;
 
     /**
@@ -16,5 +19,14 @@ class PaymentTerms {
     public function setNote(?string $note): PaymentTerms {
         $this->note = $note;
         return $this;
+    }
+    /**
+     * Serialize Payment Terms
+     */
+    public function xmlSerialize(Writer $writer)
+    {
+        if ($this->note !== null) {
+            $writer->write([ Schema::CBC . 'Note' => $this->note ]);
+        }
     }
 }
