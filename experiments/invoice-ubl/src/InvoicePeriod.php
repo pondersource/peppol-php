@@ -1,8 +1,11 @@
 <?php
 
+use InvalidArgumentException as InvalidArgumentException;
 use DateTime as DateTime;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
 
-class InvoicePeriod {
+class InvoicePeriod implements XmlSerializable {
     private $startDate;
     private $endDate;
 
@@ -35,4 +38,28 @@ class InvoicePeriod {
          $this->endDate = $endDate;
          return $this;
      }
+
+     /**
+      * validation date
+      */
+      public function validate() {
+          if($this->startDate === null && $this->endDate === null) {
+              throw new InvalidArgumentException('Missing start date and end date');
+          }
+      }
+
+      /**
+       * Invoice Period serialize
+       */
+      public function xmlSerialize(Writer $writer) {
+          $this->validate();
+
+          if($this->startDate !== null) {
+              $writer->write([ Schema::CBC . 'StartDate' => $this->startDate->format('Y-m-d') ]);
+          }
+
+          if($this->endDate !== null) {
+            $writer->write([ Schema::CBC . 'StartDate' => $this->endDate->format('Y-m-d') ]);
+          }
+      }
 }

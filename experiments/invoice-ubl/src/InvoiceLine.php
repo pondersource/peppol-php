@@ -1,6 +1,9 @@
 <?php
 
-class InvoiceLine {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class InvoiceLine implements XmlSerializable {
     private $id;
     private $note;
     private $invoiceQuantity;
@@ -192,5 +195,74 @@ class InvoiceLine {
     public function setAccountingCostCode(?string $accountingCostCode): InvoiceLine {
         $this->accountingCostCode = $accountingCostCode;
         return $this;
+    }
+
+    /**
+     * Invoice Line serialize
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+             Schema::CBC . 'ID' => $this->id 
+        ]);
+
+        if(!empty($this->getNote())) {
+            $writer->write([
+                Schema::CBC . 'Note' => $this->note 
+           ]);
+        }
+
+        $writer->write([
+            [
+                'name' => Schema::CBC . 'InvoiceQuantity',
+                'value' => $this->invoiceQuantity,
+                'attributes' => [
+                    'unitCode' => $this->unitCode
+                ]
+            ],
+            [
+                'name' => Schema::CBC . 'LineExtensionAmount',
+                'value' => $this->lineExtensionAmount,
+                'attributes' => [
+                    'currencyID' => GenerateInvoice::$currencyID
+                ]
+            ]
+        ]);
+
+        if ($this->accountingCostCode !== null) {
+            $writer->write([
+                Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
+            ]);
+        }
+        if ($this->accountingCost !== null) {
+            $writer->write([
+                Schema::CBC . 'AccountingCost' => $this->accountingCost
+            ]);
+        }
+
+        if($this->invoicePeriod !== null) {
+            $writer->write([
+                Schema::CAC . 'InvoicePeriod' => $this->invoicePeriod
+            ]);
+        }
+
+        if($this->taxTotal !== null) {
+            $writer->write([
+                Schema::CAC . 'TaxTotal' => $this->taxTotal
+            ]);
+        }
+
+        $writer->write([
+            Schema::CAC . 'Item' => $this->item
+        ]);
+
+        if($this->price !== null) {
+            $writer->write([
+                Schema::CAC . 'Price' => $this->price
+            ]);
+        } else {
+            $writer->write([
+                Schema::CAC . 'TaxScheme' => null,
+            ]);
+        }
     }
 }

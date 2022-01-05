@@ -1,6 +1,9 @@
 <?php
 
-class Price {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class Price implements XmlSerializable {
     private $priceAmount;
     private $baseQuantity;
     private $unitCode = UnitCode::UNIT;
@@ -50,5 +53,27 @@ class Price {
     public function setUnitCode(?string $unitCode): Price {
         $this->unitCode = $unitCode;
         return $this;
+    }
+
+    /**
+     * Serialize Price
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+            [
+                'name' => Schema::CBC . 'PriceAmount',
+                'values' => number_format($this->priceAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => GenerateInvoice::$currencyID
+                ]
+            ],
+            [
+                'name' => Schema::CBC . 'BaseQuantity',
+                'values' => number_format($this->baseQuantity, 2, '.', ''),
+                'attributes' => [
+                    'unitCode' => $this->unitCode
+                ]
+            ],
+        ]);
     }
 }

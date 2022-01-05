@@ -110,20 +110,18 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
   ->setName('Product Name')
   ->setClassifiedTaxCategory($classifiedTaxCategory)
   ->setDescription('Product Description');
-  $generateInvoice = new GenerateInvoice();
-  $outputXMLString = $generateInvoice->invoice($productItem);
-  var_dump($outputXMLString);
-   exit;
+
 // Price
  $price = (new Price())
        ->setBaseQuantity(1)
        ->setUnitCode(UnitCode::UNIT)
        ->setPriceAmount(10);
-
+      
 // Invoice Line tax totals
 $lineTaxTotal = (new TaxTotal())
             ->setTaxAmount(2.1);
 
+           
 // InvoicePeriod
 $invoicePeriod = (new InvoicePeriod())
 ->setStartDate(new \DateTime());
@@ -136,7 +134,10 @@ $invoiceLine = (new InvoiceLine())
 ->setInvoicePeriod($invoicePeriod)
 ->setLinesExtensionAmount(10)
 ->setInvoiceQuantity(1);
-
+$generateInvoice = new GenerateInvoice();
+$outputXMLString = $generateInvoice->invoice($invoiceLine);
+var_dump($outputXMLString);
+ exit;
 $taxCategory = (new TaxCategory())
             ->setId('S', [])
             ->setPercent(21.00)
