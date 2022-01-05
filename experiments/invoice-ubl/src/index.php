@@ -74,10 +74,7 @@ $supplierCompany = (new Party())
  ->setLegalEntity($supplierLegalEntity)
  ->setPartyTaxScheme($supplierPartyTaxScheme)
  ->setPostalAddress($address);
- $generateInvoice = new GenerateInvoice();
- $outputXMLString = $generateInvoice->invoice($supplierCompany);
- var_dump($outputXMLString);
-  exit;
+
 
 
 // Client company node
@@ -113,7 +110,10 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
   ->setName('Product Name')
   ->setClassifiedTaxCategory($classifiedTaxCategory)
   ->setDescription('Product Description');
-
+  $generateInvoice = new GenerateInvoice();
+  $outputXMLString = $generateInvoice->invoice($productItem);
+  var_dump($outputXMLString);
+   exit;
 // Price
  $price = (new Price())
        ->setBaseQuantity(1)
