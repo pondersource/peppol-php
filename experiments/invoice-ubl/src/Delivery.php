@@ -1,6 +1,11 @@
 <?php
 
-class Delivery {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+use DateTime as DateTime;
+
+class Delivery implements XmlSerializable {
     private $actualDeliveryDate;
     private $deliveryLocation;
     private $deliveryParty;
@@ -50,4 +55,26 @@ class Delivery {
         $this->deliveryParty = $deliveryParty;
         return $this;
     } 
+
+    /**
+     * Serialize Delivery
+     */
+    public function xmlSerialize(Writer $writer) {
+        if($this->actualDeliveryDate !== null) {
+            $writer->write([
+                Schema::CBC . 'ActualDeliveryDate' => $this->actualDeliveryDate->format('Y-m-d')
+            ]);
+        }
+        if($this->deliveryLocation !== null) {
+            $writer->write([
+                Schema::CAC . 'DeliveryLocation' => [ Schema::CAC . 'Address' => $this->deliveryLocation ]
+            ]);
+        }
+
+        if($this->deliveryParty !== null) {
+            $writer->write([
+                Schema::CAC . 'DeliveryParty' => $this->deliveryParty
+            ]);
+        }
+    }
 }

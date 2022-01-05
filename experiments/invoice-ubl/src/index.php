@@ -144,10 +144,7 @@ $taxCategory = (new TaxCategory())
             ->setTaxableAmount(10)
             ->setTaxAmount(2.1)
             ->setTaxCategory($taxCategory);
-            $generateInvoice = new GenerateInvoice();
-            $outputXMLString = $generateInvoice->invoice($taxSubTotal);
-                        var_dump($outputXMLString);
-                        exit;
+           
 
 $taxTotal = (new TaxTotal())
             ->setTaxSubtotal($taxSubTotal)
@@ -155,6 +152,7 @@ $taxTotal = (new TaxTotal())
    // Payment Terms
 $paymentTerms = (new PaymentTerms())
    ->setNote('30 days net');
+  
 // Delivery
 $deliveryLocation = (new PostalAddress())
   ->setCountry($country);
@@ -162,11 +160,14 @@ $deliveryLocation = (new PostalAddress())
 $delivery = (new Delivery())
   ->setActualDeliveryDate(new \DateTime())
   ->setDeliveryLocation($deliveryLocation);
-
+  $generateInvoice = new GenerateInvoice();
+  
 $orderReference = (new OrderReference())
   ->setId('5009567')
   ->setSalesOrderId('tRST-tKhM');
-
+  $outputXMLString = $generateInvoice->invoice($orderReference);
+  var_dump($outputXMLString);
+  exit;
    // Invoice object
    $invoice = (new Invoice())
    ->setCustomazationID('urn:cen.eu:en16931:2017')

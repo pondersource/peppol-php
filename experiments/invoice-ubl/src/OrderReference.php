@@ -1,6 +1,9 @@
 <?php
 
-class OrderReference {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class OrderReference implements XmlSerializable {
     private $id;
     private $salesOrderId;
 
@@ -34,5 +37,22 @@ class OrderReference {
     public function setSalesOrderId(?string $salesOrderId): OrderReference {
         $this->salesOrderId = $salesOrderId;
         return $this;
+    }
+
+    /**
+     * Serialize OrderReference
+     */
+    public function xmlSerialize(Writer $writer) {
+        if($this->id !== null) {
+            $writer->write([
+                Schema::CBC . 'ID' => $this->id
+            ]);
+        }
+
+        if($this->salesOrderId !== null) {
+            $writer->write([
+                Schema::CBC . 'SalesOrderID' => $this->salesOrderId
+            ]);
+        }
     }
 }
