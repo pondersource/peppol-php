@@ -1,6 +1,10 @@
 <?php
 
-class TaxScheme {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+//require 'Schema.php';
+
+class TaxScheme implements XmlSerializable {
     private $id;
     /**
      * For Seller Vat Identifier get
@@ -16,5 +20,14 @@ class TaxScheme {
     public function setId(?string $id): TaxScheme {
         $this->id = $id;
         return $this;
+    }
+
+    /**
+     * Serialize XML Tax Scheme
+     */
+    public function xmlSerialize(Writer $writer) {
+       $writer->write([
+          Schema::CBC . 'ID' => $this->id
+       ]);
     }
 }

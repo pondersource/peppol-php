@@ -1,5 +1,22 @@
 ## UBL Invoice
 
+### Installation 
+
+````
+composer install
+````
+
+### Go to the folder
+````
+cd /var/www/peppol-php/experiments/invoice-ubl/src
+````
+
+### And run this
+
+````
+php -S localhost:8081
+````
+
 ### UBL Address and Attachment
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/diagram_ubl_start.PNG?raw=true"/>

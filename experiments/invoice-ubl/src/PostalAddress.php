@@ -105,6 +105,9 @@ class PostalAddress implements XmlSerializable {
         return $this;
     }
 
+    /**
+     * Serialize XML for PostalAddress
+     */
     public function xmlSerialize(Writer $writer)
     {
         if ($this->streetName !== null) {

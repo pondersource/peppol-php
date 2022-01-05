@@ -1,6 +1,11 @@
 <?php
 
-class PayeeFinancialAccount {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+//require 'Schema.php';
+
+class PayeeFinancialAccount implements XmlSerializable {
     private $id;
     private $name;
     private $financialInstitutionBranch;
@@ -49,5 +54,30 @@ class PayeeFinancialAccount {
     public function setFinancialInstitutionBranch(FinancialInstitutionBranch $financialInstitutionBranch): PayeeFinancialAccount {
         $this->financialInstitutionBranch = $financialInstitutionBranch;
         return $this;
+    }
+
+    /**
+     * Serialize XML Payee Financial Account
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+            'name' => Schema::CBC . 'ID',
+            'value' => $this->id,
+            'attributes' => [
+                //'schemeID' => 'IBAN'
+            ]
+        ]);
+
+        if($this->getName() !== null) {
+            $writer->write([
+                Schema::CBC . 'Name' => $this->name
+            ]);
+        }
+
+        if($this->getFinancialInstitutionBranch() !== null) {
+            $writer->write([
+                Schema::CAC . 'FinancialInstitutionBranch' => $this->name
+            ]);
+        }
     }
 }

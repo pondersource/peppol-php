@@ -2,11 +2,11 @@
 
 use Sabre\Xml\Service;
 
-class Generator1
+class GenerateInvoice
 {
     public static $currencyID;
 
-    public static function invoice(PostalAddress $address, $currencyId = 'EUR')
+    public static function invoice(PaymentMeans $payment, $currencyId = 'EUR')
     {
         self::$currencyID = $currencyId;
 
@@ -18,8 +18,8 @@ class Generator1
             'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2' => 'cac'
         ];
 
-        return $xmlService->write('PostalAddress', [
-            $address
+        return $xmlService->write('PaymentMeans', [
+            $payment
         ]);
     }
 }
