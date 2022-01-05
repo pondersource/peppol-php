@@ -54,3 +54,7 @@ A code specifying the functional type of the Invoice. The base value for send in
 ### UBL Invoice Line
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-invoice-line.PNG?raw=true"/>
+
+### Invoice 
+
+<img src="https://github.com/pondersource/peppol-php/blob/serialize-ubl/experiments/invoice-ubl/src/pics/ubl-invoice-ubl.PNG?raw=true"/>
