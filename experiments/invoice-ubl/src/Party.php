@@ -1,10 +1,12 @@
 <?php
 
-class Party {
-    private $endpointID;
-    private $endpointID_schemeID;
-    private $partyIdentification;
-    private $partyName;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class Party implements XmlSerializable
+{
+    private $name;
+    private $partyIdentificationId;
     private $postalAddress;
     private $physicalLocation;
     private $contact;
@@ -12,61 +14,97 @@ class Party {
     private $legalEntity;
 
     /**
-     * Seller electronic address
-     * Example value: 7300010000001
+     * @return string
      */
-    public function getEndPointId(): ?string {
-        return $this->endpointID;
+    public function getName(): ?string
+    {
+        return $this->name;
     }
 
     /**
-     * Set End Point ID
+     * @param string $name
+     * @return Party
      */
-    public function setEndPointId(?string $endpointID, ?string $endpointID_schemeID): Party {
-        $this->endpointID = $endpointID;
-        $this->endpointID_schemeID = $endpointID_schemeID;
+    public function setName(?string $name): Party
+    {
+        $this->name = $name;
         return $this;
     }
 
     /**
-     * Seller identifier or bank assigned creditor identifier
+     * @return string
      */
-    public function setPartyIdentification(?string $partyIdentification): Party {
-        $this->partyIdentification = $partyIdentification;
+    public function getPartyIdentificationId(): ?string
+    {
+        return $this->partyIdentificationId;
+    }
+
+    /**
+     * @param string $partyIdentificationId
+     * @return Party
+     */
+    public function setPartyIdentificationId(?string $partyIdentificationId): Party
+    {
+        $this->partyIdentificationId = $partyIdentificationId;
         return $this;
     }
 
     /**
-     * get Identification Party
+     * @return Address
      */
-    public function getPartyIdentification(): ?string {
-        return $this->partyIdentification;
-    }
-
-    /**
-     * Seller trading name
-     */
-    public function getPartyName(): ?string {
-        return $this->partyName;
-    }
-
-    /**
-     * Set party Name
-     */
-    public function setPartyName(?string $partyName): Party {
-        $this->partyName = $partyName;
-        return $this;
-    }
-
-    /**
-     * return Postal Address
-     */
-    public function getPostalAddress(): ?PostalAddress {
+    public function getPostalAddress(): ?PostalAddress
+    {
         return $this->postalAddress;
     }
 
-      /**
-     * get Party tax scheme
+    /**
+     * @param Address $postalAddress
+     * @return Party
+     */
+    public function setPostalAddress(?PostalAddress $postalAddress): Party
+    {
+        $this->postalAddress = $postalAddress;
+        return $this;
+    }
+
+    /**
+     * @return LegalEntity
+     */
+    public function getLegalEntity(): ?LegalEntity
+    {
+        return $this->legalEntity;
+    }
+
+    /**
+     * @param LegalEntity $legalEntity
+     * @return Party
+     */
+    public function setLegalEntity(?LegalEntity $legalEntity): Party
+    {
+        $this->legalEntity = $legalEntity;
+        return $this;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getPhysicalLocation(): ?PostalAddress
+    {
+        return $this->physicalLocation;
+    }
+
+    /**
+     * @param Address $physicalLocation
+     * @return Party
+     */
+    public function setPhysicalLocation(?PostalAddress $physicalLocation): Party
+    {
+        $this->physicalLocation = $physicalLocation;
+        return $this;
+    }
+
+    /**
+     * @return PartyTaxScheme
      */
     public function getPartyTaxScheme(): ?PartyTaxScheme
     {
@@ -74,7 +112,8 @@ class Party {
     }
 
     /**
-     * Set party tax Sheme
+     * @param PartyTaxScheme $partyTaxScheme
+     * @return Party
      */
     public function setPartyTaxScheme(PartyTaxScheme $partyTaxScheme)
     {
@@ -83,55 +122,68 @@ class Party {
     }
 
     /**
-     * set postal address
+     * @return Contact
      */
-    public function setPostalAddress(?PostalAddress $postalAddress): Party {
-        $this->postalAddress = $postalAddress;
-        return $this;
-    }
-
-    /**
-     * return Address location
-     */
-    public function getPhysicalLocation(): ?PostalAddress {
-        return $this->physicalLocation;
-    }
-
-    /**
-     * Set Physical Location
-     */
-    public function setPhysicalLocation(?PostalAddress $physicalLocation): Party {
-        $this->physicalLocation = $physicalLocation;
-        return $this;
-    }
-
-    /**
-     * get Contact
-     */
-    public function getContact(): ?Contact {
+    public function getContact(): ?Contact
+    {
         return $this->contact;
     }
 
     /**
-     * Set Contact
+     * @param Contact $contact
+     * @return Party
      */
-    public function setContact(?Contact $contact): Party {
+    public function setContact(?Contact $contact): Party
+    {
         $this->contact = $contact;
         return $this;
     }
 
     /**
-     * Get Legal Entity
+     * The xmlSerialize method is called during xml writing.
+     *
+     * @param Writer $writer
+     * @return void
      */
-    public function getLegalEntity(): ?LegalEntity {
-        return $this->legalEntity;
-    }
+    public function xmlSerialize(Writer $writer)
+    {
+        if ($this->partyIdentificationId !== null) {
+            $writer->write([
+                Schema::CAC . 'PartyIdentification' => [
+                    Schema::CBC . 'ID' => $this->partyIdentificationId
+                ],
+            ]);
+        }
 
-    /**
-     * Set Legal Entity
-     */
-    public function setLegalEntity(?LegalEntity $legalEntity): Party {
-        $this->legalEntity = $legalEntity;
-        return $this;
+        $writer->write([
+            Schema::CAC . 'PartyName' => [
+                Schema::CBC . 'Name' => $this->name
+            ],
+            Schema::CAC . 'PostalAddress' => $this->postalAddress
+        ]);
+
+        if ($this->physicalLocation !== null) {
+            $writer->write([
+               Schema::CAC . 'PhysicalLocation' => [Schema::CAC . 'Address' => $this->physicalLocation]
+            ]);
+        }
+
+        if ($this->partyTaxScheme !== null) {
+            $writer->write([
+                Schema::CAC . 'PartyTaxScheme' => $this->partyTaxScheme
+            ]);
+        }
+
+        if ($this->legalEntity !== null) {
+            $writer->write([
+                Schema::CAC . 'PartyLegalEntity' => $this->legalEntity
+            ]);
+        }
+
+        if ($this->contact !== null) {
+            $writer->write([
+                Schema::CAC . 'Contact' => $this->contact
+            ]);
+        }
     }
 }
