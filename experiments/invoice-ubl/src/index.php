@@ -51,30 +51,33 @@ $payeeFinancialAccount = (new PayeeFinancialAccount())
                ->setFinancialInstitutionBranch($financialInstitutionBranch)
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
-                $generateInvoice = new GenerateInvoice();
+        
 
 $paymentMeans = (new PaymentMeans())
                 ->setPayeeFinancialAccount($payeeFinancialAccount)
                 ->setPaymentMeansCode(31, [])
                 ->setPaymentId('our invoice 1234');
-$outputXMLString = $generateInvoice->invoice($paymentMeans);
-var_dump($outputXMLString);
-exit;
+
  // Supplier company node
  $supplierLegalEntity = (new LegalEntity())
  ->setRegistrationNumber('PonderSource')
  ->setCompanyId('NL123456789');
 
+
 $supplierPartyTaxScheme = (new PartyTaxScheme())
  ->setTaxScheme($taxScheme)
  ->setCompanyId('NL123456789');
-
+ 
 $supplierCompany = (new Party())
- ->setPartyName('PonderSource')
+ //->setEndPointId('7300010000001', '0088')
+ ->setName('PonderSource')
  ->setLegalEntity($supplierLegalEntity)
  ->setPartyTaxScheme($supplierPartyTaxScheme)
  ->setPostalAddress($address);
-
+ $generateInvoice = new GenerateInvoice();
+ $outputXMLString = $generateInvoice->invoice($supplierCompany);
+ var_dump($outputXMLString);
+  exit;
 
 
 // Client company node
@@ -87,7 +90,8 @@ $clientPartyTaxScheme = (new PartyTaxScheme())
  ->setCompanyId('BE123456789');
 
 $clientCompany = (new Party())
- ->setPartyName('Client Company Name')
+//->setEndPointId('7300010000002', '0089')
+ ->setName('Client Company Name')
  ->setLegalEntity($clientLegalEntity)
  ->setPartyTaxScheme($clientPartyTaxScheme)
  ->setPostalAddress($address);
