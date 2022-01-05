@@ -21,15 +21,6 @@ Each XML signature can sign more than one type of resource. For example, a singl
 5. Add key information
 6. Enclose in a Signature element
 
-### XML namespace URIs:
-
-| URI      | namespace prefix	 | XML internal entity     |
-| :---        |    :----:   |          ---: |
-| http://www.w3.org/2000/09/xmldsig#      | default namespace, ds:, dsig:       |  `<!ENTITY dsig "http://www.w3.org/2000/09/xmldsig#">`   |
-| http://www.w3.org/2009/xmldsig11#   | dsig11:        | `<!ENTITY dsig11 "http://www.w3.org/2009/xmldsig11#">`     |
-
-While implementations must support XML and XML namespaces, and while use of the above namespace URIs is required, the namespace prefixes and entity declarations given are merely editorial conventions used in this document. Their use by implementations is optional.
-
 ### Examples
 
 ```
@@ -45,10 +36,7 @@ While implementations must support XML and XML namespaces, and while use of the 
   </SignedInfo>
   <SignatureValue>
  (<KeyInfo>)?
- <KeyValue>
-    <DSAKeyValue>
-      <P>...</P><Q>...</Q><G>...</G><Y>...</Y>
-    </DSAKeyValue>
+  <KeyValue>
   </KeyValue>
  (<Object ID?>)*
 </Signature>
@@ -89,6 +77,7 @@ Algorithms are identified by URIs that appear as an attribute to the element tha
 ### Must see
 
 [Definitions](https://www.w3.org/TR/2013/REC-xmldsig-core1-20130411/#Definitions)
+[xml digital signature core schema](https://www.w3.org/TR/2002/REC-xmldsig-core-20020212/xmldsig-core-schema.xsd#)
 
 ### XML Signature libraries:
 
@@ -101,7 +90,7 @@ Algorithms are identified by URIs that appear as an attribute to the element tha
 
 * [php-XmlDigitalSignature](https://github.com/marcelxyz/php-XmlDigitalSignature)
 * [xmlseclibs](https://github.com/robrichards/xmlseclibs)
-* [https://github.com/onelogin/php-saml](https://github.com/onelogin/php-saml)
+* [php-saml](https://github.com/onelogin/php-saml)
 
 #### C
 
