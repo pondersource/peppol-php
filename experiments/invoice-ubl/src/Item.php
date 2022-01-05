@@ -1,6 +1,10 @@
 <?php
 
-class Item {
+
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class Item implements XmlSerializable {
     private $name;
     private $description;
     private $buyersItemIdentification;
@@ -78,5 +82,36 @@ class Item {
     public function setClassifiedTaxCategory(?ClassifiedTaxCategory $classifiedTaxCategory): Item {
         $this->classifiedTaxCategory = $classifiedTaxCategory;
         return $this;
+    }
+
+    /**
+     * Item Serialization
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+            Schema::CBC . 'Description' => $this->description,
+            Schema::CBC . 'Name' => $this->name
+        ]);
+
+        if(!empty($this->getBuyersItemIdentification)) {
+            $writer->write([
+                Schema::CAC . 'BuyersItemIdentification' => [
+                    Schema::CBC . 'ID' => $this->buyersItemIdentification
+                ]
+           ]);
+        }
+
+        if(!empty($this->getSellersItemIdentification())) {
+            $writer->write([
+                Schema::CAC . 'SellersItemIdentification' => [
+                    Schema::CBC . 'ID' => $this->sellersItemIdentification
+                ]
+           ]);
+        }
+        if(!empty($this->getClassifiedTaxCategory())) {
+            $writer->write([
+                Schema::CAC . 'ClassifiedTaxCategory' => $this->getClassifiedTaxCategory()
+           ]);
+        }
     }
 }

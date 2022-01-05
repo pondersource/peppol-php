@@ -1,6 +1,6 @@
 <?php
 
-use DateTime;
+use DateTime as DateTime;
 
 class InvoicePeriod {
     private $startDate;

@@ -1,6 +1,9 @@
 <?php
 
-class LegalEntity {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class LegalEntity implements XmlSerializable {
     private $registrationName;
     private $companyId;
     private $companyIdAttributes;
@@ -52,5 +55,22 @@ class LegalEntity {
     public function setCompanyLegal(?string $companyLegalForm): LegalEntity {
         $this->companyLegalForm = $companyLegalForm;
         return $this;
+    }
+
+    /**
+     * Serialize Legal Entity
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+            Schema::CBC . 'RegistrationName' => $this->registrationName
+        ]);
+
+        if($this->companyId !== null) {
+            $writer->write([
+                'name' => Schema::CBC . 'CompanyID',
+                'value' => $this->companyId,
+                'attributes' => $this->companyIdAttributes
+            ]);
+        }
     }
 }
