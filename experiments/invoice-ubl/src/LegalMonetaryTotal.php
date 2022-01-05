@@ -1,7 +1,9 @@
 <?php
 
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
 
-class LegalMonetaryTotal {
+class LegalMonetaryTotal implements XmlSerializable {
     private $lineExtensionAmount;
     private $taxExclusiveAmount;
     private $taxInclusiveAmount;
@@ -84,5 +86,49 @@ class LegalMonetaryTotal {
     public function setPayableAmount(?float $payableAmount): LegalMonetaryTotal {
         $this->payableAmount = $payableAmount;
         return $this;
+    }
+
+    /**
+     * Serialize Legal Monetary Total
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+            [
+                'name' => Schema::CBC . 'LineExtensionAmount',
+                'values' => number_format($this->lineExtensionAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+           ],
+           [
+                'name' => Schema::CBC . 'TaxExclusiveAmount',
+                'values' => number_format($this->taxExclusiveAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+            ],
+            [
+                'name' => Schema::CBC . 'TaxInclusiveAmount',
+                'value' => number_format($this->taxInclusiveAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+            ],
+            [
+                'name' => Schema::CBC . 'AllowanceTotalAmount',
+                'value' => number_format($this->allowanceTotalAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+            ],
+            [
+                'name' => Schema::CBC . 'PayableAmount',
+                'value' => number_format($this->payableAmount, 2, '.', ''),
+                'attributes' => [
+                    'currencyID' => Generator::$currencyID
+                ]
+            ],
+
+        ]);
     }
 }

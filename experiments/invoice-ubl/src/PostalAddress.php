@@ -1,6 +1,11 @@
 <?php
 
-class PostalAddress {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+require 'Schema.php';
+
+class PostalAddress implements XmlSerializable {
     private $streetName;
     private $additionalStreetName;
     private $cityName;
@@ -98,6 +103,43 @@ class PostalAddress {
     public function setCountry(Country $country): PostalAddress {
         $this->country = $country;
         return $this;
+    }
+
+    /**
+     * Serialize XML for PostalAddress
+     */
+    public function xmlSerialize(Writer $writer)
+    {
+        if ($this->streetName !== null) {
+            $writer->write([
+                Schema::CBC . 'StreetName' => $this->streetName
+            ]);
+        }
+        if ($this->additionalStreetName !== null) {
+            $writer->write([
+                Schema::CBC . 'AdditionalStreetName' => $this->additionalStreetName
+            ]);
+        }
+        if ($this->buildingNumber !== null) {
+            $writer->write([
+                Schema::CBC . 'BuildingNumber' => $this->buildingNumber
+            ]);
+        }
+        if ($this->cityName !== null) {
+            $writer->write([
+                Schema::CBC . 'CityName' => $this->cityName,
+            ]);
+        }
+        if ($this->postalZone !== null) {
+            $writer->write([
+                Schema::CBC . 'PostalZone' => $this->postalZone,
+            ]);
+        }
+        if ($this->country !== null) {
+            $writer->write([
+                Schema::CAC . 'Country' => $this->country,
+            ]);
+        }
     }
 
 }

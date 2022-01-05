@@ -1,5 +1,22 @@
 ## UBL Invoice
 
+### Installation 
+
+````
+composer install
+````
+
+### Go to the folder
+````
+cd /var/www/peppol-php/experiments/invoice-ubl/src
+````
+
+### And run this
+
+````
+php -S localhost:8081
+````
+
 ### UBL Address and Attachment
 
 <img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/diagram_ubl_start.PNG?raw=true"/>
@@ -24,3 +41,20 @@ A code specifying the functional type of the Invoice. The base value for send in
 
 ### Duty or tax or fee category code(Subset of UNCL5305)
 - [Vat Categrory Code](https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL5305/)
+
+### UBL Item with classified tax
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/item-ubl.PNG?raw=true"/>
+
+### UBL Tax
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-tax.PNG?raw=true"/>
+
+
+### UBL Invoice Line
+
+<img src="https://github.com/pondersource/peppol-php/blob/main/experiments/invoice-ubl/src/pics/ubl-invoice-line.PNG?raw=true"/>
+
+### Invoice 
+
+<img src="https://github.com/pondersource/peppol-php/blob/serialize-ubl/experiments/invoice-ubl/src/pics/invoice-ubl.PNG?raw=true"/>

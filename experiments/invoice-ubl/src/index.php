@@ -1,5 +1,5 @@
 <?php
-
+include 'vendor/autoload.php';
 require 'Country.php';
 require 'PostalAddress.php';
 require 'Party.php';
@@ -13,8 +13,21 @@ require 'PaymentMeans.php';
 require 'LegalEntity.php';
 require 'ClassifiedTaxCategory.php';
 require 'Item.php';
+require 'UnitCode.php';
+require 'Price.php';
+require 'TaxTotal.php';
+require 'TaxSubTotal.php';
+require 'TaxCategory.php';
+require 'InvoicePeriod.php';
+require 'InvoiceLine.php';
+require 'PaymentTerms.php';
+require 'Delivery.php';
+require 'OrderReference.php';
+require 'Invoice.php';
+require 'GenerateInvoice.php';
 
-$url = 'https://docs.oasis-open.org/ubl/os-UBL-2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+
+
  // Tax scheme
  $taxScheme = (new TaxScheme())
  ->setId('VAT');
@@ -30,6 +43,7 @@ $address = (new PostalAddress())
                 ->setPostalZone('3521')
                 ->setCountry($country);
 
+
 $financialInstitutionBranch = (new FinancialInstitutionBranch())
                 ->setId('RABONL2U');
     
@@ -37,6 +51,8 @@ $payeeFinancialAccount = (new PayeeFinancialAccount())
                ->setFinancialInstitutionBranch($financialInstitutionBranch)
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
+        
+
 $paymentMeans = (new PaymentMeans())
                 ->setPayeeFinancialAccount($payeeFinancialAccount)
                 ->setPaymentMeansCode(31, [])
@@ -47,12 +63,14 @@ $paymentMeans = (new PaymentMeans())
  ->setRegistrationNumber('PonderSource')
  ->setCompanyId('NL123456789');
 
+
 $supplierPartyTaxScheme = (new PartyTaxScheme())
  ->setTaxScheme($taxScheme)
  ->setCompanyId('NL123456789');
-
+ 
 $supplierCompany = (new Party())
- ->setPartyName('PonderSource')
+ //->setEndPointId('7300010000001', '0088')
+ ->setName('PonderSource')
  ->setLegalEntity($supplierLegalEntity)
  ->setPartyTaxScheme($supplierPartyTaxScheme)
  ->setPostalAddress($address);
@@ -69,7 +87,8 @@ $clientPartyTaxScheme = (new PartyTaxScheme())
  ->setCompanyId('BE123456789');
 
 $clientCompany = (new Party())
- ->setPartyName('Client Company Name')
+//->setEndPointId('7300010000002', '0089')
+ ->setName('Client Company Name')
  ->setLegalEntity($clientLegalEntity)
  ->setPartyTaxScheme($clientPartyTaxScheme)
  ->setPostalAddress($address);
@@ -91,3 +110,78 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
   ->setName('Product Name')
   ->setClassifiedTaxCategory($classifiedTaxCategory)
   ->setDescription('Product Description');
+  $generateInvoice = new GenerateInvoice();
+  $outputXMLString = $generateInvoice->invoice($productItem);
+  var_dump($outputXMLString);
+   exit;
+// Price
+ $price = (new Price())
+       ->setBaseQuantity(1)
+       ->setUnitCode(UnitCode::UNIT)
+       ->setPriceAmount(10);
+
+// Invoice Line tax totals
+$lineTaxTotal = (new TaxTotal())
+            ->setTaxAmount(2.1);
+
+// InvoicePeriod
+$invoicePeriod = (new InvoicePeriod())
+->setStartDate(new \DateTime());
+
+// Invoice Line(s)
+$invoiceLine = (new InvoiceLine())
+->setId(0)
+->setItem($productItem)
+->setPrice($price)
+->setInvoicePeriod($invoicePeriod)
+->setLinesExtensionAmount(10)
+->setInvoiceQuantity(1);
+
+$taxCategory = (new TaxCategory())
+            ->setId('S', [])
+            ->setPercent(21.00)
+            ->setTaxScheme($taxScheme);
+
+ $taxSubTotal = (new TaxSubTotal())
+            ->setTaxableAmount(10)
+            ->setTaxAmount(2.1)
+            ->setTaxCategory($taxCategory);
+
+
+$taxTotal = (new TaxTotal())
+            ->setTaxSubtotal($taxSubTotal)
+            ->setTaxAmount(2.1);
+   // Payment Terms
+$paymentTerms = (new PaymentTerms())
+   ->setNote('30 days net');
+// Delivery
+$deliveryLocation = (new PostalAddress())
+  ->setCountry($country);
+
+$delivery = (new Delivery())
+  ->setActualDeliveryDate(new \DateTime())
+  ->setDeliveryLocation($deliveryLocation);
+
+$orderReference = (new OrderReference())
+  ->setId('5009567')
+  ->setSalesOrderId('tRST-tKhM');
+
+   // Invoice object
+   $invoice = (new Invoice())
+   ->setCustomazationID('urn:cen.eu:en16931:2017')
+   ->setId(1234)
+   ->setIssueDate(new \DateTime())
+   ->setNote('invoice note')
+   ->setDelivery($delivery)
+   ->setAccountingSupplierParty($supplierCompany)
+   ->setAccountingCustomerParty($clientCompany)
+   ->setInvoiceLines($invoiceLine)
+   ->setLegalMonetaryTotal($legalMonetaryTotal)
+   ->setPaymentTerms($paymentTerms)
+   ->setInvoicePeriod($invoicePeriod)
+   ->setPaymentMeans($paymentMeans)
+   ->setByerReference('BUYER_REF')
+   ->setOrderReference($orderReference)
+   ->setTaxTotal($taxTotal);
+   //$generator = new Generator1();
+   //$outputXMLString = $generator->invoice($invoice);

@@ -1,6 +1,9 @@
 <?php
 
-class Country {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class Country implements XmlSerializable {
     private $identificationCode;
 
     /**
@@ -16,5 +19,14 @@ class Country {
     public function setIdentificationCode(?string $identificationCode): Country {
         $this->identificationCode = $identificationCode;
         return $this;
+    }
+
+    /**
+     * XML Serialize for Country
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+            Schema::CBC . 'IdentificationCode' => $this->identificationCode
+        ]);
     }
 }
