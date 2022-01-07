@@ -1,30 +1,30 @@
 <?php
 include 'vendor/autoload.php';
-require 'Country.php';
-require 'PostalAddress.php';
-require 'Party.php';
-require 'PartyTaxScheme.php';
-require 'Contact.php';
-require 'LegalMonetaryTotal.php';
-require 'TaxScheme.php';
-require 'FinancialInstitutionBranch.php';
-require 'PayeeFinancialAccount.php';
-require 'PaymentMeans.php';
-require 'LegalEntity.php';
-require 'ClassifiedTaxCategory.php';
+require 'Account/Country.php';
+require 'Account/PostalAddress.php';
+require 'Party/Party.php';
+require 'Party/PartyTaxScheme.php';
+require 'Account/Contact.php';
+require 'Legal/LegalMonetaryTotal.php';
+require 'Party/TaxScheme.php';
+require 'Financial/FinancialInstitutionBranch.php';
+require 'Financial/PayeeFinancialAccount.php';
+require 'Payment/PaymentMeans.php';
+require 'Legal/LegalEntity.php';
+require 'Tax/ClassifiedTaxCategory.php';
 require 'Item.php';
-require 'UnitCode.php';
-require 'Price.php';
-require 'TaxTotal.php';
-require 'TaxSubTotal.php';
-require 'TaxCategory.php';
-require 'InvoicePeriod.php';
-require 'InvoiceLine.php';
-require 'PaymentTerms.php';
-require 'Delivery.php';
-require 'OrderReference.php';
-require 'Invoice.php';
-require 'GenerateInvoice.php';
+require 'Codes/UnitCode.php';
+require 'Payment/Price.php';
+require 'Tax/TaxTotal.php';
+require 'Tax/TaxSubTotal.php';
+require 'Tax/TaxCategory.php';
+require 'Invoice/InvoicePeriod.php';
+require 'Invoice/InvoiceLine.php';
+require 'Payment/PaymentTerms.php';
+require 'Account/Delivery.php';
+require 'Payment/OrderReference.php';
+require 'Invoice/Invoice.php';
+require 'Invoice/GenerateInvoice.php';
 
 
 
@@ -132,8 +132,10 @@ $invoiceLine = (new InvoiceLine())
 ->setItem($productItem)
 ->setPrice($price)
 ->setInvoicePeriod($invoicePeriod)
-->setLinesExtensionAmount(10)
-->setInvoiceQuantity(1);
+->setLineExtensionAmount(10)
+->setInvoicedQuantity(1);
+
+$invoiceLines = [$invoiceLine];
 
 $taxCategory = (new TaxCategory())
             ->setId('S', [])
@@ -160,16 +162,15 @@ $deliveryLocation = (new PostalAddress())
 $delivery = (new Delivery())
   ->setActualDeliveryDate(new \DateTime())
   ->setDeliveryLocation($deliveryLocation);
-  $generateInvoice = new GenerateInvoice();
+
   
 $orderReference = (new OrderReference())
   ->setId('5009567')
   ->setSalesOrderId('tRST-tKhM');
-  $outputXMLString = $generateInvoice->invoice($orderReference);
-  var_dump($outputXMLString);
-  exit;
+  
    // Invoice object
    $invoice = (new Invoice())
+   ->setProfileID('urn:fdc:peppol.eu:2017')
    ->setCustomazationID('urn:cen.eu:en16931:2017')
    ->setId(1234)
    ->setIssueDate(new \DateTime())
@@ -177,7 +178,7 @@ $orderReference = (new OrderReference())
    ->setDelivery($delivery)
    ->setAccountingSupplierParty($supplierCompany)
    ->setAccountingCustomerParty($clientCompany)
-   ->setInvoiceLines($invoiceLine)
+   ->setInvoiceLines($invoiceLines)
    ->setLegalMonetaryTotal($legalMonetaryTotal)
    ->setPaymentTerms($paymentTerms)
    ->setInvoicePeriod($invoicePeriod)
@@ -185,5 +186,20 @@ $orderReference = (new OrderReference())
    ->setByerReference('BUYER_REF')
    ->setOrderReference($orderReference)
    ->setTaxTotal($taxTotal);
-   //$generator = new Generator1();
-   //$outputXMLString = $generator->invoice($invoice);
+   $generateInvoice = new GenerateInvoice();
+  $outputXMLString = $generateInvoice->invoice($invoice);
+  $dom = new \DOMDocument;
+  $dom->loadXML($outputXMLString);
+  $dom->save('EN16931Test.xml');
+  // Use webservice at peppol.helger.com to verify the result
+  $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
+  $client = new \SoapClient($wsdl);
+  $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
+  var_dump($response);
+
+
+  //Use Deserialization
+  //$service = new Sabre\Xml\Service();
+  //$result = $service->parse($outputXMLString);
+  //print_r($result);
+  //exit;

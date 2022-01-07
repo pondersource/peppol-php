@@ -3,109 +3,128 @@
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-class LegalMonetaryTotal implements XmlSerializable {
+class LegalMonetaryTotal implements XmlSerializable
+{
     private $lineExtensionAmount;
     private $taxExclusiveAmount;
     private $taxInclusiveAmount;
-    private $allowanceTotalAmount = 0.0;
-    private $chargeTotalAmount = 0.0;
-    private $prepaidAmount;
-    private $payableRoundingAmount;
+    private $allowanceTotalAmount = 0;
     private $payableAmount;
 
     /**
-     * Sum of Invoice line net amount
+     * @return float
      */
-    public function getLineExtensionAmount(): ?float {
+    public function getLineExtensionAmount(): ?float
+    {
         return $this->lineExtensionAmount;
     }
 
     /**
-     * Set line extension Amount 
+     * @param float $lineExtensionAmount
+     * @return LegalMonetaryTotal
      */
-    public function setLineExtensionAmount(?float $lineExtensionAmount): LegalMonetaryTotal {
+    public function setLineExtensionAmount(?float $lineExtensionAmount): LegalMonetaryTotal
+    {
         $this->lineExtensionAmount = $lineExtensionAmount;
         return $this;
-    } 
+    }
 
     /**
-     * Invoice total amount without VAT
+     * @return float
      */
-    public function getTaxExclusiveAmount(): ?float {
+    public function getTaxExclusiveAmount(): ?float
+    {
         return $this->taxExclusiveAmount;
     }
 
     /**
-     * Set tax exclusive amount
+     * @param float $taxExclusiveAmount
+     * @return LegalMonetaryTotal
      */
-    public function setTaxExclusiveAmount(?float $taxExclusiveAmount): LegalMonetaryTotal {
+    public function setTaxExclusiveAmount(?float $taxExclusiveAmount): LegalMonetaryTotal
+    {
         $this->taxExclusiveAmount = $taxExclusiveAmount;
         return $this;
     }
 
     /**
-     * Invoice total amount with VAT
+     * @return float
      */
-    public function getTaxInclusiveAmount(): ?float {
+    public function getTaxInclusiveAmount(): ?float
+    {
         return $this->taxInclusiveAmount;
     }
 
     /**
-     * Set tax inclusive amount
+     * @param float $taxInclusiveAmount
+     * @return LegalMonetaryTotal
      */
-    public function setTaxInclusiveAmount(?float $taxInclusiveAmount): LegalMonetaryTotal {
+    public function setTaxInclusiveAmount(?float $taxInclusiveAmount): LegalMonetaryTotal
+    {
         $this->taxInclusiveAmount = $taxInclusiveAmount;
         return $this;
     }
 
     /**
-     * Sum of allowances on document level
+     * @return float
      */
-    public function allowanceTotalAmount(): ?float {
+    public function getAllowanceTotalAmount(): ?float
+    {
         return $this->allowanceTotalAmount;
     }
 
     /**
-     * set allowance total amount
+     * @param float $allowanceTotalAmount
+     * @return LegalMonetaryTotal
      */
-    public function setAllowanceTotalAmount(?float $allowanceTotalAmount): LegalMonetaryTotal {
+    public function setAllowanceTotalAmount(?float $allowanceTotalAmount): LegalMonetaryTotal
+    {
         $this->allowanceTotalAmount = $allowanceTotalAmount;
         return $this;
     }
-    
+
     /**
-     * Amount due for payment
+     * @return float
      */
-    public function getPayableAmount(): ?float {
+    public function getPayableAmount(): ?float
+    {
         return $this->payableAmount;
     }
 
     /**
-     * Set payable amout
+     * @param float $payableAmount
+     * @return LegalMonetaryTotal
      */
-    public function setPayableAmount(?float $payableAmount): LegalMonetaryTotal {
+    public function setPayableAmount(?float $payableAmount): LegalMonetaryTotal
+    {
         $this->payableAmount = $payableAmount;
         return $this;
     }
 
     /**
-     * Serialize Legal Monetary Total
+     * The xmlSerialize method is called during xml writing.
+     *
+     * @param Writer $writer
+     * @return void
      */
-    public function xmlSerialize(Writer $writer) {
+    public function xmlSerialize(Writer $writer)
+    {
         $writer->write([
             [
                 'name' => Schema::CBC . 'LineExtensionAmount',
-                'values' => number_format($this->lineExtensionAmount, 2, '.', ''),
+                'value' => number_format($this->lineExtensionAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => GenerateInvoice::$currencyID
                 ]
-           ],
-           [
+
+            ],
+            [
                 'name' => Schema::CBC . 'TaxExclusiveAmount',
-                'values' => number_format($this->taxExclusiveAmount, 2, '.', ''),
+                'value' => number_format($this->taxExclusiveAmount, 2, '.', ''),
                 'attributes' => [
                     'currencyID' => GenerateInvoice::$currencyID
                 ]
+
             ],
             [
                 'name' => Schema::CBC . 'TaxInclusiveAmount',
@@ -113,6 +132,7 @@ class LegalMonetaryTotal implements XmlSerializable {
                 'attributes' => [
                     'currencyID' => GenerateInvoice::$currencyID
                 ]
+
             ],
             [
                 'name' => Schema::CBC . 'AllowanceTotalAmount',
@@ -120,6 +140,7 @@ class LegalMonetaryTotal implements XmlSerializable {
                 'attributes' => [
                     'currencyID' => GenerateInvoice::$currencyID
                 ]
+
             ],
             [
                 'name' => Schema::CBC . 'PayableAmount',
@@ -128,7 +149,6 @@ class LegalMonetaryTotal implements XmlSerializable {
                     'currencyID' => GenerateInvoice::$currencyID
                 ]
             ],
-
         ]);
     }
 }

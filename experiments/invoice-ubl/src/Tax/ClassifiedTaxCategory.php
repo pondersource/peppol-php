@@ -101,11 +101,12 @@ class ClassifiedTaxCategory implements XmlSerializable {
         }
 
         $writer->write([
-            [
-                'name' => Schema::CBC . 'ID',
-                'value' => $this->getId(),
-                'attributes' => $schemeAttributes
-            ],
+            'name' => Schema::CBC . 'ID',
+            'value' => $this->getId(),
+            'attributes' => $schemeAttributes
+        ]);
+
+        $writer->write([
             Schema::CBC . 'Percent' => number_format($this->percent, 2, '.', ''),
         ]);
 

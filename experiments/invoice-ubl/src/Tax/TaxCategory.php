@@ -1,15 +1,18 @@
 <?php
 
-use InvalidArgumentException as InvalidArgumentException;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-class TaxCategory implements XmlSerializable {
+use InvalidArgumentException;
+
+class TaxCategory implements XmlSerializable
+{
     private $id;
     private $idAttributes = [
         'schemeID' => TaxCategory::UNCL5305,
         'schemeName' => 'Duty or tax or fee category'
     ];
+    private $name;
     private $percent;
     private $taxScheme;
     private $taxExemptionReason;
@@ -18,16 +21,34 @@ class TaxCategory implements XmlSerializable {
     public const UNCL5305 = 'UNCL5305';
 
     /**
-     * Document level allowance or charge VAT category code
+     * @return string
      */
-    public function getId(): ?string {
-       return $this->id;
+    public function getId(): ?string
+    {
+        if (!empty($this->id)) {
+            return $this->id;
+        }
+
+        if ($this->getPercent() !== null) {
+            if ($this->getPercent() >= 21) {
+                return 'S';
+            } elseif ($this->getPercent() <= 21 && $this->getPercent() >= 6) {
+                return 'AA';
+            } else {
+                return 'Z';
+            }
+        }
+
+        return null;
     }
 
     /**
-     * Set Vat category code
+     * @param string $id
+     * @param array $attributes
+     * @return TaxCategory
      */
-    public function setId(?string $id, $attributes = null): TaxCategory {
+    public function setId(?string $id, $attributes = null): TaxCategory
+    {
         $this->id = $id;
         if (isset($attributes)) {
             $this->idAttributes = $attributes;
@@ -36,37 +57,61 @@ class TaxCategory implements XmlSerializable {
     }
 
     /**
-     *  Document level allowance or charge VAT rate
+     * @return string
      */
-    public function getPercent(): ?float {
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return TaxCategory
+     */
+    public function setName(?string $name): TaxCategory
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPercent(): ?float
+    {
         return $this->percent;
     }
 
     /**
-     * Set Percent
+     * @param string $percent
+     * @return TaxCategory
      */
-    public function setPercent(?float $percent): TaxCategory {
+    public function setPercent(?float $percent): TaxCategory
+    {
         $this->percent = $percent;
         return $this;
     }
-    
-    /**
-     * TAX SCHEME
-     */
-    public function setTaxScheme(?TaxScheme $taxScheme): TaxCategory {
-         $this->taxScheme = $taxScheme;
-         return $this;
-    }
 
     /**
-     * get tax scheme
+     * @return string
      */
-    public function getTaxScheme(): ?TaxScheme {
+    public function getTaxScheme(): ?TaxScheme
+    {
         return $this->taxScheme;
     }
 
-     /**
-     * A textual statement of the reason why the amount is exempted from VAT or why no VAT is being charged
+    /**
+     * @param TaxScheme $taxScheme
+     * @return TaxCategory
+     */
+    public function setTaxScheme(?TaxScheme $taxScheme): TaxCategory
+    {
+        $this->taxScheme = $taxScheme;
+        return $this;
+    }
+
+    /**
+     * @return string
      */
     public function getTaxExemptionReason(): ?string
     {
@@ -74,8 +119,8 @@ class TaxCategory implements XmlSerializable {
     }
 
     /**
-     * Set exemption reason
-     * Example value: Reason
+     * @param string $taxExemptionReason
+     * @return TaxCategory
      */
     public function setTaxExemptionReason(?string $taxExemptionReason): TaxCategory
     {
@@ -84,7 +129,7 @@ class TaxCategory implements XmlSerializable {
     }
 
     /**
-     * A coded statement of the reason for why the amount is exempted from VAT
+     * @return string
      */
     public function getTaxExemptionReasonCode(): ?string
     {
@@ -92,7 +137,8 @@ class TaxCategory implements XmlSerializable {
     }
 
     /**
-     * Set tax exemption reason code
+     * @param string $taxExemptionReason
+     * @return TaxCategory
      */
     public function setTaxExemptionReasonCode(?string $taxExemptionReasonCode): TaxCategory
     {
@@ -101,7 +147,10 @@ class TaxCategory implements XmlSerializable {
     }
 
     /**
-     * Validation for missing taxcategory id and percent
+     * The validate function that is called during xml writing to valid the data of the object.
+     *
+     * @throws InvalidArgumentException An error with information about required data that is missing to write the XML
+     * @return void
      */
     public function validate()
     {
@@ -115,7 +164,10 @@ class TaxCategory implements XmlSerializable {
     }
 
     /**
-     * Serialize Tax Category
+     * The xmlSerialize method is called during xml writing.
+     *
+     * @param Writer $writer
+     * @return void
      */
     public function xmlSerialize(Writer $writer)
     {
