@@ -1,0 +1,28 @@
+<SOAP-ENV:Envelope
+   xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/'>
+  <SOAP-ENV:Header>
+    <Security SOAP-ENV:mustUnderstand='1'
+      xmlns='http://schemas.xmlsoap.org/ws/2003/06/secext'>
+      <ReferenceList xmlns='http://www.w3.org/2001/04/xmlenc#'>
+        <DataReference URI='#ed1'/>
+      </ReferenceList>
+    </Security>
+  </SOAP-ENV:Header>
+  <SOAP-ENV:Body>
+    <PaymentInfo xmlns='http://example.org/paymentv2'>
+      <Name>John Smith</Name>
+      <EncryptedData Id='ed1'
+        Type='http://www.w3.org/2001/04/xmlenc#Element'
+        xmlns='http://www.w3.org/2001/04/xmlenc#'>
+        <EncryptionMethod
+          Algorithm='http://www.w3.org/2001/04/xmlenc#tripledes-cbc'/>
+        <KeyInfo xmlns='http://www.w3.org/2000/09/xmldsig#'>
+          <KeyName>John Smith</KeyName>
+        </KeyInfo>
+        <CipherData>
+          <CipherValue>ydUNqHkMrD...</CipherValue>
+        </CipherData>
+      </EncryptedData>
+    </PaymentInfo>
+  </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
