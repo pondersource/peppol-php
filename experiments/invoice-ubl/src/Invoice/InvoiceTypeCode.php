@@ -1,7 +1,7 @@
 <?php
 
 class InvoiceTypeCode {
-    const COMMERCICAL_INVOICE = 380;
+    const INVOICE = 380;
     const DEBIT_NOTE_SERVICES = 80;
     const METERED_SERVICE_INVOICE = 82;
     const DEBIT_NOTE_FINANCIAL = 84;
