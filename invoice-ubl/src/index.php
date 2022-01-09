@@ -25,7 +25,7 @@ require 'Account/Delivery.php';
 require 'Payment/OrderReference.php';
 require 'Invoice/Invoice.php';
 require 'Invoice/GenerateInvoice.php';
-
+require '../../xml-transaction/src/Signature/signature.php';
 
 
  // Tax scheme
@@ -46,12 +46,12 @@ $address = (new PostalAddress())
 
 $financialInstitutionBranch = (new FinancialInstitutionBranch())
                 ->setId('RABONL2U');
-    
+
 $payeeFinancialAccount = (new PayeeFinancialAccount())
                ->setFinancialInstitutionBranch($financialInstitutionBranch)
                 ->setName('Customer Account Holder')
                 ->setId('NL00RABO0000000000');
-        
+
 
 $paymentMeans = (new PaymentMeans())
                 ->setPayeeFinancialAccount($payeeFinancialAccount)
@@ -59,7 +59,8 @@ $paymentMeans = (new PaymentMeans())
                 ->setPaymentId('our invoice 1234');
 
  // Supplier company node
- $supplierLegalEntity = (new LegalEntity())
+ $supplierLegalEntity = (new LegalEntity())		// $doc = new DOMDocument();
+		// $doc->load($path);
  ->setRegistrationNumber('PonderSource')
  ->setCompanyId('NL123456789');
 
@@ -67,7 +68,7 @@ $paymentMeans = (new PaymentMeans())
 $supplierPartyTaxScheme = (new PartyTaxScheme())
  ->setTaxScheme($taxScheme)
  ->setCompanyId('NL123456789');
- 
+
 $supplierCompany = (new Party())
  //->setEndPointId('7300010000001', '0088')
  ->setName('PonderSource')
@@ -116,12 +117,12 @@ $legalMonetaryTotal = (new LegalMonetaryTotal())
        ->setBaseQuantity(1)
        ->setUnitCode(UnitCode::UNIT)
        ->setPriceAmount(10);
-      
+
 // Invoice Line tax totals
 $lineTaxTotal = (new TaxTotal())
             ->setTaxAmount(2.1);
 
-           
+
 // InvoicePeriod
 $invoicePeriod = (new InvoicePeriod())
 ->setStartDate(new \DateTime());
@@ -146,7 +147,7 @@ $taxCategory = (new TaxCategory())
             ->setTaxableAmount(10)
             ->setTaxAmount(2.1)
             ->setTaxCategory($taxCategory);
-           
+
 
 $taxTotal = (new TaxTotal())
             ->setTaxSubtotal($taxSubTotal)
@@ -154,7 +155,7 @@ $taxTotal = (new TaxTotal())
    // Payment Terms
 $paymentTerms = (new PaymentTerms())
    ->setNote('30 days net');
-  
+
 // Delivery
 $deliveryLocation = (new PostalAddress())
   ->setCountry($country);
@@ -163,11 +164,11 @@ $delivery = (new Delivery())
   ->setActualDeliveryDate(new \DateTime())
   ->setDeliveryLocation($deliveryLocation);
 
-  
+
 $orderReference = (new OrderReference())
   ->setId('5009567')
   ->setSalesOrderId('tRST-tKhM');
-  
+
    // Invoice object
    $invoice = (new Invoice())
    ->setProfileID('urn:fdc:peppol.eu:2017')
@@ -190,12 +191,15 @@ $orderReference = (new OrderReference())
   $outputXMLString = $generateInvoice->invoice($invoice);
   $dom = new \DOMDocument;
   $dom->loadXML($outputXMLString);
-  $dom->save('EN16931Test.xml');
+  $sign = new Signature;
+  $sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
+  $signed_dom = $sign->createSignedXml($dom);
+  $signed_dom->save('EN16931Test.xml');
   // Use webservice at peppol.helger.com to verify the result
   $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
   $client = new \SoapClient($wsdl);
   $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
-  var_dump($response);
+  //var_dump($response);
 
 
   //Use Deserialization

@@ -4,13 +4,13 @@
  <cbc:CustomizationID>urn:cen.eu:en16931:2017</cbc:CustomizationID>
  <cbc:ProfileID>urn:fdc:peppol.eu:2017</cbc:ProfileID>
  <cbc:ID>1234</cbc:ID>
- <cbc:IssueDate>2022-01-07</cbc:IssueDate>
+ <cbc:IssueDate>2022-01-09</cbc:IssueDate>
  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
  <cbc:Note>invoice note</cbc:Note>
  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
  <cbc:BuyerReference>BUYER_REF</cbc:BuyerReference>
  <cac:InvoicePeriod>
-  <cbc:StartDate>2022-01-07</cbc:StartDate>
+  <cbc:StartDate>2022-01-09</cbc:StartDate>
  </cac:InvoicePeriod>
  <cac:OrderReference>
   <cbc:ID>5009567</cbc:ID>
@@ -69,7 +69,7 @@
   </cac:Party>
  </cac:AccountingCustomerParty>
  <cac:Delivery>
-  <cbc:ActualDeliveryDate>2022-01-07</cbc:ActualDeliveryDate>
+  <cbc:ActualDeliveryDate>2022-01-09</cbc:ActualDeliveryDate>
   <cac:DeliveryLocation>
    <cac:Address>
     <cac:Country>
@@ -118,7 +118,7 @@
   <cbc:InvoicedQuantity unitCode="C62">1.00</cbc:InvoicedQuantity>
   <cbc:LineExtensionAmount currencyID="EUR">10.00</cbc:LineExtensionAmount>
   <cac:InvoicePeriod>
-   <cbc:StartDate>2022-01-07</cbc:StartDate>
+   <cbc:StartDate>2022-01-09</cbc:StartDate>
   </cac:InvoicePeriod>
   <cac:Item>
    <cbc:Description>Product Description</cbc:Description>
@@ -136,4 +136,8 @@
    <cbc:BaseQuantity unitCode="C62">1.00</cbc:BaseQuantity>
   </cac:Price>
  </cac:InvoiceLine>
-</Invoice>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>v35JNS0qjKeaKgymy0CUhFTqqug03lfcT4BrHsVlZdE=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>Ky3abglW8GCpXN1zIXarBkZlk6AAu2oi7iIHOOBu7/sxFkF4ifmfSm56RXjoE5nGPCsGZpsiekGJz5lhB4lv/+R75VBppkl4gBhEpBX3EbZsVQq+57nxQom9bK5YPmUw5OG3dUwre6qEQ95n1rJViIfjdXv9aE/NVGgc/TlXHYa2TyWuf2Sic1GeLGGFh71iaGiT7ov5gfdE3a1QVeOGR2mLeiSfY1/UhpvSjP1saCWFZu/6Y1yaqSPGyAQvVr9jFgCJK1c8qYe2gcjLqNGNptbajWYol1SlO9y2EC4Hbpn2E78g3g8p1mPGgfTJEY1p1ikjGXF421cuaGvednEZ3g==</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data/></ds:KeyInfo></ds:Signature></Invoice>
