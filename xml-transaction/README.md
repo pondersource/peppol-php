@@ -1,7 +1,22 @@
 ## XML transaction
 
-### Signature
 
+## Signature
+
+### Add signature to XML
+
+1. Start the server
+
+```
+$ cd xml-transaction/src
+$ php -S localhost:8080
+```
+
+2. Visit `http://localhost:8080/`
+
+
+
+### Useful functions
 *  Generates a new private key: [openssl_pkey_new](https://www.php.net/manual/en/function.openssl-pkey-new.php)
 
  ```
@@ -17,7 +32,7 @@
 $public_key_pem = openssl_pkey_export($new_key_pair, $private_key_pem)['key'];
 ```
 
-## To create a signed XML file we will use the [xmlseclibs](https://github.com/robrichards/xmlseclibs) library
+### To create a signed XML file we will use the [xmlseclibs](https://github.com/robrichards/xmlseclibs) library
 
 ```
 php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"

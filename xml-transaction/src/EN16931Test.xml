@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2">
+ <cbc:UBLVersionID>2.1</cbc:UBLVersionID>
+ <cbc:CustomizationID>urn:cen.eu:en16931:2017</cbc:CustomizationID>
+ <cbc:ProfileID>urn:fdc:peppol.eu:2017</cbc:ProfileID>
+ <cbc:ID>1234</cbc:ID>
+ <cbc:IssueDate>2022-01-09</cbc:IssueDate>
+ <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
+ <cbc:Note>invoice note</cbc:Note>
+ <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+ <cbc:BuyerReference>BUYER_REF</cbc:BuyerReference>
+ <cac:InvoicePeriod>
+  <cbc:StartDate>2022-01-09</cbc:StartDate>
+ </cac:InvoicePeriod>
+ <cac:OrderReference>
+  <cbc:ID>5009567</cbc:ID>
+  <cbc:SalesOrderID>tRST-tKhM</cbc:SalesOrderID>
+ </cac:OrderReference>
+ <cac:AccountingSupplierParty>
+  <cac:Party>
+   <cac:PartyName>
+    <cbc:Name>PonderSource</cbc:Name>
+   </cac:PartyName>
+   <cac:PostalAddress>
+    <cbc:StreetName>Lisk Center Utreht</cbc:StreetName>
+    <cbc:AdditionalStreetName>De Burren</cbc:AdditionalStreetName>
+    <cbc:CityName>Utreht</cbc:CityName>
+    <cbc:PostalZone>3521</cbc:PostalZone>
+    <cac:Country>
+     <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+    </cac:Country>
+   </cac:PostalAddress>
+   <cac:PartyTaxScheme>
+    <cbc:CompanyID>NL123456789</cbc:CompanyID>
+    <cac:TaxScheme>
+     <cbc:ID>VAT</cbc:ID>
+    </cac:TaxScheme>
+   </cac:PartyTaxScheme>
+   <cac:PartyLegalEntity>
+    <cbc:RegistrationName>PonderSource</cbc:RegistrationName>
+    <cbc:CompanyID>NL123456789</cbc:CompanyID>
+   </cac:PartyLegalEntity>
+  </cac:Party>
+ </cac:AccountingSupplierParty>
+ <cac:AccountingCustomerParty>
+  <cac:Party>
+   <cac:PartyName>
+    <cbc:Name>Client Company Name</cbc:Name>
+   </cac:PartyName>
+   <cac:PostalAddress>
+    <cbc:StreetName>Lisk Center Utreht</cbc:StreetName>
+    <cbc:AdditionalStreetName>De Burren</cbc:AdditionalStreetName>
+    <cbc:CityName>Utreht</cbc:CityName>
+    <cbc:PostalZone>3521</cbc:PostalZone>
+    <cac:Country>
+     <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+    </cac:Country>
+   </cac:PostalAddress>
+   <cac:PartyTaxScheme>
+    <cbc:CompanyID>BE123456789</cbc:CompanyID>
+    <cac:TaxScheme>
+     <cbc:ID>VAT</cbc:ID>
+    </cac:TaxScheme>
+   </cac:PartyTaxScheme>
+   <cac:PartyLegalEntity>
+    <cbc:RegistrationName>Client Company Name</cbc:RegistrationName>
+    <cbc:CompanyID>Client Company Registration</cbc:CompanyID>
+   </cac:PartyLegalEntity>
+  </cac:Party>
+ </cac:AccountingCustomerParty>
+ <cac:Delivery>
+  <cbc:ActualDeliveryDate>2022-01-09</cbc:ActualDeliveryDate>
+  <cac:DeliveryLocation>
+   <cac:Address>
+    <cac:Country>
+     <cbc:IdentificationCode>NL</cbc:IdentificationCode>
+    </cac:Country>
+   </cac:Address>
+  </cac:DeliveryLocation>
+ </cac:Delivery>
+ <cac:PaymentMeans>
+  <cbc:PaymentMeansCode>31</cbc:PaymentMeansCode>
+  <cbc:PaymentID>our invoice 1234</cbc:PaymentID>
+  <cac:PayeeFinancialAccount>
+   <cbc:ID>NL00RABO0000000000</cbc:ID>
+   <cbc:Name>Customer Account Holder</cbc:Name>
+   <cac:FinancialInstitutionBranch>
+    <cbc:ID>RABONL2U</cbc:ID>
+   </cac:FinancialInstitutionBranch>
+  </cac:PayeeFinancialAccount>
+ </cac:PaymentMeans>
+ <cac:PaymentTerms>
+  <cbc:Note>30 days net</cbc:Note>
+ </cac:PaymentTerms>
+ <cac:TaxTotal>
+  <cbc:TaxAmount currencyID="EUR">2.10</cbc:TaxAmount>
+  <cac:TaxSubtotal>
+   <cbc:TaxableAmount currencyID="EUR">10.00</cbc:TaxableAmount>
+   <cbc:TaxAmount currencyID="EUR">2.10</cbc:TaxAmount>
+   <cac:TaxCategory>
+    <cbc:ID>S</cbc:ID>
+    <cbc:Percent>21.00</cbc:Percent>
+    <cac:TaxScheme>
+     <cbc:ID>VAT</cbc:ID>
+    </cac:TaxScheme>
+   </cac:TaxCategory>
+  </cac:TaxSubtotal>
+ </cac:TaxTotal>
+ <cac:LegalMonetaryTotal>
+  <cbc:LineExtensionAmount currencyID="EUR">10.00</cbc:LineExtensionAmount>
+  <cbc:TaxExclusiveAmount currencyID="EUR">10.00</cbc:TaxExclusiveAmount>
+  <cbc:TaxInclusiveAmount currencyID="EUR">12.10</cbc:TaxInclusiveAmount>
+  <cbc:AllowanceTotalAmount currencyID="EUR">0.00</cbc:AllowanceTotalAmount>
+  <cbc:PayableAmount currencyID="EUR">12.10</cbc:PayableAmount>
+ </cac:LegalMonetaryTotal>
+ <cac:InvoiceLine>
+  <cbc:ID>0</cbc:ID>
+  <cbc:InvoicedQuantity unitCode="C62">1.00</cbc:InvoicedQuantity>
+  <cbc:LineExtensionAmount currencyID="EUR">10.00</cbc:LineExtensionAmount>
+  <cac:InvoicePeriod>
+   <cbc:StartDate>2022-01-09</cbc:StartDate>
+  </cac:InvoicePeriod>
+  <cac:Item>
+   <cbc:Description>Product Description</cbc:Description>
+   <cbc:Name>Product Name</cbc:Name>
+   <cac:ClassifiedTaxCategory>
+    <cbc:ID>S</cbc:ID>
+    <cbc:Percent>21.00</cbc:Percent>
+    <cac:TaxScheme>
+     <cbc:ID>VAT</cbc:ID>
+    </cac:TaxScheme>
+   </cac:ClassifiedTaxCategory>
+  </cac:Item>
+  <cac:Price>
+   <cbc:PriceAmount currencyID="EUR">10.00</cbc:PriceAmount>
+   <cbc:BaseQuantity unitCode="C62">1.00</cbc:BaseQuantity>
+  </cac:Price>
+ </cac:InvoiceLine>
+<ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
+    <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
+  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>v35JNS0qjKeaKgymy0CUhFTqqug03lfcT4BrHsVlZdE=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>Ky3abglW8GCpXN1zIXarBkZlk6AAu2oi7iIHOOBu7/sxFkF4ifmfSm56RXjoE5nGPCsGZpsiekGJz5lhB4lv/+R75VBppkl4gBhEpBX3EbZsVQq+57nxQom9bK5YPmUw5OG3dUwre6qEQ95n1rJViIfjdXv9aE/NVGgc/TlXHYa2TyWuf2Sic1GeLGGFh71iaGiT7ov5gfdE3a1QVeOGR2mLeiSfY1/UhpvSjP1saCWFZu/6Y1yaqSPGyAQvVr9jFgCJK1c8qYe2gcjLqNGNptbajWYol1SlO9y2EC4Hbpn2E78g3g8p1mPGgfTJEY1p1ikjGXF421cuaGvednEZ3g==</ds:SignatureValue>
+<ds:KeyInfo><ds:X509Data/></ds:KeyInfo></ds:Signature></Invoice>
