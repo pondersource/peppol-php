@@ -1,0 +1,5 @@
+{
+    "require": {
+        "robrichards/xmlseclibs": "^3.1"
+    }
+}
