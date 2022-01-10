@@ -17,7 +17,7 @@ cd /var/www/peppol-php/experiments/invoice-ubl/src
 php -S localhost:8080
 ````
 
-### And run to see how UBL version 2.2 working with UBL version XSD
+### And run to see how ubl invoice work with XSD checking
 
 ````
 php -S localhost:8080/ubl-invoice.php
