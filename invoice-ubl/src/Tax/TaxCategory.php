@@ -3,7 +3,7 @@
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-use InvalidArgumentException;
+use InvalidArgumentException as InvalidArgumentException;
 
 class TaxCategory implements XmlSerializable
 {

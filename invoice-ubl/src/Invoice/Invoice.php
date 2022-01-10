@@ -3,8 +3,8 @@
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-use DateTime;
-use InvalidArgumentException;
+use DateTime as DateTime;
+use InvalidArgumentException as InvalidArgumentException;
 
 require 'InvoiceTypeCode.php';
 
