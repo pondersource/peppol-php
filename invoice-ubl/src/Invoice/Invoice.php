@@ -611,7 +611,7 @@ class Invoice implements XmlSerializable
 
         if ($this->accountingCostCode !== null) {
             $writer->write([
-                Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
+                Schema::CBC . 'AccountingCost' => $this->accountingCostCode
             ]);
         }
 

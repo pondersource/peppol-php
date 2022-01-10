@@ -14,6 +14,7 @@ class Party implements XmlSerializable
     private $legalEntity;
     private $endpointID;
     private $endpointID_schemeID;
+    private $partyIdAttrubutes;
 
     /**
      * @return string

@@ -8,6 +8,7 @@
  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
  <cbc:Note>invoice note</cbc:Note>
  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
+ <cbc:AccountingCost>4217:2323:2323</cbc:AccountingCost>
  <cbc:BuyerReference>BUYER_REF</cbc:BuyerReference>
  <cac:InvoicePeriod>
   <cbc:StartDate>2022-01-10</cbc:StartDate>
@@ -18,6 +19,9 @@
  </cac:OrderReference>
  <cac:AccountingSupplierParty>
   <cac:Party>
+   <cac:PartyIdentification>
+    <cbc:ID>99887766</cbc:ID>
+   </cac:PartyIdentification>
    <cac:PartyName>
     <cbc:Name>PonderSource</cbc:Name>
    </cac:PartyName>
@@ -44,6 +48,9 @@
  </cac:AccountingSupplierParty>
  <cac:AccountingCustomerParty>
   <cac:Party>
+   <cac:PartyIdentification>
+    <cbc:ID>9988217</cbc:ID>
+   </cac:PartyIdentification>
    <cac:PartyName>
     <cbc:Name>Client Company Name</cbc:Name>
    </cac:PartyName>
@@ -139,5 +146,5 @@
 <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
   <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
     <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>g92tRjze+imhxbe0qPljixCIBYhz4l/IRB11qcqrKOk=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>IymbVIf1ih1LDIQCRSjyYzRqVaRJlC2Nh4oaGTWhrOgnHAbSKQFVC2ctyeWLvV+oTlSS6ll6xJpSLEQUmFqiQsHURj69IWzqDCvJ/GaP+ZXbARSSL13iNRquFFOfGObHiAQAF65ETc+xkfbWBzpyqv486yrr9M23ZBWRl+Cdk5fuhGpxwLDC3gs7QUIWr8s3CPNR4DXNjAkkxnJMVOKjAN1Cjmv9PlMi5+vVM/2UdC9IB3HjfwNK29SqVBkU29QIqiGvKreFTVmIzg78xftI40XP7VSxWxgvBTeV6rAEgVnGaamRLbAco2N6KD8stqFbJDondiCz7YJx1KSq+zIQIw==</ds:SignatureValue>
+  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>d0Pzrnlhoa1+eBTDf7P7f0pTH8NHUtMPO4zRYtE20Rc=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>uAXqIWq78DgXYIMPeQASzYwIDq2lfnpWmYiy3R5OJjDaMQ3JNs6CTg2Vlz/ahDx2de5L/50NcwxEL+Zvh2qwOeSE7OhSXtBks0MGAwDeF8TlmmVAF7iLa9ztk1rl1uIW/NvluYFvqiMQCude+ShyVvintpndzUgRfELL9qnaCfNyUqvnID0X4zvY4VPI4BkVS+0NaSjxPL2AW0OeCQE/Deh18RYRZPV2EeqdyCg3E4697P9drbyMaFceAaGdJoKEljxbL1fOarmF9z1JYu3T0xqDmRTkbHcN3kCJY2xL9z8MZCt24yCQz5anKscZkeZYNWdr+djGy2FFRJcJJYWZjw==</ds:SignatureValue>
 <ds:KeyInfo><ds:X509Data/></ds:KeyInfo></ds:Signature></Invoice>
