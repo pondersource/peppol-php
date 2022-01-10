@@ -2,7 +2,7 @@
 
 class Encryption{
 
-	public class EncryptXML($data,$public_key){
+	public function EncryptXML($data,$public_key){
 		// in progress
 	}
 }

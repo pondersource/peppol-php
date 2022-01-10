@@ -71,6 +71,7 @@ $supplierPartyTaxScheme = (new PartyTaxScheme())
 
 $supplierCompany = (new Party())
  //->setEndPointId('7300010000001', '0088')
+ ->setPartyIdentificationId('99887766')
  ->setName('PonderSource')
  ->setLegalEntity($supplierLegalEntity)
  ->setPartyTaxScheme($supplierPartyTaxScheme)
@@ -88,6 +89,7 @@ $clientPartyTaxScheme = (new PartyTaxScheme())
  ->setCompanyId('BE123456789');
 
 $clientCompany = (new Party())
+->setPartyIdentificationId('9988217')
 //->setEndPointId('7300010000002', '0089')
  ->setName('Client Company Name')
  ->setLegalEntity($clientLegalEntity)
@@ -176,6 +178,7 @@ $orderReference = (new OrderReference())
    ->setId(1234)
    ->setIssueDate(new \DateTime())
    ->setNote('invoice note')
+   ->setAccountingCostCode('4217:2323:2323')
    ->setDelivery($delivery)
    ->setAccountingSupplierParty($supplierCompany)
    ->setAccountingCustomerParty($clientCompany)
@@ -199,7 +202,7 @@ $orderReference = (new OrderReference())
   $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
   $client = new \SoapClient($wsdl);
   $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
-  //var_dump($response);
+  var_dump($response);
 
 
   //Use Deserialization

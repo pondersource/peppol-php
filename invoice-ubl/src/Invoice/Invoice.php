@@ -3,8 +3,8 @@
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-use DateTime;
-use InvalidArgumentException;
+use DateTime as DateTime;
+use InvalidArgumentException as InvalidArgumentException;
 
 require 'InvoiceTypeCode.php';
 
@@ -611,7 +611,7 @@ class Invoice implements XmlSerializable
 
         if ($this->accountingCostCode !== null) {
             $writer->write([
-                Schema::CBC . 'AccountingCostCode' => $this->accountingCostCode
+                Schema::CBC . 'AccountingCost' => $this->accountingCostCode
             ]);
         }
 

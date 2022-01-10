@@ -9,6 +9,7 @@
 
 ```
 $ cd xml-transaction/src
+composer install
 $ php -S localhost:8080
 ```
 
