@@ -26,6 +26,7 @@ require 'Payment/OrderReference.php';
 require 'Invoice/Invoice.php';
 require 'Invoice/GenerateInvoice.php';
 require '../../xml-transaction/src/Signature/signature.php';
+require 'AllowanceCharge.php';
 
 
  // Tax scheme
@@ -36,6 +37,7 @@ require '../../xml-transaction/src/Signature/signature.php';
   $clientContact = (new Contact())
    ->setName('Client name')
    ->setTelephone('908-99-74-74');
+
 
 
 $country = (new Country())
@@ -76,7 +78,7 @@ $supplierPartyTaxScheme = (new PartyTaxScheme())
  ->setCompanyId('NL123456789');
 
 $supplierCompany = (new Party())
- //->setEndPointId('7300010000001', '0088')
+ ->setEndPointId('7300010000001', '0007')
  ->setPartyIdentificationId('99887766')
  ->setName('PonderSource')
  ->setLegalEntity($supplierLegalEntity)
@@ -96,7 +98,7 @@ $clientPartyTaxScheme = (new PartyTaxScheme())
 
 $clientCompany = (new Party())
 ->setPartyIdentificationId('9988217')
-//->setEndPointId('7300010000002', '0089')
+->setEndPointId('7300010000002', '0002')
  ->setName('Client Company Name')
  ->setLegalEntity($clientLegalEntity)
  ->setPartyTaxScheme($clientPartyTaxScheme)
@@ -152,6 +154,12 @@ $taxCategory = (new TaxCategory())
             ->setPercent(21.00)
             ->setTaxScheme($taxScheme);
 
+$allowanceCharge = (new AllowanceCharge())
+->setChargeIndicator(true)
+->setAllowanceReason('Insurance')
+->setAmount(10)
+->setTaxCategory($taxCategory);
+
  $taxSubTotal = (new TaxSubTotal())
             ->setTaxableAmount(10)
             ->setTaxAmount(2.1)
@@ -196,11 +204,13 @@ $orderReference = (new OrderReference())
    ->setInvoiceLines($invoiceLines)
    ->setLegalMonetaryTotal($legalMonetaryTotal)
    ->setPaymentTerms($paymentTerms)
+   //->setAllowanceCharges($allowanceCharge)
    ->setInvoicePeriod($invoicePeriod)
    ->setPaymentMeans($paymentMeans)
    ->setByerReference('BUYER_REF')
    ->setOrderReference($orderReference)
    ->setTaxTotal($taxTotal);
+
    $generateInvoice = new GenerateInvoice();
   $outputXMLString = $generateInvoice->invoice($invoice);
   $dom = new \DOMDocument;
@@ -213,7 +223,7 @@ $orderReference = (new OrderReference())
   $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
   $client = new \SoapClient($wsdl);
   $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
-  var_dump($response);
+  echo json_encode($response);
 
 
   //Use Deserialization

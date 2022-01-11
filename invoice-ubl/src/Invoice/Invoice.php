@@ -377,7 +377,7 @@ class Invoice implements XmlSerializable
     /**
      * @return AllowanceCharge[]
      */
-    public function getAllowanceCharges(): ?array
+    public function getAllowanceCharges(): ?AllowanceCharge
     {
         return $this->allowanceCharges;
     }
@@ -386,7 +386,7 @@ class Invoice implements XmlSerializable
      * @param AllowanceCharge[] $allowanceCharges
      * @return Invoice
      */
-    public function setAllowanceCharges(array $allowanceCharges): Invoice
+    public function setAllowanceCharges(AllowanceCharge $allowanceCharges): Invoice
     {
         $this->allowanceCharges = $allowanceCharges;
         return $this;
@@ -680,11 +680,11 @@ class Invoice implements XmlSerializable
         }
 
         if ($this->allowanceCharges !== null) {
-            foreach ($this->allowanceCharges as $allowanceCharge) {
+            //foreach ($this->allowanceCharges as $allowanceCharge) {
                 $writer->write([
-                    Schema::CAC . 'AllowanceCharge' => $allowanceCharge
+                    Schema::CAC . 'AllowanceCharge' => $this->allowanceCharges
                 ]);
-            }
+            //}
         }
 
         if ($this->taxTotal !== null) {

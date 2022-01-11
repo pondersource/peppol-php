@@ -19,6 +19,7 @@
  </cac:OrderReference>
  <cac:AccountingSupplierParty>
   <cac:Party>
+   <cbc:EndpointID schemeID="0007">7300010000001</cbc:EndpointID>
    <cac:PartyIdentification>
     <cbc:ID>99887766</cbc:ID>
    </cac:PartyIdentification>
@@ -48,6 +49,7 @@
  </cac:AccountingSupplierParty>
  <cac:AccountingCustomerParty>
   <cac:Party>
+   <cbc:EndpointID schemeID="0002">7300010000002</cbc:EndpointID>
    <cac:PartyIdentification>
     <cbc:ID>9988217</cbc:ID>
    </cac:PartyIdentification>
@@ -154,5 +156,5 @@
 <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
   <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
     <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>p2o+xmTkcLt1tqtZel5+CQ+28Q+lFlN9OxlvMBtnIYM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>d9CsY6Wk5pXSlsil1tCVVxAr/7zCmECYZ3VLATQ5VUO//6jZW+cdfwBR8WfZMiY3ZWMUamXTu4d4fKvN3WP1nTsj+Y2ux2tQTuAWEUJJsCbjjfxi4nMmeME8gLiOxEzCwVSnW9HRu00FjDhhYDL0Bd0nZN/ZOhryD7InQgUdJDQmLB+BB0Mi3Cei0KIz96ij1hDv5VUhihSjmCw5EMc2azw9zCR+Hxwfm8o2haN4CvzYOy2JbrxeeLpYktHL8L3ukCIv28J64D1RVgIqIc9mzLRrtx83KBmQTNAYB4BL88RaV0iYw5PjM3TAbfuY4vkgmZ6ls2MQmGqJA0BY9DgGXg==</ds:SignatureValue>
+  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>op9RmzH1azUzf3h6fM5XCyOVZt+qO/rNxYoD9omQVJM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>INw9r+wzumCsIKVUODhRk693Fo5m/d/sjKvGVjsJ2I1DFA/QzHqH3fGU7wt7qKL9NlAmzjLw6f+roFyLCToezvzs7s+zoZ6AhdU9hrDoKCZpcD6LNp5FYx5Ppodc+Ag/BPN+lmN9vO95Sm9UcNWgmKk2uW1aILwlGwylNSgdCm4fkhqnfyi2r5MFCeWQXASlBfS4v4UyyiWj27FtUVUKJjcks2N68LVkjxFDyjSbuNCZNy+v96+H2A8oOpXk4zQM0cP+bV6wiy1GzB8rXGsiQqbfsz0v4n6vFY7aLCuU3/Jr3h0yb4CRzIEhbAEf5L3rZ564Uk88OmV6ZCmyGaESjg==</ds:SignatureValue>
 <ds:KeyInfo><ds:X509Data/></ds:KeyInfo></ds:Signature></Invoice>

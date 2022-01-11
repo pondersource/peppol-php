@@ -1,6 +1,9 @@
 <?php
 
-class AllowanceCharge {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class AllowanceCharge implements XmlSerializable {
     private $chargeIndicator;
     private $allowanceChargeReasonCode;
     private $allowanceChargeReason;
@@ -50,7 +53,7 @@ class AllowanceCharge {
     /**
      * set document level reason code
      */
-    public function setAllowanceReason(string $allowanceChargeReasonCode): AllowanceCharge {
+    public function setAllowanceReason(string $allowanceChargeReason): AllowanceCharge {
         $this->allowanceChargeReason = $allowanceChargeReason;
         return $this;
     }
@@ -106,15 +109,68 @@ class AllowanceCharge {
     /**
      * return Tax Category
      */
-    public function getTaxCategory(): ?TaxCategory {
+    public function getTaxCategory(): ?TaxCategory
+    {
         return $this->taxCategory;
     }
 
     /**
      * Set tax category
      */
-    public function setTaxCategory(TaxtCategory $taxCategory): AllowanceCharge {
+    public function setTaxCategory(?TaxCategory $taxCategory): AllowanceCharge
+    {
         $this->taxCategory = $taxCategory;
         return $this;
+    }
+
+    /**
+     * Serialize Allowance Charge
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([
+           Schema::CBC . 'ChargeIndicator' => $this->chargeIndicator
+        ]);
+
+        if ($this->allowanceChargeReasonCode !== null) {
+            $writer->write([
+                Schema::CBC . 'AllowanceChargeReasonCode' => $this->allowanceChargeReasonCode
+            ]);
+        }
+
+        if ($this->allowanceChargeReason !== null) {
+            $writer->write([
+                Schema::CBC . 'AllowanceChargeReason' => $this->allowanceChargeReason
+            ]);
+        }
+
+        if($this->multiplierFactorNumeric !== null) {
+            $writer->write([
+                Schema::CBC . 'MultiplierFactorNumeric' => $this->multiplierFactorNumeric
+            ]);
+        }
+
+        $writer->write([
+           'name' => Schema::CBC . 'Amount',
+           'value' => number_format($this->amount, 2, '.', ''),
+           'attributes' => [
+                'currencyID' => GenerateInvoice::$currencyID
+            ]
+        ]);
+
+        if($this->taxCategory !== null) {
+            $writer->write([
+                Schema::CBC . 'TaxCategory' => $this->taxCategory
+            ]);
+        }
+
+        if($this->baseAmount !== null) {
+            $writer->write([
+                'name' => Schema::CBC . 'BaseAmount',
+                'value' => $this->baseAmount,
+                'attributes' => [
+                     'currencyID' => GenerateInvoice::$currencyID
+                 ]
+             ]);
+        }
     }
 }
