@@ -4,14 +4,14 @@
  <cbc:CustomizationID>urn:cen.eu:en16931:2017</cbc:CustomizationID>
  <cbc:ProfileID>urn:fdc:peppol.eu:2017</cbc:ProfileID>
  <cbc:ID>1234</cbc:ID>
- <cbc:IssueDate>2022-01-10</cbc:IssueDate>
+ <cbc:IssueDate>2022-01-11</cbc:IssueDate>
  <cbc:InvoiceTypeCode>380</cbc:InvoiceTypeCode>
  <cbc:Note>invoice note</cbc:Note>
  <cbc:DocumentCurrencyCode>EUR</cbc:DocumentCurrencyCode>
  <cbc:AccountingCost>4217:2323:2323</cbc:AccountingCost>
  <cbc:BuyerReference>BUYER_REF</cbc:BuyerReference>
  <cac:InvoicePeriod>
-  <cbc:StartDate>2022-01-10</cbc:StartDate>
+  <cbc:StartDate>2022-01-11</cbc:StartDate>
  </cac:InvoicePeriod>
  <cac:OrderReference>
   <cbc:ID>5009567</cbc:ID>
@@ -73,12 +73,20 @@
     <cbc:RegistrationName>Client Company Name</cbc:RegistrationName>
     <cbc:CompanyID>Client Company Registration</cbc:CompanyID>
    </cac:PartyLegalEntity>
+   <cac:Contact>
+    <cbc:Name>Client name</cbc:Name>
+    <cbc:Telephone>908-99-74-74</cbc:Telephone>
+   </cac:Contact>
   </cac:Party>
  </cac:AccountingCustomerParty>
  <cac:Delivery>
-  <cbc:ActualDeliveryDate>2022-01-10</cbc:ActualDeliveryDate>
+  <cbc:ActualDeliveryDate>2022-01-11</cbc:ActualDeliveryDate>
   <cac:DeliveryLocation>
    <cac:Address>
+    <cbc:StreetName>Delivery street 2</cbc:StreetName>
+    <cbc:AdditionalStreetName>Building 56</cbc:AdditionalStreetName>
+    <cbc:CityName>Utreht</cbc:CityName>
+    <cbc:PostalZone>3521</cbc:PostalZone>
     <cac:Country>
      <cbc:IdentificationCode>NL</cbc:IdentificationCode>
     </cac:Country>
@@ -125,7 +133,7 @@
   <cbc:InvoicedQuantity unitCode="C62">1.00</cbc:InvoicedQuantity>
   <cbc:LineExtensionAmount currencyID="EUR">10.00</cbc:LineExtensionAmount>
   <cac:InvoicePeriod>
-   <cbc:StartDate>2022-01-10</cbc:StartDate>
+   <cbc:StartDate>2022-01-11</cbc:StartDate>
   </cac:InvoicePeriod>
   <cac:Item>
    <cbc:Description>Product Description</cbc:Description>
@@ -146,5 +154,5 @@
 <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
   <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
     <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>d0Pzrnlhoa1+eBTDf7P7f0pTH8NHUtMPO4zRYtE20Rc=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>uAXqIWq78DgXYIMPeQASzYwIDq2lfnpWmYiy3R5OJjDaMQ3JNs6CTg2Vlz/ahDx2de5L/50NcwxEL+Zvh2qwOeSE7OhSXtBks0MGAwDeF8TlmmVAF7iLa9ztk1rl1uIW/NvluYFvqiMQCude+ShyVvintpndzUgRfELL9qnaCfNyUqvnID0X4zvY4VPI4BkVS+0NaSjxPL2AW0OeCQE/Deh18RYRZPV2EeqdyCg3E4697P9drbyMaFceAaGdJoKEljxbL1fOarmF9z1JYu3T0xqDmRTkbHcN3kCJY2xL9z8MZCt24yCQz5anKscZkeZYNWdr+djGy2FFRJcJJYWZjw==</ds:SignatureValue>
+  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>p2o+xmTkcLt1tqtZel5+CQ+28Q+lFlN9OxlvMBtnIYM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>d9CsY6Wk5pXSlsil1tCVVxAr/7zCmECYZ3VLATQ5VUO//6jZW+cdfwBR8WfZMiY3ZWMUamXTu4d4fKvN3WP1nTsj+Y2ux2tQTuAWEUJJsCbjjfxi4nMmeME8gLiOxEzCwVSnW9HRu00FjDhhYDL0Bd0nZN/ZOhryD7InQgUdJDQmLB+BB0Mi3Cei0KIz96ij1hDv5VUhihSjmCw5EMc2azw9zCR+Hxwfm8o2haN4CvzYOy2JbrxeeLpYktHL8L3ukCIv28J64D1RVgIqIc9mzLRrtx83KBmQTNAYB4BL88RaV0iYw5PjM3TAbfuY4vkgmZ6ls2MQmGqJA0BY9DgGXg==</ds:SignatureValue>
 <ds:KeyInfo><ds:X509Data/></ds:KeyInfo></ds:Signature></Invoice>

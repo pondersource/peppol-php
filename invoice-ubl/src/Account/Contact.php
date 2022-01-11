@@ -1,6 +1,9 @@
 <?php
 
-class Contact {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class Contact implements XmlSerializable {
     private $name;
     private $telephone;
     private $telefax;
@@ -68,5 +71,34 @@ class Contact {
     public function setElectronicMail(?string $electronicMail): Contact {
         $this->electronicMail = $electronicMail;
         return $this;
+    }
+
+    /**
+     * Serialize Contact
+     */
+    public function xmlSerialize(Writer $writer) {
+        if($this->name !== null) {
+            $writer->write([
+                Schema::CBC . 'Name' => $this->name
+            ]);
+        }
+
+        if($this->telephone !== null) {
+            $writer->write([
+                Schema::CBC . 'Telephone' => $this->telephone
+            ]);
+        }
+        
+        if($this->telefax !== null) {
+            $writer->write([
+                Schema::CBC . 'Telefax' . $this->telefax
+            ]);
+        }
+
+        if($this->electronicMail !== null) {
+            $writer->write([
+                Schema::CBC . 'ElectronicMail' . $this->electronicMail
+            ]);
+        }
     }
 }

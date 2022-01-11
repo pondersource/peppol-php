@@ -29,14 +29,14 @@ class Delivery implements XmlSerializable {
     /**
      * get Delivery Location
      */
-    public function getDeliveryLocation() {
+    public function getDeliveryLocation(): ?PostalAddress {
         return $this->deliveryLocation;
     }
 
     /**
      * Set delivery location
      */
-    public function setDeliveryLocation($deliveryLocation): Delivery {
+    public function setDeliveryLocation(?PostalAddress $deliveryLocation): Delivery {
         $this->deliveryLocation = $deliveryLocation;
         return $this;
     }

@@ -11,10 +11,16 @@ composer install
 cd /var/www/peppol-php/experiments/invoice-ubl/src
 ````
 
-### And run this
+### And run to see how EN16931 standard will be work validation will be pass or not
 
 ````
-php -S localhost:8081
+php -S localhost:8080
+````
+
+### And run to see how ubl invoice work with XSD checking
+
+````
+php -S localhost:8080/ubl-invoice.php
 ````
 
 ### UBL Address and Attachment
