@@ -32,6 +32,12 @@ require '../../xml-transaction/src/Signature/signature.php';
  $taxScheme = (new TaxScheme())
  ->setId('VAT');
 
+  // Client contact node
+  $clientContact = (new Contact())
+   ->setName('Client name')
+   ->setTelephone('908-99-74-74');
+
+
 $country = (new Country())
             ->setIdentificationCode('NL');
 
@@ -94,7 +100,8 @@ $clientCompany = (new Party())
  ->setName('Client Company Name')
  ->setLegalEntity($clientLegalEntity)
  ->setPartyTaxScheme($clientPartyTaxScheme)
- ->setPostalAddress($address);
+ ->setPostalAddress($address)
+ ->setContact($clientContact);
 
 $legalMonetaryTotal = (new LegalMonetaryTotal())
  ->setPayableAmount(10 + 2.1)

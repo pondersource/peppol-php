@@ -73,6 +73,10 @@
     <cbc:RegistrationName>Client Company Name</cbc:RegistrationName>
     <cbc:CompanyID>Client Company Registration</cbc:CompanyID>
    </cac:PartyLegalEntity>
+   <cac:Contact>
+    <cbc:Name>Client name</cbc:Name>
+    <cbc:Telephone>908-99-74-74</cbc:Telephone>
+   </cac:Contact>
   </cac:Party>
  </cac:AccountingCustomerParty>
  <cac:Delivery>
@@ -150,5 +154,5 @@
 <ds:Signature xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
   <ds:SignedInfo><ds:CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#"/>
     <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"/>
-  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>SlxRAmF80xg3DLXzVMz7HRB5TUsz6HHm0eUNTGF6Zdk=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>JztKwAAL0e0spRshiu/84ka4jlnTiSFEBinzi6DhkXWrsZIOoyKe/cFwXUFUfHrCsMABs2XkT7xFi1OvpZY/4zi4LPNg8GRHM8iZ4fQaW++jo5iyVImgkBHnEFcqHx2/roFmeZPdXphBDCvF6HaIjAzlKItrhX3mNqouJV88QObmGNSQsCs9YOYGpjj+aw1vfvz8ANL9VEGGmB6p9Z50jRy6wPitEqsPGQ2CdSfE8ZwRy6K+e9wxYgVFByQErqid6IJ8SrABRRsT0VrstKTH8PwctzJQMa/EVdrE8ZMaTLHECybiBnHxTxiPo/tqtfBiZbq2oaDNIKwwsIo8BWQLjw==</ds:SignatureValue>
+  <ds:Reference><ds:Transforms><ds:Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature"/></ds:Transforms><ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"/><ds:DigestValue>p2o+xmTkcLt1tqtZel5+CQ+28Q+lFlN9OxlvMBtnIYM=</ds:DigestValue></ds:Reference></ds:SignedInfo><ds:SignatureValue>CIHnqZNKtKS9PEZ6em0v0WhUrjuezGQYcM2HTaRH1ES75B3lq3/HzsS7HiXAWhNohI0bVpqsaJZw8jwJ1d8ZtGlKPu9SzcgpU3GDaLUi3W3VVDYfVc8fQyPXgr1Tn0hAy71sc5GmkN/w5iyGA8300APLHqvWiaQuDkuifus5E+n9gf187e4d5FkaZ3bpB4j2//RBB3bHyCfJu3ZORB/hokt/0DK9jXeNy2KaDA1vdExol39/H2THoBC9+/wEb9BlHvUa80b35Gie+o5Z0ru2W3i7W5q3Pc/xtLFaSEvvXn6joeA3e68BwroiSAqC/+RRMWM05w0fkxDrti9DDddvfA==</ds:SignatureValue>
 <ds:KeyInfo><ds:X509Data/></ds:KeyInfo></ds:Signature></Invoice>
