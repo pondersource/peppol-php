@@ -160,7 +160,11 @@ $paymentTerms = (new PaymentTerms())
 
 // Delivery
 $deliveryLocation = (new PostalAddress())
-  ->setCountry($country);
+->setStreetName('Delivery street 2')
+->setAddionalStreetName('Building 56')
+->setCityName('Utreht')
+->setPostalZone('3521')
+->setCountry($country);
 
 $delivery = (new Delivery())
   ->setActualDeliveryDate(new \DateTime())
