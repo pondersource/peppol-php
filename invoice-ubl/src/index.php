@@ -229,5 +229,8 @@ $orderReference = (new OrderReference())
   //Use Deserialization
   //$service = new Sabre\Xml\Service();
   //$result = $service->parse($outputXMLString);
-  //print_r($result);
+  //foreach(array_keys($result) as $key){
+   //var_dump($result[$key]['name'] . ":" . $result[$key]['value']);
+  //}
+
   //exit;

@@ -29,7 +29,7 @@ class Invoice implements XmlSerializable
     private $legalMonetaryTotal;
     private $invoiceLines;
     private $allowanceCharges;
-    private $additionalDocumentReferences = [];
+    private $additionalDocumentReferences;
     private $documentCurrencyCode = 'EUR';
     private $buyerReference;
     private $accountingCostCode;
@@ -397,7 +397,7 @@ class Invoice implements XmlSerializable
      */
     public function getAdditionalDocumentReference(): ?AdditionalDocumentReference
     {
-        return $this->additionalDocumentReferences[0] ?? null;
+        return $this->additionalDocumentReferences;
     }
 
     /**
@@ -406,21 +406,9 @@ class Invoice implements XmlSerializable
      */
     public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReferences): Invoice
     {
-        $this->additionalDocumentReferences = [$additionalDocumentReferences];
+        $this->additionalDocumentReferences = $additionalDocumentReferences;
         return $this;
     }
-
-    /**
-     * @param AdditionalDocumentReference $additionalDocumentReference
-     * @return Invoice
-     */
-    public function addAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReferences): Invoice
-    {
-        $this->additionalDocumentReferences[] = $additionalDocumentReferences;
-        return $this;
-    }
-
-
 
     /**
      * @param string $buyerReference
@@ -652,12 +640,9 @@ class Invoice implements XmlSerializable
         }
 
         if (!empty($this->additionalDocumentReferences)) {
-            foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
                 $writer->write([
-                    Schema::CAC . 'AdditionalDocumentReference' => $additionalDocumentReference
+                    Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReferences
                 ]);
-            }
-           
         }
 
         if ($this->supplierAssignedAccountID !== null) {
