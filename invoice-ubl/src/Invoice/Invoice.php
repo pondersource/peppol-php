@@ -29,7 +29,7 @@ class Invoice implements XmlSerializable
     private $legalMonetaryTotal;
     private $invoiceLines;
     private $allowanceCharges;
-    private $additionalDocumentReference;
+    private $additionalDocumentReferences = [];
     private $documentCurrencyCode = 'EUR';
     private $buyerReference;
     private $accountingCostCode;
@@ -397,18 +397,30 @@ class Invoice implements XmlSerializable
      */
     public function getAdditionalDocumentReference(): ?AdditionalDocumentReference
     {
-        return $this->additionalDocumentReference;
+        return $this->additionalDocumentReferences[0] ?? null;
     }
 
     /**
      * @param AdditionalDocumentReference $additionalDocumentReference
      * @return Invoice
      */
-    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReference): Invoice
+    public function setAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReferences): Invoice
     {
-        $this->additionalDocumentReference = $additionalDocumentReference;
+        $this->additionalDocumentReferences = [$additionalDocumentReferences];
         return $this;
     }
+
+    /**
+     * @param AdditionalDocumentReference $additionalDocumentReference
+     * @return Invoice
+     */
+    public function addAdditionalDocumentReference(AdditionalDocumentReference $additionalDocumentReferences): Invoice
+    {
+        $this->additionalDocumentReferences[] = $additionalDocumentReferences;
+        return $this;
+    }
+
+
 
     /**
      * @param string $buyerReference
@@ -639,10 +651,13 @@ class Invoice implements XmlSerializable
             ]);
         }
 
-        if ($this->additionalDocumentReference !== null) {
-            $writer->write([
-                Schema::CAC . 'AdditionalDocumentReference' => $this->additionalDocumentReference
-            ]);
+        if (!empty($this->additionalDocumentReferences)) {
+            foreach ($this->additionalDocumentReferences as $additionalDocumentReference) {
+                $writer->write([
+                    Schema::CAC . 'AdditionalDocumentReference' => $additionalDocumentReference
+                ]);
+            }
+           
         }
 
         if ($this->supplierAssignedAccountID !== null) {

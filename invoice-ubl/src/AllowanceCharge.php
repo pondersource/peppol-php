@@ -159,7 +159,7 @@ class AllowanceCharge implements XmlSerializable {
 
         if($this->taxCategory !== null) {
             $writer->write([
-                Schema::CBC . 'TaxCategory' => $this->taxCategory
+                Schema::CAC . 'TaxCategory' => $this->taxCategory
             ]);
         }
 
