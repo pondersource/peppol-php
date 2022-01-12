@@ -1,6 +1,9 @@
 <?php
 
-class AdditionalDocumentReference {
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
+
+class AdditionalDocumentReference implements XmlSerializable {
     private $id;
     private $documentTypeCode;
     private $documentDescription;
@@ -62,6 +65,21 @@ class AdditionalDocumentReference {
      */
     public function setAttachMent(Attachment $attachment): AdditionalDocumentReference {
         $this->attachment = $attachment;
+    }
+
+    /**
+     * Serialize Document Referece 
+     */
+    public function xmlSerialize(Writer $writer) {
+        $writer->write([ Schema::CBC . 'ID' => $this->id ]);
+        if($this->documentTypeCode !== null) {
+            $writer->write([ Schema::CBC . 'DocumentTypeCode' => $this->documentTypeCode ]);
+        }
+
+        if($this->documentDescription !== null) {
+            $writer->write([ Schema::CBC . 'DocumentDescription' => $this->documentDescription ]);
+        }
+        $writer->write([ Schema::CAC . 'Attachment' => $this->attachment ]);
     }
 
 }

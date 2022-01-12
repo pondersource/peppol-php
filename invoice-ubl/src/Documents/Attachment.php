@@ -2,8 +2,10 @@
 
 use Exception;
 use InvalidArgumentException;
+use Sabre\Xml\Writer;
+use Sabre\Xml\XmlSerializable;
 
-class Attachment {
+class Attachment implements XmlSerializable {
     private $filePath;
     private $externalReference;
 
@@ -59,6 +61,32 @@ class Attachment {
 
         if ($this->filePath !== null && file_exists($this->filePath) === false) {
             throw new InvalidArgumentException('Attachment at filePath does not exist');
+        }
+    }
+
+    /**
+     * Serialize Attachment
+     */
+    public function xmlSerialize(Writer $writer)
+    {
+        if($this->filePath) {
+            $fileContents = base64_encode(file_get_contents($this->filePath));
+            $mime_type = $this->getFileMimeType();
+
+            $writer->write([
+                'name' => Schema::CBC . 'EmbeddedDocumentBinaryObject',
+                'values' => $fileContents,
+                'attributes' => [
+                    'mimeCode' => $mime_type,
+                    'fileName' => $this->filePath
+                ]
+            ]);
+        }
+        if ($this->externalReference) {
+            $writer->writeElement(
+                Schema::CAC . 'ExternalReference',
+                [ Schema::CBC . 'URI' => $this->externalReference ]
+            );
         }
     }
 }
