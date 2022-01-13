@@ -11,6 +11,12 @@ composer install
 cd /var/www/peppol-php/experiments/invoice-ubl/src
 ````
 
+
+### Run this to check if the tests for Invoice will pass
+````
+./vendor/bin/phpunit
+````
+
 ### And run to see how EN16931 standard will be work validation will be pass or not
 
 ````
