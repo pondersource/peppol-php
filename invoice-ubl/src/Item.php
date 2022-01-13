@@ -66,7 +66,8 @@ class Item implements XmlSerializable {
      * set sellers item identification
      */
     public function setSellersItemIdentification(?string $sellersItemIdentification): Item {
-        return $this->sellersItemIdentification;
+        $this->sellersItemIdentification = $sellersItemIdentification;
+        return $this;
     }
 
     /**
