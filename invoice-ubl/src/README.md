@@ -11,6 +11,36 @@
 composer install
 ````
 
+### Usage for show classes in Invoice that you will generate
+```php
+equire 'Account/Country.php';
+require 'Account/PostalAddress.php';
+require 'Party/Party.php';
+require 'Party/PartyTaxScheme.php';
+require 'Account/Contact.php';
+require 'Legal/LegalMonetaryTotal.php';
+require 'Party/TaxScheme.php';
+require 'Financial/FinancialInstitutionBranch.php';
+require 'Financial/PayeeFinancialAccount.php';
+require 'Payment/PaymentMeans.php';
+require 'Legal/LegalEntity.php';
+require 'Tax/ClassifiedTaxCategory.php';
+require 'Item.php';
+require 'Codes/UnitCode.php';
+require 'Payment/Price.php';
+require 'Tax/TaxTotal.php';
+require 'Tax/TaxSubTotal.php';
+require 'Tax/TaxCategory.php';
+require 'Invoice/InvoicePeriod.php';
+require 'Invoice/InvoiceLine.php';
+require 'Payment/PaymentTerms.php';
+require 'Account/Delivery.php';
+require 'Payment/OrderReference.php';
+require 'Invoice/Invoice.php';
+require 'Invoice/GenerateInvoice.php';
+require '../../xml-transaction/src/Signature/signature.php';
+require 'AllowanceCharge.php';
+```
 ### Usage for generating Invoice EN1691
 
 ```php
