@@ -1,5 +1,46 @@
 ## UBL Invoice
 
+### Requirements
+
+* PHP 7.2
+* composer
+
+### Usage for generating Invoice EN1691
+
+```php
+    include 'vendor/autoload.php';
+   // Invoice object
+   $invoice = (new Invoice())
+   ->setProfileID('urn:fdc:peppol.eu:2017')
+   ->setCustomazationID('urn:cen.eu:en16931:2017')
+   ->setId(1234)
+   ->setIssueDate(new \DateTime())
+   ->setNote('invoice note')
+   ->setAccountingCostCode('4217:2323:2323')
+   ->setDelivery($delivery)
+   ->setAccountingSupplierParty($supplierCompany)
+   ->setAccountingCustomerParty($clientCompany)
+   ->setInvoiceLines($invoiceLines)
+   ->setLegalMonetaryTotal($legalMonetaryTotal)
+   ->setPaymentTerms($paymentTerms)
+   //->setAllowanceCharges($allowanceCharge)
+   ->setInvoicePeriod($invoicePeriod)
+   ->setPaymentMeans($paymentMeans)
+   ->setByerReference('BUYER_REF')
+   ->setOrderReference($orderReference)
+   ->setTaxTotal($taxTotal);
+
+  $generateInvoice = new GenerateInvoice();
+  $outputXMLString = $generateInvoice->invoice($invoice);
+  $dom = new \DOMDocument;
+  $dom->loadXML($outputXMLString);
+  $sign = new Signature;
+  $sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
+  $signed_dom = $sign->createSignedXml($dom);
+  $signed_dom->save('EN16931Test.xml');
+
+```
+
 ### Installation 
 
 ````
@@ -21,12 +62,6 @@ cd /var/www/peppol-php/experiments/invoice-ubl/src
 
 ````
 php -S localhost:8080
-````
-
-### And run to see how ubl invoice work with XSD checking
-
-````
-php -S localhost:8080/ubl-invoice.php
 ````
 
 ### UBL Address and Attachment

@@ -211,7 +211,7 @@ $orderReference = (new OrderReference())
    ->setOrderReference($orderReference)
    ->setTaxTotal($taxTotal);
 
-   $generateInvoice = new GenerateInvoice();
+  $generateInvoice = new GenerateInvoice();
   $outputXMLString = $generateInvoice->invoice($invoice);
   $dom = new \DOMDocument;
   $dom->loadXML($outputXMLString);
@@ -227,8 +227,29 @@ $orderReference = (new OrderReference())
 
 
   //Use Deserialization
-  //$service = new Sabre\Xml\Service();
-  //$result = $service->parse($outputXMLString);
+  $service = new Sabre\Xml\Service();
+  $result = $service->parse($outputXMLString);
+  function flatten($array) {
+    if (!is_array($array)) {
+        // nothing to do if it's not an array
+        return array($array);
+    }
+
+    $res = array();
+    foreach ($array as $value) {
+        // explode the sub-array, and add the parts
+        $res = array_merge($res, flatten($value));
+    }
+
+    return $res;
+}
+
+foreach (flatten($result) as $value) {
+    $pattern = '/{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}/i';
+    
+    echo '<li>', preg_replace($pattern, '', $value), '</li>';
+}
+echo '<ul>';
   //foreach(array_keys($result) as $key){
    //var_dump($result[$key]['name'] . ":" . $result[$key]['value']);
   //}
