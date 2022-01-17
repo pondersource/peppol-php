@@ -27,6 +27,7 @@ require 'Invoice/Invoice.php';
 require 'Invoice/GenerateInvoice.php';
 require '../../xml-transaction/src/Signature/signature.php';
 require 'AllowanceCharge.php';
+require 'DeserializeInvoice.php';
 
 
  // Tax scheme
@@ -225,33 +226,6 @@ $orderReference = (new OrderReference())
   $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
   echo json_encode($response);
 
-
-  //Use Deserialization
-  $service = new Sabre\Xml\Service();
-  $result = $service->parse($outputXMLString);
-  function flatten($array) {
-    if (!is_array($array)) {
-        // nothing to do if it's not an array
-        return array($array);
-    }
-
-    $res = array();
-    foreach ($array as $value) {
-        // explode the sub-array, and add the parts
-        $res = array_merge($res, flatten($value));
-    }
-
-    return $res;
-}
-
-foreach (flatten($result) as $value) {
-    $pattern = '/{urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2}/i';
-    
-    echo '<li>', preg_replace($pattern, '', $value), '</li>';
-}
-echo '<ul>';
-  //foreach(array_keys($result) as $key){
-   //var_dump($result[$key]['name'] . ":" . $result[$key]['value']);
-  //}
-
-  //exit;
+ $deserialize = new DeserializeInvoice();
+ var_dump($deserialize->deserializeXML($outputXMLString));
+ exit;
