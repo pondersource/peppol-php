@@ -219,6 +219,7 @@ $orderReference = (new OrderReference())
   //$sign = new Signature;
   //$sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
   //$signed_dom = $sign->createSignedXml($dom);
+  //$signed_dom->save('EN16931Test.xml');
   $dom->save('EN16931Test.xml');
   // Use webservice at peppol.helger.com to verify the result
   $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
