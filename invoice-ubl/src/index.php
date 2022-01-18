@@ -216,10 +216,10 @@ $orderReference = (new OrderReference())
   $outputXMLString = $generateInvoice->invoice($invoice);
   $dom = new \DOMDocument;
   $dom->loadXML($outputXMLString);
-  $sign = new Signature;
-  $sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
-  $signed_dom = $sign->createSignedXml($dom);
-  $signed_dom->save('EN16931Test.xml');
+  //$sign = new Signature;
+  //$sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
+  //$signed_dom = $sign->createSignedXml($dom);
+  $dom->save('EN16931Test.xml');
   // Use webservice at peppol.helger.com to verify the result
   $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
   $client = new \SoapClient($wsdl);
