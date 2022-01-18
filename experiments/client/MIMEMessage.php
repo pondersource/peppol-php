@@ -24,15 +24,12 @@ class MIMEMessage {
 	function __construct($server){
 		$this->uri = $server;
 		$this->client = new Client(['base_uri' => $server]);
-<<<<<<< HEAD
 		$this->boundary = uniqid('----=MIMEBoundary_', true);
 		$messageId = uniqid('<', true);
 		$messageId = gethostname()?$messageId . '@' . gethostname() . '>':$messageId . '@pondersourcePeppol>';
 		$this->messageId = $messageId;
-=======
 		$this->boundary = uniqid("----=MIMEBoundary_", true);
 		$this->messageId = uniqid("MessageId:", true);
->>>>>>> Added classes and functions to generate requests like phase4-peppol-client
 		return $this;
 	}
 
@@ -43,16 +40,11 @@ class MIMEMessage {
 				$this->content .= "\n$header";
 			}
 		}
-<<<<<<< HEAD
 		$this->content .= "\n\n$payload";
-=======
-		$this->content .= "\n$payload";
->>>>>>> Added classes and functions to generate requests like phase4-peppol-client
 		return $this;
 	}
 
 	function prepareRequest(){
-<<<<<<< HEAD
 		$this->request = new Request('POST', 
 			$this->uri, 
 			[
@@ -63,9 +55,6 @@ class MIMEMessage {
 				'Content-Type' => 'multipart/related;	boundary="' . $this->boundary . '";	type="application/soap+xml";	charset=UTF-8'
 			], 
 			$this->content);
-=======
-		$this->request = new Request('POST', $this->uri, ['Message-Id' => $this->messageId, 'MIME-Version' => '1.0', 'Content-Type' => 'multipart/related;	boundary="' . $this->boundary . '";	type="application/soap+xml";	charset=UTF-8'], $this->content);
->>>>>>> Added classes and functions to generate requests like phase4-peppol-client
 	}
 
 	function send(){
@@ -129,19 +118,11 @@ function whatever(){
 	];
 	$soap = $service->write('S12:Envelope', $header);
 	$soapXml = new \DOMDocument();
-<<<<<<< HEAD
 	$soapXml->loadXML($soap, LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN);
 	$soapNormalized = '<?xml version="1.0" encoding="UTF-8"?>' . $soapXml->C14N($exclusive=true);
 	error_log($soapNormalized);
 	$message = (new MIMEMessage('http://localhost:8080/as4'))
 		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8', ['Content-Transfer-Encoding: 8bit'])
 		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Transfer-Encoding: base64','Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);
-=======
-	$soapXml->loadXML($soap);
-	$soapNormalized = $soapXml->C14N($exclusive=true);
-	$message = (new MIMEMessage('http://localhost:8080/as4'))
-		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8')
-		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);
->>>>>>> Added classes and functions to generate requests like phase4-peppol-client
 	$message->send();
 }

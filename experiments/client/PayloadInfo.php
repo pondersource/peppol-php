@@ -1,9 +1,6 @@
 <?php
 namespace PonderSource\Peppol;
-<<<<<<< HEAD
 require('./vendor/autoload.php');
-=======
->>>>>>> Added classes and functions to generate requests like phase4-peppol-client
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -41,11 +38,7 @@ class PayloadInfo implements XmlSerializable {
 		foreach($this->partProperties as $key => $value) {
 			array_push($res,[
 				'name' => $this::EBNS . 'Property', 
-<<<<<<< HEAD
 				'attributes' => [
-=======
-				'attribute' => [
->>>>>>> Added classes and functions to generate requests like phase4-peppol-client
 					'name' => $key,
 				],
 				'value' => $value,
