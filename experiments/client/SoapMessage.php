@@ -14,10 +14,12 @@ class SoapMessage implements XmlSerializable {
 
 	private ElectronicBusinessMessage $ebms;
 	private string $bodyId;
+	private string $messageId;
 
 	function __construct($ebms) {
 		$this->ebms = $ebms;
 		$this->bodyId = GUID();
+		$this->messageId = GUID();
 	}
 
 	function getEBMS(): ElectronicBusinessMessage {
@@ -33,10 +35,18 @@ class SoapMessage implements XmlSerializable {
 		return $this->bodyId;
 	}
 
+	function getMessageId(): string {
+		return $this->messageId;
+	}
+
 	function XmlSerialize(Writer $writer) {
 		$writer->write([
 			'{' . $this::S12 . '}Header' => [
-				'{' . $this::EB . '}Messaging' => $this->ebms
+				'name' => '{' . $this::EB . '}Messaging',
+				'attributes' => [
+					'{' . $this::WSU . '}Id' => $this->messageId,
+				],
+				'value' => $this->ebms,
 			],
 			[
 				'name' => '{' . $this::S12 . '}Body',
