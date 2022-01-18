@@ -24,8 +24,10 @@ class MIMEMessage {
 	function __construct($server){
 		$this->uri = $server;
 		$this->client = new Client(['base_uri' => $server]);
-		$this->boundary = uniqid("----=MIMEBoundary_", true);
-		$this->messageId = uniqid("MessageId:", true);
+		$this->boundary = uniqid('----=MIMEBoundary_', true);
+		$messageId = uniqid('<', true);
+		$messageId = gethostname()?$messageId . '@' . gethostname() . '>':$messageId . '@pondersourcePeppol>';
+		$this->messageId = $messageId;
 		return $this;
 	}
 
@@ -36,12 +38,21 @@ class MIMEMessage {
 				$this->content .= "\n$header";
 			}
 		}
-		$this->content .= "\n$payload";
+		$this->content .= "\n\n$payload";
 		return $this;
 	}
 
 	function prepareRequest(){
-		$this->request = new Request('POST', $this->uri, ['Message-Id' => $this->messageId, 'MIME-Version' => '1.0', 'Content-Type' => 'multipart/related;	boundary="' . $this->boundary . '";	type="application/soap+xml";	charset=UTF-8'], $this->content);
+		$this->request = new Request('POST', 
+			$this->uri, 
+			[
+				'Message-Id' => $this->messageId, 
+				'Accept-Encoding' => 'gzip,deflate', 
+				'Date' => (new \DateTime())->format('D, d M Y H:i:s O (T)'), 
+				'MIME-Version' => '1.0', 
+				'Content-Type' => 'multipart/related;	boundary="' . $this->boundary . '";	type="application/soap+xml";	charset=UTF-8'
+			], 
+			$this->content);
 	}
 
 	function send(){
@@ -105,10 +116,11 @@ function whatever(){
 	];
 	$soap = $service->write('S12:Envelope', $header);
 	$soapXml = new \DOMDocument();
-	$soapXml->loadXML($soap);
-	$soapNormalized = $soapXml->C14N($exclusive=true);
+	$soapXml->loadXML($soap, LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN);
+	$soapNormalized = '<?xml version="1.0" encoding="UTF-8"?>' . $soapXml->C14N($exclusive=true);
+	error_log($soapNormalized);
 	$message = (new MIMEMessage('http://localhost:8080/as4'))
-		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8')
-		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);
+		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8', ['Content-Transfer-Encoding: 8bit'])
+		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Transfer-Encoding: base64','Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);
 	$message->send();
 }
