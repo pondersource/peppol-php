@@ -194,3 +194,4 @@ openssl_encrypt(gzcompress($data),"aes-128-gcm",$key)
 - Canonicalization: c14n exclusive
 - Signing Parameters: Algorithm: RSA_SHA_256, Digest: DIGEST_SHA_256
 - Encryption Parameters: AlgorithmCrypt: AES_128_GCM, KeyEncAlgo: "http://www.w3.org/2009/xmlenc11#rsa-oaep", MGFAlgo: "http://www.w3.org/2009/xmlenc11#mgf1sha256", DigestAlgo: "http://www.w3.org/2001/04/xmlenc#sha256"
+```
