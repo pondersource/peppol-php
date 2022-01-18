@@ -7,6 +7,7 @@ require_once('ElectronicBusinessMessage.php');
 require_once('GUID.php');
 require_once('SoapMessage.php');
 require_once('PayloadInfo.php');
+require_once('../../xml-transaction/src/Signature/signature.php');
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Sabre\Xml\Writer;
@@ -82,8 +83,7 @@ function whatever(){
 	$payloadNormalized = $payloadXML->C14N($exclusive=true);
 	$payloadCompressed = gzcompress($payloadNormalized);
 	$payloadEncrypted = openssl_encrypt($payloadCompressed, 'aes-128-gcm', $publicPem, 0, openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-128-gcm')),$tag);
-	$header = new SoapMessage(
-		new ElectronicBusinessMessage(
+	$ebm = 	new ElectronicBusinessMessage(
 			new \DateTime(), 
 			'messageId-' . GUID() . '@pondersourcepeppol', 
 			$myId,
@@ -97,8 +97,8 @@ function whatever(){
 			$myId,
 			$recipient,
 			[ new PayloadInfo($payloadRef, ["MimeType" => "application/xml", "CompressionType" => "application/gzip"]) ]
-		)
 	);
+	$header = new SoapMessage($ebm);
 	$service = new Service();
 	$service->namespaceMap = [
 		'http://www.w3.org/2003/soap-envelope' => 'S12',
@@ -117,6 +117,17 @@ function whatever(){
 	$soap = $service->write('S12:Envelope', $header);
 	$soapXml = new \DOMDocument();
 	$soapXml->loadXML($soap, LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN);
+	$sign = new \Signature();
+	$referenceTransformMap = [
+		$soapXml->getElementById($header->getMessageId()) => [
+			'http://www.w3.org/2001/10/xml-exc-c14n#',
+		],
+		$soapXml->getElementById($header->getBodyId()) => [
+			'http://www.w3.org/2001/10/xml-exc-c14n#',
+		],
+		$payloadEncrypted => 'http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform'
+	];
+	$soapXml = $sign->addSignatures($soapXml, $referenceTransformMap);
 	$soapNormalized = '<?xml version="1.0" encoding="UTF-8"?>' . $soapXml->C14N($exclusive=true);
 	error_log($soapNormalized);
 	$message = (new MIMEMessage('http://localhost:8080/as4'))
