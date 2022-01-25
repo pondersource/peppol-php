@@ -100,10 +100,10 @@ function whatever(){
 			$recipient,
 			[ new PayloadInfo($payloadRef, ["MimeType" => "application/xml", "CompressionType" => "application/gzip"]) ]
 	);
-	$header = new SoapMessage($ebm);
+	$header = new SoapMessage($ebm, $keypair);
 	$service = new Service();
 	$service->namespaceMap = [
-		'http://www.w3.org/2003/soap-envelope' => 'S12',
+		'http://www.w3.org/2003/05/soap-envelope' => 'S12',
 		'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd' => 'wsse',
 		'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd' => 'wsu',
 		'http://www.w3.org/2001/04/xmlenc#' => 'xenc',
@@ -116,22 +116,12 @@ function whatever(){
 		'http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0' => 'ebbp',
 		'http://www.w3.org/1999/xlink' => 'xlink',
 	];
+	$service->options = LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN;
 	$soap = $service->write('S12:Envelope', $header);
 	$soapXml = new \DOMDocument();
 	$soapXml->loadXML($soap, LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN);
-	$sign = new \Signature();
-	$referenceTransformMap = [
-		$soapXml->getElementById($header->getMessageId()) => [
-			'http://www.w3.org/2001/10/xml-exc-c14n#',
-		],
-		$soapXml->getElementById($header->getBodyId()) => [
-			'http://www.w3.org/2001/10/xml-exc-c14n#',
-		],
-		$payloadEncrypted => 'http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform'
-	];
-	$soapXml = $sign->addSignatures($soapXml, $referenceTransformMap);
 	$soapNormalized = '<?xml version="1.0" encoding="UTF-8"?>' . $soapXml->C14N($exclusive=true);
-	error_log($soapNormalized);
+	file_put_contents('debug.xml',$soapNormalized);
 	$message = (new MIMEMessage('http://localhost:8080/as4'))
 		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8', ['Content-Transfer-Encoding: 8bit'])
 		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Transfer-Encoding: base64','Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);

@@ -1,13 +1,55 @@
 <?php
-
+namespace PonderSource\Peppol;
+require_once('vendor/autoload.php');
+require_once('GUID.php');
+use Sabre\Xml\Writer;
+use Sabre\XML\XmlSerializable;
 class WSSE implements XmlSerializable {
-    private $encryptionSecurityToken;
-    private $encryptedKey;
-    private $encryptedData;
-    private $signatureSecurityToken;
-    private $signature;
 
-    public function __construct(){}
+	const WSSE = '{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd}';
+	const WSU = '{http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd}';
+    const XENC = '{http://www.w3.org/2001/04/xmlenc#}';
+    const DS = '{http://www.w3.org/2000/09/xmldsig#}';
+    const XENC11 = '{http://www.w3.org/2009/xmlenc11#}';
+    const WSSE11 = '{http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd}';
+    const EC = '{http://www.w3.org/2001/10/xml-exc-c14n#}';
+
+    private $encryptionSecurityToken = 'encryptionSecurityToken';
+    private $encryptionSecurityTokenId;
+    private $encryptedKey = 'encryptedKey';
+    private $encryptedKeyId;
+    private $encryptedData = 'encryptedData';
+    private $cipherValue = 'cipherValue';
+    private $encryptedDataId;
+    private $signatureSecurityToken = 'signatureSecurityToken';
+    private $signature = 'signature';
+    private $signatureId;
+    private $signatureKeyInfoId;
+    private $signatureTokenId;
+    private $signatureKey;
+    private $signatureKeyId;
+    private $digests = [];
+    private $cipherValues = [];
+    private $myKey;
+
+    public function __construct($myKey){
+        $this->encryptionSecurityTokenId = 'G' . GUID();
+        $this->encryptedKeyId = 'EK-' . GUID();
+        $this->encryptedDataId = 'ED-' . GUID();
+        $this->signatureId = 'SIG-' . GUID();
+        $this->signatureKeyInfoId = 'KI-' . GUID();
+        $this->signatureTokenId = 'STR-' . GUID();
+        $this->signatureKeyId = 'X509-' . GUID();
+        $this->myKey = $myKey;
+        $this->signatureKey = openssl_pkey_get_details($myKey)['key'];
+        $this->digests = [['name' => $this::DS . 'CanonicalizationMethod',
+                           'attributes' => ['Algorithm' => 'http://www.w3.org/2001/10/xml-exc-c14n#'],
+                           'value' => ['name' => $this::EC . 'InclusiveNamespaces',
+                                       'attributes' => ['PrefixList' => 'S12']]],
+                          ['name' => $this::DS . 'SignatureMethod',
+                           'attributes' => ['Algorithm' => 'http:/www.w3.org/2001/04/xmldsig-more-rsa-sha256']]];
+        $this->generateSignature();
+    }
     public function xmlSerialize(Writer $writer){
         $writer->write(
             [
@@ -37,7 +79,7 @@ class WSSE implements XmlSerializable {
                             'attributes' => [
                                 'Algorithm' => 'http://www.w3.org/2009/xmlenc11#rsa-oaep',
                             ],
-                            value => [
+                            'value' => [
                                 [
                                     'name' => $this::DS . 'DigestMethod',
                                     'attributes' => [
@@ -45,7 +87,7 @@ class WSSE implements XmlSerializable {
                                     ],
                                 ],
                                 [
-                                    'name' => $this:XENC11 . 'MGF',
+                                    'name' => $this::XENC11 . 'MGF',
                                     'attributes' => [
                                         'Algorithm' => 'http://www.w3.org/2009/xmlenc11#mgf1sha256'
                                     ],
@@ -86,7 +128,7 @@ class WSSE implements XmlSerializable {
                 [
                     'name' => $this::XENC . 'EncryptedData',
                     'attributes' => [
-                        'URI' => $this->encryptedDataId,
+                        'Id' => $this->encryptedDataId,
                         'MimeType' => 'application/xml',
                         'Type' => 'http://docs.oasis-open.org/wss/oasis-wss/SwAProfile-1.1#Attachment-Content-Only',
                     ],
@@ -108,7 +150,6 @@ class WSSE implements XmlSerializable {
                                     'name' => $this::WSSE . 'Reference',
                                     'attributes' => [
                                         'URI' => '#' . $this->encryptedKeyId,
-                                        'ValueType' => 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3',
                                     ],
                                 ],
                             ],
@@ -116,8 +157,7 @@ class WSSE implements XmlSerializable {
                         [
                             'name' => $this::XENC . 'CipherData',
                             'value' => [
-                                'name' => $this::XENC . 'CipherValue',
-                                'value' => $this->cipherValue,
+                                $this->cipherValues,
                             ],
                         ],
                     ],
@@ -126,11 +166,15 @@ class WSSE implements XmlSerializable {
                     'name' => $this::WSSE . 'BinarySecurityToken',
                     'attributes' => [
                         'EncodingType' => 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary',
-                        'ValueType' => 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3'
+                        'ValueType' => 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3',
                         $this::WSU . 'Id' => $this->signatureKeyId,
                     ],
                     'value' => [
-                        $this->signatureKey,
+                        str_replace("\n",
+                                    '',
+                                    substr($this->signatureKey,
+                                           strlen('-----BEGIN PUBLIC KEY----- '),
+                                           strlen('-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----'))) . '==',
                     ],
                 ],
                 [
@@ -142,24 +186,6 @@ class WSSE implements XmlSerializable {
                         [
                             'name' => $this::DS . 'SignedInfo',
                             'value' => [
-                                [
-                                    'name' => $this::DS . 'CanonicalizationMethod',
-                                    'attributes' => [
-                                        'Algorithm' => 'http://www.w3.org/2001/10/xml-exc-c14n#',
-                                    ],
-                                    'value' => [
-                                        'name' => $this::EC . 'InclusiveNamespaces',
-                                        'attributes' => [
-                                            'PrefixList' => 'S12',
-                                        ],
-                                    ],
-                                ],
-                                [
-                                    'name' => $this::DS . 'SignatureMethod',
-                                    'attributes' => [
-                                        'Algorithm' => 'http:/www.w3.org/2001/04/xmldsig-more-rsa-sha256',
-                                    ],
-                                ],
                                 $this->digests,
                             ],
                         ],
@@ -182,14 +208,39 @@ class WSSE implements XmlSerializable {
                                     'attributes' => [
                                         'URI' => '#' . $this->signatureKeyId,
                                         'ValueType' => 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3',
-                                    ]]]]]]]]);
+                                    ]]]]]]]]]);
     }
-    public function addReference(DOMNode $node, string $transformCallback='noopNormalize', string $digestCallback='sha256Digest'){
+    public function addNodeReference(DOMNode $node, string $transformCallback='noopNormalize', string $digestCallback='sha256Digest'){
         $uri = '#' . $node->getAttributeNS($namespace, 'Id');
-        $digestInfo = $digestCallback($transformCallback($node));
-        $digestValue = $digestInfo['value'];
-        $digestTransform = $digestInfo['transform'];
-        $signature->addReference($digestValue, $digestTransform);
+        addReference($uri, $node, $transformCallback, $digestCallback);
+    }
+    public function addAttachmentReference($data, string $transformCallback='noopNormalize', string $digestCallback='sha256Digest'){
+        addReference($data['uri'], $data['payload'], $transformCallback, $digestCallback);
+    }
+    public function addReference($reference, $data, $transformCallback, $digestCallback){
+        $digestInfo = $digestCallback($transformCallback($data));
+        $digests.append([
+            'name' => $this::DS . 'Reference',
+            'attributes' => [
+                'URI' => $reference,
+            ],
+            'value' => [
+                $this::DS . 'Transforms' => [
+                    'name' => $this::DS . 'Transform',
+                    'attributes' => [
+                        'Algorithm' => $digestInfo['transform'],
+                    ],
+                ],
+                [
+                    'name' => $this::DS . 'DigestMethod',
+                    'attributes' => [
+                        'Algorithm' => $digestInfo['algorithm'],
+                    ],
+                ],
+                $this::DS . 'DigestValue' => $digestInfo['value'],
+            ],
+        ]);
+        $this->generateSignature();
     }
     public function c14neNormalize(DOMNode $node){
         return [
@@ -203,11 +254,41 @@ class WSSE implements XmlSerializable {
             'transform' => 'http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform',
             ];
     }
-    public function sha256Digest(string $data){
+    public function sha256Digest(array $data){
         return [
             'value' => base64_encode(openssl_digest($data['value'], 'sha256', true)),
             'transform' => $data['transform'],
+            'algorithm' => 'http://www.w3.org/2001/04/xmlenc#sha256',
         ];
     }
+    public function serializedDigests(){
+        $writer = new \Sabre\Xml\Writer();
+        $writer->openMemory();
+        $writer->options = LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN;
+        $writer->namespaceMap = [
+            'http://www.w3.org/2003/05/soap-envelope' => 'S12',
+            'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd' => 'wsse',
+            'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd' => 'wsu',
+            'http://www.w3.org/2001/04/xmlenc#' => 'xenc',
+            'http://www.w3.org/2000/09/xmldsig#' => 'ds',
+            'http://www.w3.org/2009/xmlenc11#' => 'xenc11',
+            'http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd' => 'wsse11',
+            'http://www.w3.org/2001/10/xml-exc-c14n#' => 'ec',
+            'http://schemas.xmlsoap.org/soap/envelope/' => 'S11',
+            'http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/' => 'eb',
+            'http://docs.oasis-open.org/ebxml-bp/ebbp-signals-2.0' => 'ebbp',
+            'http://www.w3.org/1999/xlink' => 'xlink',
+        ];
+        $writer->setIndent(false);
+        $writer->writeElement($this::DS . 'SignedInfo', $this->digests);
+        $str = $writer->outputMemory();
+        return $str;
+    }
+    public function generateSignature(){
+        $data = $this->serializedDigests();
+        $key = $this->signatureKey;
+        $binSig = '';
+        openssl_sign($data, $binSig, openssl_pkey_get_private($this->myKey), OPENSSL_ALGO_SHA256);
+        $this->signature = base64_encode($binSig);
+    }
 }
-
