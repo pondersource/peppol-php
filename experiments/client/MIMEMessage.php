@@ -29,8 +29,6 @@ class MIMEMessage {
 		$messageId = uniqid('<', true);
 		$messageId = gethostname()?$messageId . '@' . gethostname() . '>':$messageId . '@pondersourcePeppol>';
 		$this->messageId = $messageId;
-		$this->boundary = uniqid("----=MIMEBoundary_", true);
-		$this->messageId = uniqid("MessageId:", true);
 		return $this;
 	}
 
