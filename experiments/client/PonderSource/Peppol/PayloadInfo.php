@@ -1,6 +1,6 @@
 <?php
 namespace PonderSource\Peppol;
-require('./vendor/autoload.php');
+
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -37,7 +37,7 @@ class PayloadInfo implements XmlSerializable {
 		$res = [];
 		foreach($this->partProperties as $key => $value) {
 			array_push($res,[
-				'name' => $this::EBNS . 'Property', 
+				'name' => $this::EBNS . 'Property',
 				'attributes' => [
 					'name' => $key,
 				],
@@ -48,7 +48,7 @@ class PayloadInfo implements XmlSerializable {
 	}
 	function xmlSerialize(Writer $writer){
 		$writer->write([
-			'name' => $this::EBNS . 'PayloadInfo',
+			'name' => $this::EBNS . 'PartInfo',
 			'attributes' => [
 				'href' => $this->id,
 			],

@@ -127,3 +127,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# composer
+composer.phar
+/vendor/
+*/vendor/
+*/*/vendor/
+*/*/*/vendor/

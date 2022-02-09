@@ -1,9 +1,8 @@
 <?php
 namespace PonderSource\Peppol;
-require_once('vendor/autoload.php');
-require_once('ElectronicBusinessMessage.php');
-require_once('GUID.php');
-require_once('WSSE.php');
+
+use PonderSource\Peppol\{ElectronicBusinessMessage,WSSE};
+use PonderSource\Peppol\Utils\GUID;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -19,11 +18,11 @@ class SoapMessage implements XmlSerializable {
 	private string $bodyId;
 	private string $messageId;
 
-	function __construct($ebms, $signatureKey) {
-		$this->security = new WSSE($signatureKey);
+	function __construct($ebms, $signatureKey, $encryptedKeys, $targetCertificate) {
+		$this->security = new WSSE($signatureKey, $encryptedKeys, $targetCertificate);
 		$this->ebms = $ebms;
-		$this->bodyId = GUID();
-		$this->messageId = GUID();
+		$this->bodyId = GUID::getNew();
+		$this->messageId = GUID::getNew();
 	}
 
 	function getEBMS(): ElectronicBusinessMessage {

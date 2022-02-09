@@ -1,4 +1,19 @@
 {
+	"name": "pondersource/peppol",
+	"description": "A Peppol/AS4 implementation in php",
+	"version": "0.1",
+	"authors": [
+		{
+			"name": "brokkoli",
+			"email": "benz.schenk@brokkoli.be"
+		}
+	],
+	"autoload": {
+		"psr-4": {
+			"PonderSource\\Peppol\\":
+			"PonderSource/Peppol"
+		}
+	},
     "require": {
         "robrichards/xmlseclibs": "^3.1",
         "guzzlehttp/guzzle": "^7.4",

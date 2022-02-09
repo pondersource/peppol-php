@@ -1,7 +1,7 @@
 <?php
 namespace PonderSource\Peppol;
-require_once('vendor/autoload.php');
-require_once('GUID.php');
+
+use PonderSource\Peppol\Utils\GUID;
 use Sabre\Xml\Writer;
 use Sabre\XML\XmlSerializable;
 class WSSE implements XmlSerializable {
@@ -14,15 +14,12 @@ class WSSE implements XmlSerializable {
     const WSSE11 = '{http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd}';
     const EC = '{http://www.w3.org/2001/10/xml-exc-c14n#}';
 
-    private $encryptionSecurityToken = 'encryptionSecurityToken';
+    private $encryptionSecurityToken;
     private $encryptionSecurityTokenId;
-    private $encryptedKey = 'encryptedKey';
     private $encryptedKeyId;
-    private $encryptedData = 'encryptedData';
-    private $cipherValue = 'cipherValue';
+    private $cipherValue;
     private $encryptedDataId;
-    private $signatureSecurityToken = 'signatureSecurityToken';
-    private $signature = 'signature';
+    private $signature;
     private $signatureId;
     private $signatureKeyInfoId;
     private $signatureTokenId;
@@ -32,15 +29,19 @@ class WSSE implements XmlSerializable {
     private $cipherValues = [];
     private $myKey;
 
-    public function __construct($myKey){
-        $this->encryptionSecurityTokenId = 'G' . GUID();
-        $this->encryptedKeyId = 'EK-' . GUID();
-        $this->encryptedDataId = 'ED-' . GUID();
-        $this->signatureId = 'SIG-' . GUID();
-        $this->signatureKeyInfoId = 'KI-' . GUID();
-        $this->signatureTokenId = 'STR-' . GUID();
-        $this->signatureKeyId = 'X509-' . GUID();
+    public function __construct($myKey, $encryptedKeys, $targetCertificate){
+        $this->encryptionSecurityTokenId = 'G' . GUID::getNew();
+        $this->encryptedKeyId = 'EK-' . GUID::getNew();
+        $this->encryptedDataId = 'ED-' . GUID::getNew();
+        $this->signatureId = 'SIG-' . GUID::getNew();
+        $this->signatureKeyInfoId = 'KI-' . GUID::getNew();
+        $this->signatureTokenId = 'STR-' . GUID::getNew();
+        $this->signatureKeyId = 'X509-' . GUID::getNew();
+		openssl_x509_export($targetCertificate[0], $targetCertificateString);
+		$targetCertificateString = $this->stripCertificateString($targetCertificateString);
+		$this->encryptionSecurityToken = $targetCertificateString;
         $this->myKey = $myKey;
+		$this->cipherValue = base64_encode($encryptedKeys[0]);
         $this->signatureKey = openssl_pkey_get_details($myKey)['key'];
         $this->digests = [['name' => $this::DS . 'CanonicalizationMethod',
                            'attributes' => ['Algorithm' => 'http://www.w3.org/2001/10/xml-exc-c14n#'],
@@ -169,13 +170,7 @@ class WSSE implements XmlSerializable {
                         'ValueType' => 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3',
                         $this::WSU . 'Id' => $this->signatureKeyId,
                     ],
-                    'value' => [
-                        str_replace("\n",
-                                    '',
-                                    substr($this->signatureKey,
-                                           strlen('-----BEGIN PUBLIC KEY----- '),
-                                           strlen('-----BEGIN PUBLIC KEY----- -----END PUBLIC KEY-----'))) . '==',
-                    ],
+                    'value' => $this->stripCertificateString($this->signatureKey),
                 ],
                 [
                     'name' => $this::DS . 'Signature',
@@ -291,4 +286,13 @@ class WSSE implements XmlSerializable {
         openssl_sign($data, $binSig, openssl_pkey_get_private($this->myKey), OPENSSL_ALGO_SHA256);
         $this->signature = base64_encode($binSig);
     }
+	public function stripCertificateString($certstring) {
+		$arr = explode("\n", $certstring);
+		foreach($arr as $k => $e) {
+			if(str_starts_with($e, '-')){
+				$arr[$k] = '';
+			}
+		}
+		return implode($arr);
+	}
 }

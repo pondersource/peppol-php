@@ -1,7 +1,7 @@
 <?php
 namespace PonderSource\Peppol;
-require_once('vendor/autoload.php');
-require_once('PayloadInfo.php');
+
+use PonderSource\Peppol\PayloadInfo;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
@@ -21,17 +21,17 @@ class ElectronicBusinessMessage implements XmlSerializable {
 	private string $finalRecipient;
 	private array $payloadInfo;
 
-	function __construct(\DateTime $timestamp, 
-					     string $id, 
-						 string $partyIdFrom, 
-						 string $partyRoleFrom, 
-						 string $partyIdTo, 
-						 string $partyRoleTo, 
-						 string $agreementRef, 
-						 string $service, 
-						 string $action, 
-						 string $conversationId, 
-						 string $originalSender, 
+	function __construct(\DateTime $timestamp,
+					     string $id,
+						 string $partyIdFrom,
+						 string $partyRoleFrom,
+						 string $partyIdTo,
+						 string $partyRoleTo,
+						 string $agreementRef,
+						 string $service,
+						 string $action,
+						 string $conversationId,
+						 string $originalSender,
 						 string $finalRecipient,
 						 array $payloadInfo)
 	{
@@ -155,7 +155,7 @@ class ElectronicBusinessMessage implements XmlSerializable {
 				$this::EBNS . "PartyInfo" => [
 					$this::EBNS . "From" => [
 						[
-							'name' => $this::EBNS . "PartyId",  
+							'name' => $this::EBNS . "PartyId",
 							'attributes' => [
 								'type' => 'urn:fdc:peppol.eu:2017:identifiers:ap',
 							],
@@ -165,7 +165,7 @@ class ElectronicBusinessMessage implements XmlSerializable {
 					],
 					$this::EBNS . "To" => [
 						[
-							'name' => $this::EBNS . "PartyId",  
+							'name' => $this::EBNS . "PartyId",
 							'attributes' => [
 								'type' => 'urn:fdc:peppol.eu:2017:identifiers:ap',
 							],
@@ -174,7 +174,7 @@ class ElectronicBusinessMessage implements XmlSerializable {
 						$this::EBNS . "Role" => $this->partyRoleTo,
 					],
 				],
-				$this::EBNS . "CollaboriationInfo" => [
+				$this::EBNS . "CollaborationInfo" => [
 					$this::EBNS . "AgreementRef" => $this->agreementRef,
 					[
 						'name' => $this::EBNS . "Service",
