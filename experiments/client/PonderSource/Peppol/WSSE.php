@@ -27,9 +27,10 @@ class WSSE implements XmlSerializable {
     private $signatureKeyId;
     private $digests = [];
     private $cipherValues = [];
+    private $cipherReferences = [];
     private $myKey;
 
-    public function __construct($myKey, $encryptedKeys, $targetCertificate){
+    public function __construct($myKey, $encryptedKeys, $targetCertificate, $attachments=[]){
         $this->encryptionSecurityTokenId = 'G' . GUID::getNew();
         $this->encryptedKeyId = 'EK-' . GUID::getNew();
         $this->encryptedDataId = 'ED-' . GUID::getNew();
@@ -48,7 +49,10 @@ class WSSE implements XmlSerializable {
                            'value' => ['name' => $this::EC . 'InclusiveNamespaces',
                                        'attributes' => ['PrefixList' => 'S12']]],
                           ['name' => $this::DS . 'SignatureMethod',
-                           'attributes' => ['Algorithm' => 'http:/www.w3.org/2001/04/xmldsig-more-rsa-sha256']]];
+                           'attributes' => ['Algorithm' => 'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256']]];
+        foreach($attachments as $attachment) {
+            $this->addAttachmentReference($attachment);
+        }
         $this->generateSignature();
     }
     public function xmlSerialize(Writer $writer){
@@ -112,7 +116,7 @@ class WSSE implements XmlSerializable {
                             'name' => $this::XENC . 'CipherData',
                             'value' => [
                                 'name' => $this::XENC . 'CipherValue',
-                                'value' => $this->cipherValue
+                                'value' => $this->cipherValue,
                             ],
                         ],
                         [
@@ -158,7 +162,7 @@ class WSSE implements XmlSerializable {
                         [
                             'name' => $this::XENC . 'CipherData',
                             'value' => [
-                                $this->cipherValues,
+                                $this->cipherReferences,
                             ],
                         ],
                     ],
@@ -207,20 +211,36 @@ class WSSE implements XmlSerializable {
     }
     public function addNodeReference(DOMNode $node, string $transformCallback='noopNormalize', string $digestCallback='sha256Digest'){
         $uri = '#' . $node->getAttributeNS($namespace, 'Id');
-        addReference($uri, $node, $transformCallback, $digestCallback);
+        $this->addReference($uri, $node, $transformCallback, $digestCallback);
     }
     public function addAttachmentReference($data, string $transformCallback='noopNormalize', string $digestCallback='sha256Digest'){
-        addReference($data['uri'], $data['payload'], $transformCallback, $digestCallback);
+        $this->addReference($data['uri'], $data['payload'], $transformCallback, $digestCallback);
+        array_push($this->cipherReferences, [
+            'name' => $this::XENC . 'CipherReference',
+            'attributes' => [
+                'URI' => $data['uri']
+            ],
+            'value' => [
+                'name' => $this::XENC . 'Transforms',
+                'value' => [
+                    'name' => $this::DS . 'Transform',
+                    'attributes' => [
+                        'Algorithm' => 'http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Ciphertext-Transform'
+                    ]
+                ]
+            ]
+        ]);
     }
     public function addReference($reference, $data, $transformCallback, $digestCallback){
-        $digestInfo = $digestCallback($transformCallback($data));
-        $digests.append([
+        $digestInfo = $this->$digestCallback($this->$transformCallback($data));
+        $digest = [
             'name' => $this::DS . 'Reference',
             'attributes' => [
                 'URI' => $reference,
             ],
             'value' => [
-                $this::DS . 'Transforms' => [
+                'name' => $this::DS . 'Transforms',
+                'value' => [
                     'name' => $this::DS . 'Transform',
                     'attributes' => [
                         'Algorithm' => $digestInfo['transform'],
@@ -234,7 +254,8 @@ class WSSE implements XmlSerializable {
                 ],
                 $this::DS . 'DigestValue' => $digestInfo['value'],
             ],
-        ]);
+        ];
+        array_push($this->digests,$digest);
         $this->generateSignature();
     }
     public function c14neNormalize(DOMNode $node){
@@ -289,7 +310,7 @@ class WSSE implements XmlSerializable {
 	public function stripCertificateString($certstring) {
 		$arr = explode("\n", $certstring);
 		foreach($arr as $k => $e) {
-			if(str_starts_with($e, '-')){
+			if(strstr($e[0], '-')){
 				$arr[$k] = '';
 			}
 		}

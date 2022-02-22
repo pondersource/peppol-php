@@ -18,7 +18,7 @@ function sendRequest($targetServer,
 					 $action='busdox-docid-qns::urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1'){
 	$tag;
 	$myId = 'pondersourceTestClient' . GUID::getNew();
-	$payloadRef = 'cid:pondersourcepeppol-att-' . GUID::getNew() . '@cid';
+	$payloadRef = 'pondersourcepeppol-att-' . GUID::getNew() . '@cid';
 	$payloadNormalized = $payload->C14N($exclusive=true);
 	$payloadCompressed = gzcompress($payloadNormalized);
 	$payloadEncrypted;
@@ -40,7 +40,7 @@ function sendRequest($targetServer,
 			$recipientId,
 			[ new PayloadInfo($payloadRef, ["MimeType" => "application/xml", "CompressionType" => "application/gzip"]) ]
 	);
-	$header = new SoapMessage($ebm, $privateKey, $encryptedKeys, $targetCertificate);
+	$header = new SoapMessage($ebm, $privateKey, $encryptedKeys, $targetCertificate, [['uri' => $payloadRef, 'data' => $payloadEncrypted]]);
 	$service = new Sabre\XML\Service();
 	$service->namespaceMap = [
 		'http://www.w3.org/2003/05/soap-envelope' => 'S12',

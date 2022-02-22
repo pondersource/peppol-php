@@ -18,11 +18,20 @@ class SoapMessage implements XmlSerializable {
 	private string $bodyId;
 	private string $messageId;
 
-	function __construct($ebms, $signatureKey, $encryptedKeys, $targetCertificate) {
-		$this->security = new WSSE($signatureKey, $encryptedKeys, $targetCertificate);
+	function __construct($ebms, $signatureKey, $encryptedKeys, $targetCertificate, $attachments = []) {
+		$this->security = new WSSE($signatureKey, $encryptedKeys, $targetCertificate, $attachments);
 		$this->ebms = $ebms;
 		$this->bodyId = GUID::getNew();
 		$this->messageId = GUID::getNew();
+	}
+
+	function getSecurity(): WSSE {
+		return $this->security;
+	}
+
+	function setSecurity($security): SoapMessage {
+		$this->security = $security;
+		return $this;
 	}
 
 	function getEBMS(): ElectronicBusinessMessage {
