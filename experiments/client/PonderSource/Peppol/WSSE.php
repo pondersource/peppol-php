@@ -134,7 +134,7 @@ class WSSE implements XmlSerializable {
                     'name' => $this::XENC . 'EncryptedData',
                     'attributes' => [
                         'Id' => $this->encryptedDataId,
-                        'MimeType' => 'application/xml',
+                        'MimeType' => 'application/gzip',
                         'Type' => 'http://docs.oasis-open.org/wss/oasis-wss/SwAProfile-1.1#Attachment-Content-Only',
                     ],
                     'value' => [
@@ -214,7 +214,7 @@ class WSSE implements XmlSerializable {
         $this->addReference($uri, $node, $transformCallback, $digestCallback);
     }
     public function addAttachmentReference($data, string $transformCallback='noopNormalize', string $digestCallback='sha256Digest'){
-        $this->addReference($data['uri'], $data['payload'], $transformCallback, $digestCallback);
+        $this->addReference($data['uri'], $data['data'], $transformCallback, $digestCallback);
         array_push($this->cipherReferences, [
             'name' => $this::XENC . 'CipherReference',
             'attributes' => [
@@ -236,14 +236,16 @@ class WSSE implements XmlSerializable {
         $digest = [
             'name' => $this::DS . 'Reference',
             'attributes' => [
-                'URI' => $reference,
+                'URI' => '#' . $reference,
             ],
             'value' => [
-                'name' => $this::DS . 'Transforms',
-                'value' => [
-                    'name' => $this::DS . 'Transform',
-                    'attributes' => [
-                        'Algorithm' => $digestInfo['transform'],
+                [
+                    'name' => $this::DS . 'Transforms',
+                    'value' => [
+                        'name' => $this::DS . 'Transform',
+                        'attributes' => [
+                            'Algorithm' => $digestInfo['transform'],
+                        ],
                     ],
                 ],
                 [
@@ -271,10 +273,13 @@ class WSSE implements XmlSerializable {
             ];
     }
     public function sha256Digest(array $data){
+        $value = \base64_encode(\openssl_digest($data['value'], 'sha256', true));
+        $transform = $data['transform'];
+        $algorithm = 'http://www.w3.org/2001/04/xmlenc#sha256';
         return [
-            'value' => base64_encode(openssl_digest($data['value'], 'sha256', true)),
-            'transform' => $data['transform'],
-            'algorithm' => 'http://www.w3.org/2001/04/xmlenc#sha256',
+            'value' =>  $value,
+            'transform' => $transform,
+            'algorithm' => $algorithm,
         ];
     }
     public function serializedDigests(){
@@ -310,7 +315,7 @@ class WSSE implements XmlSerializable {
 	public function stripCertificateString($certstring) {
 		$arr = explode("\n", $certstring);
 		foreach($arr as $k => $e) {
-			if(strstr($e[0], '-')){
+			if($e && strstr($e[0], '-')){
 				$arr[$k] = '';
 			}
 		}
