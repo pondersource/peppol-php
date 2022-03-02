@@ -2,15 +2,12 @@
 
 namespace PonderSource\Peppol;
 
-use PonderSource\Peppol\SoapMessage;
-use PonderSource\Peppol\PayloadInfo;
-use PonderSource\Peppol\ElectronicBusinessMessage;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Sabre\Xml\Writer;
 use Sabre\Xml\Service;
 
-class MIMEMessage {
+class MIME {
 	private $boundary;
 	private $content;
 	private $request;
@@ -58,12 +55,14 @@ class MIMEMessage {
 		try {
 			$response = $this->client->send($this->request);
 			$xmlstring = $response->getBody();
-			$doc = new \DOMDocument();
+			print($xmlstring);
+/*			$doc = new \DOMDocument();
 			$doc->preserveWhiteSpace = false;
 			$doc->formatOutput = true;
 			$doc->loadXML($xmlstring);
 			$out = $doc->saveXML();
 			print('<pre>' . $out . '</pre>');
+			*/
 		} catch(Exception $e) {
 			error_log($e);
 		}

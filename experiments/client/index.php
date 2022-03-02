@@ -2,7 +2,7 @@
 
 require __DIR__ . '/vendor/autoload.php';
 
-use PonderSource\Peppol\{MIMEMessage, ElectronicBusinessMessage, PayloadInfo, SoapMessage};
+use PonderSource\Peppol\{MIME, EBMS, PayloadInfo, SOAP};
 use PonderSource\Peppol\Utils\GUID;
 
 $privateKey;
@@ -25,7 +25,7 @@ function sendRequest($targetServer,
 	$encryptedKeys;
 	$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-128-gcm'));
 	openssl_seal($payloadCompressed, $payloadEncrypted, $encryptedKeys, $targetCertificate, 'aes-128-gcm', $iv);
-	$ebm = 	new ElectronicBusinessMessage(
+	$ebm = 	new EBMS(
 			new \DateTime(), 
 			'messageId-' . GUID::getNew() . '@pondersourcepeppol', 
 			$myId,
@@ -40,7 +40,7 @@ function sendRequest($targetServer,
 			$recipientId,
 			[ new PayloadInfo($payloadRef, ["MimeType" => "application/xml", "CompressionType" => "application/gzip"]) ]
 	);
-	$header = new SoapMessage($ebm, $privateKey, $encryptedKeys, $targetCertificate, [['uri' => $payloadRef, 'data' => $payloadEncrypted]]);
+	$header = new SOAP($ebm, $privateKey, $encryptedKeys, $targetCertificate, [['uri' => $payloadRef, 'data' => $payloadEncrypted]]);
 	$service = new Sabre\XML\Service();
 	$service->namespaceMap = [
 		'http://www.w3.org/2003/05/soap-envelope' => 'S12',
@@ -62,7 +62,7 @@ function sendRequest($targetServer,
 	$soapXml->loadXML($soap, LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN);
 	$soapNormalized = '<?xml version="1.0" encoding="UTF-8"?>' . $soapXml->C14N($exclusive=true);
 	file_put_contents('debug.xml',$soapNormalized);
-	$message = (new MIMEMessage('http://localhost:8080/as4'))
+	$message = (new MIME('http://localhost:8080/as4'))
 		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8', ['Content-Transfer-Encoding: binary'])
 		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Transfer-Encoding: binary','Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);
 	$message->send();

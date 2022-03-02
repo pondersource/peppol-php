@@ -1,12 +1,12 @@
 <?php
 namespace PonderSource\Peppol;
 
-use PonderSource\Peppol\{ElectronicBusinessMessage,WSSE};
+use PonderSource\Peppol\{EBMS,WSSE};
 use PonderSource\Peppol\Utils\GUID;
 use Sabre\Xml\Writer;
 use Sabre\Xml\XmlSerializable;
 
-class SoapMessage implements XmlSerializable {
+class SOAP implements XmlSerializable {
 
 	const S12 = 'http://www.w3.org/2003/05/soap-envelope';
 	const WSU = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd';
@@ -14,7 +14,7 @@ class SoapMessage implements XmlSerializable {
 	const WSSE = 'http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd';
 
 	private WSSE $security;
-	private ElectronicBusinessMessage $ebms;
+	private EBMS $ebms;
 	private string $bodyId;
 	private string $messageId;
 
@@ -29,16 +29,16 @@ class SoapMessage implements XmlSerializable {
 		return $this->security;
 	}
 
-	function setSecurity($security): SoapMessage {
+	function setSecurity($security): SOAP {
 		$this->security = $security;
 		return $this;
 	}
 
-	function getEBMS(): ElectronicBusinessMessage {
+	function getEBMS(): EBMS {
 		return $this->ebms;
 	}
 
-	function setEBMS($ebms): SoapMessage {
+	function setEBMS($ebms): SOAP {
 		$this->ebms = $ebms;
 		return $this;
 	}
