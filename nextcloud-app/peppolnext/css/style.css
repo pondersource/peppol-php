@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app-content-wrapper {
+	height: 100%;
+}
+
+#editor {
+	height: 100%;
+	width: 100%;
+}
+
+#editor .input {
+	height: calc(100% - 51px);
+	width: 100%;
+}
+
+#editor .save {
+	height: 50px;
+	width: 100%;
+	text-align: center;
+	border-top: 1px solid #ccc;
+	background-color: #fafafa;
+}
+
+#editor textarea {
+	height: 100%;
+	width: 100%;
+	border: 0;
+	margin: 0;
+	border-radius: 0;
+	overflow-y: auto;
+}
+
+#editor button {
+	height: 44px;
+}
+
+div.row{
+	display: flex;
+}
+div.col-1{
+	flex: .1;
+}
+div.col-2{
+	flex: .2;
+}
+div.col-3{
+	flex: .3;
+}
+div.col-4{
+	flex: .4;
+}
+
+div.col-5{
+	flex: .5;
+}
+div.col-6{
+	flex: .6;
+}
+div.col-7{
+	flex: .7;
+}
+div.col-8{
+	flex: .8;
+}
+div.col-9{
+	flex: .9;
+}
+div.col-10{
+	flex: 1;
+}
+input{
+	width: 100%;
+}
+textarea{
+	width: 100%;
+}
+table{
+	width: 100%;
+}
+
+.data-list td {
+	text-align: center;
+	padding: 1%;
+	font-size: 14pt;
+	border-bottom: darkgrey 1px solid;
+}

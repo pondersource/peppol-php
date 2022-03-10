@@ -1,0 +1,14 @@
+- open two nextcloud hosts with different ports one for sender and one for receiver
+- query from peppol directiry
+- add a peppol member to your contacts 
+- show the contact that is added recently to your contact app
+- add a peppol next direct address to added contact
+- create an invoice and send it to receiver
+- show the invoice file inside the list of sent Items
+- show the file in file app in sender nextcloud
+- show the file in file app in receiver next cloud
+- show the notification in receiver peppol next app
+- show the item in new receicd invoices
+- mark as read the received invoice
+- show the file in file browser of nextcloud
+- show the file
