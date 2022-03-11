@@ -24,6 +24,7 @@ function sendRequest($targetServer,
 	$payloadEncrypted;
 	$encryptedKeys;
 	$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-128-gcm'));
+	file_put_contents('.iv', $iv);
 	openssl_seal($payloadCompressed, $payloadEncrypted, $encryptedKeys, $targetCertificate, 'aes-128-gcm', $iv);
 	$ebm = 	new EBMS(
 			new \DateTime(), 
@@ -65,11 +66,16 @@ function sendRequest($targetServer,
 	$message = (new MIME('http://localhost:8080/as4'))
 		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8', ['Content-Transfer-Encoding: binary'])
 		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Transfer-Encoding: binary','Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);
-	$message->send();
+	return $message->send();
 }
 
-$certfile = file_get_contents('test-ap.crt');
-$targetCertificate = [openssl_x509_read($certfile)];
+$certfile = file_get_contents('test-ap-2021.p12');
+$readCert = openssl_pkcs12_read($certfile, $targetKey, 'peppol');
+if($readCert) {
+	$targetCertificate = $targetKey;
+} else {
+	exit;
+}
 $payload = new \DOMDocument();
 $payload->load('base-example.xml');
 $recipientId = 'recipient-id-test-phase4';

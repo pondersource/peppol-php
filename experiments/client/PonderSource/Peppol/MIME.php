@@ -55,14 +55,7 @@ class MIME {
 		try {
 			$response = $this->client->send($this->request);
 			$xmlstring = $response->getBody();
-			print($xmlstring);
-/*			$doc = new \DOMDocument();
-			$doc->preserveWhiteSpace = false;
-			$doc->formatOutput = true;
-			$doc->loadXML($xmlstring);
-			$out = $doc->saveXML();
-			print('<pre>' . $out . '</pre>');
-			*/
+			return $xmlstring;
 		} catch(Exception $e) {
 			error_log($e);
 		}
