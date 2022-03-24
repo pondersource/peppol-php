@@ -38,7 +38,7 @@ class WSSE implements XmlSerializable {
         $this->signatureKeyInfoId = 'KI-' . GUID::getNew();
         $this->signatureTokenId = 'STR-' . GUID::getNew();
         $this->signatureKeyId = 'X509-' . GUID::getNew();
-		openssl_x509_export($targetCertificate[0], $targetCertificateString);
+		openssl_x509_export($targetCertificate, $targetCertificateString);
 		$targetCertificateString = $this->stripCertificateString($targetCertificateString);
 		$this->encryptionSecurityToken = $targetCertificateString;
         $this->myKey = $myKey;

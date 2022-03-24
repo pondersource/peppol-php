@@ -25,14 +25,14 @@ class MIME {
 		return $this;
 	}
 
-	function addAttachment($payload, $contentType="application/octet-stream", $additionalHeaders=[]){
+	function addAttachment($attachment, $contentType="application/octet-stream", $additionalHeaders=[]){
 		$this->content .= "\r\n--$this->boundary\r\nContent-Type: $contentType";
 		if($additionalHeaders){
 			foreach($additionalHeaders as $header){
 				$this->content .= "\r\n$header";
 			}
 		}
-		$this->content .= "\r\n\r\n$payload";
+		$this->content .= "\r\n\r\n$attachment";
 		return $this;
 	}
 

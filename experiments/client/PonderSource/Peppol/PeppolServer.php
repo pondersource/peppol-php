@@ -30,6 +30,7 @@ class PeppolServer {
         foreach($this->attachments as $attachment){
             $this->parseAttachment($attachment);
         }
+        $this->decryptData();
     }
 
     function parseAttachment($a) {
@@ -46,7 +47,7 @@ class PeppolServer {
                 if(!isset($headers[$key])){
                     $headers[$key] = \trim($value);
                 }
-            } else if(isset($headers['Content-Type']) && \trim($lines[$n] !== '--')){
+            } else if(isset($headers['Content-Type']) && \trim($lines[$n] !== '--' && \trim($lines[$n] !== ''))){
                 array_push($rest, $lines[$n]);
             }
             $n++;
@@ -60,7 +61,6 @@ class PeppolServer {
             if($headers['Content-Description'] === 'Attachment'){
                 if($headers['Content-ID'] === '<' . $this->encryptedData['DataReference'] . '>'){
                     $this->encryptedData['Data'] = $rest;
-                    $this->decryptData();
                 }
             }
         }
@@ -231,10 +231,50 @@ class PeppolServer {
         $this->encryptedKey = $key;
     }
     function decryptData(){
-        error_log('decrypting data');
-        openssl_pkcs12_read(file_get_contents('test-ap-2021.p12'), $certificates, 'peppol');
+        $privateKey = \file_get_contents('keys/private.key');
+        $privateKey = \openssl_pkey_get_private($privateKey);
         $iv = file_get_contents('/home/eru/development/pondersource/peppol-php/experiments/client/.iv');
-        $success = openssl_open($this->encryptedData['Data'], $decryptedData, $this->encryptedKey['Value'],$certificates['pkey'],'aes-128-gcm',$iv);
-        var_dump($success);
+        $success = openssl_open($this->encryptedData['Data'], $decryptedData, $this->encryptedKey['Value'],$privateKey,'aes-128-gcm',$iv);
+        var_dump($success, $this->encryptedData, $this->encryptedKey, $privateKey, $iv);
+    }
+
+    function initialSetup($key=null, $ca=null){
+        if(\file_exists('keys/private.key') && \file_exists('keys/public.pem')){
+            $privateKey = \file_get_contents('keys/private.key');
+            $privateKey = \openssl_pkey_get_private($privateKey);
+            $publicKey = \file_get_contents('keys/public.pem');
+            $publicKey = \openssl_x509_read($publicKey);
+            return ($publicKey && $privateKey);
+        }
+        if($key===null){
+            $privateKey = \openssl_pkey_new(
+                [
+                    'digest_alg' => 'sha256',
+                    'private_key_bits' => 2048,
+                    'private_key_type' => OPENSSL_KEYTYPE_RSA,
+                ]
+            );
+            $success = \openssl_pkey_export_to_file($privateKey, 'keys/private.key');
+            $csr = \openssl_csr_new([], $privateKey);
+            $cert = \openssl_csr_sign($csr,$ca,$privateKey,90);
+            $success &= \openssl_x509_export_to_file($cert, 'keys/public.pem');
+            /*
+            $publicKey = \openssl_pkey_get_details($privateKey);
+            $success &= \file_put_contents('keys/public.key', $publicKey['key']);
+            */
+            \openssl_free_key($privateKey);
+            return ($success);
+        } else {
+            $success = \openssl_pkey_export_to_file($key, 'keys/private.key');
+            $csr = \openssl_csr_new([],$key);
+            $cert = \openssl_csr_sign($csr,$ca,$privateKey,90);
+            $success &= \openssl_x509_export_to_file($cert, 'keys/public.pem');
+            /*
+            $publicKey = \openssl_pkey_get_details($privateKey);
+            $success &= \file_put_contents('keys/public.key', $publicKey['key']);
+            */
+            \openssl_free_key($key);
+            return ($success);
+        }
     }
 }

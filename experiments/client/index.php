@@ -4,12 +4,12 @@ require __DIR__ . '/vendor/autoload.php';
 
 use PonderSource\Peppol\{MIME, EBMS, PayloadInfo, SOAP};
 use PonderSource\Peppol\Utils\GUID;
+use GuzzleHttp\Client;
 
 $privateKey;
 $certificate;
 
 function sendRequest($targetServer, 
-                     $targetCertificate, 
 					 $privateKey, 
 					 $payload, 
 					 $recipientId, 
@@ -25,7 +25,8 @@ function sendRequest($targetServer,
 	$encryptedKeys;
 	$iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length('aes-128-gcm'));
 	file_put_contents('.iv', $iv);
-	openssl_seal($payloadCompressed, $payloadEncrypted, $encryptedKeys, $targetCertificate, 'aes-128-gcm', $iv);
+	$targetCertificate = getTargetCertificate($targetServer);
+	$length = openssl_seal($payloadCompressed, $payloadEncrypted, $encryptedKeys, [openssl_pkey_get_details(openssl_pkey_get_public($targetCertificate))['key']], 'aes-128-gcm', $iv);
 	$ebm = 	new EBMS(
 			new \DateTime(), 
 			'messageId-' . GUID::getNew() . '@pondersourcepeppol', 
@@ -63,26 +64,29 @@ function sendRequest($targetServer,
 	$soapXml->loadXML($soap, LIBXML_NOBLANKS | LIBXML_COMPACT | LIBXML_NSCLEAN);
 	$soapNormalized = '<?xml version="1.0" encoding="UTF-8"?>' . $soapXml->C14N($exclusive=true);
 	file_put_contents('debug.xml',$soapNormalized);
-	$message = (new MIME('http://localhost:8080/as4'))
+	$message = (new MIME($targetServer . '/as4'))
 		->addAttachment($soapNormalized, 'application/soap+xml;charset=UTF-8', ['Content-Transfer-Encoding: binary'])
 		->addAttachment($payloadEncrypted, 'application/octet-stream',['Content-Transfer-Encoding: binary','Content-Description: Attachment', 'Content-ID: <' . $payloadRef . '>']);
 	return $message->send();
 }
 
-$certfile = file_get_contents('test-ap-2021.p12');
-$readCert = openssl_pkcs12_read($certfile, $targetKey, 'peppol');
-if($readCert) {
-	$targetCertificate = $targetKey;
-} else {
-	exit;
+function getTargetCertificate($url){
+	$client = new Client();
+	$response = $client->request('GET', $url . '/key');
+	$key = $response->getBody();
+	$targetCertificate = openssl_x509_read($key);
+	return $targetCertificate;
 }
+
 $payload = new \DOMDocument();
 $payload->load('base-example.xml');
 $recipientId = 'recipient-id-test-phase4';
 $agreementReference = '1';
-$privateKey = openssl_pkey_new();
+$privateKey = file_get_contents('keys/private.key');
+$privateKey = openssl_pkey_get_private($privateKey);
 
-$out = sendRequest('http://localhost:8080/as4', $targetCertificate, $privateKey, $payload, $recipientId, $agreementReference);
+$out = sendRequest('http://localhost:8080', $privateKey, $payload, $recipientId, $agreementReference);
 print('<xmp>' . $out . '</xmp>');
+
 
 ?>
