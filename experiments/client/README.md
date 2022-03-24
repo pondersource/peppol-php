@@ -24,12 +24,3 @@
 21. Prepend [BST2] to [sec]
 22. Generate MIME Message with Part 1 being [soap] and Part 2 being [payload] making sure that the Content-ID MIME Header is set to the cid used to reference [cid] within the SOAP Header
 23. Send
-
-```
-$soapMessage = new SOAP();
-
-$mime = new MIME();
-$mime.addPart($soapMessage);
-$mime.addPart($payload);
-
-```
