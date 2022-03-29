@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<info xmlns:xsi= "http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+    <id>peppolnext</id>
+    <name>Peppol for nextcloud</name>
+    <summary>app for connecting to peppol network</summary>
+    <description><![CDATA[This is a tutorial app for taking notes to demonstrate the Nextcloud API]]></description>
+    <version>18.0.0</version>
+    <licence>agpl</licence>
+    <author mail="navid.pdp11@gmail.com" >Navid Shokri</author>
+    <namespace>PeppolNext</namespace>
+    <category>Integration</category>
+    <bugs>https://github.com/pondersource</bugs>
+    <dependencies>
+        <nextcloud min-version="19" max-version="22"/>
+    </dependencies>
+    <navigations>
+        <navigation>
+            <name>Peppol Next</name>
+            <route>peppolnext.page.index</route>
+        </navigation>
+    </navigations>
+</info>

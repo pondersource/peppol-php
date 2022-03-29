@@ -27,6 +27,7 @@ require 'Invoice/Invoice.php';
 require 'Invoice/GenerateInvoice.php';
 require '../../xml-transaction/src/Signature/signature.php';
 require 'AllowanceCharge.php';
+require 'DeserializeInvoice.php';
 
 
  // Tax scheme
@@ -211,26 +212,21 @@ $orderReference = (new OrderReference())
    ->setOrderReference($orderReference)
    ->setTaxTotal($taxTotal);
 
-   $generateInvoice = new GenerateInvoice();
+  $generateInvoice = new GenerateInvoice();
   $outputXMLString = $generateInvoice->invoice($invoice);
   $dom = new \DOMDocument;
   $dom->loadXML($outputXMLString);
-  $sign = new Signature;
-  $sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
-  $signed_dom = $sign->createSignedXml($dom);
-  $signed_dom->save('EN16931Test.xml');
+  //$sign = new Signature;
+  //$sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
+  //$signed_dom = $sign->createSignedXml($dom);
+  //$signed_dom->save('EN16931Test.xml');
+  $dom->save('EN16931Test.xml');
   // Use webservice at peppol.helger.com to verify the result
   $wsdl = "http://peppol.helger.com/wsdvs?wsdl=1";
   $client = new \SoapClient($wsdl);
-  $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.1']);
+  $response = $client->validate(['XML' => $outputXMLString, 'VESID' => 'eu.cen.en16931:ubl:1.3.7']);
   echo json_encode($response);
 
-
-  //Use Deserialization
-  //$service = new Sabre\Xml\Service();
-  //$result = $service->parse($outputXMLString);
-  //foreach(array_keys($result) as $key){
-   //var_dump($result[$key]['name'] . ":" . $result[$key]['value']);
-  //}
-
-  //exit;
+ $deserialize = new DeserializeInvoice();
+ var_dump($deserialize->deserializeXML($outputXMLString));
+ exit;
