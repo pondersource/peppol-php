@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<S12:Envelope xmlns:S12="http://www.w3.org/2003/05/soap-envelope">
+    <S12:Header>
+        <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" S12:mustUnderstand="true">
+        </wsse:Security>
+        <eb:Messaging xmlns:eb="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" wsu:Id="e8f595b7-7370-4879-bf4e-c2a687867f20">
+            <eb:UserMessage>
+                <eb:MessageInfo>
+                    <eb:Timestamp>2022-03-29T10:08:14.226+01:00</eb:Timestamp>
+                    <eb:MessageId>SomeMessageId-123</eb:MessageId>
+                </eb:MessageInfo>
+                <eb:PartyInfo>
+                    <eb:From>
+                        <eb:PartyId type="urn:fdc:peppol.eu:2017:identifiers:ap">SenderPartyId</eb:PartyId>
+                        <eb:Role>http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/initiator</eb:Role>
+                    </eb:From>
+                    <eb:To>
+                        <eb:PartyId type="urn:fdc:peppol.eu:2017:identifiers:ap">ReceiverPartyId</eb:PartyId>
+                        <eb:Role>http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/responder</eb:Role>
+                    </eb:To>
+                </eb:PartyInfo>
+                <eb:CollaboriationInfo>
+                    <eb:AgreementRef>urn:fdc:peppol.eu:2017:agreements:tia:ap_provider</eb:AgreementRef>
+                    <eb:Service type="cenbii-procid-ubl">urn:fdc:peppol.eu:2017:poacc:billing:01:1.0</eb:Service>
+                    <eb:Action>busdox-docid-qns::urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1</eb:Action>
+                    <eb:ConversationId>ConversationId-123</eb:ConversationId>
+                </eb:CollaboriationInfo>
+                <eb:MessageProperties>
+                    <eb:Property name="originalSender" type="iso6523-actorid-upis">1234:test</eb:Property>
+                    <eb:Property name="finalRecipient" type="iso6523-actorid-upis">2345:test</eb:Property>
+                </eb:MessageProperties>
+                <eb:PayloadInfo>
+                    <eb:PayloadInfo href="cid:payloadUri@cid">
+                        <eb:PartProperties>
+                            <eb:Property name="MimeType">application/xml</eb:Property>
+                            <eb:Property name="CompressionType">application/gzip</eb:Property>
+                        </eb:PartProperties>
+                    </eb:PayloadInfo>
+                </eb:PayloadInfo>
+            </eb:UserMessage>
+        </eb:Messaging>
+    </S12:Header>
+    <S12:Body xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+    wsu:Id="SOAPBodyId-123"></S12:Body>
+</S12:Envelope>

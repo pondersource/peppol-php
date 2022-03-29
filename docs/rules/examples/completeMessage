@@ -1,0 +1,22 @@
+User-Agent: SomeUserAgent
+Host: {Hostname}
+Message-Id: <messageId@Hostname>
+Content-Length: {ContentLength}
+Date: {DateTime}
+MIME-Version: 1.0
+Content-Type: multipart/related;	boundary="--=MIMEBoundary_123";	type="application/soap+xml";	charset=UTF-8
+
+
+----=MIMEBoundary_123
+Content-Type: application/soap+xml;charset=UTF-8
+Content-Transfer-Encoding: binary
+
+<?xml version="1.0" encoding="UTF-8"?><S12:Envelope>...</S12:Envelope>
+----=MIMEBoundary_123
+Content-Type: application/octet-stream
+Content-Transfer-Encoding: binary
+Content-Description: Attachment
+Content-ID: <payloadUri@cid>
+
+...[nonce][aesGcmEncrypt(encryptionKey, nonce, tag, gzip(c14nExclusive(base-example.xml)))][tag]
+----=MIMEBoundary_123--
