@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<S12:Envelope xmlns:S12="http://www.w3.org/2003/05/soap-envelope">
+    <S12:Header></S12:Header>
+    <S12:Body></S12:Body>
+</S12:Envelope>
