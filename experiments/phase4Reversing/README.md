@@ -11,7 +11,7 @@ copy it into resources folder, for good measure i just put it into all of them :
 for d in $(find -type d -name 'resources'); do cp test-ap-2021.p12 $d; done;
 ```
 
-Then in phase4/phase4-peppol/client run src/test/java/com/helger/phase4/peppol/MainPhase4PeppolSender.java in a debugger, setting a breakpoint in AbstractAS4UserMessageBuilderMIMEPayload.java on line 118 so you can change the value of m_sEndpointURL to "http://localhost:8080/as4" (this value is parsed from an xml that you get from the smp server, so you cannot change it in config or anything afaik, hence using a debugger), so it will send a request to the phase4-peppol-server-webapp.
+Then in phase4/phase4-peppol-client run src/test/java/com/helger/phase4/peppol/MainPhase4PeppolSender.java in a debugger, setting a breakpoint in AbstractAS4UserMessageBuilderMIMEPayload.java on line 118 so you can change the value of m_sEndpointURL to "http://localhost:8080/as4" (this value is parsed from an xml that you get from the smp server, so you cannot change it in config or anything afaik, hence using a debugger), so it will send a request to the phase4-peppol-server-webapp.
 
 the resulting request is then stored by the server in phase4-data and can be inspected. (see ./phase4-data/*)
 
