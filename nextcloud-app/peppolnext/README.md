@@ -11,16 +11,14 @@ To install it change into your Nextcloud's apps directory:
 
     cd nextcloud/apps
 
-Then run:
-
-    git clone https://github.com/nextcloud/app-tutorial.git notestutorial
+Then copy `peppolnext` folder into apps folder :
 
 Then install the dependencies using:
 
     make composer
 
 ## Frontend development
-
+**npm version 7.0 is required. you can use `nvm` to enable npm version switch easily.**
 The app tutorial also shows the very basic implementation of an app frontend using [Vue.js](https://vuejs.org/). To build the frontend code after doing changes to its source in `src/` requires to have Node and npm installed.
 
 - 👩‍💻 Run `make dev-setup` to install the frontend dependencies
