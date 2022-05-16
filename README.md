@@ -34,5 +34,11 @@ sender (c1) -(https)-> receiver (c4)
 
 Our implementation will allow both the sender and the receiver to publish their identity at a well-known URL, under the company domain names as linked in the XML invoice.
 
+# Install
 
-
+* set up a Nextcloud server
+* cd /var/www/html/apps
+* git clone https://github.com/pondersource/peppol-php
+* ln -s peppol-php/nextcloud-app/peppolnext
+* cd peppolnext
+* composer install
