@@ -1,10 +1,12 @@
 <template>
 	<div>
 		<div class="header">
-			<div class="amount-header">Amount</div>
-			<div class="vat-header">Vat</div>
+			<div class="row-number-header">#</div>
+			<div class="title-header">Title</div>
+			<div class="fee-header">Fee</div>
+			<div class="quantity-header">Quantity</div>
 			<div class="total-header">Total</div>
-
+			<div class="description-header">Description</div>
 		</div>
 		<div id="item-container" v-for="(obj, index) in rows" v-bind:key="index">
 			<InvoiceItem
@@ -44,9 +46,11 @@ export default {
 	data() {
 		return {
 			rows: [{
-				amount: 0,
-				vat: 0,
+				title: '',
+				quantity: 0,
+				description: '',
 				totalPrice: 0,
+				fee: 0,
 			}],
 			sumOfItems: 0,
 		}
@@ -59,9 +63,11 @@ export default {
 	methods: {
 		addItem: function() {
 			this.rows.push({
-				amount: 0,
-				vat: 0,
+				title: '',
+				quantity: 0,
+				description: '',
 				totalPrice: 0,
+				fee: 0,
 			})
 		},
 		calculateSum: function() {
@@ -94,16 +100,27 @@ export default {
 	.header{
 		display: flex;
 	}
-	.amount-header {
+	.row-number-header {
+		text-align: center;
+	}
+	.title-header {
 		flex: 0.2;
 		text-align: center;
 	}
-	.vat-header {
+	.fee-header {
+		flex: 0.1;
+		text-align: center;
+	}
+	.quantity-header {
 		flex: 0.1;
 		text-align: center;
 	}
 	.total-header {
 		flex: 0.1;
+		text-align: center;
+	}
+	.description-header {
+		flex: 0.4;
 		text-align: center;
 	}
 	.footer{
