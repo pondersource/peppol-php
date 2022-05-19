@@ -14,7 +14,7 @@
 			</div>
 			<div class="row">
 				<div class="col-8">
-					<label for="cmb-recipient">Recipient</label>
+					<label for="cmb-recipient">Peppol ID or WebID</label>
 					<v-select id="cmb-recipient"
 						v-model="message.recipient"
 						class="fullwidth"
@@ -48,17 +48,7 @@
 					<label for="txt-subject">Subject</label>
 					<input id="txt-subject"
 						v-model="message.subject"
-						type="text"> </input>
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-10">
-					<label for="txt-message">Message</label>
-					<textarea
-						id="txt-message"
-						v-model="message.body"
-						placeholder="type your message"
-						rows="1" />
+						type="text"> input>
 				</div>
 			</div>
 			<div class="row">
@@ -70,7 +60,7 @@
 			</div>
 			<div class="row">
 				<div class="col-10">
-					<label for="file">Choose a XML file</label>
+					<label for="file">Upload Invoice</label>
 					<input id="file"
 						type="file"
 						placeholder="Choose a file or drop it here..."
@@ -122,16 +112,12 @@ export default {
 			options: [],
 			mediaOptions: [
 				{
-					text: 'AS4 direct',
-					value: 'AS4Direct',
+					text: 'AS4',
+					value: 'AS4',
 				},
 				{
-					text: 'Peppol classic',
-					value: 'PeppolClassic',
-				},
-				{
-					text: 'Peppol Next',
-					value: 'PeppolNext',
+					text: 'Peppol',
+					value: 'Peppol',
 				},
 			],
 			message: {

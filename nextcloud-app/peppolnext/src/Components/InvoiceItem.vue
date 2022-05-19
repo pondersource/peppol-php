@@ -1,41 +1,19 @@
 <template>
 	<div class="item-body">
 		<div class="row-number">{{rowNumber}}</div>
-		<div class="title">
+		<div class="amount">
 			<input
 				@change="notifyDataChange"
-				placeholder="Title"
-				v-model="invoiceItem.title">
+				placeholder="Amount"
+				v-model="invoiceItem.amount">
 		</div>
-		<div class="fee">
+		<div class="vat">
 			<input
 				@change="notifyDataChange"
 				type="number"
 				step="0.01"
-				placeholder="Fee"
-				v-model="invoiceItem.fee">
-		</div>
-		<div class="quantity">
-			<input
-				@change="notifyDataChange"
-				type="number"
-				placeholder="Quantity"
-				v-model="invoiceItem.quantity">
-		</div>
-		<div class="total">
-			<input
-				type="number"
-				step="0.001"
-				@change="notifyDataChange"
-				readonly="true"
-				placeholder="Total"
-				v-model="price">
-		</div>
-		<div class="description">
-			<input
-				@change="notifyDataChange"
-				placeholder="description"
-				v-model="invoiceItem.description">
+				placeholder="Vat"
+				v-model="invoiceItem.vat">
 		</div>
 		<div>
 			<button type="button" @click="notifyRowDeleted">-</button>
@@ -55,17 +33,14 @@ export default {
 	data() {
 		return {
 			invoiceItem: {
-				title: '',
-				quantity: 0,
-				description: '',
-				totalPrice: 0,
-				fee: 0
+				amount: 0,
+				vat: 0,
 			}
 		}
 	},
 	computed: {
 		price: function() {
-			return this.invoiceItem.quantity * this.invoiceItem.fee
+			return this.invoiceItem.amount + ((this.invoiceItem.vat/100) * this.invoiceItem.amount)
 		}
 	},
 	methods: {

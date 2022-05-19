@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<h1> {{ $route.params.category }} page</h1>
 		<div class="row">
 			<div class="col-1" />
 			<div class="col-8">
