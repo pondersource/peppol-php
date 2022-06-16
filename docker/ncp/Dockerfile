@@ -13,7 +13,9 @@ RUN mv server html
 WORKDIR /var/www/html
 ENV PHP_MEMORY_LIMIT="512M"
 ADD init.sh /init.sh
-RUN git clone --depth=1 https://github.com/pondersource/nc-sciencemesh apps/sciencemesh
-RUN cd apps/sciencemesh && git pull
-RUN cd apps/sciencemesh && make
+RUN git clone --depth=1 https://github.com/pondersource/peppol-php peppol-php
+RUN ln -s ../peppol-php/nextcloud-app/contactapi apps/contactapi
+RUN ln -s ../peppol-php/nextcloud-app/peppolnext apps/peppolnext
+RUN cd apps/peppolnext && git pull
+RUN cd apps/peppolnext && make
 USER root
