@@ -12,4 +12,5 @@ $dom->loadXML($XMLString);
 $sign = new Signature;
 $sign->GenerateKeyPair(OPENSSL_KEYTYPE_RSA);
 $sign->createSignedXml($dom,'signed_EN16931Test.xml');
+echo "check signed_EN16931Test.xml\n";
 ?>

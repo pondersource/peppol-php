@@ -24,7 +24,7 @@ class Signature{
 		file_put_contents('public_key.pem', $public_key);
 	}
 
-	public function createSignedXml($doc){
+	public function createSignedXml($doc, $outputfile){
 		// Create a new Security object
 		$objDSig = new XMLSecurityDSig();
 		// Use the c14n exclusive canonicalization
@@ -51,8 +51,8 @@ class Signature{
 		// Append the signature to the XML
 		$objDSig->appendSignature($doc->documentElement);
 		// Save the signed XML
+		$doc->save($outputfile);
 		return $doc;
-		//$doc->save($outputfile);
 	}
 	private function setPrivateKey($private_key){
 		return $this->private_key = $private_key;
