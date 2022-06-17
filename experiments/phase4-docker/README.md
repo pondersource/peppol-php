@@ -10,4 +10,4 @@ docker buidl -t server .
 cd ..
 docker create network testnet
 docker run -d --name=server --network=testnet server
-docker run -d --name=client -e "AS4_END_POINT=http://server" --network=testnet client
+docker run -d --name=client -e "AS4_END_POINT=http://server:8080" --network=testnet client
