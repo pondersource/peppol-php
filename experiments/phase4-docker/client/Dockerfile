@@ -5,6 +5,6 @@ RUN /usr/lib/jvm/java-8-openjdk-amd64/bin/keytool -genkeypair -keystore /root/ph
 
 WORKDIR /root/phase4/phase4-peppol-client
 
-ADD run.sh
+ADD run.sh ./run.sh
 
 CMD run.sh
