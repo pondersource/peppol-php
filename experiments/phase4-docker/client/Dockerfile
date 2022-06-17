@@ -7,4 +7,4 @@ WORKDIR /root/phase4/phase4-peppol-client
 
 ADD run.sh ./run.sh
 
-CMD run.sh
+CMD bash run.sh
