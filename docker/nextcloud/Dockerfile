@@ -34,7 +34,7 @@ ARG CACHEBUST=1
 # Build the app
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make dev-setup'
 # RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make lint'
-RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make build-js-production'
+# RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make build-js-production'
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make test'
 
 RUN cd apps/peppolnext && git pull
