@@ -40,6 +40,3 @@ RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make dev-setup'
 
 USER root
 RUN npm install -g eslint
-USER www-data
-RUN cd apps/peppolnext && make
-USER root
