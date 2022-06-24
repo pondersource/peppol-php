@@ -34,5 +34,13 @@ sender (c1) -(https)-> receiver (c4)
 
 Our implementation will allow both the sender and the receiver to publish their identity at a well-known URL, under the company domain names as linked in the XML invoice.
 
+## Running in Docker testnet
 
+Get an Ubuntu server and install Docker. Clone this repo and `cd` into it. Then:
+
+```sh
+./scripts/gencerts.sh
+./scripts/rebuild.sh
+./scripts/start-from-Nextcloud.sh
+```
 
