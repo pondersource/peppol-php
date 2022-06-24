@@ -31,13 +31,13 @@ USER www-data
 # See https://github.com/moby/moby/issues/1996#issuecomment-185872769 for explanation of cachebust.
 ARG CACHEBUST=1
 
+RUN cd apps/peppolnext && git pull
 # Build the app
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make dev-setup'
 # RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make lint'
 # RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make build-js-production'
-RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make test'
+# RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make test'
 
-RUN cd apps/peppolnext && git pull
 USER root
 RUN npm install -g eslint
 USER www-data
