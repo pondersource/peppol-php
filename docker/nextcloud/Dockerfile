@@ -1,5 +1,6 @@
 FROM apache-php
-RUN apt install -y zip
+RUN apt update
+RUN apt install -y zip nodejs npm
 RUN rm -rf /var/www/html
 USER www-data
 WORKDIR /var/www
@@ -16,5 +17,6 @@ ADD init.sh /init.sh
 RUN git clone --depth=1 https://github.com/pondersource/peppol-php apps/peppol-php
 RUN cd apps && ln -s peppol-php/nextcloud-app/peppolnext
 RUN cd apps/peppolnext && git pull
-# RUN cd apps/peppolnext && make
+
+RUN cd apps/peppolnext && make
 USER root
