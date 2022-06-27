@@ -123,7 +123,13 @@ class MessageApiController extends ApiController {
 		return $orderName."-". (new \DateTime())->format("Y-m-d").".xml";
 	}
 
-
-
-
+	/*
+	* @noadminrequired
+	* @nocsrfrequired
+	* @publicpage
+	* @cors
+	*/
+	public function as4Endpoint() {
+		error_log('AS4 endpoint function was called!');
+	}
 }
