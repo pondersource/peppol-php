@@ -33,6 +33,6 @@ RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && npm install'
 # See https://github.com/pondersource/peppol-php/issues/125#issuecomment-1167329919
 #RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make'
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make composer'
-
+RUN bash -c 'cd apps/peppolnext && rm -rf vendor/guzzlehttp'
 USER root
 RUN npm install -g eslint
