@@ -10,7 +10,6 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.5",
         "pondersource/invoice-ubl": "^1.0",
         "jms/serializer": "^3.17"
     },
