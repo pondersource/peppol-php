@@ -124,7 +124,7 @@ class MessageApiController extends ApiController {
 	}
 
 	/*
-	* @NoadminRequired
+	* @NoAdminRequired
 	* @NoCSRFRequired
 	* @PublicPage
 	* @CORS
