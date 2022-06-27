@@ -15,6 +15,8 @@ return [
 		['name' => 'message_api#delete', 'url' => '/api/v1/message','verb' => 'DELETE'],
 		['name' => 'message_api#create', 'url' => '/api/v1/message','verb' => 'POST'],
 
+		['name' => 'message_api#as4Endpoint', 'url' => '/api/v1/as4','verb' => 'POST'],
+
 		['name' => 'upload_api#receive_new', 'url' => '/api/v1/upload','verb' => 'POST'],
 
 		['name' => 'contact_api#search', 'url' => '/api/v1/contact', 'verb'=>'GET'],

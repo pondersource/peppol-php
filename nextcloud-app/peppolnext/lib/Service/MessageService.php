@@ -370,4 +370,14 @@ class MessageService {
 		}
 		return true;
 	}
+
+	/*
+	* @noadminrequired
+	* @nocsrfrequired
+	* @publicpage
+	* @cors
+	*/
+	public function as4Endpoint() {
+		error_log('AS4 endpoint function was called!');
+	}
 }
