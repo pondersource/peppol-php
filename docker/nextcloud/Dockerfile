@@ -24,16 +24,15 @@ RUN echo '[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm' >> 
 RUN echo '[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion" # This loads nvm bash_completion' >> "$HOME/.bashrc"
 RUN bash -c 'source $HOME/.nvm/nvm.sh   && \
     nvm install $NODE_VERSION && nvm use $NODE_VERSION && nvm alias default $NODE_VERSION';
-USER root
-RUN npm install -g eslint
-USER www-data
 
 # See https://github.com/moby/moby/issues/1996#issuecomment-185872769 for explanation of cachebust.
 ARG CACHEBUST=1
 
 RUN cd apps/peppolnext && git pull
 # Build the app
-RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make dev-setup'
+RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && npm install'
+RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make'
+# RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make dev-setup'
 # RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make lint'
 # RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make build-js-production'
 # RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make test'
