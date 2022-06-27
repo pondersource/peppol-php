@@ -41,6 +41,9 @@ Get an Ubuntu server and install Docker. Clone this repo and `cd` into it. Then:
 ```sh
 ./scripts/gencerts.sh
 ./scripts/rebuild.sh
-./scripts/start-from-Nextcloud.sh
+./scripts/start-from-Phase4.sh
+./scripts/start-to-Nextcloud.sh
+sleep 10
+docker container cp client:/root/phase4/phase4-peppol-client/phase4-dumps .
 ```
 

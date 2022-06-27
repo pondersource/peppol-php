@@ -13,8 +13,6 @@ ADD init.sh /init.sh
 RUN git clone --depth=1 https://github.com/pondersource/peppol-php apps/peppol-php
 RUN cd apps && ln -s peppol-php/nextcloud-app/peppolnext
 
-
-
 # Installation of NVM, NPM and packages
 RUN touch ~/.bashrc && chmod +x ~/.bashrc
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash ;
@@ -31,11 +29,10 @@ ARG CACHEBUST=1
 RUN cd apps/peppolnext && git pull
 # Build the app
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && npm install'
-RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make'
-# RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make dev-setup'
-# RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make lint'
-# RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make build-js-production'
-# RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make test'
+
+# See https://github.com/pondersource/peppol-php/issues/125#issuecomment-1167329919
+#RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make'
+RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/peppolnext && make composer'
 
 USER root
 RUN npm install -g eslint

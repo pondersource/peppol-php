@@ -1,4 +1,4 @@
-FROM mutual
+FROM phase4-mutual
 
 WORKDIR /root/phase4/phase4-peppol-server-webapp
 RUN cp keys/test.p12 target/test-classes/keys/test.p12

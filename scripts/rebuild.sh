@@ -1,8 +1,17 @@
 #!/bin/bash
 set -e
 
+cd docker/phase4-mutual
+docker build -t phase4-mutual .
+
+cd ../phase4-client
+docker build -t phase4-client .
+
+cd ../phase4-server
+docker build -t phase4-server .
+
 # base image for nextcloud image and owncloud image:
-cd docker/apache-php
+cd ../apache-php
 cp -r ../../tls .
 docker build -t apache-php .
 
