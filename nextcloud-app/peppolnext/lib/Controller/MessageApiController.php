@@ -124,10 +124,10 @@ class MessageApiController extends ApiController {
 	}
 
 	/*
-	* @noadminrequired
-	* @nocsrfrequired
-	* @publicpage
-	* @cors
+	* @NoadminRequired
+	* @NoCSRFRequired
+	* @PublicPage
+	* @CORS
 	*/
 	public function as4Endpoint() {
 		error_log('AS4 endpoint function was called!');
