@@ -185,7 +185,7 @@ class MessageApiController extends ApiController {
 
 		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
 
-		$keystore_file = '/opt/temp/yashar_pc/test.p12';
+		$keystore_file = '/p12transport/test.p12';
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
