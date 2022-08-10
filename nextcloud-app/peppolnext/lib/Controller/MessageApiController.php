@@ -165,7 +165,7 @@ class MessageApiController extends ApiController {
 		$boundry = substr($contentType, $boundryStart + 10, $boundryEnd - $boundryStart - 10);
 		$boundryLength = strlen($boundry);
 
-		$body = $this->request->post;
+		$body = file_get_contents('php://input');
 
 
 		$pointer = strpos($body, $boundry);
