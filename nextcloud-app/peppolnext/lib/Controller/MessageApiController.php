@@ -205,12 +205,12 @@ class MessageApiController extends ApiController {
 		$cert->loadX509($cert_info['cert']);
 		error_log(var_export($cert, true));
 
-		$sender_cert = RSA::loadPublicKey(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+		//$sender_cert = RSA::loadPublicKey(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
 
 		list($envelope, $invoice) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
 
-		$envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $sender_cert);
-		error_log('YAAAAAAAAAYYYYYYY signature checked');
+		//$envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $sender_cert);
+		//error_log('YAAAAAAAAAYYYYYYY signature checked');
 
 		$output = var_export($invoice, true);
 		error_log($output);
@@ -246,7 +246,9 @@ class MessageApiController extends ApiController {
 
 		$serializer = SerializerBuilder::create()->build();
 		$serializedMessaging = $serializer->serialize($response->getHeader()->getMessaging(), 'xml');
+		$serializedMessaging = str_replace("  ", '', str_replace("\n", '', $serializedMessaging));
 		$serializedBody = $serializer->serialize($response->getBody(), 'xml');
+		$serializedBody = str_replace("  ", '', str_replace("\n", '', $serializedBody));
 
 		$references = [
 			new DSigReference("#$messagingId", $serializedMessaging, [$c14ne], $sha256),
@@ -255,15 +257,12 @@ class MessageApiController extends ApiController {
 
 		$response->getHeader()->getSecurity()->generateSignature($private_key, $cert, $references, new C14NExclusive(), new RsaSha256(), $response);
 
-		$dom = new \DOMDocument();
-        $dom->loadXml($serializer->serialize($response, 'xml'));
-		$serializedCanonicalizedResponse = $c14ne->transform($dom);
+		$serializedCanonicalizedResponse = $c14ne->transform($serializer->serialize($response, 'xml'));
 		error_log($serializedCanonicalizedResponse);
 		$serializedCanonicalizedResponse = str_replace("\n", '', $serializedCanonicalizedResponse);
 		$serializedCanonicalizedResponse = str_replace("  ", '', $serializedCanonicalizedResponse);
 
-
-		return new DataResponse($serializedCanonicalizedResponse, Http::STATUS_OK, [
+		$response = new DataResponse($serializedCanonicalizedResponse, Http::STATUS_OK, [
 			'Referrer-Policy' => 'strict-origin-when-cross-origin',
 			'X-Frame-Options' => 'SAMEORIGIN',
 			'X-Content-Type-Options' => 'nosniff',
@@ -272,6 +271,8 @@ class MessageApiController extends ApiController {
 			'Cache-Control' => 'no-cache, no-store, must-revalidate, proxy-revalidate',
 			'Content-Type' => 'application/soap+xml;charset=utf-8'
 		]);
+		$response->addHeader('Content-Disposition', null);
+		return $response;
 	}
 
 	/**
