@@ -23,7 +23,7 @@ use OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256;
 use OCA\PeppolNext\PonderSource\WSSec\Transform;
 use OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation;
 use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\Files\IRootFolder;
 use OCP\IRequest;
 use OCP\Contacts\IManager;
@@ -72,7 +72,7 @@ class MessageApiController extends ApiController {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function index(): DataResponse {
+	public function index(): DataDisplayResponse {
 		$type = $this->request->getParam("type");
 		$direction = ($type === "Inbox") ? Constants::RECEIVE_DIRECTION : Constants::SEND_DIRECTION;
 		$response = $this->messageService->getAllInvoices($direction);
