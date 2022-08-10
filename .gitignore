@@ -2,6 +2,8 @@ tls
 docker/apache-php/tls
 nextcloud-app/peppolnext/vendor
 nextcloud-app/peppolnext/node_modules
+p12transport
+.vscode
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
