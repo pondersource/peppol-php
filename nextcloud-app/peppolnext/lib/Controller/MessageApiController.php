@@ -205,7 +205,12 @@ class MessageApiController extends ApiController {
 		$cert->loadX509($cert_info['cert']);
 		error_log(var_export($cert, true));
 
+		$sender_cert = RSA::loadPublicKey(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+
 		list($envelope, $invoice) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
+
+		$envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $sender_cert);
+		error_log('YAAAAAAAAAYYYYYYY signature checked');
 
 		$output = var_export($invoice, true);
 		error_log($output);

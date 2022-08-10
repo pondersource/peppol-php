@@ -62,13 +62,29 @@ class Signature {
         
         $dom = new \DOMDocument();
         $dom->loadXml($xml);
-        $element = $dom->firstElementChild->firstElementChild->getElementsByTagName('Signature')[0]->firstElementChild;
+        $element = $dom->getElementsByTagName('Header')[0]->getElementsByTagName('Security')[0]->getElementsByTagName('Signature')[0]->getElementsByTagName('SignedInfo')[0];
 
         $xml = $this->signedInfo->getCanonicalizationMethod()->applyAlgorithm($element);
         $xml = str_replace("  ", '', str_replace("\n", '', $xml));
         $signature = $this->signedInfo->getSignatureMethod()->sign($pkey,$xml);
         $this->signatureValue = $signature;
         return $this;
+    }
+
+    public function verify($envelope, $public_key) {
+        $serializer = SerializerBuilder::create()->build();
+        $xml = $serializer->serialize($envelope, 'xml');
+        
+        $dom = new \DOMDocument();
+        $dom->loadXml($xml);
+        $element = $dom->getElementsByTagName('Header')[0]->getElementsByTagName('Security')[0]->getElementsByTagName('Signature')[0]->getElementsByTagName('SignedInfo')[0];
+
+        $xml = $this->signedInfo->getCanonicalizationMethod()->applyAlgorithm($element);
+        $xml = str_replace("  ", '', str_replace("\n", '', $xml));
+
+        $signature = \base64_decode($this->signatureValue);
+
+        $public_key->verify($xml, $signature);
     }
 
 }
