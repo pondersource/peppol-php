@@ -6,9 +6,7 @@ use OCA\PeppolNext\PonderSource\EBMS\Property;
 use OCA\PeppolNext\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlNamespace,XmlRoot,XmlList,XmlAttribute,XmlElement,SerializedName};
 
-/**
- * @XmlNamespace(uri="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/core/ebms-header-3_0-200704.xsd", prefix="eb")
- */
+
 class PartInfo {
     /**
      * @XmlList(entry="Property",namespace=Namespaces::EB)

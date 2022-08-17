@@ -31,4 +31,12 @@ class RsaSha256 implements ISignatureMethod {
         $signature = $pkey->sign($value);
         return \base64_encode($signature);
     }
+
+    public function verify($public_key, $message, $signature) {
+        $public_key = $public_key->withPadding(RSA::SIGNATURE_PKCS1);
+
+        $signature = \base64_decode($signature);
+        return $public_key->verify($message, $signature);
+    }
+
 }

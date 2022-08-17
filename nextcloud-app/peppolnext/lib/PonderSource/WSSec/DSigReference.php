@@ -49,4 +49,31 @@ class DSigReference {
         }
         $this->digestValue = $digestMethod->getDigest($content);
     }
+
+    public function getUri() {
+        return $this->uri;
+    }
+
+    public function getDigestMethod() {
+        return $this->digestMethod;
+    }
+
+    public function getTransforms() {
+        return $this->transforms;
+    }
+
+    public function getDigestValue() {
+        return $this->digestValue;
+    }
+
+    public function verify($content) {
+        foreach($this->transforms as $transform) {
+            $content = $transform->transform($content);
+        }
+
+        $content = $this->digestMethod->getDigest($content);
+
+        return $content === $this->digestValue;
+    }
+
 }

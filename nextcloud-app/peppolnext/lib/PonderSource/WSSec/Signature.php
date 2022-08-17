@@ -71,10 +71,10 @@ class Signature {
         return $this;
     }
 
-    public function verify($envelope, $public_key) {
+    public function verify($envelope, $payload, $public_key) {
         $serializer = SerializerBuilder::create()->build();
         $xml = $serializer->serialize($envelope, 'xml');
-        
+
         $dom = new \DOMDocument();
         $dom->loadXml($xml);
         $element = $dom->getElementsByTagName('Header')[0]->getElementsByTagName('Security')[0]->getElementsByTagName('Signature')[0]->getElementsByTagName('SignedInfo')[0];
@@ -82,9 +82,52 @@ class Signature {
         $xml = $this->signedInfo->getCanonicalizationMethod()->applyAlgorithm($element);
         $xml = str_replace("  ", '', str_replace("\n", '', $xml));
 
-        $signature = \base64_decode($this->signatureValue);
+        if ($this->signedInfo->getSignatureMethod()->verify($public_key, $xml, $this->signatureValue) !== true) {
+            error_log('signature check failed');
+            return false;
+        }
+        error_log('signature check success');
 
-        $public_key->verify($xml, $signature);
+        foreach ($this->signedInfo->getReferences() as $reference) {
+            $uri = $reference->getUri();
+            $id = ($uri[0] == '#') ? substr($uri, 1) : $uri;
+
+            $content = false;
+
+            if ($id === $envelope->getHeader()->getMessaging()->getId()) {
+                $content = Signature::serializeAndRemoveSpaces($envelope->getHeader()->getMessaging());
+                error_log('messaging reference');
+            }
+            else if ($id === $envelope->getBody()->getId()) {
+                $content = Signature::serializeAndRemoveSpaces($envelope->getBody());
+                error_log('body reference');
+            }
+            else if ($id === $envelope->getHeader()->getMessaging()->getUserMessage()->getPayloadInfo()->getPartInfo()->getReference()) {
+                $content = $payload;
+                error_log('payload reference');
+            }
+            else {
+                error_log('reference '.$id.' not found');
+                return false;
+            }
+
+            if ($content === false) {
+                return false;
+            }
+
+            if ($reference->verify($content) === false) {
+                error_log('verify failed');
+                return false;
+            }
+        }
+        
+        return true;
+    }
+
+    private static function serializeAndRemoveSpaces($obj) {
+        $xml = (SerializerBuilder::create()->build())->serialize($obj, 'xml');
+        $xml = str_replace("  ", '', str_replace("\n", '', $xml));
+        return $xml;
     }
 
 }

@@ -10,13 +10,13 @@ class PayloadReader {
 
 	static function readPayload($raw_envelope, $raw_payload, $certificate, $private_key) {
 		$envelope = EnvelopeReader::readEnvelope($raw_envelope);
-		$payload_str = $envelope->getHeader()->decodePayload($raw_payload, $private_key);
+		list($payload_str, $decrypted_payload) = $envelope->getHeader()->decodePayload($raw_payload, $private_key);
 		
 		$des = new DeserializeInvoice();
 		$res = $des->deserializeXML($payload_str);
 		$invoice = $res[1]->value;
 
-		return [$envelope, $invoice];
+		return [$envelope, $invoice, $decrypted_payload];
 	}
 
 	static function readPayloadWithKeystore($raw_envelope, $raw_payload, $keystore_file, $passphrase) {

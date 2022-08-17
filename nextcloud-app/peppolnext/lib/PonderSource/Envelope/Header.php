@@ -57,10 +57,10 @@ class Header
         $compression_type = $part_info->getProperty('CompressionType');
 
         if ($compression_type == 'application/gzip') {
-            return gzdecode($decrypted_payload);
+            return [gzdecode($decrypted_payload), $decrypted_payload];
         }
 
-        return $decrypted_payload;
+        return [$decrypted_payload, $decrypted_payload];
     }
 
 }

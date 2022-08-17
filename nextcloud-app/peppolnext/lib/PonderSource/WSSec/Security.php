@@ -135,4 +135,5 @@ class Security {
         $this->encryptedData = $encryptedData;
         return $encryptedData->getEncryptionMethod()->encrypt($data, $encryptionKey);
     }
+
 }

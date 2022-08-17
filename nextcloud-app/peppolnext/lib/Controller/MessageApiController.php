@@ -203,14 +203,16 @@ class MessageApiController extends ApiController {
 
 		$cert = new X509;
 		$cert->loadX509($cert_info['cert']);
-		error_log(var_export($cert, true));
 
-		//$sender_cert = RSA::loadPublicKey(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+		$sender_certificate = new X509;
+		$sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+		$sender_public_key = $sender_certificate->getPublicKey();
 
-		list($envelope, $invoice) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
+		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
 
-		//$envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $sender_cert);
-		//error_log('YAAAAAAAAAYYYYYYY signature checked');
+		$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
+		error_log('YAAAAAAAAAYYYYYYY signature checked: '.var_export($verifyResult, true));
+		if (!$verifyResult) return false;
 
 		$output = var_export($invoice, true);
 		error_log($output);
@@ -262,7 +264,7 @@ class MessageApiController extends ApiController {
 		$serializedCanonicalizedResponse = str_replace("\n", '', $serializedCanonicalizedResponse);
 		$serializedCanonicalizedResponse = str_replace("  ", '', $serializedCanonicalizedResponse);
 
-		$response = new DataResponse($serializedCanonicalizedResponse, Http::STATUS_OK, [
+		$response = new DataDisplayResponse($serializedCanonicalizedResponse, Http::STATUS_OK, [
 			'Referrer-Policy' => 'strict-origin-when-cross-origin',
 			'X-Frame-Options' => 'SAMEORIGIN',
 			'X-Content-Type-Options' => 'nosniff',
@@ -387,9 +389,7 @@ class MessageApiController extends ApiController {
 		$envelope->getHeader()->getSecurity()->generateSignature($private_key, $cert, $references, new C14NExclusive(), new RsaSha256(), $envelope);
 		$payload = $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $cert, "cid:$payloadId", $invoiceString);
 
-		$dom = new \DOMDocument();
-        $dom->loadXml($serializer->serialize($envelope, 'xml'));
-		$serializedEnvelope = $c14ne->transform($dom);
+		$serializedEnvelope = $c14ne->transform($serializer->serialize($envelope, 'xml'));
 		error_log($serializedEnvelope);
 		$serializedEnvelope = str_replace("\n", '', $serializedEnvelope);
 		$serializedEnvelope = str_replace("  ", '', $serializedEnvelope);
@@ -398,7 +398,7 @@ class MessageApiController extends ApiController {
 
 		// Send request
 		$boundry = '----=_Part_'.uniqid();
-		$body = "--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload";
+		$body = "--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry\r\n";
 
 		$client = new GuzzleHttp\Client();
 		$response = $client->request('POST', $as4_endpoint, [
