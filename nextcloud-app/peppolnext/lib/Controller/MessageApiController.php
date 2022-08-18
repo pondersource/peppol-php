@@ -186,6 +186,7 @@ class MessageApiController extends ApiController {
 		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
 
 		$keystore_file = '/p12transport/test.p12';
+		$sendercert_file = '/p12transport/sender.cer';
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
@@ -205,7 +206,7 @@ class MessageApiController extends ApiController {
 		$cert->loadX509($cert_info['cert']);
 
 		$sender_certificate = new X509;
-		$sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+		$sender_certificate->loadX509(file_get_contents($sendercert_file));
 		$sender_public_key = $sender_certificate->getPublicKey();
 
 		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
