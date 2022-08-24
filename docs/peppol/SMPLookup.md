@@ -1,34 +1,44 @@
 # SMP Lookup Algorithm
 Sample SMP lookup url
+
 http://b-c5dfca40c96105ec54e99c1103bbe603.iso6523-actorid-upis.acc.edelivery.tech.ec.europa.eu/iso6523-actorid-upis%3A%3A9915%3Aphase4-test-sender/services/busdox-docid-qns%3A%3Aurn%3Aoasis%3Anames%3Aspecification%3Aubl%3Aschema%3Axsd%3AInvoice-2%3A%3AInvoice%23%23urn%3Acen.eu%3Aen16931%3A2017%23compliant%23urn%3Afdc%3Apeppol.eu%3A2017%3Apoacc%3Abilling%3A3.0%3A%3A2.1
 
 
 ## SMLInfo
 ID, DisplayName, DNSZone, ManagementServiceURL, ClientCertificateRequired
-DIGIT_PRODUCTION("digitprod", "SML", "edelivery.tech.ec.europa.eu.", "https://edelivery.tech.ec.europa.eu/edelivery-sml", true),
-DIGIT_TEST("digittest", "SMK", "acc.edelivery.tech.ec.europa.eu.", "https://acc.edelivery.tech.ec.europa.eu/edelivery-sml", true),
-DEVELOPMENT_LOCAL("local", "Development", "smj.peppolcentral.org.", "http://localhost:8080", false);
+
+DIGIT_PRODUCTION("digitprod", "SML", "edelivery.tech.ec.europa.eu.", "https://edelivery.tech.ec.europa.eu/edelivery-sml", true)
+
+DIGIT_TEST("digittest", "SMK", "acc.edelivery.tech.ec.europa.eu.", "https://acc.edelivery.tech.ec.europa.eu/edelivery-sml", true)
+
+DEVELOPMENT_LOCAL("local", "Development", "smj.peppolcentral.org.", "http://localhost:8080", false)
 
 
 ## Inputs
-ServiceGroupID/ParticipantIdentifier
-DocumentTypeID
-ProcessID
-TransportProfile
+- ServiceGroupID/ParticipantIdentifier
+- DocumentTypeID
+- ProcessID
+- TransportProfile
 
+```
 DefaultParticipantIdentifierScheme = "iso6523-actorid-upis"
        ParticipantIdentifierValue = "9915:phase4-test-sender"
 
-DefaultDucmentTypeScheme = "busdox-docid-qns"
+DefaultDocumentTypeScheme = "busdox-docid-qns"
 InvoiceDocumentType = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1"
+```
 
 ## Look up
-if (ParticipantIdentifierValue == '*') dnsPart = "*" else dnsPart = lowercase("B-" + hashMD5(ParticipantIdentifierValue))
+if (ParticipantIdentifierValue == '\*') dnsPart = "\*" else dnsPart = lowercase("B-" + hashMD5(ParticipantIdentifierValue))
+
 SMPHost = http:// dnsPart . ParticipantIdentifierScheme . DNSZone(removing the . in the end of the zone)
+
 SMPEndPoint = SMPHost / url_encode(ParticipantIdentifierScheme::ParticipantIdentifierValue) /services/ url_encode(DucmentTypeScheme::DocumentType)
 
 GET SMPEndPoint
+
 200
+
 ``` xml
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <smp:SignedServiceMetadata xmlns:smp="http://busdox.org/serviceMetadata/publishing/1.0/" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:id="http://busdox.org/transport/identifiers/1.0/" xmlns:wsa="http://www.w3.org/2005/08/addressing">
