@@ -27,7 +27,7 @@ class CipherData {
     public function __construct($cipherDataOrReference){
         if (is_string($cipherDataOrReference)){
             $this->cipherValue = $cipherDataOrReference;
-        } else if (is_object($cipherDataOrReference) && get_class($cipherDataOrReference) === 'PonderSource\WSSec\CipherReference'){
+        } else if (is_object($cipherDataOrReference) && get_class($cipherDataOrReference) === 'OCA\PeppolNext\PonderSource\WSSec\CipherReference'){
             $this->cipherReference = $cipherDataOrReference;
         } else {
             throw new \Exception('CipherData can only contain either CipherValue(string) or CipherReference types');

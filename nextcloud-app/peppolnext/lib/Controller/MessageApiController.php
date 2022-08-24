@@ -12,34 +12,36 @@ use OCA\PeppolNext\Service\UploadService;
 use OCA\PeppolNext\PonderSource\Envelope\Envelope;
 use OCA\PeppolNext\PonderSource\Envelope\Body;
 use OCA\PeppolNext\PonderSource\Envelope\Header;
-use OCA\PeppolNext\PonderSource\EBMS\Messaging;
-use OCA\PeppolNext\PonderSource\EBMS\Receipt;
-use OCA\PeppolNext\PonderSource\EBMS\SignalMessage;
-use OCA\PeppolNext\PonderSource\WSSec\Security;
-use OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
-use OCA\PeppolNext\PonderSource\WSSec\DigestMethod\SHA256;
-use OCA\PeppolNext\PonderSource\WSSec\DSigReference;
-use OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256;
-use OCA\PeppolNext\PonderSource\WSSec\Transform;
-use OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation;
-use OCP\AppFramework\ApiController;
-use OCP\AppFramework\Http\DataDisplayResponse;
-use OCP\Files\IRootFolder;
-use OCP\IRequest;
-use OCP\Contacts\IManager;
-
-use phpseclib3\Crypt\RSA;
-use phpseclib3\File\X509;
-use JMS\Serializer\SerializerBuilder;
 use OCA\PeppolNext\PonderSource\EBMS\CollaborationInfo;
+use OCA\PeppolNext\PonderSource\EBMS\Messaging;
 use OCA\PeppolNext\PonderSource\EBMS\PartInfo;
 use OCA\PeppolNext\PonderSource\EBMS\Party;
 use OCA\PeppolNext\PonderSource\EBMS\PartyId;
 use OCA\PeppolNext\PonderSource\EBMS\PartyInfo;
 use OCA\PeppolNext\PonderSource\EBMS\PayloadInfo;
 use OCA\PeppolNext\PonderSource\EBMS\Property;
-use OCA\PeppolNext\PonderSource\EBMS\Service;
+use OCA\PeppolNext\PonderSource\EBMS\Receipt;
+use OCA\PeppolNext\PonderSource\EBMS\SignalMessage;
 use OCA\PeppolNext\PonderSource\EBMS\UserMessage;
+use OCA\PeppolNext\PonderSource\WSSec\Security;
+use OCA\PeppolNext\PonderSource\EBMS\Service;
+use OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
+use OCA\PeppolNext\PonderSource\WSSec\DigestMethod\SHA256;
+use OCA\PeppolNext\PonderSource\WSSec\DSigReference;
+use OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256;
+use OCA\PeppolNext\PonderSource\WSSec\Transform;
+use OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation;
+use OCA\PeppolNext\PonderSource\SMP\SMPLookup;
+use OCP\AppFramework\ApiController;
+use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\Files\IRootFolder;
+use OCP\IRequest;
+use OCP\Contacts\IManager;
+
+use phpseclib3\Crypt\{RSA, Random};
+use phpseclib3\File\X509;
+use JMS\Serializer\SerializerBuilder;
+
 
 class MessageApiController extends ApiController {
 
@@ -203,12 +205,25 @@ class MessageApiController extends ApiController {
 
 		$cert = new X509;
 		$cert->loadX509($cert_info['cert']);
+		
+		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
 
+		$messageProperties = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageProperties();
+
+		$sender_id = false;
+
+		foreach ($messageProperties as $property) {
+			if ($property->getName() === 'originalSender') {
+				$sender_id = $property->getValue();
+				break;
+			}
+		}
+
+		list($sender_endpoint, $sender_certificate) = SMPLookup::SMPLookup($sender_id, false);
+		error_log(var_export($sender_endpoint, true));
 		$sender_certificate = new X509;
 		$sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
 		$sender_public_key = $sender_certificate->getPublicKey();
-
-		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
 
 		$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
 		error_log('YAAAAAAAAAYYYYYYY signature checked: '.var_export($verifyResult, true));
@@ -294,7 +309,7 @@ class MessageApiController extends ApiController {
 
 		// TODO as4 lookup
 		$as4_endpoint = 'http://188.208.143.130:8080/as4';
-		$cert_file = '/opt/temp/yashar_pc/test.cer';
+		$cert_file = '/opt/temp/docker_server/receiver.cer';
 		// if (!$cert_store = file_get_contents($cert_file)) {
 		// 	echo "Error: Unable to read the cert file\n";
 		// 	exit;
@@ -351,14 +366,14 @@ class MessageApiController extends ApiController {
 						'phase4@Conv-3221508681736967991'
 					),
 					[
-						new Property('9915:phase4-test-sender', ['name'=>'originalSender','type'=>'iso6523-actorid-upis']),
-						new Property('9915:helger', ['name'=>'finalRecipient','type'=>'iso6523-actorid-upis'])
+						new Property('9915:phase4-test-sender', 'originalSender', 'iso6523-actorid-upis'),
+						new Property('9915:helger', 'finalRecipient', 'iso6523-actorid-upis')
 					],
 					new PayloadInfo(new PartInfo(
 						'cid:'.$payloadId,
 						[
-							new Property('application/xml',['name'=>'MimeType']),
-							new Property('application/gzip',['name'=>'CompressionType'])
+							new Property('application/xml','MimeType'),
+							new Property('application/gzip','CompressionType')
 						]
 					))
 				), null, $messagingId)
@@ -379,15 +394,16 @@ class MessageApiController extends ApiController {
   		$invoiceString = $generateInvoice->invoice($invoice);
 		$invoiceString = str_replace("\n", '', $invoiceString);
 		$invoiceString = str_replace("  ", '', $invoiceString);
+		$invoiceString = gzencode($invoiceString);
 
 		$references = [
 			new DSigReference("#$messagingId", $serializedMessaging, [$c14ne], $sha256),
 			new DSigReference("#$bodyId", $serializedBody, [$c14ne], $sha256),
-			new DSigReference("cid:$payloadId", $invoiceString, [$c14ne], $sha256)
+			new DSigReference("cid:$payloadId", $invoiceString, [new Transform('http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform')], $sha256)
 		];
 
-		$envelope->getHeader()->getSecurity()->generateSignature($private_key, $cert, $references, new C14NExclusive(), new RsaSha256(), $envelope);
-		$payload = $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $cert, "cid:$payloadId", $invoiceString);
+		$envelope->getHeader()->getSecurity()->generateSignature($private_key, $receiver_cert, $references, new C14NExclusive(), new RsaSha256(), $envelope);
+		$payload = $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $receiver_cert, "cid:$payloadId", $invoiceString);
 
 		$serializedEnvelope = $c14ne->transform($serializer->serialize($envelope, 'xml'));
 		error_log($serializedEnvelope);
@@ -398,9 +414,9 @@ class MessageApiController extends ApiController {
 
 		// Send request
 		$boundry = '----=_Part_'.uniqid();
-		$body = "--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry\r\n";
+		$body = "\r\n--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry--\r\n";
 
-		$client = new GuzzleHttp\Client();
+		$client = new \GuzzleHttp\Client();
 		$response = $client->request('POST', $as4_endpoint, [
 			'headers' => [
 				'Message-Id' => '<'.uniqid().'>',
@@ -526,16 +542,16 @@ class MessageApiController extends ApiController {
 			->setPriceAmount(10);
 
 		// Invoice Line tax totals
-		$lineTaxTotal = (new Pondersource\Invoice\Tax\TaxTotal())
+		$lineTaxTotal = (new \Pondersource\Invoice\Tax\TaxTotal())
 			->setTaxAmount(2.1);
 
 
 		// InvoicePeriod
-		$invoicePeriod = (new Pondersource\Invoice\Invoice\InvoicePeriod())
+		$invoicePeriod = (new \Pondersource\Invoice\Invoice\InvoicePeriod())
 			->setStartDate(new \DateTime());
 
 		// Invoice Line(s)
-		$invoiceLine = (new Pondersource\Invoice\Invoice\InvoiceLine())
+		$invoiceLine = (new \Pondersource\Invoice\Invoice\InvoiceLine())
 			->setId(0)
 			->setItem($productItem)
 			->setPrice($price)
