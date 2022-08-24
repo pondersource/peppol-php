@@ -3,7 +3,7 @@
 namespace OCA\PeppolNext\PonderSource\SMP;
 
 use OCA\PeppolNext\PonderSource\Namespaces;
-use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
+use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlList,XmlElement};
 
 /**
  * @XmlNamespace(uri=Namespaces::SMP, prefix="smp")

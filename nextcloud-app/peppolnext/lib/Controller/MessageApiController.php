@@ -219,10 +219,17 @@ class MessageApiController extends ApiController {
 			}
 		}
 
-		list($sender_endpoint, $sender_certificate) = SMPLookup::SMPLookup($sender_id, false);
-		error_log(var_export($sender_endpoint, true));
-		$sender_certificate = new X509;
-		$sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+		$useSMP = false;
+
+		if ($useSMP) {
+			$isProduction = false;
+			list($sender_endpoint, $sender_certificate) = SMPLookup::SMPLookup($sender_id, $isProduction);
+		}
+		else {
+			$sender_certificate = new X509;
+			$sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+		}
+
 		$sender_public_key = $sender_certificate->getPublicKey();
 
 		$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);

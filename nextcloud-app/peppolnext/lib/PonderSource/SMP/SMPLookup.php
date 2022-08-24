@@ -25,7 +25,7 @@ class SMPLookup
         $smpEndpoint = SMPLookup::getSMPEndpoint($participantId, $isProduction);
 
         $client = new \GuzzleHttp\Client();
-		$response = $client->request('GET', $smpEndpoint);
+		$response = $client->request('GET', $smpEndpoint)->getBody();
 
         $serializer = \JMS\Serializer\SerializerBuilder::create()->build();
 		$obj = $serializer->deserialize($response,'OCA\PeppolNext\PonderSource\SMP\SignedServiceMetadata::class', 'xml');
