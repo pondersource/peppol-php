@@ -147,3 +147,6 @@ JhBwiJzo45K7fkNpmP2VzfEuMc+BErKgyGXuK/jpPm7iS48RHZgxCtR4HatKbvSzkko4dejC+/cz&#13
     </Signature>
 </smp:SignedServiceMetadata>
 ```
+
+### Caution
+The SMP response may contain a redirect instruction. You can find it in Phase4 class `com.helger.smpclient.peppol.SMPClientReadOnly` method `getServiceMetadata` where it says `getServiceMetadata().getRedirect()`.
