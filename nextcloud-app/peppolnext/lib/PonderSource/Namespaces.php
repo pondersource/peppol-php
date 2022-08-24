@@ -15,4 +15,8 @@ class Namespaces {
     const XENC11 = 'http://www.w3.org/2009/xmlenc11#';
     const WSSE11 = 'http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd';
     const EC = 'http://www.w3.org/2001/10/xml-exc-c14n#';
+    
+    const SMP = 'http://busdox.org/serviceMetadata/publishing/1.0/';
+    const ID = 'http://busdox.org/transport/identifiers/1.0/';
+    const WSA = 'http://www.w3.org/2005/08/addressing';
 }
