@@ -4,7 +4,7 @@ Link to Peppol SMP specifications: https://docs.peppol.eu/edelivery/smp/PEPPOL-E
 
 Link to European Union's implementation of SMP's documentation: https://ec.europa.eu/digital-building-blocks/wikis/display/DIGITAL/SMP
 
-* In order to fully understand this document, you have to read the SMPLookup document first.
+*In order to fully understand this document, you have to read the SMPLookup document first.*
 
 ## API calls
 All calls require username password authentication
@@ -17,7 +17,7 @@ PUT SMPHost / url_encode(ParticipantIdentifierScheme::ParticipantIdentifierValue
 ``` xml
 <?xml version="1.0" encoding="utf-8" ?>
 <ServiceGroup xmlns="http://busdox.org/serviceMetadata/publishing/1.0/" xmlns:ids="http://busdox.org/transport/identifiers/1.0/">
-	<ids:ParticipantIdentifier scheme="busdox-actorid-upis">{ParticipantIdentifierValue}</ids:ParticipantIdentifier>
+	<ids:ParticipantIdentifier scheme="{ParticipantIdentifierScheme}">{ParticipantIdentifierValue}</ids:ParticipantIdentifier>
 	<ServiceMetadataReferenceCollection>
 	</ServiceMetadataReferenceCollection>
 	<Extension>
@@ -55,8 +55,9 @@ PUT SMPEndPoint
 	</smp:ServiceInformation>
 </smp:ServiceMetadata>
 ```
-* Note that namespace identifiers are excluded in the sample XML. Obviously, it needs to be a valid XML in real life.
-* Note that ServiceMetadata can have a Redirect child instead of a ServiceInformation.
+*Note that namespace identifiers are excluded in the sample XML. Obviously, it needs to be a valid XML in real life.*
+
+*Note that ServiceMetadata can have a Redirect child instead of a ServiceInformation.*
 
 ### Remove endpoint for a document type for a participant
 DELETE SMPEndPoint
