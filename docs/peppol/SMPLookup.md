@@ -26,6 +26,9 @@ DefaultParticipantIdentifierScheme = "iso6523-actorid-upis"
 
 DefaultDocumentTypeScheme = "busdox-docid-qns"
 InvoiceDocumentType = "urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1"
+
+DefaultProcessIdentifierScheme = "cenbii-procid-ubl"
+DefaultProcessIdentifier = "urn:fdc:peppol.eu:2017:poacc:billing:01:1.0""
 ```
 
 ## Look up
@@ -33,7 +36,7 @@ if (ParticipantIdentifierValue == '\*') dnsPart = "\*" else dnsPart = lowercase(
 
 SMPHost = http:// dnsPart . ParticipantIdentifierScheme . DNSZone(removing the . in the end of the zone)
 
-SMPEndPoint = SMPHost / url_encode(ParticipantIdentifierScheme::ParticipantIdentifierValue) /services/ url_encode(DucmentTypeScheme::DocumentType)
+SMPEndPoint = SMPHost / url_encode(ParticipantIdentifierScheme::ParticipantIdentifierValue) /services/ url_encode(DocumentTypeScheme::DocumentType)
 
 GET SMPEndPoint
 
