@@ -31,7 +31,7 @@ use OCA\PeppolNext\PonderSource\WSSec\DSigReference;
 use OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256;
 use OCA\PeppolNext\PonderSource\WSSec\Transform;
 use OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation;
-use OCA\PeppolNext\PonderSource\SMP\SMPLookup;
+use OCA\PeppolNext\PonderSource\SMP\SMP;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\Files\IRootFolder;
@@ -223,7 +223,7 @@ class MessageApiController extends ApiController {
 
 		if ($useSMP) {
 			$isProduction = false;
-			list($sender_endpoint, $sender_certificate) = SMPLookup::SMPLookup($sender_id, $isProduction);
+			list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_id, $isProduction);
 		}
 		else {
 			$sender_certificate = new X509;
