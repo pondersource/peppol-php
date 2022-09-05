@@ -19,4 +19,7 @@ class Namespaces {
     const SMP = 'http://busdox.org/serviceMetadata/publishing/1.0/';
     const ID = 'http://busdox.org/transport/identifiers/1.0/';
     const WSA = 'http://www.w3.org/2005/08/addressing';
+
+    const SBD = 'http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader';
+    const XS = 'http://www.w3.org/2001/XMLSchema';
 }

@@ -36,7 +36,9 @@ class Transform {
             case 'http://www.w3.org/2001/10/xml-exc-c14n#':
                 $dom = new \DOMDocument();
                 $dom->loadXML($value);
-                return $dom->C14N($exclusive=true);
+                $xml = $dom->C14N($exclusive=true);
+                $xml = str_replace("  ", '', str_replace("\n", '', $xml));
+                return $xml;
                 break;
             case 'http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform':
                 return $value;

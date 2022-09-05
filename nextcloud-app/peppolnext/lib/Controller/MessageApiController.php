@@ -41,7 +41,13 @@ use OCP\Contacts\IManager;
 use phpseclib3\Crypt\{RSA, Random};
 use phpseclib3\File\X509;
 use JMS\Serializer\SerializerBuilder;
-
+use OCA\PeppolNext\PonderSource\SBD\DocumentIdentification;
+use OCA\PeppolNext\PonderSource\SBD\Identifier;
+use OCA\PeppolNext\PonderSource\SBD\Receiver;
+use OCA\PeppolNext\PonderSource\SBD\Scope;
+use OCA\PeppolNext\PonderSource\SBD\Sender;
+use OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument;
+use OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocumentHeader;
 
 class MessageApiController extends ApiController {
 
@@ -160,6 +166,8 @@ class MessageApiController extends ApiController {
 	 * @CORS
 	 */
 	public function as4Endpoint() {
+		$peppolNext_identifier = '0106:80235875'; // TODO
+
 		//$output = var_export($this->request->post, true);
 		$contentType = $this->request->getHeader('Content-Type');
 		$boundryStart = strpos($contentType, 'boundary="');
@@ -307,6 +315,8 @@ class MessageApiController extends ApiController {
 	 */
 	public function as4Send() {
 		error_log('received!');
+		
+		$peppolNext_identifier = '0106:80235875';
 
 
 		// TODO get the invoice
@@ -373,7 +383,7 @@ class MessageApiController extends ApiController {
 						'phase4@Conv-3221508681736967991'
 					),
 					[
-						new Property('9915:phase4-test-sender', 'originalSender', 'iso6523-actorid-upis'),
+						new Property($peppolNext_identifier, 'originalSender', 'iso6523-actorid-upis'),
 						new Property('9915:helger', 'finalRecipient', 'iso6523-actorid-upis')
 					],
 					new PayloadInfo(new PartInfo(
@@ -399,18 +409,40 @@ class MessageApiController extends ApiController {
 
 		$generateInvoice = new \Pondersource\Invoice\Invoice\GenerateInvoice();
   		$invoiceString = $generateInvoice->invoice($invoice);
-		$invoiceString = str_replace("\n", '', $invoiceString);
-		$invoiceString = str_replace("  ", '', $invoiceString);
-		$invoiceString = gzencode($invoiceString);
+
+		$instanceIdentifier = uniqid(); // TODO ?
+		$standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
+			'1.0',
+			new Sender(new Identifier('iso6523-actorid-upis', $peppolNext_identifier)),
+			new Receiver(new Identifier('iso6523-actorid-upis', '9915:phase4-test-sender')),
+			new DocumentIdentification(
+				'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
+				'2.1',
+				$instanceIdentifier,
+				'Invoice',
+				new \DateTime()
+			),
+			[
+				new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice215 2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
+				new Scope('PROCESSID', 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0', 'cenbii-procid-ubl')
+			]
+		));
+		$payload = $serializer->serialize($standardBusinessDocument, 'xml');
+		$payload = str_replace('<Any/>', $invoiceString, $payload);
+		$payload = $c14ne->transform($payload);
+		$payload = str_replace("\n", '', $payload);
+		$payload = str_replace("  ", '', $payload);
+
+		$payload = gzencode($payload);
 
 		$references = [
 			new DSigReference("#$messagingId", $serializedMessaging, [$c14ne], $sha256),
 			new DSigReference("#$bodyId", $serializedBody, [$c14ne], $sha256),
-			new DSigReference("cid:$payloadId", $invoiceString, [new Transform('http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform')], $sha256)
+			new DSigReference("cid:$payloadId", $payload, [new Transform('http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform')], $sha256)
 		];
 
 		$envelope->getHeader()->getSecurity()->generateSignature($private_key, $receiver_cert, $references, new C14NExclusive(), new RsaSha256(), $envelope);
-		$payload = $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $receiver_cert, "cid:$payloadId", $invoiceString);
+		$payload = $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $receiver_cert, "cid:$payloadId", $payload);
 
 		$serializedEnvelope = $c14ne->transform($serializer->serialize($envelope, 'xml'));
 		error_log($serializedEnvelope);

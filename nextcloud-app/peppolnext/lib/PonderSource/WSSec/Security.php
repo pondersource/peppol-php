@@ -106,7 +106,7 @@ class Security {
                      ->setEncryptionMethod(
                         new EncryptionMethod\RsaOeap(
                             new DigestMethod\SHA256(), 
-                            new MGF('http://www.w3.org/2001/04/xmlenc11#mgf1sha256')))
+                            new MGF('http://www.w3.org/2009/xmlenc11#mgf1sha256')))
                      ->setKeyInfo(
                         new KeyInfo(
                             new SecurityTokenReference(
