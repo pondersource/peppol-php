@@ -3,7 +3,7 @@
 namespace OCA\PeppolNext\PonderSource\SBD;
 
 use OCA\PeppolNext\PonderSource\Namespaces;
-use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement};
+use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 use OCA\PeppolNext\PonderSource\SBD\Any;
 
 /**

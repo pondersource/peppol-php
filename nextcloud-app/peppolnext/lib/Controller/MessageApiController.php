@@ -34,6 +34,7 @@ use OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation;
 use OCA\PeppolNext\PonderSource\SMP\SMP;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\AppFramework\Http\DataResponse;
 use OCP\Files\IRootFolder;
 use OCP\IRequest;
 use OCP\Contacts\IManager;
@@ -195,7 +196,8 @@ class MessageApiController extends ApiController {
 
 		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
 
-		$keystore_file = '/p12transport/test.p12';
+		// $keystore_file = '/p12transport/test.p12';
+		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
@@ -219,11 +221,14 @@ class MessageApiController extends ApiController {
 		$messageProperties = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageProperties();
 
 		$sender_id = false;
+		$recipient_id = false;
 
 		foreach ($messageProperties as $property) {
 			if ($property->getName() === 'originalSender') {
 				$sender_id = $property->getValue();
-				break;
+			}
+			else if ($property->getName() === 'finalRecipient') {
+				$recipient_id = $property->getValue();
 			}
 		}
 
@@ -235,7 +240,8 @@ class MessageApiController extends ApiController {
 		}
 		else {
 			$sender_certificate = new X509;
-			$sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+			// $sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
+			$sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
 		}
 
 		$sender_public_key = $sender_certificate->getPublicKey();
@@ -246,6 +252,18 @@ class MessageApiController extends ApiController {
 
 		$output = var_export($invoice, true);
 		error_log($output);
+
+
+		/////////////// MESSAGE FORWARDING ///////////////
+		$should_forward = true;
+
+		if ($should_forward) {
+			error_log("forwarding to $recipient_id");
+			$success = $this->as4SendWithIdentifier($invoice, $recipient_id);
+			error_log("forward result is: $success");
+		}
+		//////////////////////////////////////////////////
+
 
 		$messagingId = uniqid('peppolnext-msg-');
 		$bodyId = uniqid('id-');
@@ -314,31 +332,34 @@ class MessageApiController extends ApiController {
 	 * @CORS
 	 */
 	public function as4Send() {
-		error_log('received!');
-		
+		$this->as4SendWithIdentifier($this->generateSampleInvoice(), '9915:phase4-test-sender');
+		return new DataResponse(["message"=> "done"], Http::STATUS_OK);
+	}
+
+	public function as4SendWithIdentifier($invoice, $receiver_identifier) {
 		$peppolNext_identifier = '0106:80235875';
 
+		// as4 lookup
+		$useSMP = false;
 
-		// TODO get the invoice
-		$invoice = $this->generateSampleInvoice();
-		/////////////////////////////////////////////
-
-
-		// TODO as4 lookup
-		$as4_endpoint = 'http://188.208.143.130:8080/as4';
-		$cert_file = '/opt/temp/docker_server/receiver.cer';
-		// if (!$cert_store = file_get_contents($cert_file)) {
-		// 	echo "Error: Unable to read the cert file\n";
-		// 	exit;
-		// }
-		// $cert = openssl_x509_read($cert_store);
-		$receiver_cert = new X509;
-		$receiver_cert->loadX509(file_get_contents($cert_file));
+		if ($useSMP) {
+			$isProduction = false;
+			list($as4_endpoint, $receiver_cert) = SMP::lookup($receiver_identifier, $isProduction);
+		}
+		else {
+			// $as4_endpoint = 'http://188.208.143.130:8080/as4';
+			$as4_endpoint = 'http://DESKTOP-H39H1N6.local:8080/as4';
+			// $cert_file = '/opt/temp/docker_server/receiver.cer';
+			$cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer';
+			$receiver_cert = new X509;
+			$receiver_cert->loadX509(file_get_contents($cert_file));
+		}
 		/////////////////////////////////////////////
 
 
 		// Loading my private key and cert
-		$keystore_file = '/opt/temp/yashar_pc/test.p12';
+		// $keystore_file = '/opt/temp/yashar_pc/test.p12';
+		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
@@ -409,6 +430,7 @@ class MessageApiController extends ApiController {
 
 		$generateInvoice = new \Pondersource\Invoice\Invoice\GenerateInvoice();
   		$invoiceString = $generateInvoice->invoice($invoice);
+		$invoiceString = $c14ne->transform($invoiceString);
 
 		$instanceIdentifier = uniqid(); // TODO ?
 		$standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
@@ -423,7 +445,7 @@ class MessageApiController extends ApiController {
 				new \DateTime()
 			),
 			[
-				new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice215 2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
+				new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
 				new Scope('PROCESSID', 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0', 'cenbii-procid-ubl')
 			]
 		));
@@ -468,10 +490,16 @@ class MessageApiController extends ApiController {
 		$statusCode = $response->getStatusCode();
 		//echo $res->getHeader('content-type')[0];
 		$responseBody = $response->getBody();
-		error_log("$statusCode: $responseBody");
+
+		$response = $serializer->deserialize($responseBody,'OCA\PeppolNext\PonderSource\Envelope\Envelope::class', 'xml');
+		error_log("$statusCode: ".var_export($response, true));
+
+		$receiver_public_key = $receiver_cert->getPublicKey();
+		$verifyResult = $response->getHeader()->getSecurity()->getSignature()->verify($response, null, $receiver_public_key);
+		error_log('YAAAAAAAAAYYYYYYY signature checked: '.var_export($verifyResult, true));
 		/////////////////////////////////////////////
 
-		return new DataResponse(["message"=> "done"], Http::STATUS_OK);
+		return $verifyResult;
 	}
 
 	private function generateSampleInvoice() {
