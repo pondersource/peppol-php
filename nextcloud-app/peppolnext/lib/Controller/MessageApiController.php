@@ -49,6 +49,39 @@ use OCA\PeppolNext\PonderSource\SBD\Scope;
 use OCA\PeppolNext\PonderSource\SBD\Sender;
 use OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument;
 use OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocumentHeader;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\AccountingCustomerParty;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\AccountingSupplierParty;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\AllowanceCharge;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Amount;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\ClassifiedTaxCategory;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Contact;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Country;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\CountryCode;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Delivery;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\EndpointID;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\FinancialInstitutionBranch;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\ID;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\InvoiceLine;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\InvoicePeriod;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Item;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\LegalMonetaryTotal;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\OrderReference;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Party as InvoiceParty;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PartyIdentification;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PartyLegalEntity;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PartyTaxScheme;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PayeeFinancialAccount;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentMeans;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentMeansCode;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentTerms;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PostalAddress;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Price;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\Quantity;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxCategory;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxScheme;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxSubtotal;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxTotal;
 
 class MessageApiController extends ApiController {
 
@@ -428,8 +461,7 @@ class MessageApiController extends ApiController {
 		$serializedMessaging = $serializer->serialize($envelope->getHeader()->getMessaging(), 'xml');
 		$serializedBody = $serializer->serialize($envelope->getBody(), 'xml');
 
-		$generateInvoice = new \Pondersource\Invoice\Invoice\GenerateInvoice();
-  		$invoiceString = $generateInvoice->invoice($invoice);
+  		$invoiceString = $serializer->serialize($invoice, 'xml');
 		$invoiceString = $c14ne->transform($invoiceString);
 
 		$instanceIdentifier = uniqid(); // TODO ?
@@ -502,7 +534,350 @@ class MessageApiController extends ApiController {
 		return $verifyResult;
 	}
 
+	// private function invoiceFromDict($dict) {
+	// 	$dictSP = $dict['AccountingSupplierParty']['Party'];
+	// 	$dictCP = $dict['AccountingCustomerParty']['Party'];
+
+	// 	// Tax scheme
+	// 	$taxScheme = (new \Pondersource\Invoice\Party\TaxScheme())
+	// 		->setId($dictSP['PartyTaxScheme']['TaxScheme']['ID']);
+
+	// 	// Client contact node
+	// 	$clientContact = (new \Pondersource\Invoice\Account\Contact()) // TODO
+	// 		->setName('Client name')
+	// 		->setTelephone('908-99-74-74');
+
+
+	// 	$country = (new \Pondersource\Invoice\Account\Country())
+	// 		->setIdentificationCode($dictSP['PostalAddress']['Country']['IdentificationCode']);
+
+
+	// 	// Full address
+	// 	$address = (new \Pondersource\Invoice\Account\PostalAddress())
+	// 		->setStreetName($dictSP['PostalAddress']['StreetName'])
+	// 		->setAddionalStreetName($dictSP['PostalAddress']['AdditionalStreetName'])
+	// 		->setCityName($dictSP['CityName'])
+	// 		->setPostalZone($dictSP['PostalZone'])
+	// 		->setCountry($country);
+
+
+	// 	$financialInstitutionBranch = (new \Pondersource\Invoice\Financial\FinancialInstitutionBranch())
+	// 		->setId('RABONL2U'); // TODO
+
+
+	// 	$payeeFinancialAccount = (new \Pondersource\Invoice\Financial\PayeeFinancialAccount()) // TODO
+	// 		->setFinancialInstitutionBranch($financialInstitutionBranch)
+	// 		->setName('Customer Account Holder')
+	// 		->setId('NL00RABO0000000000');
+
+
+	// 	$paymentMeans = (new  \Pondersource\Invoice\Payment\PaymentMeans()) // TODO
+	// 		->setPayeeFinancialAccount($payeeFinancialAccount)
+	// 		->setPaymentMeansCode(31, [])
+	// 		->setPaymentId('our invoice 1234');
+
+	// 	// Supplier company node
+	// 	$supplierLegalEntity = (new \Pondersource\Invoice\Legal\LegalEntity())
+	// 		->setRegistrationNumber($dictSP['PartyLegalEntity']['RegistrationName'])
+	// 		->setCompanyId($dictSP['PartyLegalEntity']['CompanyID']);
+
+
+	// 	$supplierPartyTaxScheme = (new \Pondersource\Invoice\Party\PartyTaxScheme())
+	// 		->setTaxScheme($taxScheme)
+	// 		->setCompanyId($dictSP['PartyTaxScheme']['CompanyID']);
+
+	// 	$supplierCompany = (new \Pondersource\Invoice\Party\Party())
+	// 		->setEndPointId($dictSP['EndpointID'])
+	// 		->setPartyIdentificationId($dictSP['PartyIdentification']['ID'])
+	// 		->setName($dictSP['PartyName']['Name'])
+	// 		->setLegalEntity($supplierLegalEntity)
+	// 		->setPartyTaxScheme($supplierPartyTaxScheme)
+	// 		->setPostalAddress($address);
+
+
+
+	// 	// Client company node
+	// 	$clientLegalEntity = (new \Pondersource\Invoice\Legal\LegalEntity()) // TODO
+	// 		->setRegistrationNumber('Client Company Name')
+	// 		->setCompanyId('Client Company Registration');
+
+
+
+	// 	$clientPartyTaxScheme = (new \Pondersource\Invoice\Party\PartyTaxScheme()) // TODO
+	// 		->setTaxScheme($taxScheme)
+	// 		->setCompanyId('BE123456789');
+
+
+	// 	$clientCompany = (new \Pondersource\Invoice\Party\Party()) // TODO
+	// 		->setEndPointId('7300010000002', '0002')
+	// 		->setPartyIdentificationId('9988217')
+	// 		->setName('Client Company Name')
+	// 		->setLegalEntity($clientLegalEntity)
+	// 		->setPartyTaxScheme($clientPartyTaxScheme)
+	// 		->setPostalAddress($address)
+	// 		->setContact($clientContact);
+
+	// 	$legalMonetaryTotal = (new \Pondersource\Invoice\Legal\LegalMonetaryTotal()) // TODO
+	// 		->setPayableAmount(10 + 2.1)
+	// 		->setAllowanceTotalAmount(0)
+	// 		->setTaxInclusiveAmount(10 + 2.1)
+	// 		->setLineExtensionAmount(10)
+	// 		->setTaxExclusiveAmount(10);
+
+
+	// 	$classifiedTaxCategory = (new \Pondersource\Invoice\Tax\ClassifiedTaxCategory()) // TODO
+	// 		->setId('S')
+	// 		->setPercent(21.00)
+	// 		->setTaxScheme($taxScheme);
+
+	// 	// Product
+	// 	$productItem = (new \Pondersource\Invoice\Item()) // TODO
+	// 		->setName('Product Name')
+	// 		->setClassifiedTaxCategory($classifiedTaxCategory)
+	// 		->setDescription('Product Description');
+
+	// 	// Price
+	// 	$price = (new \Pondersource\Invoice\Payment\Price()) // TODO
+	// 		->setBaseQuantity(1)
+	// 		->setUnitCode(\Pondersource\Invoice\Payment\UnitCode::UNIT)
+	// 		->setPriceAmount(10);
+
+	// 	// Invoice Line tax totals
+	// 	$lineTaxTotal = (new \Pondersource\Invoice\Tax\TaxTotal()) // TODO
+	// 		->setTaxAmount(2.1);
+
+
+	// 	// InvoicePeriod
+	// 	$invoicePeriod = (new \Pondersource\Invoice\Invoice\InvoicePeriod()) // TODO
+	// 		->setStartDate(new \DateTime());
+
+	// 	// Invoice Line(s)
+	// 	$invoiceLine = (new \Pondersource\Invoice\Invoice\InvoiceLine()) // TODO
+	// 		->setId(0)
+	// 		->setItem($productItem)
+	// 		->setPrice($price)
+	// 		->setInvoicePeriod($invoicePeriod)
+	// 		->setLineExtensionAmount(10)
+	// 		->setInvoicedQuantity(1);
+
+
+
+	// 	$invoiceLines = [$invoiceLine]; // TODO
+
+	// 	$taxCategory = (new \Pondersource\Invoice\Tax\TaxCategory()) // TODO
+	// 		->setId('S', [])
+	// 		->setPercent(21.00)
+	// 		->setTaxScheme($taxScheme);
+
+	// 	$allowanceCharge = (new \Pondersource\Invoice\AllowanceCharge()) // TODO
+	// 		->setChargeIndicator(true)
+	// 		->setAllowanceReason('Insurance')
+	// 		->setAmount(10)
+	// 		->setTaxCategory($taxCategory);
+
+	// 	$taxSubTotal = (new \Pondersource\Invoice\Tax\TaxSubTotal()) // TODO
+	// 		->setTaxableAmount(10)
+	// 		->setTaxAmount(2.1)
+	// 		->setTaxCategory($taxCategory);
+
+	// 	$taxTotal = (new \Pondersource\Invoice\Tax\TaxTotal()) // TODO
+	// 		->setTaxSubtotal($taxSubTotal)
+	// 		->setTaxAmount(2.1);
+
+
+	// 	// Payment Terms
+	// 	$paymentTerms = (new \Pondersource\Invoice\Payment\PaymentTerms()) // TODO
+	// 		->setNote('30 days net');
+
+	// 	// Delivery
+	// 	$deliveryLocation = (new \Pondersource\Invoice\Account\PostalAddress()) // TODO
+	// 		->setStreetName('Delivery street 2')
+	// 		->setAddionalStreetName('Building 56')
+	// 		->setCityName('Utreht')
+	// 		->setPostalZone('3521')
+	// 		->setCountry($country);
+
+
+	// 	$delivery = (new \Pondersource\Invoice\Account\Delivery()) // TODO
+	// 		->setActualDeliveryDate(new \DateTime())
+	// 		->setDeliveryLocation($deliveryLocation);
+
+
+	// 	$orderReference = (new \Pondersource\Invoice\Payment\OrderReference()) // TODO
+	// 		->setId('5009567')
+	// 		->setSalesOrderId('tRST-tKhM');
+
+	// 	// Invoice object
+	// 	$invoice = (new  \Pondersource\Invoice\Invoice\Invoice())
+	// 		->setProfileID($dict['ProfileID'])
+	// 		->setCustomazationID($dict['CustomizationID'])
+	// 		->setId($dict['ID'])
+	// 		->setIssueDate(strtotime($dict['IssueDate']))
+	// 		->setDueDate(strtotime($dict['DueDate']))
+	// 		->setInvoiceTypeCode($dict['InvoiceTypeCode'])
+	// 		->setDocumentCurrencyCode($dict['DocumentCurrencyCode'])
+	// 		->setNote('invoice note') // TODO
+	// 		->setAccountingCostCode($dict['AccountingCost'])
+	// 		->setDelivery($delivery) // TODO
+	// 		->setAccountingSupplierParty($supplierCompany)
+	// 		->setAccountingCustomerParty($clientCompany) // TODO
+	// 		->setInvoiceLines($invoiceLines) // TODO
+	// 		->setLegalMonetaryTotal($legalMonetaryTotal) // TODO
+	// 		->setPaymentTerms($paymentTerms) // TODO
+	// 		//->setAllowanceCharges($allowanceCharge)
+	// 		->setInvoicePeriod($invoicePeriod) // TODO
+	// 		->setPaymentMeans($paymentMeans) // TODO
+	// 		->setByerReference($dict['BuyerReference'])
+	// 		->setOrderReference($orderReference) // TODO
+	// 		->setTaxTotal($taxTotal); // TODO
+
+	// 	return $invoice;
+	// }
+
 	private function generateSampleInvoice() {
+		// Tax scheme
+		$taxScheme = new TaxScheme();
+
+		// Client contact node
+		$clientContact = new Contact('Client name', '908-99-74-74');
+
+		$country = new Country(CountryCode::NL);
+
+		// Full address
+		$address = new PostalAddress('Lisk Center Utreht', 'De Burren', 'Utreht', '3521', null, null, $country);
+
+
+		$financialInstitutionBranch = new FinancialInstitutionBranch('RABONL2U');
+		$payeeFinancialAccount = new PayeeFinancialAccount('NL00RABO0000000000', 'Customer Account Holder', $financialInstitutionBranch);
+		$paymentMeans = new PaymentMeans(
+			new PaymentMeansCode(null, 31),
+			'our invoice 1234',
+			null, $payeeFinancialAccount, null
+		);
+
+		// Supplier company node
+		$supplierLegalEntity = new PartyLegalEntity('PonderSource', new ID(null, 'NL123456789'));
+		$supplierTaxScheme = new PartyTaxScheme('NL123456789', $taxScheme);
+		$supplierParty = new \OCA\PeppolNext\PonderSource\UBL\Invoice\Party(
+			new EndpointID('7300010000001', '0007'),
+			[ new PartyIdentification('99887766') ],
+			'PonderSource',
+			$address,
+			$supplierTaxScheme,
+			$supplierLegalEntity,
+			null
+		);
+
+		// Client company node
+		$clientLegalEntity = new PartyLegalEntity('Client Company Name', new ID(null, 'Client Company Registration'));
+		$clientPartyTaxScheme = new PartyTaxScheme('BE123456789', $taxScheme);
+		$clientParty = new \OCA\PeppolNext\PonderSource\UBL\Invoice\Party(
+			new EndpointID('7300010000002', '0002'),
+			[ new PartyIdentification('9988217') ],
+			'Client Company Name',
+			$address,
+			$clientPartyTaxScheme,
+			$clientLegalEntity,
+			$clientContact
+		);
+
+		$legalMonetaryTotal = new LegalMonetaryTotal(
+			new Amount('EUR', 10),
+			new Amount('EUR', 10),
+			new Amount('EUR', 10 + 2.1),
+			new Amount('EUR', 0),
+			null, null, null,
+			new Amount('EUR', 10 + 2.1)
+		);
+
+		$classifiedTaxCategory = new ClassifiedTaxCategory('S', 21.00, $taxScheme);
+		$productItem = new Item('Product Description', 'Product Name', null, null, null, null, null, $classifiedTaxCategory, []);
+
+		// Price
+		$price = new Price(
+			new Amount('EUR', 10),
+			new Quantity('Unit', 1),
+			null
+		);
+
+		// InvoicePeriod
+		$invoicePeriod = new InvoicePeriod(new \DateTime(), null, null);
+
+		// Invoice Line(s)
+		$invoiceLine = new InvoiceLine(
+			0,
+			null,
+			new Quantity('Unit', 1),
+			new Amount('EUR', 10),
+			null,
+			$invoicePeriod,
+			null,
+			null,
+			[],
+			$productItem,
+			$price
+		);
+
+		$taxCategory = new TaxCategory(new ID(null, 'S'), 21.00, null, null, $taxScheme);
+		$allowanceCharge = new AllowanceCharge(true, null, 'Insurance', null, new Amount('EUR', 10), null, $taxCategory);
+
+		$taxSubTotal = new TaxSubtotal(new Amount('EUR', 10), new Amount('EUR', 2.1), $taxCategory);
+		$taxTotal = new TaxTotal(new Amount('EUR', 2.1), $taxSubTotal);
+
+		// Payment Terms
+		$paymentTerms = new PaymentTerms('30 days net');
+
+		// Delivery
+		$deliveryLocation = new PostalAddress(
+			'Delivery street 2',
+			'Building 56',
+			'Utreht',
+			'3521',
+			null, null,
+			$country
+		);
+		$delivery = new Delivery(new \DateTime(), $deliveryLocation, null);
+
+		$orderReference = new OrderReference('5009567', 'tRST-tKhM');
+
+		// Invoice object
+		$invoice = new Invoice(
+			1234,
+			new \DateTime(),
+			null,
+			null,
+			'invoice note',
+			null,
+			null,
+			null,
+			'4217:2323:2323',
+			'BUYER_REF',
+			$invoicePeriod,
+			$orderReference,
+			null,
+			null,
+			null,
+			null,
+			null,
+			[],
+			null,
+			new AccountingSupplierParty($supplierParty),
+			new AccountingCustomerParty($clientParty),
+			null,
+			null,
+			$delivery,
+			[$paymentMeans],
+			$paymentTerms,
+			[$allowanceCharge],
+			$taxTotal,
+			$legalMonetaryTotal,
+			[$invoiceLine]
+		);
+
+		return $invoice;
+	}
+
+	private function generateSampleInvoice2() {
 		// Tax scheme
 		$taxScheme = (new \Pondersource\Invoice\Party\TaxScheme())
 			->setId('VAT');

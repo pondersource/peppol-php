@@ -22,4 +22,8 @@ class Namespaces {
 
     const SBD = 'http://www.unece.org/cefact/namespaces/StandardBusinessDocumentHeader';
     const XS = 'http://www.w3.org/2001/XMLSchema';
+
+    const UBL = 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2';
+    const CBC = 'urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2';
+    const CAC = 'urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2';
 }

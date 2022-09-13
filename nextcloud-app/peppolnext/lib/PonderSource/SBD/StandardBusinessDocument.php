@@ -21,14 +21,22 @@ class StandardBusinessDocument
     private $header;
 
     /**
-     * @SerializedName("Any")
+     * @SerializedName("Invoice")
      * @XmlElement()
-     * @Type("OCA\PeppolNext\PonderSource\SBD\Any")
+     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice")
+     */
+    private $invoice;
+
+    /**
+     * SerializedName("Any")
+     * XmlElement()
+     * Type("OCA\PeppolNext\PonderSource\SBD\Any")
      */
     private $any;
 
-    public function __construct($header = null){
+    public function __construct($header = null, $invoice = null){
         $this->header = $header;
+        $this->invoice = $invoice;
         $this->any = new Any();
         return $this;
     }
@@ -41,4 +49,14 @@ class StandardBusinessDocument
     public function getHeader(){
         return $this->header;
     }
+
+    public function setInvoice($invoice){
+        $this->invoice = $invoice;
+        return $this;
+    }
+
+    public function getInvoice(){
+        return $this->invoice;
+    }
+
 }
