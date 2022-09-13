@@ -461,9 +461,6 @@ class MessageApiController extends ApiController {
 		$serializedMessaging = $serializer->serialize($envelope->getHeader()->getMessaging(), 'xml');
 		$serializedBody = $serializer->serialize($envelope->getBody(), 'xml');
 
-  		$invoiceString = $serializer->serialize($invoice, 'xml');
-		$invoiceString = $c14ne->transform($invoiceString);
-
 		$instanceIdentifier = uniqid(); // TODO ?
 		$standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
 			'1.0',
@@ -480,9 +477,8 @@ class MessageApiController extends ApiController {
 				new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
 				new Scope('PROCESSID', 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0', 'cenbii-procid-ubl')
 			]
-		));
+		),	$invoice);
 		$payload = $serializer->serialize($standardBusinessDocument, 'xml');
-		$payload = str_replace('<Any/>', $invoiceString, $payload);
 		$payload = $c14ne->transform($payload);
 		$payload = str_replace("\n", '', $payload);
 		$payload = str_replace("  ", '', $payload);

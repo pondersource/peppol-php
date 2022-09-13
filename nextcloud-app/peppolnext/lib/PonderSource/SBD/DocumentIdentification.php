@@ -13,35 +13,35 @@ class DocumentIdentification
 
     /**
      * @SerializedName("Standard")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $standard;
 
     /**
      * @SerializedName("TypeVersion")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $typeVersion;
 
     /**
      * @SerializedName("InstanceIdentifier")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $instanceIdentifier;
 
     /**
      * @SerializedName("Type")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $type; 
 
     /**
      * @SerializedName("CreationDateAndTime")
-     * @XmlElement(cdata=false)
+     * @XmlElement(cdata=false, namespace=Namespaces::SBD)
      * @Type("DateTime<'Y-m-d\TH:i:sP'>")
      */
     private $creationDateAndTime;

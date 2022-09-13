@@ -11,18 +11,18 @@ use OCA\PeppolNext\PonderSource\SBD\Any;
  * @XmlNamespace(uri=Namespaces::XS, prefix="xs")
  * @XmlRoot("StandardBusinessDocument")
  */
-class StandardBusinessDocument 
+class StandardBusinessDocument
 {
     /**
      * @SerializedName("StandardBusinessDocumentHeader")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocumentHeader")
      */
     private $header;
 
     /**
      * @SerializedName("Invoice")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::UBL)
      * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Invoice")
      */
     private $invoice;

@@ -7,8 +7,8 @@ use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,Xml
 
 /**
  * @XmlNamespace(uri=Namespaces::UBL)
- * @XmlNamespace(uri=Namespaces::CBC, prefix='cbc)
- * @XmlNamespace(uri=Namespaces::CAC, prefix='cac')
+ * @XmlNamespace(uri=Namespaces::CBC, prefix="cbc")
+ * @XmlNamespace(uri=Namespaces::CAC, prefix="cac")
  * @XmlRoot("Invoice")
  */
 class Invoice // https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/

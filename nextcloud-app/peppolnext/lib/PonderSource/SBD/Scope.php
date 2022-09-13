@@ -13,21 +13,21 @@ class Scope
 
     /**
      * @SerializedName("Type")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $type;
 
     /**
      * @SerializedName("InstanceIdentifier")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $instanceIdentifier;
 
     /**
      * @SerializedName("Identifier")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $identifier;

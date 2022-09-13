@@ -14,35 +14,35 @@ class StandardBusinessDocumentHeader
 
     /**
      * @SerializedName("HeaderVersion")
-     * @XmlElement(cdata=false)
+     * @XmlElement(cdata=false, namespace=Namespaces::SBD)
      * @Type("string")
      */
     private $headerVersion;
 
     /**
      * @SerializedName("Sender")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("OCA\PeppolNext\PonderSource\SBD\Sender")
      */
     private $sender;
 
     /**
      * @SerializedName("Receiver")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("OCA\PeppolNext\PonderSource\SBD\Receiver")
      */
     private $receiver;
 
     /**
      * @SerializedName("DocumentIdentification")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("OCA\PeppolNext\PonderSource\SBD\DocumentIdentification")
      */
     private $documentIdentification;
 
     /**
      * @SerializedName("BusinessScope")
-     * @XmlList(inline=false, entry="Scope")
+     * @XmlList(inline=false, entry="Scope", namespace=Namespaces::SBD)
      * @Type("array<OCA\PeppolNext\PonderSource\SBD\Scope>")
      */
     private $businessScope = [];

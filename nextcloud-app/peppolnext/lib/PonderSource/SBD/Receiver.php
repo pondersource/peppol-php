@@ -13,7 +13,7 @@ class Receiver
 
     /**
      * @SerializedName("Identifier")
-     * @XmlElement()
+     * @XmlElement(namespace=Namespaces::SBD)
      * @Type("OCA\PeppolNext\PonderSource\SBD\Identifier")
      */
     private $identifier;

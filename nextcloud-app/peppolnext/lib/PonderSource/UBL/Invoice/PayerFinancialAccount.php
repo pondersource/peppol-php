@@ -6,8 +6,8 @@ use OCA\PeppolNext\PonderSource\Namespaces;
 use JMS\Serializer\Annotation\{Type,XmlAttribute,XmlNamespace,SerializedName,XmlRoot,XmlElement,XmlList};
 
 /**
- * @XmlNamespace(uri=Namespaces::CBC, prefix='cbc)
- * @XmlNamespace(uri=Namespaces::CAC, prefix='cac')
+ * @XmlNamespace(uri=Namespaces::CBC, prefix="cbc")
+ * @XmlNamespace(uri=Namespaces::CAC, prefix="cac")
  */
 class PayerFinancialAccount 
 {
