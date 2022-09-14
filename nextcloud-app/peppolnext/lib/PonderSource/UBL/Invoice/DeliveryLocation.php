@@ -22,7 +22,7 @@ class DeliveryLocation
     /**
      * @SerializedName("Address")
      * @XmlElement(cdata=false,namespace=Namespaces::CAC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\Address")
+     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\PostalAddress")
      */
     private $address;
     

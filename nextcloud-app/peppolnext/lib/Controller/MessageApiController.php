@@ -58,6 +58,7 @@ use OCA\PeppolNext\PonderSource\UBL\Invoice\Contact;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\Country;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\CountryCode;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\Delivery;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\DeliveryLocation;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\EndpointID;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\FinancialInstitutionBranch;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\ID;
@@ -70,6 +71,7 @@ use OCA\PeppolNext\PonderSource\UBL\Invoice\OrderReference;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\Party as InvoiceParty;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\PartyIdentification;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\PartyLegalEntity;
+use OCA\PeppolNext\PonderSource\UBL\Invoice\PartyName;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\PartyTaxScheme;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\PayeeFinancialAccount;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\PaymentMeans;
@@ -756,10 +758,10 @@ class MessageApiController extends ApiController {
 		$supplierTaxScheme = new PartyTaxScheme('NL123456789', $taxScheme);
 		$supplierParty = new \OCA\PeppolNext\PonderSource\UBL\Invoice\Party(
 			new EndpointID('7300010000001', '0007'),
-			[ new PartyIdentification('99887766') ],
-			'PonderSource',
+			[ new PartyIdentification(new ID(null, '99887766')) ],
+			new PartyName('PonderSource'),
 			$address,
-			$supplierTaxScheme,
+			[ $supplierTaxScheme ],
 			$supplierLegalEntity,
 			null
 		);
@@ -769,10 +771,10 @@ class MessageApiController extends ApiController {
 		$clientPartyTaxScheme = new PartyTaxScheme('BE123456789', $taxScheme);
 		$clientParty = new \OCA\PeppolNext\PonderSource\UBL\Invoice\Party(
 			new EndpointID('7300010000002', '0002'),
-			[ new PartyIdentification('9988217') ],
-			'Client Company Name',
+			[ new PartyIdentification(new ID(null, '9988217')) ],
+			new PartyName('Client Company Name'),
 			$address,
-			$clientPartyTaxScheme,
+			[ $clientPartyTaxScheme ],
 			$clientLegalEntity,
 			$clientContact
 		);
@@ -814,7 +816,7 @@ class MessageApiController extends ApiController {
 			$price
 		);
 
-		$taxCategory = new TaxCategory(new ID(null, 'S'), 21.00, null, null, $taxScheme);
+		$taxCategory = new TaxCategory('S', 21.00, null, null, $taxScheme);
 		$allowanceCharge = new AllowanceCharge(true, null, 'Insurance', null, new Amount('EUR', 10), null, $taxCategory);
 
 		$taxSubTotal = new TaxSubtotal(new Amount('EUR', 10), new Amount('EUR', 2.1), $taxCategory);
@@ -824,14 +826,14 @@ class MessageApiController extends ApiController {
 		$paymentTerms = new PaymentTerms('30 days net');
 
 		// Delivery
-		$deliveryLocation = new PostalAddress(
+		$deliveryLocation = new DeliveryLocation(null, new PostalAddress(
 			'Delivery street 2',
 			'Building 56',
 			'Utreht',
 			'3521',
 			null, null,
 			$country
-		);
+		));
 		$delivery = new Delivery(new \DateTime(), $deliveryLocation, null);
 
 		$orderReference = new OrderReference('5009567', 'tRST-tKhM');

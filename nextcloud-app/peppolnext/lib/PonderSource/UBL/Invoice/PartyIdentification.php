@@ -14,7 +14,7 @@ class PartyIdentification
 
     /**
      * @SerializedName("ID")
-     * @XmlElement(cdata=false,namespace=Namespaces::CBC)
+     * @XmlElement(cdata=false, namespace=Namespaces::CBC)
      * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ID")
      */
     private $id;

@@ -34,10 +34,10 @@ class StandardBusinessDocument
      */
     private $any;
 
-    public function __construct($header = null, $invoice = null){
+    public function __construct($header = null, $invoice = null, $any = null){
         $this->header = $header;
         $this->invoice = $invoice;
-        $this->any = new Any();
+        $this->any = $any;
         return $this;
     }
 

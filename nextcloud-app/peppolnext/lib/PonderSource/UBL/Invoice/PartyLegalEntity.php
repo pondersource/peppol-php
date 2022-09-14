@@ -22,7 +22,7 @@ class PartyLegalEntity
     /**
      * @SerializedName("CompanyID")
      * @XmlElement(cdata=false,namespace=Namespaces::CBC)
-     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\CompanyID")
+     * @Type("OCA\PeppolNext\PonderSource\UBL\Invoice\ID")
      */
     private $companyID;
     

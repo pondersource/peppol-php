@@ -3,7 +3,7 @@
 namespace OCA\PeppolNext\PonderSource\EBMS;
 
 use OCA\PeppolNext\PonderSource\Namespaces;
-use JMS\Serializer\Annotation\{Type, XmlElement, SerializedName, Exclude};
+use JMS\Serializer\Annotation\{Type, XmlElement, SerializedName, Exclude, XmlAttribute};
 
 class Error {
 

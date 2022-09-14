@@ -25,6 +25,7 @@ class ID
     // Delivery/DeliveryLocation: ISO 6523 ICD list
     // InvoiceLine/DocumentReference: Invoiced object identifier scheme (UNCL 1153) // https://docs.peppol.eu/poacc/billing/3.0/codelist/UNCL1153/
     // InvoiceLine/Item/StandardItemIdentification: ISO 6523 ICD list
+    // Party/PartyLegalEntity/CompanyID: ISO 6523 ICD list
 
     /**
      * @XmlValue(cdata=false)
