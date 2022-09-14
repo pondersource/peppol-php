@@ -11,7 +11,6 @@
     ],
     "require": {
         "phpseclib/phpseclib": "^3.0",
-        "pondersource/invoice-ubl": "^1.0",
         "jms/serializer": "^3.17"
     },
     "require-dev": {

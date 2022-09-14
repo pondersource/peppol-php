@@ -3,7 +3,6 @@
 namespace OCA\PeppolNext;
 
 use phpseclib3\Crypt\RSA;
-use Pondersource\Invoice\DeserializeInvoice;
 use OCA\PeppolNext\EnvelopeReader;
 
 class PayloadReader {
