@@ -231,8 +231,8 @@ class MessageApiController extends ApiController {
 
 		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
 
-		// $keystore_file = '/p12transport/test.p12';
-		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
+		$keystore_file = '/p12transport/test.p12';
+		// $keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
@@ -275,8 +275,8 @@ class MessageApiController extends ApiController {
 		}
 		else {
 			$sender_certificate = new X509;
-			// $sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
-			$sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
+			$sender_certificate->loadX509(file_get_contents('/p12transport/sender.cer'));
+			// $sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
 		}
 
 		$sender_public_key = $sender_certificate->getPublicKey();
@@ -384,8 +384,8 @@ class MessageApiController extends ApiController {
 		else {
 			// $as4_endpoint = 'http://188.208.143.130:8080/as4';
 			$as4_endpoint = 'http://DESKTOP-H39H1N6.local:8080/as4';
-			// $cert_file = '/opt/temp/docker_server/receiver.cer';
-			$cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer';
+			$cert_file = '/p12transport/receiver.cer';
+			// $cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer';
 			$receiver_cert = new X509;
 			$receiver_cert->loadX509(file_get_contents($cert_file));
 		}
@@ -393,8 +393,8 @@ class MessageApiController extends ApiController {
 
 
 		// Loading my private key and cert
-		// $keystore_file = '/opt/temp/yashar_pc/test.p12';
-		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
+		$keystore_file = '/p12transport/test.p12';
+		// $keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
