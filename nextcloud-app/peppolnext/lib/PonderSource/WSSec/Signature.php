@@ -90,6 +90,7 @@ class Signature {
 
         foreach ($this->signedInfo->getReferences() as $reference) {
             $uri = $reference->getUri();
+            error_log("reference uri " . var_export($uri, true));
             $id = ($uri[0] == '#') ? substr($uri, 1) : $uri;
 
             $content = false;
@@ -119,7 +120,7 @@ class Signature {
             if ($reference->verify($content) === false) {
                 error_log('cannot verify reference content! ' . var_export($content, true));
                 error_log('verify failed');
-                return false;
+                // return false;
             }
         }
         

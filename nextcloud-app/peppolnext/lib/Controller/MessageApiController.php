@@ -286,11 +286,17 @@ class MessageApiController extends ApiController {
 		if (!$verifyResult) return false;
 
 		$output = var_export($invoice, true);
-		error_log($output);
+		// error_log($output);
+
+
+		/////////////// MESSAGE SAVING ///////////////////
+		$file = $this->rootFolder->newFile('invoice.xml', $decrypted_payload);
+    error_log("invoice saved to Nextcloud " . $file->getPath());
+		//////////////////////////////////////////////////
 
 
 		/////////////// MESSAGE FORWARDING ///////////////
-		$should_forward = true;
+		$should_forward = false;
 
 		if ($should_forward) {
 			error_log("forwarding to $recipient_id");

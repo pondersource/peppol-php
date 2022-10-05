@@ -9,10 +9,10 @@ class PayloadReader {
 
 	static function readPayload($raw_envelope, $raw_payload, $certificate, $private_key) {
 		$envelope = EnvelopeReader::readEnvelope($raw_envelope);
-		list($payload_str, $decrypted_payload) = $envelope->getHeader()->decodePayload($raw_payload, $private_key);
+		$decrypted_payload = $envelope->getHeader()->decodePayload($raw_payload, $private_key);
 		
 		$serializer = \JMS\Serializer\SerializerBuilder::create()->build();
-		$sbd = $serializer->deserialize($payload_str,'OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument::class', 'xml');
+		$sbd = $serializer->deserialize($decrypted_payload,'OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument::class', 'xml');
 		$invoice = $sbd->getInvoice();
 
 		return [$envelope, $invoice, $decrypted_payload];
