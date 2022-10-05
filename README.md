@@ -42,6 +42,8 @@ Get an Ubuntu server and install Docker. Clone this repo and `cd` into it. Then,
 ./scripts/gencerts.sh
 ./scripts/rebuild.sh
 ./scripts/transportp12.sh
+docker network create testnet
+export PEPPOL_PHP_DIR=`pwd`
 ./scripts/start-to-Nextcloud.sh
 sleep 10
 # this will send 1 message to the Phase4 server and then exit:
@@ -54,6 +56,7 @@ To generate PHP -> Java:
 ```sh
 ./scripts/gencerts.sh
 ./scripts/rebuild.sh
+docker network create testnet
 ./scripts/start-from-Nextcloud.sh
 ./scripts/start-to-Phase4.sh
 ```
