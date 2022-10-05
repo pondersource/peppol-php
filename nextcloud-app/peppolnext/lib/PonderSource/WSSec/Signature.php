@@ -96,15 +96,15 @@ class Signature {
 
             if ($id === $envelope->getHeader()->getMessaging()->getId()) {
                 $content = Signature::serializeAndRemoveSpaces($envelope->getHeader()->getMessaging());
-                error_log('messaging reference');
+                error_log('messaging reference ' . var_export($content, true));
             }
             else if ($id === $envelope->getBody()->getId()) {
                 $content = Signature::serializeAndRemoveSpaces($envelope->getBody());
-                error_log('body reference');
+                error_log('body reference ' . var_export($content, true));
             }
             else if ($id === $envelope->getHeader()->getMessaging()->getUserMessage()->getPayloadInfo()->getPartInfo()->getReference()) {
                 $content = $payload;
-                error_log('payload reference');
+                error_log('payload reference ' . var_export($content, true));
             }
             else {
                 error_log('reference '.$id.' not found');
@@ -112,10 +112,12 @@ class Signature {
             }
 
             if ($content === false) {
+                error_log('unrecognised reference id! ' . var_export($id, true));
                 return false;
             }
 
             if ($reference->verify($content) === false) {
+                error_log('cannot verify reference content! ' . var_export($content, true));
                 error_log('verify failed');
                 return false;
             }
