@@ -119,8 +119,12 @@ class Signature {
 
             if ($reference->verify($content) === false) {
                 error_log('cannot verify reference content! ' . var_export($content, true));
-                error_log('verify failed');
-                // return false;
+                if ($id === $envelope->getHeader()->getMessaging()->getId() || $id === $envelope->getHeader()->getMessaging()->getUserMessage()->getPayloadInfo()->getPartInfo()->getReference()) {
+                    error_log('FIXME https://github.com/pondersource/peppol-php/issues/148');
+                } else {
+                    return false;
+                }
+
             }
         }
         
