@@ -383,7 +383,8 @@ class MessageApiController extends ApiController {
 		}
 		else {
 			// $as4_endpoint = 'http://188.208.143.130:8080/as4';
-			$as4_endpoint = 'http://DESKTOP-H39H1N6.local:8080/as4';
+			// $as4_endpoint = 'http://DESKTOP-H39H1N6.local:8080/as4';
+			$as4_endpoint = 'http://server:8080/as4';
 			$cert_file = '/p12transport/receiver.cer';
 			// $cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer';
 			$receiver_cert = new X509;
@@ -467,7 +468,7 @@ class MessageApiController extends ApiController {
 		$standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
 			'1.0',
 			new Sender(new Identifier('iso6523-actorid-upis', $peppolNext_identifier)),
-			new Receiver(new Identifier('iso6523-actorid-upis', '9915:phase4-test-sender')),
+			new Receiver(new Identifier('iso6523-actorid-upis', $receiver_identifier)),
 			new DocumentIdentification(
 				'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
 				'2.1',
