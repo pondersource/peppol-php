@@ -232,7 +232,7 @@ class MessageApiController extends ApiController {
 		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
 
 		// $keystore_file = '/p12transport/test.p12';
-		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
+		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12'; // Private key of the receiver/us
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
@@ -274,7 +274,7 @@ class MessageApiController extends ApiController {
 			list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_id, $isProduction);
 		}
 		else {
-			$sender_certificate = new X509;
+			$sender_certificate = new X509; // Sender's certificate
 			// $sender_certificate->loadX509(file_get_contents('/opt/temp/yashar_pc/sender.cer'));
 			$sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
 		}
@@ -383,9 +383,9 @@ class MessageApiController extends ApiController {
 		}
 		else {
 			// $as4_endpoint = 'http://188.208.143.130:8080/as4';
-			$as4_endpoint = 'http://DESKTOP-H39H1N6.local:8080/as4';
+			$as4_endpoint = 'http://DESKTOP-H39H1N6.local:8080/as4'; // Endpoint of the receiver
 			// $cert_file = '/opt/temp/docker_server/receiver.cer';
-			$cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer';
+			$cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer'; // Certificate of the receiver
 			$receiver_cert = new X509;
 			$receiver_cert->loadX509(file_get_contents($cert_file));
 		}
@@ -394,7 +394,7 @@ class MessageApiController extends ApiController {
 
 		// Loading my private key and cert
 		// $keystore_file = '/opt/temp/yashar_pc/test.p12';
-		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
+		$keystore_file = '/home/yasharpm/pondersource/keys/test.p12'; // Sender's/Our private key
 		$passphrase = 'peppol';
 
 		if (!$cert_store = file_get_contents($keystore_file)) {
@@ -467,7 +467,7 @@ class MessageApiController extends ApiController {
 		$standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
 			'1.0',
 			new Sender(new Identifier('iso6523-actorid-upis', $peppolNext_identifier)),
-			new Receiver(new Identifier('iso6523-actorid-upis', '9915:phase4-test-sender')),
+			new Receiver(new Identifier('iso6523-actorid-upis', $receiver_identifier)),
 			new DocumentIdentification(
 				'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
 				'2.1',
