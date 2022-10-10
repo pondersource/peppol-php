@@ -290,7 +290,7 @@ class MessageApiController extends ApiController {
 
 
 		/////////////// MESSAGE SAVING ///////////////////
-		$this->messageService->save($decrypted_payload, 'invoice.xml');
+		$this->messageService->saveIncoming($decrypted_payload, 'invoice.xml');
 
     error_log("invoice saved to Nextcloud Peppolnext MessageService");
 		//////////////////////////////////////////////////

@@ -42,7 +42,7 @@ class UploadApiController extends ApiController
 			fclose($file);
 		}
 		try {
-			$this->saveIncoming($contents, $stream["name"]);
+			$this->messageService->saveIncoming($contents, $stream["name"]);
 
 			return new DataResponse(["msg" => "done"]);
 		}
@@ -50,11 +50,4 @@ class UploadApiController extends ApiController
 			return new DataResponse(["msg" => $ex->getMessage()], Http::STATUS_BAD_REQUEST);
 		}
 	}
-	public function saveIncoming($contents, $filename) {
-		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
-		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
-		$invoice = $this->messageService->deserializeXML($contents);
-		$sharedFolder->newFile($filename, $contents);
-	}
-
 }

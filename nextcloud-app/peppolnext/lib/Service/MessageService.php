@@ -79,6 +79,7 @@ class MessageService {
 	}
 
 	/**
+	 * This method is used from the GUI with logged-in user
 	 * @param string $content
 	 * @param string $fileName
 	 * @param int $messageType Use FileManager MessageType constants
@@ -100,6 +101,21 @@ class MessageService {
 			$file->putContent($content);
 			$file->unlock(ILockingProvider::LOCK_SHARED);
 		}
+	}
+
+	/**
+	 * This method is used from the public upload / AS4 endpoint
+	 * @param string $content
+	 * @param string $fileName
+	 * @return void
+	 * @throws NotPermittedException
+	 * @throws \OC\User\NoUserException
+	 */
+	public function saveIncoming($contents, $filename) {
+		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
+		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
+		$invoice = $this->deserializeXML($contents);
+		$sharedFolder->newFile($filename, $contents);
 	}
 
 	public function serializeXML(MessageBuilder $messageBuilder):string{
