@@ -70,8 +70,11 @@ class MessageService {
 		$this->rootFolder = $rootFolder;
 		$this->userId = $userId;
 		$this->folderManager = $foldermanager;
-		if (isset($userId))
+		if (isset($userId)) {
 			$this->folderManager->createAllFolders($rootFolder->getUserFolder($userId), $rootFolder, $dbConnection);
+		} else {
+			$this->folderManager->createAllFolders(null, $rootFolder, $dbConnection);
+		}
 		$this->appSettingManager = $settingManager;
 		$this->contactManager = $contacManager;
 		$this->dbConnection = $dbConnection;
@@ -114,9 +117,6 @@ class MessageService {
 	public function saveIncoming($contents, $filename) {
 		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
 		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
-		if(!$rootFolder->nodeExists($sharedFolder)){
-			$rootFolder->newFolder($sharedFolder);
-		}
 		$invoice = $this->deserializeXML($contents);
 		$sharedFolder->newFile($filename, $contents);
 	}

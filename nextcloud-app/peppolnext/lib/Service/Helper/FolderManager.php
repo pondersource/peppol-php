@@ -31,17 +31,19 @@ class FolderManager
 	}
 
 	/**
-	 * @param Folder $userFolder
+	 * @param Folder $userFolder or null
 	 * @return void
 	 * @throws \OCP\Files\NotPermittedException
 	 * @description this try to initial PeppolNext folders
 	 */
 	public function createAllFolders(Folder $userFolder, Folder $rootFolder, IDBConnection $dbConnection){
-		if(!$userFolder->nodeExists($this->getInvoiceInbox())){
-			$userFolder->newFolder($this->getInvoiceInbox());
-		}
-		if(!$userFolder->nodeExists($this->getInvoiceOutbox())){
-			$userFolder->newFolder($this->getInvoiceOutbox());
+    if ($userFolder) {
+			if(!$userFolder->nodeExists($this->getInvoiceInbox())){
+				$userFolder->newFolder($this->getInvoiceInbox());
+			}
+			if(!$userFolder->nodeExists($this->getInvoiceOutbox())){
+				$userFolder->newFolder($this->getInvoiceOutbox());
+			}
 		}
 		$sharedFolder = $this->getSharedFolderAddress($dbConnection);
 		if(!$rootFolder->nodeExists($sharedFolder)){
