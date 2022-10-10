@@ -120,7 +120,7 @@ class MessageApiController extends ApiController {
 		$type = $this->request->getParam("type");
 		$direction = ($type === "Inbox") ? Constants::RECEIVE_DIRECTION : Constants::SEND_DIRECTION;
 		$response = $this->messageService->getAllInvoices($direction);
-		return new DataResponse(
+		return new DataDisplayResponse(
 			[
 				"items" => $response,
 				"totalCount" => count($response)

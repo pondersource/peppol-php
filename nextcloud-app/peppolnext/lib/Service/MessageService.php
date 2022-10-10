@@ -19,27 +19,6 @@ use OCP\Files\NotPermittedException;
 use OCP\IDBConnection;
 use OCP\Lock\ILockingProvider;
 use PhpParser\Error;
-use Pondersource\Invoice\Account\Contact;
-use Pondersource\Invoice\Account\Country;
-use Pondersource\Invoice\Account\Delivery;
-use Pondersource\Invoice\Account\PostalAddress;
-use Pondersource\Invoice\DeserializeInvoice;
-use Pondersource\Invoice\Invoice\GenerateInvoice;
-use Pondersource\Invoice\Invoice\Invoice;
-use Pondersource\Invoice\Invoice\InvoiceLine;
-use Pondersource\Invoice\Invoice\InvoicePeriod;
-use Pondersource\Invoice\Item;
-use Pondersource\Invoice\Legal\LegalEntity;
-use Pondersource\Invoice\Legal\LegalMonetaryTotal;
-use Pondersource\Invoice\Party\Party;
-use Pondersource\Invoice\Party\PartyTaxScheme;
-use Pondersource\Invoice\Party\TaxScheme;
-use Pondersource\Invoice\Payment\OrderReference;
-use Pondersource\Invoice\Payment\PaymentTerms;
-use Pondersource\Invoice\Payment\Price;
-use Pondersource\Invoice\Tax\TaxCategory;
-use Pondersource\Invoice\Tax\TaxSubTotal;
-use Pondersource\Invoice\Tax\TaxTotal;
 use Safe\DateTime;
 
 class MessageService {
@@ -119,7 +98,6 @@ class MessageService {
 		error_log("saveIncoming");
 		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
 		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
-		$invoice = $this->deserializeXML($contents);
 		$sharedFolder->newFile($filename, $contents);
 	}
 
@@ -285,8 +263,9 @@ class MessageService {
 	 * @return object
 	 */
 	public function deserializeXML(string $xmlContent) : object{
-		$invoiceDesrializer = new DeserializeInvoice();
-		$invoice = $invoiceDesrializer->deserializeXML($xmlContent) ;
+		$serializer = \JMS\Serializer\SerializerBuilder::create()->build();
+		$sbd = $serializer->deserialize($xmlContent, 'OCA\PeppolNext\PonderSource\SBD\StandardBusinessDocument::class', 'xml');
+		$invoice = $sbd->getInvoice();
 		if (!$this->checkIncomingInvoiceValidity($invoice))
 			throw new Error("invalid structured invoice submitted");
 		return $invoice;
