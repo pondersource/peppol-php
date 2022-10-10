@@ -335,13 +335,13 @@ class MessageService {
 		error_log("deserialized invoice!");
 		// error_log(var_export($invoice, true));
 		$summary = new InvoiceSummary();
-		$summary->orderId = $invoice->getOrderReference()->getId();
-		$summary->amount = $invoice->getLegalMonetaryTotal()->getPayableAmount();
+		$summary->orderId = ($invoice->getOrderReference() ? $invoice->getOrderReference()->getId() : 0);
+		$summary->amount = $invoice->getLegalMonetaryTotal()->getPayableAmount()->getValue();
 		$summary->sender = $invoice->getAccountingSupplierParty()->getParty()->getPartyName()->getName();
 		$summary->receiver = $invoice->getAccountingCustomerParty()->getParty()->getPartyName()->getName();
 		$summary->fileName = $file->getName();
-		$summary->amount = $invoice->getLegalMonetaryTotal()->getPayableAmount();
-		$summary->note = $invoice->getNote();
+		$summary->amount = $invoice->getLegalMonetaryTotal()->getPayableAmount()->getValue();
+		$summary->note = ($invoice->getNote() ? $invoice->getNote() : '');
 		$summary->creationTime = date('Y-m-d h:m', $file->getMTime());
 		return $summary;
 
@@ -366,7 +366,7 @@ class MessageService {
 	private function checkIncomingInvoiceValidity(object $invoice){
 		if (empty($invoice->getAccountingSupplierParty())
 			|| empty($invoice->getAccountingCustomerParty())
-			|| empty($invoice->getInvoiceLine())){
+			|| empty($invoice->getInvoiceLines())){
 			return false;
 		}
 		return true;
