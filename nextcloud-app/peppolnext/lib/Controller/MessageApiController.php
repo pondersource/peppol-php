@@ -290,8 +290,9 @@ class MessageApiController extends ApiController {
 
 
 		/////////////// MESSAGE SAVING ///////////////////
-		$file = $this->rootFolder->newFile('invoice.xml', $decrypted_payload);
-    error_log("invoice saved to Nextcloud " . $file->getPath());
+		$this->messageService->save($decrypted_payload, 'invoice.xml');
+
+    error_log("invoice saved to Nextcloud Peppolnext MessageService");
 		//////////////////////////////////////////////////
 
 
