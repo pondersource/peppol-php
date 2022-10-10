@@ -46,9 +46,7 @@ class FolderManager
 			}
 		}
 		$sharedFolder = $this->getSharedFolderAddress($dbConnection);
-		error_log("checking if $sharedFolder exists");
 		if(!$rootFolder->nodeExists($sharedFolder)){
-			error_log("creating $sharedFolder");
 			$rootFolder->newFolder($sharedFolder);
 		}
 	}

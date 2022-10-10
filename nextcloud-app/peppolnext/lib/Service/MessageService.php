@@ -46,7 +46,6 @@ class MessageService {
 		, UploadService $uploadService
 		, $userId)
 	{
-		error_log("constructing MessageService");
 		$this->rootFolder = $rootFolder;
 		$this->userId = $userId;
 		$this->folderManager = $foldermanager;
@@ -333,14 +332,16 @@ class MessageService {
 	{
 
 		$invoice = $this->deserializeXML($file->getContent());
+		error_log("deserialized invoice!");
+		// error_log(var_export($invoice, true));
 		$summary = new InvoiceSummary();
-		$summary->orderId = $invoice->OrderReference->ID;
-		$summary->amount = $invoice->LegalMonetaryTotal->PayableAmount;
-		$summary->sender = $invoice->AccountingSupplierParty->Party->PartyName->Name;
-		$summary->receiver = $invoice->AccountingCustomerParty->Party->PartyName->Name;
+		$summary->orderId = $invoice->getOrderReference()->getId();
+		$summary->amount = $invoice->getLegalMonetaryTotal()->getPayableAmount();
+		$summary->sender = $invoice->getAccountingSupplierParty()->getParty()->getPartyName()->getName();
+		$summary->receiver = $invoice->getAccountingCustomerParty()->getParty()->getPartyName()->getName();
 		$summary->fileName = $file->getName();
-		$summary->amount = $invoice->LegalMonetaryTotal->PayableAmount;
-		$summary->note = $invoice->Note;
+		$summary->amount = $invoice->getLegalMonetaryTotal()->getPayableAmount();
+		$summary->note = $invoice->getNote();
 		$summary->creationTime = date('Y-m-d h:m', $file->getMTime());
 		return $summary;
 
@@ -363,9 +364,9 @@ class MessageService {
 		return $location;
 	}
 	private function checkIncomingInvoiceValidity(object $invoice){
-		if (empty($invoice->AccountingSupplierParty)
-			|| empty($invoice->AccountingCustomerParty)
-			|| empty($invoice->InvoiceLine)){
+		if (empty($invoice->getAccountingSupplierParty())
+			|| empty($invoice->getAccountingCustomerParty())
+			|| empty($invoice->getInvoiceLine())){
 			return false;
 		}
 		return true;
