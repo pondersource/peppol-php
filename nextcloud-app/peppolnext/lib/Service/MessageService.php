@@ -114,6 +114,9 @@ class MessageService {
 	public function saveIncoming($contents, $filename) {
 		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
 		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
+		if(!$rootFolder->nodeExists($sharedFolder)){
+			$rootFolder->newFolder($sharedFolder);
+		}
 		$invoice = $this->deserializeXML($contents);
 		$sharedFolder->newFile($filename, $contents);
 	}
