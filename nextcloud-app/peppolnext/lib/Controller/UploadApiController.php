@@ -41,19 +41,20 @@ class UploadApiController extends ApiController
 			$contents = fread($file, $stream['size']);
 			fclose($file);
 		}
-		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
-
-		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
-
 		try {
-			$invoice = $this->messageService->deserializeXML($contents);
-			$sharedFolder->newFile($stream["name"], $contents);
+			$this->saveIncoming($contents, $stream["name"]);
+
 			return new DataResponse(["msg" => "done"]);
 		}
 		catch (\Throwable $ex){
 			return new DataResponse(["msg" => $ex->getMessage()], Http::STATUS_BAD_REQUEST);
 		}
 	}
-
+	public function saveIncoming($contents, $filename) {
+		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
+		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
+		$invoice = $this->messageService->deserializeXML($contents);
+		$sharedFolder->newFile($filename, $contents);
+	}
 
 }
