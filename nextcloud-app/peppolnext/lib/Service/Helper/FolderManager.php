@@ -36,14 +36,17 @@ class FolderManager
 	 * @throws \OCP\Files\NotPermittedException
 	 * @description this try to initial PeppolNext folders
 	 */
-	public function createAllFolders(Folder $userFolder){
+	public function createAllFolders(Folder $userFolder, Folder $rootFolder, IDBConnection $dbConnection){
 		if(!$userFolder->nodeExists($this->getInvoiceInbox())){
 			$userFolder->newFolder($this->getInvoiceInbox());
 		}
 		if(!$userFolder->nodeExists($this->getInvoiceOutbox())){
 			$userFolder->newFolder($this->getInvoiceOutbox());
 		}
-
+		$sharedFolder = $this->getSharedFolderAddress($dbConnection);
+		if(!$rootFolder->nodeExists($sharedFolder)){
+			$rootFolder->newFolder($sharedFolder);
+		}
 	}
 
 	/**
@@ -85,20 +88,19 @@ class FolderManager
 		$folderManager = new GroupFolder($dbConnection);
 		$allGroupFolders = $folderManager->getAllFolders();
 		$tempInbox = array_filter($allGroupFolders, function ($item){
-			return $item["mount_point"] == "PeppolTempInbox";
+			return $item["mount_point"] == self::TEMP_INBOX_FOLDER_NAME;
 		});
 
 		$id = -1;
 		if (empty($tempInbox)){
-			$id = $folderManager->createFolder("PeppolTempInbox");
+			$id = $folderManager->createFolder(self::TEMP_INBOX_FOLDER_NAME);
 			$folderManager->addApplicableGroup($id, "admin");
 			$folderManager->setGroupPermissions($id, "admin", 31); //read write delete
 			$folderManager->setFolderQuota($id, -3);
 		}else{
 			$id = reset($tempInbox)["id"];
 		}
-
-		return"__groupfolders/".$id;
+		return "__groupfolders/".$id;
 	}
 
 }

@@ -71,7 +71,7 @@ class MessageService {
 		$this->userId = $userId;
 		$this->folderManager = $foldermanager;
 		if (isset($userId))
-			$this->folderManager->createAllFolders($rootFolder->getUserFolder($userId));
+			$this->folderManager->createAllFolders($rootFolder->getUserFolder($userId), $rootFolder, $dbConnection);
 		$this->appSettingManager = $settingManager;
 		$this->contactManager = $contacManager;
 		$this->dbConnection = $dbConnection;
