@@ -36,7 +36,7 @@ class FolderManager
 	 * @throws \OCP\Files\NotPermittedException
 	 * @description this try to initial PeppolNext folders
 	 */
-	public function createAllFolders(Folder $userFolder, Folder $rootFolder, IDBConnection $dbConnection){
+	public function createAllFolders(?Folder $userFolder, Folder $rootFolder, IDBConnection $dbConnection){
     if ($userFolder) {
 			if(!$userFolder->nodeExists($this->getInvoiceInbox())){
 				$userFolder->newFolder($this->getInvoiceInbox());
@@ -46,7 +46,9 @@ class FolderManager
 			}
 		}
 		$sharedFolder = $this->getSharedFolderAddress($dbConnection);
+		error_log("checking if $sharedFolder exists");
 		if(!$rootFolder->nodeExists($sharedFolder)){
+			error_log("creating $sharedFolder");
 			$rootFolder->newFolder($sharedFolder);
 		}
 	}

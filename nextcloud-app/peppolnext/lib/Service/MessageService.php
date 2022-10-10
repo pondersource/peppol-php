@@ -67,6 +67,7 @@ class MessageService {
 		, UploadService $uploadService
 		, $userId)
 	{
+		error_log("constructing MessageService");
 		$this->rootFolder = $rootFolder;
 		$this->userId = $userId;
 		$this->folderManager = $foldermanager;
@@ -115,6 +116,7 @@ class MessageService {
 	 * @throws \OC\User\NoUserException
 	 */
 	public function saveIncoming($contents, $filename) {
+		error_log("saveIncoming");
 		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
 		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
 		$invoice = $this->deserializeXML($contents);

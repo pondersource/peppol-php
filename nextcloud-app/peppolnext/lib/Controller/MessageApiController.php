@@ -282,7 +282,7 @@ class MessageApiController extends ApiController {
 		$sender_public_key = $sender_certificate->getPublicKey();
 
 		$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
-		error_log('YAAAAAAAAAYYYYYYY signature checked: '.var_export($verifyResult, true));
+		error_log('signature checked in AS4 endpoint: '.var_export($verifyResult, true));
 		if (!$verifyResult) return false;
 
 		$output = var_export($invoice, true);
@@ -534,7 +534,7 @@ class MessageApiController extends ApiController {
 
 		$receiver_public_key = $receiver_cert->getPublicKey();
 		$verifyResult = $response->getHeader()->getSecurity()->getSignature()->verify($response, null, $receiver_public_key);
-		error_log('YAAAAAAAAAYYYYYYY signature checked: '.var_export($verifyResult, true));
+		error_log('signature checked in MessageApiController: '.var_export($verifyResult, true));
 		/////////////////////////////////////////////
 
 		return $verifyResult;
