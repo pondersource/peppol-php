@@ -1,0 +1,2 @@
+FROM node
+add . /app
