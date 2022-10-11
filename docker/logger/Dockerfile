@@ -1,2 +1,4 @@
 FROM node
-add . /app
+ADD . /app
+WORKDIR /app
+CMD node index.js
