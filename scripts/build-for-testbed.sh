@@ -2,7 +2,7 @@
 set -e
 
 # base image for nextcloud image and owncloud image:
-cd ../apache-php
+cd docker/apache-php
 cp -r ../../tls .
 docker build -t apache-php .
 

@@ -373,6 +373,62 @@ class MessageApiController extends ApiController {
 	 * @PublicPage
 	 * @CORS
 	 */
+	public function handleTestbedMessage() {
+		$messagingId = 4;
+		$bodyId = 5;
+		$response = new Envelope(
+			new Header(
+				new Security(
+
+				),
+				new Messaging(null, new SignalMessage(
+					new MessageInfo(
+						new \DateTime(),
+						uniqid().'@peppolnext',
+					),
+					new Receipt(),
+					null
+				), $messagingId)
+			),
+			new Body($bodyId)
+		);
+
+		$sha256 = new SHA256();
+		$c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
+
+		$serializer = SerializerBuilder::create()->build();
+		$serializedMessaging = $serializer->serialize($response->getHeader()->getMessaging(), 'xml');
+		$serializedMessaging = str_replace("  ", '', str_replace("\n", '', $serializedMessaging));
+		$serializedBody = $serializer->serialize($response->getBody(), 'xml');
+		$serializedBody = str_replace("  ", '', str_replace("\n", '', $serializedBody));
+
+		$references = [
+		];
+
+		$serializedCanonicalizedResponse = $c14ne->transform($serializer->serialize($response, 'xml'));
+		error_log($serializedCanonicalizedResponse);
+		$serializedCanonicalizedResponse = str_replace("\n", '', $serializedCanonicalizedResponse);
+		$serializedCanonicalizedResponse = str_replace("  ", '', $serializedCanonicalizedResponse);
+
+		$response = new DataDisplayResponse($serializedCanonicalizedResponse, Http::STATUS_OK, [
+			'Referrer-Policy' => 'strict-origin-when-cross-origin',
+			'X-Frame-Options' => 'SAMEORIGIN',
+			'X-Content-Type-Options' => 'nosniff',
+			'X-XSS-Protection' => '1; mode=block',
+			'Strict-Transport-Security' => 'max-age=3600;includeSubDomains',
+			'Cache-Control' => 'no-cache, no-store, must-revalidate, proxy-revalidate',
+			'Content-Type' => 'application/soap+xml;charset=utf-8'
+		]);
+		$response->addHeader('Content-Disposition', null);
+		return $response;
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 * @CORS
+	 */
 	public function as4Send() {
 		$this->as4SendWithIdentifier($this->generateSampleInvoice(), '9915:phase4-test-sender');
 		return new DataResponse(["message"=> "done"], Http::STATUS_OK);
