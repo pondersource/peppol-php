@@ -1,4 +1,4 @@
 FROM node
 ADD . /app
 WORKDIR /app
-CMD node index.js
+CMD node index.mjs
