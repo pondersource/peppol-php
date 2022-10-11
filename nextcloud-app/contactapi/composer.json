@@ -1,5 +1,5 @@
 {
-    "name": "Contact Api",
+    "name": "nextcloud/contactapi",
     "description": "Expose the persisted contacts by RestAPI",
     "type": "project",
     "license": "AGPL",
