@@ -61,7 +61,16 @@ To generate PHP -> Java:
 ./scripts/gencerts.sh
 ./scripts/rebuild.sh
 docker network create testnet
+export PEPPOL_PHP_DIR=`pwd`
 ./scripts/start-from-Nextcloud.sh
 ./scripts/start-to-Phase4.sh
 ```
 
+To run c2.pondersource.net (and similar for c3.pondersource.net):
+```sh
+mkdir -p tls
+./scripts/build-for-testbed.sh
+docker network create testnet
+export PEPPOL_PHP_DIR=`pwd`
+./scripts/run-testbed-node-c2.sh
+```

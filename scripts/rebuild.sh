@@ -28,10 +28,5 @@ docker build -t nc1 .
 cd ../nc2
 docker build -t nc2 .
 
-# image for c2:
-cd ../c2
-docker build -t c2 .
-
-# image for c3:
-cd ../c3
-docker build -t c3 .
+cd ../..
+docker pull mariadb
