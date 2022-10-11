@@ -27,3 +27,11 @@ docker build -t nc1 .
 # image for nc2:
 cd ../nc2
 docker build -t nc2 .
+
+# image for c2:
+cd ../c2
+docker build -t c2 .
+
+# image for c3:
+cd ../c3
+docker build -t c3 .
