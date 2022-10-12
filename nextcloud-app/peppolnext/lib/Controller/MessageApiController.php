@@ -388,9 +388,10 @@ class MessageApiController extends ApiController {
 		$payload = $this->getPayload();
 		error_log("TESTBED ENDPOINT PAYLOAD", $payload);
 		$row = new \SimpleXMLElement($payload);
-
 		$json = json_encode($row);
 		$array = json_decode($json,TRUE);
+
+		$interceptor = "https://13.81.109.44:15000/as4Interceptor";
 
 		return $this->generateResponse(null, 4, 5, [], null, null);
 	}
@@ -406,15 +407,13 @@ class MessageApiController extends ApiController {
 		return new DataResponse(["message"=> "done"], Http::STATUS_OK);
 	}
 
-	public function as4SendWithIdentifier($invoice, $receiver_identifier) {
-		$peppolNext_identifier = '0106:80235875';
-
+	private function getRecipient() {
 		// as4 lookup
 		$useSMP = false;
 
 		if ($useSMP) {
 			$isProduction = false;
-			list($as4_endpoint, $receiver_cert) = SMP::lookup($receiver_identifier, $isProduction);
+			return SMP::lookup($receiver_identifier, $isProduction);
 		}
 		else {
 			// $as4_endpoint = 'http://188.208.143.130:8080/as4';
@@ -424,10 +423,11 @@ class MessageApiController extends ApiController {
 			// $cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer'; // Certificate of the receiver
 			$receiver_cert = new X509;
 			$receiver_cert->loadX509(file_get_contents($cert_file));
+			return [ $as4_endpoint, $receiver_cert ];
 		}
-		/////////////////////////////////////////////
+	}
 
-
+	private function getMyCertificate() {
 		// Loading my private key and cert
 		$keystore_file = '/p12transport/test.p12';
 		// $keystore_file = '/home/yasharpm/pondersource/keys/test.p12'; // Sender's/Our private key
@@ -448,16 +448,11 @@ class MessageApiController extends ApiController {
 
 		$cert = new X509;
 		$cert->loadX509($cert_info['cert']);
-		/////////////////////////////////////////////
+		return [ $private_key, $cert ];
+	}
 
-
-		// Prepare the request
-		$messagingId = uniqid('peppolnext-msg-');
-		$messageId = uniqid().'@peppolnext';
-		$bodyId = uniqid('id-');
-		$payloadId = uniqid('peppolnext-att-').'@cid';
-
-		$envelope = new Envelope(
+	private function prepareEnvelope($messagingId, $messageId, $peppolNext_identifier, $payloadId, $bodyId) {
+		return new Envelope(
 			new Header(
 				new Security(
 
@@ -489,40 +484,40 @@ class MessageApiController extends ApiController {
 			),
 			new Body($bodyId)
 		);
+	}
+	private function preparePayload($envelope, $peppolNext_identifier, $receiver_identifier, $invoice, $messagingId, $bodyId, $payloadId, $private_key, $receiver_cert) {
+    $payloadKey = Random::string(32);
 
-		$payloadKey = Random::string(32);
+    $sha256 = new SHA256();
+    $c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
 
-		$sha256 = new SHA256();
-		$c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
+    $serializer = SerializerBuilder::create()->build();
+    $serializedMessaging = $serializer->serialize($envelope->getHeader()->getMessaging(), 'xml');
+    $serializedBody = $serializer->serialize($envelope->getBody(), 'xml');
 
-		$serializer = SerializerBuilder::create()->build();
-		$serializedMessaging = $serializer->serialize($envelope->getHeader()->getMessaging(), 'xml');
-		$serializedBody = $serializer->serialize($envelope->getBody(), 'xml');
+    $instanceIdentifier = uniqid(); // TODO ?
+    $standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
+        '1.0',
+        new Sender(new Identifier('iso6523-actorid-upis', $peppolNext_identifier)),
+        new Receiver(new Identifier('iso6523-actorid-upis', $receiver_identifier)),
+        new DocumentIdentification(
+            'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
+            '2.1',
+            $instanceIdentifier,
+            'Invoice',
+            new \DateTime()
+        ),
+        [
+            new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
+            new Scope('PROCESSID', 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0', 'cenbii-procid-ubl')
+        ]
+    ), $invoice);
+    $payload = $serializer->serialize($standardBusinessDocument, 'xml');
+    $payload = $c14ne->transform($payload);
+    $payload = str_replace("\n", '', $payload);
+    $payload = str_replace("  ", '', $payload);
 
-		$instanceIdentifier = uniqid(); // TODO ?
-		$standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
-			'1.0',
-			new Sender(new Identifier('iso6523-actorid-upis', $peppolNext_identifier)),
-			new Receiver(new Identifier('iso6523-actorid-upis', $receiver_identifier)),
-			new DocumentIdentification(
-				'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
-				'2.1',
-				$instanceIdentifier,
-				'Invoice',
-				new \DateTime()
-			),
-			[
-				new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
-				new Scope('PROCESSID', 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0', 'cenbii-procid-ubl')
-			]
-		),	$invoice);
-		$payload = $serializer->serialize($standardBusinessDocument, 'xml');
-		$payload = $c14ne->transform($payload);
-		$payload = str_replace("\n", '', $payload);
-		$payload = str_replace("  ", '', $payload);
-
-		$payload = gzencode($payload);
-
+    $payload = gzencode($payload);
 		$references = [
 			new DSigReference("#$messagingId", $serializedMessaging, [$c14ne], $sha256),
 			new DSigReference("#$bodyId", $serializedBody, [$c14ne], $sha256),
@@ -530,19 +525,35 @@ class MessageApiController extends ApiController {
 		];
 
 		$envelope->getHeader()->getSecurity()->generateSignature($private_key, $receiver_cert, $references, new C14NExclusive(), new RsaSha256(), $envelope);
-		$payload = $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $receiver_cert, "cid:$payloadId", $payload);
+		return $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $receiver_cert, "cid:$payloadId", $payload);
+	}
 
+	private function prepareBody($peppolNext_identifier, $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry) {
+		// Prepare the request
+		$messagingId = uniqid('peppolnext-msg-');
+		$messageId = uniqid().'@peppolnext';
+		$bodyId = uniqid('id-');
+		$payloadId = uniqid('peppolnext-att-').'@cid';
+
+		$envelope = $this->prepareEnvelope($messagingId, $messageId, $peppolNext_identifier, $payloadId, $bodyId);
+		$payload = $this->preparePayload($envelope, $peppolNext_identifier, $receiver_identifier, $invoice, $messagingId, $bodyId, $payloadId, $private_key, $receiver_cert);
+
+		$serializer = SerializerBuilder::create()->build();
+		$c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
 		$serializedEnvelope = $c14ne->transform($serializer->serialize($envelope, 'xml'));
 		error_log($serializedEnvelope);
 		$serializedEnvelope = str_replace("\n", '', $serializedEnvelope);
 		$serializedEnvelope = str_replace("  ", '', $serializedEnvelope);
-		/////////////////////////////////////////////
+		
+		return "\r\n--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry--\r\n";		
+	}
 
-
-		// Send request
+	public function as4SendWithIdentifier($invoice, $receiver_identifier) {
+		$peppolNext_identifier = '0106:80235875';
+		list($as4_endpoint, $receiver_cert) = $this->getRecipient($receiver_identifier);
+    list ($private_key, $cert) = $this->getMyCertificate();
 		$boundry = '----=_Part_'.uniqid();
-		$body = "\r\n--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry--\r\n";
-
+		$body = $this->prepareBody($peppolNext_identifier, $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry);
 		$client = new \GuzzleHttp\Client();
 		$response = $client->request('POST', $as4_endpoint, [
 			'headers' => [
@@ -557,13 +568,13 @@ class MessageApiController extends ApiController {
 		//echo $res->getHeader('content-type')[0];
 		$responseBody = $response->getBody();
 
+		$serializer = SerializerBuilder::create()->build();
 		$response = $serializer->deserialize($responseBody,'OCA\PeppolNext\PonderSource\Envelope\Envelope::class', 'xml');
 		error_log("$statusCode: ".var_export($response, true));
 
 		$receiver_public_key = $receiver_cert->getPublicKey();
 		$verifyResult = $response->getHeader()->getSecurity()->getSignature()->verify($response, null, $receiver_public_key);
 		error_log('signature checked in MessageApiController: '.var_export($verifyResult, true));
-		/////////////////////////////////////////////
 
 		return $verifyResult;
 	}
