@@ -1,7 +1,7 @@
 import { createServer } from "https";
 import { readFileSync } from "fs";
 console.log("it works");
-const SERVER = "https://nc1.docker/index.php/apps/peppolnext/api/v1";
+const SERVER = "https://nc1.docker/index.php/apps/peppolnext/api/v1/testbed";
 
 const server = createServer({
 	key: readFileSync("/tls/privkey.pem"),
@@ -20,7 +20,12 @@ const server = createServer({
 			method: "POST",
 			body
 		});
-    const resBody = await reqOut.text();
+		const resBody = await reqOut.text();
+
+		for(const header of reqOut.headers){
+			console.log("RESP HEADER", `Name: ${header[0]}, Value:${header[1]}`);
+			resIn.setHeader(header[0], header[1]);
+		}
 		console.log("RESP", resBody);
 		resIn.end(resBody);
 	});
