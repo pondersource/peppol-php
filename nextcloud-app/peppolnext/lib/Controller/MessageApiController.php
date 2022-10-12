@@ -195,127 +195,36 @@ class MessageApiController extends ApiController {
 		return $orderName."-". (new \DateTime())->format("Y-m-d").".xml";
 	}
 
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @PublicPage
-	 * @CORS
-	 */
-	public function as4Endpoint() {
-		$peppolNext_identifier = '0106:80235875'; // TODO
+	private function getPayload() {
+    //$output = var_export($this->request->post, true);
+    $contentType = $this->request->getHeader('Content-Type');
+    $boundryStart = strpos($contentType, 'boundary="');
+    $boundryEnd = strpos($contentType, '"', $boundryStart + 10);
+    $boundry = substr($contentType, $boundryStart + 10, $boundryEnd - $boundryStart - 10);
+    $boundryLength = strlen($boundry);
 
-		//$output = var_export($this->request->post, true);
-		$contentType = $this->request->getHeader('Content-Type');
-		$boundryStart = strpos($contentType, 'boundary="');
-		$boundryEnd = strpos($contentType, '"', $boundryStart + 10);
-		$boundry = substr($contentType, $boundryStart + 10, $boundryEnd - $boundryStart - 10);
-		$boundryLength = strlen($boundry);
-
-		$body = file_get_contents('php://input');
+    $body = file_get_contents('php://input');
 
 
-		$pointer = strpos($body, $boundry);
-		$pointer = strpos($body, "\r\n\r\n", $pointer);
-		$envelopeStart = $pointer + 4;
+    $pointer = strpos($body, $boundry);
+    $pointer = strpos($body, "\r\n\r\n", $pointer);
+    $envelopeStart = $pointer + 4;
 
-		$pointer = strpos($body, $boundry, $envelopeStart);
-		$envelopeEnd = $pointer - 4;
+    $pointer = strpos($body, $boundry, $envelopeStart);
+    $envelopeEnd = $pointer - 4;
 
-		$envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
+    $envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
 
-		$pointer = strpos($body, "\r\n\r\n", $pointer);
-		$payloadStart = $pointer + 4;
+    $pointer = strpos($body, "\r\n\r\n", $pointer);
+    $payloadStart = $pointer + 4;
 
-		$pointer = strpos($body, $boundry, $payloadStart);
-		$payloadEnd = $pointer - 4;
+    $pointer = strpos($body, $boundry, $payloadStart);
+    $payloadEnd = $pointer - 4;
 
-		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
+    return substr($body, $payloadStart, $payloadEnd - $payloadStart);
+	}
 
-		$keystore_file = '/p12transport/test.p12'; // Private key of the receiver/us
-		// $keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
-		$passphrase = 'peppol';
-
-		if (!$cert_store = file_get_contents($keystore_file)) {
-			echo "Error: Unable to read the cert file\n";
-			exit;
-		}
-		
-		if (openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
-		} else {
-			echo "Error: Unable to read the cert store.\n";
-			exit;
-		}
-		
-		$private_key = RSA::loadPrivateKey($cert_info['pkey']);
-
-		$cert = new X509;
-		$cert->loadX509($cert_info['cert']);
-		
-		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
-
-		$messageProperties = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageProperties();
-
-		$sender_id = false;
-		$recipient_id = false;
-
-		foreach ($messageProperties as $property) {
-			if ($property->getName() === 'originalSender') {
-				$sender_id = $property->getValue();
-			}
-			else if ($property->getName() === 'finalRecipient') {
-				$recipient_id = $property->getValue();
-			}
-		}
-
-		$useSMP = false;
-
-		if ($useSMP) {
-			$isProduction = false;
-			list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_id, $isProduction);
-		}
-		else {
-			$sender_certificate = new X509; // Sender's certificate
-			$sender_certificate->loadX509(file_get_contents('/p12transport/sender.cer'));
-			// $sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
-		}
-
-		$sender_public_key = $sender_certificate->getPublicKey();
-
-		$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
-		error_log('signature checked in AS4 endpoint: '.var_export($verifyResult, true));
-		if (!$verifyResult) return false;
-
-		$output = var_export($invoice, true);
-		// error_log($output);
-
-
-		/////////////// MESSAGE SAVING ///////////////////
-		$this->messageService->saveIncoming($decrypted_payload, 'invoice.xml');
-
-    error_log("invoice saved to Nextcloud Peppolnext MessageService");
-		//////////////////////////////////////////////////
-
-
-		/////////////// MESSAGE FORWARDING ///////////////
-		$should_forward = false;
-
-		if ($should_forward) {
-			error_log("forwarding to $recipient_id");
-			$success = $this->as4SendWithIdentifier($invoice, $recipient_id);
-			error_log("forward result is: $success");
-		}
-		//////////////////////////////////////////////////
-
-
-		$messagingId = uniqid('peppolnext-msg-');
-		$bodyId = uniqid('id-');
-
-		$nonRepudiationInformation = [];
-
-		foreach ($envelope->getHeader()->getSecurity()->getSignature()->getSignedInfo()->getReferences() as $reference) {
-			$nonRepudiationInformation[] = (new MessagePartNRInformation())->addReference($reference);
-		}
-
+	private function generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert) {
 		$response = new Envelope(
 			new Header(
 				new Security(
@@ -325,12 +234,12 @@ class MessageApiController extends ApiController {
 					new MessageInfo(
 						new \DateTime(),
 						uniqid().'@peppolnext',
-						$envelope->getHeader()->getMessaging()->getUserMessage()->getMessageInfo()->getMessageId()),
+						$theirMsgId),
 					new Receipt($nonRepudiationInformation),
 					null
-				), $messagingId)
+				), $ourMsgId)
 			),
-			new Body($bodyId)
+			new Body($ourBodyId)
 		);
 
 		$sha256 = new SHA256();
@@ -343,11 +252,13 @@ class MessageApiController extends ApiController {
 		$serializedBody = str_replace("  ", '', str_replace("\n", '', $serializedBody));
 
 		$references = [
-			new DSigReference("#$messagingId", $serializedMessaging, [$c14ne], $sha256),
-			new DSigReference("#$bodyId", $serializedBody, [$c14ne], $sha256)
+			new DSigReference("#$ourMsgId", $serializedMessaging, [$c14ne], $sha256),
+			new DSigReference("#$ourBodyId", $serializedBody, [$c14ne], $sha256)
 		];
 
-		$response->getHeader()->getSecurity()->generateSignature($private_key, $cert, $references, new C14NExclusive(), new RsaSha256(), $response);
+		if ($private_key && $cert) {
+			$response->getHeader()->getSecurity()->generateSignature($private_key, $cert, $references, new C14NExclusive(), new RsaSha256(), $response);
+		}
 
 		$serializedCanonicalizedResponse = $c14ne->transform($serializer->serialize($response, 'xml'));
 		error_log($serializedCanonicalizedResponse);
@@ -373,54 +284,115 @@ class MessageApiController extends ApiController {
 	 * @PublicPage
 	 * @CORS
 	 */
+	public function as4Endpoint() {
+    $peppolNext_identifier = '0106:80235875'; // TODO
+
+    $payload = $this->getPayload();
+
+    $keystore_file = '/p12transport/test.p12'; // Private key of the receiver/us
+    // $keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
+    $passphrase = 'peppol';
+
+    if (!$cert_store = file_get_contents($keystore_file)) {
+        echo "Error: Unable to read the cert file\n";
+        exit;
+    }
+
+    if (openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
+    } else {
+        echo "Error: Unable to read the cert store.\n";
+        exit;
+    }
+
+    $private_key = RSA::loadPrivateKey($cert_info['pkey']);
+
+    $cert = new X509();
+    $cert->loadX509($cert_info['cert']);
+
+    list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
+
+    $messageProperties = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageProperties();
+
+    $sender_id = false;
+    $recipient_id = false;
+
+    foreach ($messageProperties as $property) {
+        if ($property->getName() === 'originalSender') {
+            $sender_id = $property->getValue();
+        } elseif ($property->getName() === 'finalRecipient') {
+            $recipient_id = $property->getValue();
+        }
+    }
+
+    $useSMP = false;
+
+    if ($useSMP) {
+        $isProduction = false;
+        list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_id, $isProduction);
+    } else {
+        $sender_certificate = new X509(); // Sender's certificate
+        $sender_certificate->loadX509(file_get_contents('/p12transport/sender.cer'));
+        // $sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
+    }
+
+    $sender_public_key = $sender_certificate->getPublicKey();
+
+    $verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
+    error_log('signature checked in AS4 endpoint: '.var_export($verifyResult, true));
+    if (!$verifyResult) {
+        return false;
+    }
+
+    $output = var_export($invoice, true);
+    // error_log($output);
+
+
+    /////////////// MESSAGE SAVING ///////////////////
+    $this->messageService->saveIncoming($decrypted_payload, 'invoice.xml');
+
+    error_log("invoice saved to Nextcloud Peppolnext MessageService");
+    //////////////////////////////////////////////////
+
+
+    /////////////// MESSAGE FORWARDING ///////////////
+    $should_forward = false;
+
+    if ($should_forward) {
+        error_log("forwarding to $recipient_id");
+        $success = $this->as4SendWithIdentifier($invoice, $recipient_id);
+        error_log("forward result is: $success");
+    }
+    //////////////////////////////////////////////////
+
+
+		// FIXME: are there really supposed to be two message ID's? One for the request and one for the response?
+		$theirMsgId = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageInfo()->getMessageId();
+    $ourMsgId = uniqid('peppolnext-msg-');
+    $ourBodyId = uniqid('id-');
+		
+    $nonRepudiationInformation = [];
+		
+    foreach ($envelope->getHeader()->getSecurity()->getSignature()->getSignedInfo()->getReferences() as $reference) {
+			$nonRepudiationInformation[] = (new MessagePartNRInformation())->addReference($reference);
+    }
+		return $this->generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 * @CORS
+	 */
 	public function handleTestbedMessage() {
-		$messagingId = 4;
-		$bodyId = 5;
-		$response = new Envelope(
-			new Header(
-				new Security(
+		$payload = $this->getPayload();
+		error_log("TESTBED ENDPOINT PAYLOAD", $payload);
+		$row = new \SimpleXMLElement($payload);
 
-				),
-				new Messaging(null, new SignalMessage(
-					new MessageInfo(
-						new \DateTime(),
-						uniqid().'@peppolnext',
-					),
-					new Receipt(),
-					null
-				), $messagingId)
-			),
-			new Body($bodyId)
-		);
+		$json = json_encode($row);
+		$array = json_decode($json,TRUE);
 
-		$sha256 = new SHA256();
-		$c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
-
-		$serializer = SerializerBuilder::create()->build();
-		$serializedMessaging = $serializer->serialize($response->getHeader()->getMessaging(), 'xml');
-		$serializedMessaging = str_replace("  ", '', str_replace("\n", '', $serializedMessaging));
-		$serializedBody = $serializer->serialize($response->getBody(), 'xml');
-		$serializedBody = str_replace("  ", '', str_replace("\n", '', $serializedBody));
-
-		$references = [
-		];
-
-		$serializedCanonicalizedResponse = $c14ne->transform($serializer->serialize($response, 'xml'));
-		error_log($serializedCanonicalizedResponse);
-		$serializedCanonicalizedResponse = str_replace("\n", '', $serializedCanonicalizedResponse);
-		$serializedCanonicalizedResponse = str_replace("  ", '', $serializedCanonicalizedResponse);
-
-		$response = new DataDisplayResponse($serializedCanonicalizedResponse, Http::STATUS_OK, [
-			'Referrer-Policy' => 'strict-origin-when-cross-origin',
-			'X-Frame-Options' => 'SAMEORIGIN',
-			'X-Content-Type-Options' => 'nosniff',
-			'X-XSS-Protection' => '1; mode=block',
-			'Strict-Transport-Security' => 'max-age=3600;includeSubDomains',
-			'Cache-Control' => 'no-cache, no-store, must-revalidate, proxy-revalidate',
-			'Content-Type' => 'application/soap+xml;charset=utf-8'
-		]);
-		$response->addHeader('Content-Disposition', null);
-		return $response;
+		return $this->generateResponse(null, 4, 5, [], null, null);
 	}
 
 	/**
