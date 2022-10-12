@@ -1,7 +1,7 @@
 import { createServer } from "https";
 import { readFileSync } from "fs";
 console.log("it works");
-const SERVER = "http://server/index.php/apps/peppolnext/api/v1";
+const SERVER = "https://nc1.docker/index.php/apps/peppolnext/api/v1";
 
 const server = createServer({
 	key: readFileSync("/tls/privkey.pem"),
