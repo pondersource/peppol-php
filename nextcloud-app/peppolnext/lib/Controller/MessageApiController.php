@@ -196,7 +196,7 @@ class MessageApiController extends ApiController {
 	}
 
 	private function getPayload() {
-    error_log('getting payload!', var_export($this->request->post, true));
+    error_log('getting payload!' + var_export($this->request->post, true));
     $contentType = $this->request->getHeader('Content-Type');
     $boundryStart = strpos($contentType, 'boundary="');
     $boundryEnd = strpos($contentType, '"', $boundryStart + 10);
@@ -205,7 +205,7 @@ class MessageApiController extends ApiController {
 
     $body = file_get_contents('php://input');
 
-
+   error_log("Got body:" + $body)
     $pointer = strpos($body, $boundry);
     $pointer = strpos($body, "\r\n\r\n", $pointer);
     $envelopeStart = $pointer + 4;
@@ -214,7 +214,7 @@ class MessageApiController extends ApiController {
     $envelopeEnd = $pointer - 4;
 
     $envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
-		error_log("envelope found!", $envelopeStart, $envelopeEnd, strlen($body), var_export($envelope, true));
+		error_log("envelope found! " + $envelopeStart + " " + $envelopeEnd + " " + strlen($body) + " " + var_export($envelope, true));
 
     $pointer = strpos($body, "\r\n\r\n", $pointer);
     $payloadStart = $pointer + 4;
@@ -222,7 +222,7 @@ class MessageApiController extends ApiController {
     $pointer = strpos($body, $boundry, $payloadStart);
     $payloadEnd = $pointer - 4;
 
-		error_log("returning", $payloadStart, $payloadEnd, substr($body, $payloadStart, $payloadEnd - $payloadStart));
+		error_log("returning" + " " + $payloadStart + " " + $payloadEnd + " " + substr($body, $payloadStart, $payloadEnd - $payloadStart));
     return substr($body, $payloadStart, $payloadEnd - $payloadStart);
 	}
 
