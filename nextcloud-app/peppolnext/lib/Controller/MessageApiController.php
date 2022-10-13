@@ -196,16 +196,21 @@ class MessageApiController extends ApiController {
 	}
 
 	private function getPayload() {
-    error_log('getting payload!' + var_export($this->request->post, true));
+    error_log('getting payload!' . var_export($this->request->post, true));
+		// return "something";
     $contentType = $this->request->getHeader('Content-Type');
     $boundryStart = strpos($contentType, 'boundary="');
     $boundryEnd = strpos($contentType, '"', $boundryStart + 10);
+		error_log("Looking at content-type header '$contentType': $boundryStart - $boundryEnd");
     $boundry = substr($contentType, $boundryStart + 10, $boundryEnd - $boundryStart - 10);
     $boundryLength = strlen($boundry);
+		error_log("found boundary string from content-type request header($boundryLength): $boundry");
 
     $body = file_get_contents('php://input');
 
-   error_log("Got body:" + $body)
+   error_log("Got body:" . $body);
+	 $parts = explode($boundry, $body);
+	 error_log("Exploded parts:" . var_export($parts,true));
     $pointer = strpos($body, $boundry);
     $pointer = strpos($body, "\r\n\r\n", $pointer);
     $envelopeStart = $pointer + 4;
@@ -214,7 +219,7 @@ class MessageApiController extends ApiController {
     $envelopeEnd = $pointer - 4;
 
     $envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
-		error_log("envelope found! " + $envelopeStart + " " + $envelopeEnd + " " + strlen($body) + " " + var_export($envelope, true));
+		error_log("envelope found! " . $envelopeStart . " " . $envelopeEnd . " " . strlen($body) . " " . var_export($envelope, true));
 
     $pointer = strpos($body, "\r\n\r\n", $pointer);
     $payloadStart = $pointer + 4;
@@ -222,7 +227,7 @@ class MessageApiController extends ApiController {
     $pointer = strpos($body, $boundry, $payloadStart);
     $payloadEnd = $pointer - 4;
 
-		error_log("returning" + " " + $payloadStart + " " + $payloadEnd + " " + substr($body, $payloadStart, $payloadEnd - $payloadStart));
+		error_log("returning" . " " . $payloadStart . " " . $payloadEnd . " " . substr($body, $payloadStart, $payloadEnd - $payloadStart));
     return substr($body, $payloadStart, $payloadEnd - $payloadStart);
 	}
 
@@ -263,7 +268,7 @@ class MessageApiController extends ApiController {
 		}
 
 		$serializedCanonicalizedResponse = $c14ne->transform($serializer->serialize($response, 'xml'));
-		error_log($serializedCanonicalizedResponse);
+		error_log("serializedCanonicalizedResponse:" . $serializedCanonicalizedResponse);
 		$serializedCanonicalizedResponse = str_replace("\n", '', $serializedCanonicalizedResponse);
 		$serializedCanonicalizedResponse = str_replace("  ", '', $serializedCanonicalizedResponse);
 
@@ -387,11 +392,12 @@ class MessageApiController extends ApiController {
 	 * @CORS
 	 */
 	public function handleTestbedMessage() {
+		error_log("Wha!");
 		$payload = $this->getPayload();
-		error_log("TESTBED ENDPOINT PAYLOAD", $payload);
-		$row = new \SimpleXMLElement($payload);
-		$json = json_encode($row);
-		$array = json_decode($json,TRUE);
+		error_log("TESTBED ENDPOINT PAYLOAD:" . $payload);
+		// $row = new \SimpleXMLElement($payload);
+		// $json = json_encode($row);
+		// $array = json_decode($json,TRUE);
 
 		$interceptor = "https://13.81.109.44:15000/as4Interceptor";
 
@@ -543,7 +549,7 @@ class MessageApiController extends ApiController {
 		$serializer = SerializerBuilder::create()->build();
 		$c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
 		$serializedEnvelope = $c14ne->transform($serializer->serialize($envelope, 'xml'));
-		error_log($serializedEnvelope);
+		error_log("serializedEnvelope:" . $serializedEnvelope);
 		$serializedEnvelope = str_replace("\n", '', $serializedEnvelope);
 		$serializedEnvelope = str_replace("  ", '', $serializedEnvelope);
 		
@@ -572,11 +578,11 @@ class MessageApiController extends ApiController {
 
 		$serializer = SerializerBuilder::create()->build();
 		$response = $serializer->deserialize($responseBody,'OCA\PeppolNext\PonderSource\Envelope\Envelope::class', 'xml');
-		error_log("$statusCode: ".var_export($response, true));
+		error_log("statusCode $statusCode - Response: ".var_export($response, true));
 
 		$receiver_public_key = $receiver_cert->getPublicKey();
 		$verifyResult = $response->getHeader()->getSecurity()->getSignature()->verify($response, null, $receiver_public_key);
-		error_log('signature checked in MessageApiController: '.var_export($verifyResult, true));
+		error_log('signature checked in MessageApiController: ' . var_export($verifyResult, true));
 
 		return $verifyResult;
 	}

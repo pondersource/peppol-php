@@ -14,6 +14,12 @@ const server = createServer({
 		body += chunk.toString();
 	});
 	
+	const headersIn = {};
+	for(const header of reqIn.headers){
+		console.log("REQ HEADER", `Name: ${header[0]}, Value:${header[1]}`);
+		headersIn[header[0]] = header[1];
+	}
+
 	reqIn.on('end', async (chunk) => {
 		console.log('END');;
 		const reqOut = await fetch(SERVER, {
