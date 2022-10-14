@@ -204,8 +204,8 @@ class MessageApiController extends ApiController {
 		error_log("Looking at content-type header '$contentType': $boundryStart - $boundryEnd");
 		$boundry = substr($contentType, $boundryStart + 10, $boundryEnd - $boundryStart - 10);
 		$boundryLength = strlen($boundry);
-		error_log("found boundary string from content-type request header($boundryLength): $boundry")		
-		$body = file_get_contents('php://input')		
+		error_log("found boundary string from content-type request header($boundryLength): $boundry");
+		$body = file_get_contents('php://input');
 		error_log("Got body:" . $body);
 		$parts = explode($boundry, $body);
 		for ($i = 0; $i < count($parts); $i++) {
@@ -213,27 +213,28 @@ class MessageApiController extends ApiController {
 			$parts[$i] = $lines;
 			for ($j = 0; $j < count($lines); $j++) {
 				error_log("[$i][$j]" . $lines[$j]);
-				$str = $lines[$j];
-				for ( $pos=0; $pos < strlen($str); $pos ++ ) {
-					$byte = substr($str, $pos, 1);
-					error_log("$pos:" . ord($byte) . " $byte");
-				}
+				// $str = $lines[$j];
+				// for ( $pos=0; $pos < strlen($str); $pos ++ ) {
+				// 	$byte = substr($str, $pos, 1);
+				// 	error_log("$pos:" . ord($byte) . " $byte");
+				// }
 			}
 		}
 		error_log("Exploded parts:" . var_export($parts,true));
-		$pointer = strpos($body, $boundry);
-		$pointer = strpos($body, "\r\n\r\n", $pointer);
-		$envelopeStart = $pointer + 4		
-		$pointer = strpos($body, $boundry, $envelopeStart);
-		$envelopeEnd = $pointer - 4		
-		$envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
-		error_log("envelope found! " . $envelopeStart . " " . $envelopeEnd . " " . strlen($body) . " " . var_export($envelope, true))		
-		$pointer = strpos($body, "\r\n\r\n", $pointer);
-		$payloadStart = $pointer + 4		
-		$pointer = strpos($body, $boundry, $payloadStart);
-		$payloadEnd = $pointer - 4		
-		error_log("returning" . " " . $payloadStart . " " . $payloadEnd . " " . substr($body, $payloadStart, $payloadEnd - $payloadStart));
-		return substr($body, $payloadStart, $payloadEnd - $payloadStart);
+		return implode("\n", array_slice($parts[1], 3));
+		// $pointer = strpos($body, $boundry);
+		// $pointer = strpos($body, "\r\n\r\n", $pointer);
+		// $envelopeStart = $pointer + 4;
+		// $pointer = strpos($body, $boundry, $envelopeStart);
+		// $envelopeEnd = $pointer - 4;
+		// $envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
+		// error_log("envelope found! " . $envelopeStart . " " . $envelopeEnd . " " . strlen($body) . " " . var_export($envelope, true));
+		// $pointer = strpos($body, "\r\n\r\n", $pointer);
+		// $payloadStart = $pointer + 4;
+		// $pointer = strpos($body, $boundry, $payloadStart);
+		// $payloadEnd = $pointer - 4;
+		// error_log("returning" . " " . $payloadStart . " " . $payloadEnd . " " . substr($body, $payloadStart, $payloadEnd - $payloadStart));
+		// return substr($body, $payloadStart, $payloadEnd - $payloadStart);
 	}
 
 	private function generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert) {
@@ -400,12 +401,12 @@ class MessageApiController extends ApiController {
 		error_log("Wha!");
 		$payload = $this->getPayload();
 		error_log("TESTBED ENDPOINT PAYLOAD:" . $payload);
-		// $row = new \SimpleXMLElement($payload);
-		// $json = json_encode($row);
-		// $array = json_decode($json,TRUE);
+		$row = new \SimpleXMLElement($payload);
+		$json = json_encode($row);
+		$array = json_decode($json,TRUE);
 
 		$interceptor = "https://13.81.109.44:15000/as4Interceptor";
-
+		$this->as4SendWithIdentifier($payload, "receiver_identifier", $interceptor);
 		return $this->generateResponse(null, 4, 5, [], null, null);
 	}
 
@@ -561,14 +562,14 @@ class MessageApiController extends ApiController {
 		return "\r\n--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry--\r\n";		
 	}
 
-	public function as4SendWithIdentifier($invoice, $receiver_identifier) {
+	public function as4SendWithIdentifier($invoice, $receiver_identifier, $interceptor) {
 		$peppolNext_identifier = '0106:80235875';
 		list($as4_endpoint, $receiver_cert) = $this->getRecipient($receiver_identifier);
     list ($private_key, $cert) = $this->getMyCertificate();
 		$boundry = '----=_Part_'.uniqid();
 		$body = $this->prepareBody($peppolNext_identifier, $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry);
 		$client = new \GuzzleHttp\Client();
-		$response = $client->request('POST', $as4_endpoint, [
+		$response = $client->request('POST', ($interceptor ? $interceptor : $as4_endpoint), [
 			'headers' => [
 				'Message-Id' => '<'.uniqid().'>',
 				'MIME-Version' => '1.0',
