@@ -195,7 +195,7 @@ class MessageApiController extends ApiController {
 		return $orderName."-". (new \DateTime())->format("Y-m-d").".xml";
 	}
 
-	private function getPayload() {
+	private function getEnvelopeAndPayload() {
 		error_log('getting payload!' . var_export($this->request->post, true));
 		// return "something";
 		$contentType = $this->request->getHeader('Content-Type');
@@ -221,20 +221,21 @@ class MessageApiController extends ApiController {
 			}
 		}
 		error_log("Exploded parts:" . var_export($parts,true));
-		return implode("\n", array_slice($parts[1], 3));
-		// $pointer = strpos($body, $boundry);
-		// $pointer = strpos($body, "\r\n\r\n", $pointer);
-		// $envelopeStart = $pointer + 4;
-		// $pointer = strpos($body, $boundry, $envelopeStart);
-		// $envelopeEnd = $pointer - 4;
-		// $envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
-		// error_log("envelope found! " . $envelopeStart . " " . $envelopeEnd . " " . strlen($body) . " " . var_export($envelope, true));
-		// $pointer = strpos($body, "\r\n\r\n", $pointer);
-		// $payloadStart = $pointer + 4;
-		// $pointer = strpos($body, $boundry, $payloadStart);
-		// $payloadEnd = $pointer - 4;
-		// error_log("returning" . " " . $payloadStart . " " . $payloadEnd . " " . substr($body, $payloadStart, $payloadEnd - $payloadStart));
-		// return substr($body, $payloadStart, $payloadEnd - $payloadStart);
+		// return [ implode("\n", array_slice($parts[1], 3)), implode("\n", array_slice($parts[2], 3)) ];
+		$pointer = strpos($body, $boundry);
+		$pointer = strpos($body, "\r\n\r\n", $pointer);
+		$envelopeStart = $pointer + 4;
+		$pointer = strpos($body, $boundry, $envelopeStart);
+		$envelopeEnd = $pointer - 4;
+		$envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
+		error_log("envelope found! " . $envelopeStart . " " . $envelopeEnd . " " . strlen($body) . " " . var_export($envelope, true));
+		$pointer = strpos($body, "\r\n\r\n", $pointer);
+		$payloadStart = $pointer + 4;
+		$pointer = strpos($body, $boundry, $payloadStart);
+		$payloadEnd = $pointer - 4;
+		error_log("returning" . " " . $payloadStart . " " . $payloadEnd . " " . substr($body, $payloadStart, $payloadEnd - $payloadStart));
+		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
+		return [ $envelope, $payload ];
 	}
 
 	private function generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert) {
@@ -300,7 +301,7 @@ class MessageApiController extends ApiController {
 	public function as4Endpoint() {
     $peppolNext_identifier = '0106:80235875'; // TODO
 
-    $payload = $this->getPayload();
+    list($envelope, $payload) = $this->getEnvelopeAndPayload();
 
     $keystore_file = '/p12transport/test.p12'; // Private key of the receiver/us
     // $keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
@@ -399,7 +400,7 @@ class MessageApiController extends ApiController {
 	 */
 	public function handleTestbedMessage() {
 		error_log("Wha!");
-		$payload = $this->getPayload();
+		list($envelope, $payload) = $this->getEnvelopeAndPayload();
 		error_log("TESTBED ENDPOINT PAYLOAD:" . $payload);
 		$row = new \SimpleXMLElement($payload);
 		$json = json_encode($row);
