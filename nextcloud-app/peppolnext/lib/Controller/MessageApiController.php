@@ -570,12 +570,17 @@ class MessageApiController extends ApiController {
 		$boundry = '----=_Part_'.uniqid();
 		$body = $this->prepareBody($peppolNext_identifier, $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry);
 		$client = new \GuzzleHttp\Client();
-		$response = $client->request('POST', ($interceptor ? $interceptor : $as4_endpoint), [
-			'headers' => [
-				'Message-Id' => '<'.uniqid().'>',
-				'MIME-Version' => '1.0',
-				'Content-Type' => "multipart/related;    boundary=\"$boundry\";    type=\"application/soap+xml\"; charset=UTF-8"
-			],
+		$headers = [
+			'Message-Id' => '<'.uniqid().'>',
+			'MIME-Version' => '1.0',
+			'Content-Type' => "multipart/related;    boundary=\"$boundry\";    type=\"application/soap+xml\"; charset=UTF-8"
+		];
+		$url = ($interceptor ? $interceptor : $as4_endpoint);
+		error_log("POSTING! $url");
+		error_log(var_export($headers, true));
+		file_put_contents('body.txt', $body);
+		$response = $client->request('POST', $url, [
+			'headers' => $headers,
 			'body' => $body
 		]);
 
