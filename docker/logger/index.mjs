@@ -7,24 +7,23 @@ const server = createServer({
 	key: readFileSync("/tls/privkey.pem"),
 	cert: readFileSync("/tls/fullchain.pem")
 }, (reqIn, resIn) => {
-	let body = "";
+	const buffers = [];
 	console.log(reqIn.method, reqIn.url);
 	reqIn.on('data', (chunk) => {
 		console.log('CHUNK', chunk.toString());
-		body += chunk.toString();
+		buffers.push(chunk);
 	});
 	
-	const headersIn = {};
-	for(const header of reqIn.headers){
-		console.log("REQ HEADER", `Name: ${header[0]}, Value:${header[1]}`);
-		headersIn[header[0]] = header[1];
-	}
-
 	reqIn.on('end', async (chunk) => {
-		console.log('END');;
+		console.log('END');
+		const body = Buffer.concat(buffers);
+		for (let i = 0; i < body.length; i++) {
+			console.log(i, body[i], String.fromCharCode(body[i]));
+		}
 		const reqOut = await fetch(SERVER, {
 			method: "POST",
-			body
+			body,
+			headers: reqIn.headers
 		});
 		const resBody = await reqOut.text();
 

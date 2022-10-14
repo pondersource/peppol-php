@@ -196,39 +196,44 @@ class MessageApiController extends ApiController {
 	}
 
 	private function getPayload() {
-    error_log('getting payload!' . var_export($this->request->post, true));
+		error_log('getting payload!' . var_export($this->request->post, true));
 		// return "something";
-    $contentType = $this->request->getHeader('Content-Type');
-    $boundryStart = strpos($contentType, 'boundary="');
-    $boundryEnd = strpos($contentType, '"', $boundryStart + 10);
+		$contentType = $this->request->getHeader('Content-Type');
+		$boundryStart = strpos($contentType, 'boundary="');
+		$boundryEnd = strpos($contentType, '"', $boundryStart + 10);
 		error_log("Looking at content-type header '$contentType': $boundryStart - $boundryEnd");
-    $boundry = substr($contentType, $boundryStart + 10, $boundryEnd - $boundryStart - 10);
-    $boundryLength = strlen($boundry);
-		error_log("found boundary string from content-type request header($boundryLength): $boundry");
-
-    $body = file_get_contents('php://input');
-
-   error_log("Got body:" . $body);
-	 $parts = explode($boundry, $body);
-	 error_log("Exploded parts:" . var_export($parts,true));
-    $pointer = strpos($body, $boundry);
-    $pointer = strpos($body, "\r\n\r\n", $pointer);
-    $envelopeStart = $pointer + 4;
-
-    $pointer = strpos($body, $boundry, $envelopeStart);
-    $envelopeEnd = $pointer - 4;
-
-    $envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
-		error_log("envelope found! " . $envelopeStart . " " . $envelopeEnd . " " . strlen($body) . " " . var_export($envelope, true));
-
-    $pointer = strpos($body, "\r\n\r\n", $pointer);
-    $payloadStart = $pointer + 4;
-
-    $pointer = strpos($body, $boundry, $payloadStart);
-    $payloadEnd = $pointer - 4;
-
+		$boundry = substr($contentType, $boundryStart + 10, $boundryEnd - $boundryStart - 10);
+		$boundryLength = strlen($boundry);
+		error_log("found boundary string from content-type request header($boundryLength): $boundry")		
+		$body = file_get_contents('php://input')		
+		error_log("Got body:" . $body);
+		$parts = explode($boundry, $body);
+		for ($i = 0; $i < count($parts); $i++) {
+			$lines = explode("\n", $parts[$i]);
+			$parts[$i] = $lines;
+			for ($j = 0; $j < count($lines); $j++) {
+				error_log("[$i][$j]" . $lines[$j]);
+				$str = $lines[$j];
+				for ( $pos=0; $pos < strlen($str); $pos ++ ) {
+					$byte = substr($str, $pos, 1);
+					error_log("$pos:" . ord($byte) . " $byte");
+				}
+			}
+		}
+		error_log("Exploded parts:" . var_export($parts,true));
+		$pointer = strpos($body, $boundry);
+		$pointer = strpos($body, "\r\n\r\n", $pointer);
+		$envelopeStart = $pointer + 4		
+		$pointer = strpos($body, $boundry, $envelopeStart);
+		$envelopeEnd = $pointer - 4		
+		$envelope = substr($body, $envelopeStart, $envelopeEnd - $envelopeStart);
+		error_log("envelope found! " . $envelopeStart . " " . $envelopeEnd . " " . strlen($body) . " " . var_export($envelope, true))		
+		$pointer = strpos($body, "\r\n\r\n", $pointer);
+		$payloadStart = $pointer + 4		
+		$pointer = strpos($body, $boundry, $payloadStart);
+		$payloadEnd = $pointer - 4		
 		error_log("returning" . " " . $payloadStart . " " . $payloadEnd . " " . substr($body, $payloadStart, $payloadEnd - $payloadStart));
-    return substr($body, $payloadStart, $payloadEnd - $payloadStart);
+		return substr($body, $payloadStart, $payloadEnd - $payloadStart);
 	}
 
 	private function generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert) {
