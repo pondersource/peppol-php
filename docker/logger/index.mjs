@@ -17,9 +17,9 @@ const server = createServer({
 	reqIn.on('end', async (chunk) => {
 		console.log('END');
 		const body = Buffer.concat(buffers);
-		for (let i = 0; i < body.length; i++) {
-			console.log(i, body[i], String.fromCharCode(body[i]));
-		}
+		// for (let i = 0; i < body.length; i++) {
+		// 	console.log(i, body[i], String.fromCharCode(body[i]));
+		// }
 		const reqOut = await fetch(SERVER, {
 			method: "POST",
 			body,
