@@ -405,8 +405,9 @@ class MessageApiController extends ApiController {
 		$json = json_encode($row);
 		$array = json_decode($json,TRUE);
 
-		$interceptor = "https://13.81.109.44:15000/as4Interceptor";
-		$this->as4SendWithIdentifier($payload, "receiver_identifier", $interceptor);
+		$invoice = $this->generateSampleInvoice();
+		$interceptor = "https://edelconf.westeurope.cloudapp.azure.com:15000/as4Interceptor";
+		$this->as4SendWithIdentifier($invoice, "receiver_identifier", $interceptor);
 		return $this->generateResponse(null, 4, 5, [], null, null);
 	}
 
