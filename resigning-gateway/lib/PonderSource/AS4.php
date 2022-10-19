@@ -216,9 +216,13 @@ use OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256;
 use OCA\PeppolNext\PonderSource\WSSec\Transform;
 use OCA\PeppolNext\PonderSource\SMP\SMP;
 
-
 class AS4 {
   public function handleAs4($contentType, $body) {
+    // In CYB this would come from our database of verified Peppol id's:
+    $WHITELIST = [
+      "9915:phase4-test-sender" => file_get_contents('/p12transport/sender.cer')
+    ];
+
 		$peppolNext_identifier = '0106:80235875'; // TODO
 
 		$boundryStart = strpos($contentType, 'boundary="');
@@ -286,8 +290,11 @@ class AS4 {
 			list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_id, $isProduction);
 		}
 		else {
+      error_log("checking whitelist for $sender_id");
+      $pem = $WHITELIST[$sender_id];
+      error_log("Found $pem");
 			$sender_certificate = new X509; // Sender's certificate
-			$sender_certificate->loadX509(file_get_contents('/p12transport/sender.cer'));
+			$sender_certificate->loadX509($pem);
 			// $sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
 		}
 
