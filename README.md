@@ -55,9 +55,8 @@ docker rm client
 rm -rf phase4-dumps
 ```
 
-
 To generate PHP -> Java:
-```sh
+```
 ./scripts/gencerts.sh
 ./scripts/rebuild.sh
 docker network create testnet
@@ -75,11 +74,17 @@ docker network create testnet
 export PEPPOL_PHP_DIR=`pwd`
 ```
 Then run:
+
 ```
 ./scripts/start-to-Phase4.sh
 ./scripts/start-resigning-gateway.sh
+docker run --name=client -e "AS4_END_POINT=http://resigning-gateway.docker" --network=testnet phase4-client
+docker container cp client:/root/phase4/phase4-peppol-client/phase4-dumps .
+cat phase4-dumps/outgoing/*/*/*/*.as4response
+# clean up for next run:
+docker rm client
+rm -rf phase4-dumps
 ```
-And then the same process for `send-from-Phase4.sh` as above.
 
 To run c2.pondersource.net (and similar for c3.pondersource.net):
 ```sh
