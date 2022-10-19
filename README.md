@@ -80,6 +80,7 @@ Then run:
 ./scripts/start-resigning-gateway.sh
 docker run --name=client -e "AS4_END_POINT=http://resigning-gateway.docker" --network=testnet phase4-client
 docker container cp client:/root/phase4/phase4-peppol-client/phase4-dumps .
+docker container cp server:/root/phase4/phase4-peppol-server-webapp/phase4-data/as4dump .
 cat phase4-dumps/outgoing/*/*/*/*.as4response
 # clean up for next run:
 docker rm client
