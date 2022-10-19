@@ -5,6 +5,7 @@ nextcloud-app/peppolnext/vendor
 nextcloud-app/peppolnext/node_modules
 p12transport
 .vscode
+resigning-gateway/vendor
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

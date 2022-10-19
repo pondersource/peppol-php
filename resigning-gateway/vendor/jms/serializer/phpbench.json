@@ -1,5 +1,0 @@
-{
-  "runner.bootstrap": "tests/bootstrap.php",
-  "runner.iterations": 3,
-  "runner.revs": 1
-}
