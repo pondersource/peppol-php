@@ -2,9 +2,20 @@
 
 require_once("./lib/PonderSource/AS4.php");
 
-// echo "Hi";
+error_log("Hi");
 $as4 = new \OCA\PeppolNext\PonderSource\AS4();
-$response = $as4->handleAs4(apache_request_headers(), file_get_contents('php://input'));
+$contentType = "unknown";
+$headers = apache_request_headers();
+foreach ($headers as $header => $value) {
+  if (strtolower($header) == "content-type") {
+    $contentType = $value;
+  }
+  error_log("[INCOMING HEADER] $header: $value");
+}
+error_log("[CONTENT-TYPE] $contentType");
+$body = file_get_contents('php://input');
+error_log("[BODY] $body");
+$response = $as4->handleAs4($contentType, $body);
 header('Referrer-Policy: strict-origin-when-cross-origin');
 header('X-Frame-Options: SAMEORIGIN');
 header('X-Content-Type-Options: nosniff');
