@@ -65,3 +65,17 @@ docker network create testnet
 ./scripts/start-to-Phase4.sh
 ```
 
+To show milestone 4, prepare with:
+```
+./scripts/gencerts.sh
+./scripts/rebuild.sh
+./scripts/transportp12.sh
+docker network create testnet
+export PEPPOL_PHP_DIR=`pwd`
+```
+Then run:
+```
+./scripts/start-to-Phase4.sh
+./scripts/start-resigning-gateway.sh
+```
+And then the same process for `send-from-Phase4.sh` as above.

@@ -27,3 +27,7 @@ docker build -t nc1 .
 # image for nc2:
 cd ../nc2
 docker build -t nc2 .
+
+# image for resigning-gateway
+cd ../../resigning-gateway
+docker build -t resigning-gateway .

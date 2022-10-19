@@ -29,3 +29,4 @@ openssl req -new -x509 -days 365 \
 
 createCert nc1
 createCert nc2
+createCert resigning-gateway
