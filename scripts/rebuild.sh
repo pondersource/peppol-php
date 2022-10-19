@@ -28,6 +28,12 @@ docker build -t nc1 .
 cd ../nc2
 docker build -t nc2 .
 
-# image for resigning-gateway
+# image for resigning-gateway, which lives outside the docker/folder:
 cd ../../resigning-gateway
 docker build -t resigning-gateway .
+
+# back to th repo root:
+cd ..
+
+# will use this as-is:
+docker pull mariadb

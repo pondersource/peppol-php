@@ -16,6 +16,7 @@ return [
 		['name' => 'message_api#create', 'url' => '/api/v1/message','verb' => 'POST'],
 
 		['name' => 'message_api#as4Endpoint', 'url' => '/api/v1/as4','verb' => 'POST'],
+		['name' => 'message_api#handleTestbedMessage', 'url' => '/api/v1/testbed','verb' => 'POST'],
 		['name' => 'message_api#as4Send', 'url' => '/api/v1/as4send','verb' => 'GET'],
 
 		['name' => 'upload_api#receive_new', 'url' => '/api/v1/upload','verb' => 'POST'],
