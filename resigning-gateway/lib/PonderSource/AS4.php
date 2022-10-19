@@ -145,6 +145,9 @@ use JMS\Serializer\SerializerBuilder;
 
 use OCA\PeppolNext\PayloadReader;
 use OCA\PeppolNext\EnvelopeReader;
+use OCA\PeppolNext\PonderSource\Envelope\Envelope;
+use OCA\PeppolNext\PonderSource\Envelope\Header;
+use OCA\PeppolNext\PonderSource\EBBP\MessagePartNRInformation;
 use OCA\PeppolNext\PonderSource\SBD\DocumentIdentification;
 use OCA\PeppolNext\PonderSource\SBD\Identifier;
 use OCA\PeppolNext\PonderSource\SBD\Receiver;
@@ -187,6 +190,32 @@ use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxCategory;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxScheme;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxSubtotal;
 use OCA\PeppolNext\PonderSource\UBL\Invoice\TaxTotal;
+use OCA\PeppolNext\PonderSource\EBMS\MessageInfo;
+use OCA\PeppolNext\Service\MessageService;
+use OCA\PeppolNext\Service\Model\Constants;
+use OCA\PeppolNext\Service\Model\MessageBuilder;
+use OCA\PeppolNext\Service\UploadService;
+use OCA\PeppolNext\PonderSource\Envelope\Body;
+use OCA\PeppolNext\PonderSource\EBMS\CollaborationInfo;
+use OCA\PeppolNext\PonderSource\EBMS\Messaging;
+use OCA\PeppolNext\PonderSource\EBMS\PartInfo;
+use OCA\PeppolNext\PonderSource\EBMS\Party;
+use OCA\PeppolNext\PonderSource\EBMS\PartyId;
+use OCA\PeppolNext\PonderSource\EBMS\PartyInfo;
+use OCA\PeppolNext\PonderSource\EBMS\PayloadInfo;
+use OCA\PeppolNext\PonderSource\EBMS\Property;
+use OCA\PeppolNext\PonderSource\EBMS\Receipt;
+use OCA\PeppolNext\PonderSource\EBMS\SignalMessage;
+use OCA\PeppolNext\PonderSource\EBMS\UserMessage;
+use OCA\PeppolNext\PonderSource\WSSec\Security;
+use OCA\PeppolNext\PonderSource\EBMS\Service;
+use OCA\PeppolNext\PonderSource\WSSec\CanonicalizationMethod\C14NExclusive;
+use OCA\PeppolNext\PonderSource\WSSec\DigestMethod\SHA256;
+use OCA\PeppolNext\PonderSource\WSSec\DSigReference;
+use OCA\PeppolNext\PonderSource\WSSec\SignatureMethod\RsaSha256;
+use OCA\PeppolNext\PonderSource\WSSec\Transform;
+use OCA\PeppolNext\PonderSource\SMP\SMP;
+
 
 class AS4 {
   public function handleAs4($contentType, $body) {
