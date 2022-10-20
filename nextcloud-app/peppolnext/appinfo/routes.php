@@ -25,7 +25,8 @@ return [
 		['name' => 'contact_api#create', 'url' => '/api/v1/contact', 'verb'=>'POST'],
 
 		['name' => 'setting_api#index', 'url' => '/api/v1/setting', 'verb'=>'GET'],
-		['name' => 'setting_api#create', 'url' => '/api/v1/setting', 'verb'=>'POST']
+		['name' => 'setting_api#create', 'url' => '/api/v1/setting', 'verb'=>'POST'],
+		['name' => 'setting_api#cert', 'url' => '/cert', 'verb'=> 'GET']
 
 	]
 ];

@@ -1,5 +1,9 @@
 #!/bin/bash
 set -e
+if [[ -z "$PEPPOL_PHP_DIR" ]]; then
+    echo "Must provide PEPPOL_PHP_DIR in environment" 1>&2
+    exit 1
+fi
 echo Mounting peppol-php code repo from the host, folder: $PEPPOL_PHP_DIR 
 docker run -d --network=testnet -e MARIADB_ROOT_PASSWORD=eilohtho9oTahsuongeeTh7reedahPo1Ohwi3aek --name=maria2.docker mariadb --transaction-isolation=READ-COMMITTED --binlog-format=ROW --innodb-file-per-table=1 --skip-innodb-read-only-compressed
 docker run -d --network=testnet --name=nc2.docker -v $PEPPOL_PHP_DIR/p12transport:/p12transport -v $PEPPOL_PHP_DIR:/var/www/html/apps/peppol-php nc2

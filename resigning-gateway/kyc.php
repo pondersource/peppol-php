@@ -64,6 +64,10 @@
         <input type="text" name="vatnum" value="<?php  if (isset($_POST["vatnum"])) { echo $_POST["vatnum"]; } ?>"/>
       </div>
       <div>
+        <label for="vatnum">Enter your P12 certificate (e.g. https://cloud.pondersource.org/index.php/apps/peppolnext/cert)</label>
+        <input type="text" name="vatnum" value="<?php  if (isset($_POST["vatnum"])) { echo $_POST["vatnum"]; } ?>"/>
+      </div>
+      <div>
         <input type="submit" value="Check" />
       </div> 
     </form>

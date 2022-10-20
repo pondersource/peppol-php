@@ -7,15 +7,29 @@ use OCA\PeppolNext\AppInfo\Application;
 use OCA\PeppolNext\Settings\AppSettingManager;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\DataDisplayResponse;
+use OCP\Files\IRootFolder;
+use OCA\PeppolNext\Service\Helper\FolderManager;
+use OCP\IDBConnection;
 use OCP\IRequest;
 
 class SettingApiController extends ApiController
 {
 	/** @var AppSettingManager  */
 	private $settingManager;
-	public function __construct(IRequest $request, AppSettingManager $settingManager, $userId){
+	private $dbConnection;
+	public function __construct(IRequest $request
+		, IRootFolder $rootFolder
+		, AppSettingManager $settingManager
+		, FolderManager $foldermanager
+		, IDBConnection $dbConnection
+		, $userId)
+	{
 		parent::__construct(Application::APP_ID, $request);
 		$this->settingManager = $settingManager;
+		$this->dbConnection = $dbConnection;
+		$this->folderManager = $foldermanager;
+		$this->rootFolder = $rootFolder;
 		$this->userId = $userId;
 	}
 
@@ -36,5 +50,19 @@ class SettingApiController extends ApiController
 	public function create(){
 		$body = $this->request->getParam("body");
 		$this->settingManager->updateSettings($body);
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 */
+	public function cert() {
+		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
+		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
+		$node = $sharedFolder->get('cert.p12');
+    // error_log(json_encode($node));
+		return new DataDisplayResponse($node->getContent());
+		// passthru('/var/www/html/cert.p12');
 	}
 }

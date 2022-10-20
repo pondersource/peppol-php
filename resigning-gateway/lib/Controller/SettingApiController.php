@@ -13,7 +13,12 @@ class SettingApiController extends ApiController
 {
 	/** @var AppSettingManager  */
 	private $settingManager;
-	public function __construct(IRequest $request, AppSettingManager $settingManager, $userId){
+	public function __construct(
+		IRequest $request,
+		AppSettingManager $settingManager,
+		IRootFolder $rootFolder,
+		$userId
+	){
 		parent::__construct(Application::APP_ID, $request);
 		$this->settingManager = $settingManager;
 		$this->userId = $userId;
