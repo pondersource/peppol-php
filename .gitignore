@@ -5,7 +5,6 @@ docker/apache-php/tls
 nextcloud-app/peppolnext/vendor
 nextcloud-app/peppolnext/build
 nextcloud-app/peppolnext/node_modules
-p12transport
 .vscode
 resigning-gateway/vendor
 resigning-gateway/build

@@ -1,4 +1,7 @@
 <?php
+  require_once(dirname(__FILE__) . "/vendor/autoload.php");
+  use phpseclib3\File\X509;
+
   error_log("User chose" . var_export($_POST, true));
 ?>
 <html>
@@ -51,8 +54,11 @@
     "TR" => "Turkey",
     "VA" => "Vatican City",
   ];
+  $selected = (isset($_POST["cc"]) ? $_POST["cc"] : "NL" );
+  $vatnum = (isset($_POST["vatnum"]) ? $_POST["vatnum"] : "862637223B01" );
+  $server = (isset($_POST["server"]) ? $_POST["server"] : "https://cloud.pondersource.org" );
+  $path = (isset($_POST["path"]) ? $_POST["path"] : "/index.php/apps/peppolnext/cert" );
   foreach($countries as $cc => $countryName) {
-    $selected = (isset($_POST["cc"]) ? $_POST["cc"] : "NL");
     echo "          <option value=\"$cc\" " .
      ($cc == $selected ? "selected" : "" ) .
     ">$countryName</option>\n";
@@ -62,15 +68,15 @@
       </div>
       <div>
         <label for="vatnum">Enter your VAT number</label>
-        <input type="text" name="vatnum" value="<?php  echo (isset($_POST["vatnum"]) ? $_POST["vatnum"] : "862637223B01" ); ?>"/>
+        <input type="text" name="vatnum" value="<?php  echo $vatnum; ?>"/>
       </div>
       <div>
         <label for="server">Enter the URL of your bookkeeping server:</label>
-        <input type="text" name="server" style="width:50em;" value="<?php  echo (isset($_POST["server"]) ? $_POST["server"] : "https://cloud.pondersource.org" ); ?>"/>
+        <input type="text" name="server" style="width:50em;" value="<?php  echo $server; ?>"/>
       </div>
       <div>
         <label for="path">Enter your server's cert path:</label>
-        <input type="text" name="path" style="width:50em;" value="<?php  echo (isset($_POST["path"]) ? $_POST["path"] : "/index.php/apps/peppolnext/cert" ); ?>"/>
+        <input type="text" name="path" style="width:50em;" value="<?php  echo $path; ?>"/>
       </div>
       <div>
         <input type="submit" value="Check" />
@@ -90,6 +96,27 @@ if (isset($_POST["cc"]) && isset($_POST["vatnum"])) {
   }
   echo "<p>Name: '$result->name'</p>";
   echo "<p>Address: '$result->address'</p>";
+
+  $certUrl = $server . $path;
+  $client = new \GuzzleHttp\Client();
+  $response = $client->request('GET', $certUrl);
+
+  $statusCode = $response->getStatusCode();
+  //echo $res->getHeader('content-type')[0];
+  $responseBody = (string) $response->getBody();
+  if($statusCode == 200) {
+    if(strlen($responseBody) == 0) {
+      echo "Received empty response body from $server$path.";
+    } else {
+      $cert = new X509;
+      $cert->loadX509($responseBody);
+      echo "<p>Found cert at $server$path</p>";
+      echo "<p>$responseBody</p>";
+      echo $cert->getPublicKey();
+    }
+  } else {
+    echo "Attempt to retrieve cert from $server$path resulted in a $statusCode response code.";
+  }
 }
 ?>
     <div>
