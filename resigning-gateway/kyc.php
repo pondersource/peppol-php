@@ -1,46 +1,87 @@
+<?php
+  error_log("User chose" . var_export($_POST, true));
+?>
 <html>
   <body>
     <h2>Tell us your VAT number</h2>
-    <p>Please choose the country in which your organisation pays VAT:</p>
-    <ul>
-      <li id="AD:VAT">Andorra</li>
-      <li id="AL:VAT">Albania</li>
-      <li id="AT:VAT">Austria</li>
-      <li id="BE:VAT">Belgium</li>
-      <li id="BG:VAT">Bulgaria</li>
-      <li id="CH:VAT">Switzerland</li>
-      <li id="CY:VAT">Cyprus</li>
-      <li id="CZ:VAT">Czechia</li>
-      <li id="DE:VAT">Germany</li>
-      <li id="EE:VAT">Estonia</li>
-      <li id="ES:VAT">Spain</li>
-      <li id="FR:VAT">France</li>
-      <li id="GB:VAT">Great Britain</li>
-      <li id="GR:VAT">Greece</li>
-      <li id="HR:VAT">Croatia</li>
-      <li id="HU:VAT">Hungary</li>
-      <li id="IE:VAT">Ireland</li>
-      <li id="IT:VAT">Italy</li>
-      <li id="LI:VAT">Liechtenstein</li>
-      <li id="LT:VAT">Lithuania</li>
-      <li id="LU:VAT">Luxemburg</li>
-      <li id="LV:VAT">Latvia</li>
-      <li id="MC:VAT">Monaco</li>
-      <li id="ME:VAT">Montenegro</li>
-      <li id="MK:VAT">Macedonia</li>
-      <li id="MT:VAT">Malta</li>
-      <li id="NL:VAT">The Netherlands</li>
-      <li id="NO:VAT">Norway</li>
-      <li id="PL:VAT">Poland</li>
-      <li id="PT:VAT">Portugal</li>
-      <li id="RO:VAT">Romania</li>
-      <li id="RS:VAT">Serbia</li>
-      <li id="SE:VAT">Sweden</li>
-      <li id="SI:VAT">Slovenia</li>
-      <li id="SK:VAT">Slovakia</li>
-      <li id="SM:VAT">San</li> Marino
-      <li id="TR:VAT">Turkey</li>
-      <li id="VA:VAT">Vatican City</li>
-    <ul>
+    <p></p>
+    <form action="" method="post">
+      <div>
+        <label for="cc">Please choose the country in which your organisation pays VAT:</label>
+
+        <select id="cc" name="cc" required>
+<?php
+  $countries = [
+    "??" => " --- please select ---",
+    "AD" => "Andorra",
+    "AT" => "Austria",
+    "BE" => "Belgium",
+    "BG" => "Bulgaria",
+    "CH" => "Switzerland",
+    "CY" => "Cyprus",
+    "CZ" => "Czechia",
+    "DE" => "Germany",
+    "EE" => "Estonia",
+    "ES" => "Spain",
+    "FR" => "France",
+    "GB" => "Great Britain",
+    "GR" => "Greece",
+    "HR" => "Croatia",
+    "HU" => "Hungary",
+    "IE" => "Ireland",
+    "IT" => "Italy",
+    "LI" => "Liechtenstein",
+    "LT" => "Lithuania",
+    "LU" => "Luxemburg",
+    "LV" => "Latvia",
+    "MC" => "Monaco",
+    "ME" => "Montenegro",
+    "MK" => "Macedonia",
+    "MT" => "Malta",
+    "NL" => "The Netherlands",
+    "NO" => "Norway",
+    "PL" => "Poland",
+    "PT" => "Portugal",
+    "RO" => "Romania",
+    "RS" => "Serbia",
+    "SE" => "Sweden",
+    "SI" => "Slovenia",
+    "SK" => "Slovakia",
+    "SM" => "San</optio",
+    "TR" => "Turkey",
+    "VA" => "Vatican City",
+  ];
+  foreach($countries as $cc => $countryName) {
+    echo "          <option value=\"$cc\" " .
+    (isset($_POST["cc"]) && $_POST["cc"] == $cc ? "selected" : "") .
+    ">$countryName</option>\n";
+  }
+  ?>
+        </select>
+      </div>
+      <div>
+        <label for="vatnum">Enter your VAT number</label>
+        <input type="text" name="vatnum" value="<?php  if (isset($_POST["vatnum"])) { echo $_POST["vatnum"]; } ?>"/>
+      </div>
+      <div>
+        <input type="submit" value="Check" />
+      </div> 
+    </form>
+    <div>
+<?php
+if (isset($_POST["cc"]) && isset($_POST["vatnum"])) {
+  $client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
+  $result = $client->checkVat(array('countryCode' => $_POST["cc"], 'vatNumber' => $_POST["vatnum"]));
+  error_log(var_export($result, true));
+
+  if ($result->valid) {
+    echo "Valid!";
+  } else {
+    echo "Not valid!";
+  }
+  var_dump($result);
+}
+?>
+    <div>
   </body>
 </html>
