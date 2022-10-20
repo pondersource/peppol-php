@@ -52,8 +52,9 @@
     "VA" => "Vatican City",
   ];
   foreach($countries as $cc => $countryName) {
+    $selected = (isset($_POST["cc"]) ? $_POST["cc"] : "NL");
     echo "          <option value=\"$cc\" " .
-    (isset($_POST["cc"]) && $_POST["cc"] == $cc ? "selected" : "") .
+     ($cc == $selected ? "selected" : "" ) .
     ">$countryName</option>\n";
   }
   ?>
@@ -61,11 +62,15 @@
       </div>
       <div>
         <label for="vatnum">Enter your VAT number</label>
-        <input type="text" name="vatnum" value="<?php  if (isset($_POST["vatnum"])) { echo $_POST["vatnum"]; } ?>"/>
+        <input type="text" name="vatnum" value="<?php  echo (isset($_POST["vatnum"]) ? $_POST["vatnum"] : "862637223B01" ); ?>"/>
       </div>
       <div>
-        <label for="vatnum">Enter your P12 certificate (e.g. https://cloud.pondersource.org/index.php/apps/peppolnext/cert)</label>
-        <input type="text" name="vatnum" value="<?php  if (isset($_POST["vatnum"])) { echo $_POST["vatnum"]; } ?>"/>
+        <label for="server">Enter the URL of your bookkeeping server:</label>
+        <input type="text" name="server" style="width:50em;" value="<?php  echo (isset($_POST["server"]) ? $_POST["server"] : "https://cloud.pondersource.org" ); ?>"/>
+      </div>
+      <div>
+        <label for="path">Enter your server's cert path:</label>
+        <input type="text" name="path" style="width:50em;" value="<?php  echo (isset($_POST["path"]) ? $_POST["path"] : "/index.php/apps/peppolnext/cert" ); ?>"/>
       </div>
       <div>
         <input type="submit" value="Check" />
@@ -83,7 +88,8 @@ if (isset($_POST["cc"]) && isset($_POST["vatnum"])) {
   } else {
     echo "Not valid!";
   }
-  var_dump($result);
+  echo "<p>Name: '$result->name'</p>";
+  echo "<p>Address: '$result->address'</p>";
 }
 ?>
     <div>
