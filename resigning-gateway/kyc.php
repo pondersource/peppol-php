@@ -90,32 +90,36 @@ if (isset($_POST["cc"]) && isset($_POST["vatnum"])) {
   error_log(var_export($result, true));
 
   if ($result->valid) {
-    echo "Valid!";
+    echo "<p>Your details:</p>";
+    echo "<p>Name: '$result->name'</p>";
+    echo "<p>Address: '$result->address'</p>";
+  
+    $certUrl = $server . $path;
+    $client = new \GuzzleHttp\Client();
+    $response = $client->request('GET', $certUrl);
+  
+    $statusCode = $response->getStatusCode();
+    //echo $res->getHeader('content-type')[0];
+    $responseBody = (string) $response->getBody();
+    if($statusCode == 200) {
+      if(strlen($responseBody) == 0) {
+        echo "Received empty response body from $server$path.";
+      } else {
+        $cert = new X509;
+        $cert->loadX509($responseBody);
+        echo "<p>Found cert at $server$path</p>";
+        // echo "<p>$responseBody</p>";
+        echo "<pre>".$cert->getPublicKey()."</pre>";
+      }
+    } else {
+      echo "Attempt to retrieve cert from $server$path resulted in a $statusCode response code.";
+    }
+  
+    echo "<p>Welcome! Your request to join has been approved.</p>";
+    echo "<p>Now please go to the settings in your bookkeeping system (e.g. the PeppolNext app in your Nextcloud server)</p>";
+    echo "<p>and set your AS4-to-Peppol gateway to <tt>https://connectyourbooks.com</tt>.</p>";
   } else {
     echo "Not valid!";
-  }
-  echo "<p>Name: '$result->name'</p>";
-  echo "<p>Address: '$result->address'</p>";
-
-  $certUrl = $server . $path;
-  $client = new \GuzzleHttp\Client();
-  $response = $client->request('GET', $certUrl);
-
-  $statusCode = $response->getStatusCode();
-  //echo $res->getHeader('content-type')[0];
-  $responseBody = (string) $response->getBody();
-  if($statusCode == 200) {
-    if(strlen($responseBody) == 0) {
-      echo "Received empty response body from $server$path.";
-    } else {
-      $cert = new X509;
-      $cert->loadX509($responseBody);
-      echo "<p>Found cert at $server$path</p>";
-      echo "<p>$responseBody</p>";
-      echo $cert->getPublicKey();
-    }
-  } else {
-    echo "Attempt to retrieve cert from $server$path resulted in a $statusCode response code.";
   }
 }
 ?>
