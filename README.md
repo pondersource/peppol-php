@@ -55,15 +55,36 @@ docker rm client
 rm -rf phase4-dumps
 ```
 
-
 To generate PHP -> Java:
-```sh
+```
 ./scripts/gencerts.sh
 ./scripts/rebuild.sh
 docker network create testnet
 export PEPPOL_PHP_DIR=`pwd`
 ./scripts/start-from-Nextcloud.sh
 ./scripts/start-to-Phase4.sh
+```
+
+To show milestone 4, prepare with:
+```
+./scripts/gencerts.sh
+./scripts/rebuild.sh
+./scripts/transportp12.sh
+docker network create testnet
+export PEPPOL_PHP_DIR=`pwd`
+```
+Then run:
+
+```
+./scripts/start-to-Phase4.sh
+./scripts/start-resigning-gateway.sh
+docker run --name=client -e "AS4_END_POINT=http://resigning-gateway.docker" --network=testnet phase4-client
+docker container cp client:/root/phase4/phase4-peppol-client/phase4-dumps .
+docker container cp server:/root/phase4/phase4-peppol-server-webapp/phase4-data/as4dump .
+cat phase4-dumps/outgoing/*/*/*/*.as4response
+# clean up for next run:
+docker rm client
+rm -rf phase4-dumps
 ```
 
 To run c2.pondersource.net (and similar for c3.pondersource.net):

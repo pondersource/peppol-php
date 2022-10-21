@@ -1,0 +1,62 @@
+------=_Part_39_869791064.1665565057596
+Content-Type: application/soap+xml; charset=utf-8
+
+<env:Envelope xmlns:env="http://www.w3.org/2003/05/soap-envelope"><env:Header><ns2:Messaging xmlns:ns2="http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/" xmlns:soapenv="http://www.w3.org/2003/05/soap-envelope" soapenv:mustUnderstand="true">
+    <ns2:UserMessage>
+        <ns2:MessageInfo>
+            <ns2:Timestamp>2022-10-12T08:57:37.587Z</ns2:Timestamp>
+            <ns2:MessageId>135f0fbc-36dd-421c-85a1-1592cf9bdf8b@mindertestbed.org</ns2:MessageId>
+        </ns2:MessageInfo>
+        <ns2:PartyInfo>
+            <ns2:From>
+                <ns2:PartyId type="urn:oasis:names:tc:ebcore:partyid-type:unregistered">minder</ns2:PartyId>
+                <ns2:Role>http://www.esens.eu/as4/conformancetest/testdriver</ns2:Role>
+            </ns2:From>
+            <ns2:To>
+                <ns2:PartyId type="urn:oasis:names:tc:ebcore:partyid-type:unregistered">pondersource-c2</ns2:PartyId>
+                <ns2:Role>http://www.esens.eu/as4/conformancetest/sut</ns2:Role>
+            </ns2:To>
+        </ns2:PartyInfo>
+        <ns2:CollaborationInfo>
+            <ns2:Service>http://www.esens.eu/as4/conformancetest</ns2:Service>
+            <ns2:Action>Submit</ns2:Action>
+            <ns2:ConversationId>743929</ns2:ConversationId>
+        </ns2:CollaborationInfo>
+        <ns2:MessageProperties>
+            <ns2:Property name="FromPartyIdType">urn:oasis:names:tc:ebcore:partyid-type:unregistered</ns2:Property>
+            <ns2:Property name="ToPartyIdType">urn:oasis:names:tc:ebcore:partyid-type:unregistered</ns2:Property>
+            <ns2:Property name="MessageId">91fa5c43-6396-43fd-ae27-1aedcd641dfc@mindertestbed.org</ns2:Property>
+<ns2:Property name="ConversationId">743929</ns2:Property>
+<ns2:Property name="Service">SRV_SIMPLE_ONEWAY</ns2:Property>
+<ns2:Property name="Action">ACT_SIMPLE_ONEWAY</ns2:Property>
+<ns2:Property name="ToPartyId">pondersource-c3</ns2:Property>
+<ns2:Property name="ToPartyRole">http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/responder</ns2:Property>
+<ns2:Property name="FromPartyId">pondersource-c2</ns2:Property>
+<ns2:Property name="FromPartyRole">http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/initiator</ns2:Property>
+<ns2:Property name="originalSender">C1</ns2:Property>
+<ns2:Property name="finalRecipient">C4</ns2:Property>
+        </ns2:MessageProperties>
+        <ns2:PayloadInfo>
+            <ns2:PartInfo href="cid:xmlpayload@minder">
+<ns2:PartProperties><ns2:Property name="MimeType">application/xml</ns2:Property>
+</ns2:PartProperties>
+</ns2:PartInfo>
+<ns2:PartInfo href="cid:custompayload@minder">
+<ns2:PartProperties><ns2:Property name="MimeType">application/octet-stream</ns2:Property>
+</ns2:PartProperties>
+</ns2:PartInfo>
+
+        </ns2:PayloadInfo>
+    </ns2:UserMessage>
+</ns2:Messaging></env:Header><env:Body/></env:Envelope>
+------=_Part_39_869791064.1665565057596
+Content-Type: application/xml
+Content-ID: <xmlpayload@minder>
+
+<min><der>sample</der></min>
+------=_Part_39_869791064.1665565057596
+Content-Type: application/octet-stream
+Content-ID: <custompayload@minder>
+
+!! Modify me after submission, if you dare!!
+------=_Part_39_869791064.1665565057596--
