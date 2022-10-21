@@ -2,7 +2,8 @@ import { createServer } from "https";
 import { readFileSync } from "fs";
 console.log("it works");
 const SERVER = "https://nc1.docker/index.php/apps/peppolnext/api/v1/testbed";
-
+while (true) {
+	try {
 const server = createServer({
 	key: readFileSync("/tls/privkey.pem"),
 	cert: readFileSync("/tls/fullchain.pem")
@@ -31,3 +32,7 @@ const server = createServer({
 	});
 });
 server.listen(443);
+} catch (e) {
+	console.log('logger error!', e);
+}
+}
