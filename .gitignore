@@ -6,5 +6,5 @@ nextcloud-app/peppolnext/vendor
 nextcloud-app/peppolnext/build
 nextcloud-app/peppolnext/node_modules
 .vscode
-resigning-gateway/vendor
-resigning-gateway/build
+re-signing-gateway/vendor
+re-signing-gateway/build
