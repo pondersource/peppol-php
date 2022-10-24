@@ -12,7 +12,9 @@
     "require": {
         "phpseclib/phpseclib": "^3.0",
         "jms/serializer": "^3.17",
-        "guzzlehttp/guzzle": "^6.5"
+        "guzzlehttp/guzzle": "^6.5",
+        "easyrdf/easyrdf": "^1.1",
+        "ext-soap": "*"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.5",
