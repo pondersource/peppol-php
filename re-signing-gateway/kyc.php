@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Ponder Source
+//
+// SPDX-License-Identifier: MIT
+
 <?php
   require_once(dirname(__FILE__) . "/vendor/autoload.php");
   use phpseclib3\File\X509;

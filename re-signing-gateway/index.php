@@ -1,3 +1,7 @@
+// SPDX-FileCopyrightText: 2022 Ponder Source
+//
+// SPDX-License-Identifier: MIT
+
 <?php
 
 require_once("./lib/PonderSource/AS4.php");
