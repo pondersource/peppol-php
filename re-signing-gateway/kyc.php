@@ -60,10 +60,95 @@
       "VA" => "Vatican City",
     ];
   }
+  function echoDetailsWebID($webid) {
+    echo "<h2>Details from your WebID</h2>";
+    echo "<p><strong>WebID:</strong> $webid</p>";
+    $client = new \GuzzleHttp\Client();
+    if (!str_starts_with($webid, "http")) {
+        $webid = "https://" . $webid;
+    }
+    $response = $client->request('GET', $webid);
+
+    $statusCode = $response->getStatusCode();
+    //echo $res->getHeader('content-type')[0];
+    $responseBody = (string) $response->getBody();
+    if ($statusCode == 200) {
+        if (strlen($responseBody) == 0) {
+            echo "Received empty response body from $webid.";
+        } else {
+            // following https://stackoverflow.com/questions/31165989/parsing-turtle-rdf-from-string-to-array
+            $graph = new EasyRdf\Graph();
+            $graph->parse($responseBody, 'turtle');
+            $array = $graph->toRdfPhp();
+            unset($graph);
+            $pubkey = $array['.']['http://federatedbookkeeping.org/ns/as4#pubkey'][0]['value'];
+            echo "<p><strong>AS4 pubkey parsed from your webid profile:</strong></p><pre>$pubkey</pre>";
+        }
+    } else {
+        echo "Attempt to retrieve cert from $webid resulted in a $statusCode response code.";
+    }
+  }
+
+  function echoDetailsVatNum($cc, $vatnum) {
+    $client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
+    $result = $client->checkVat(array('countryCode' => $cc, 'vatNumber' => $vatnum));
+    error_log(var_export($result, true));
+  
+    if ($result->valid) {
+      echo "<h2>Details from your VAT Number</h2>";
+      echo "<p><strong>VAT Number:</strong> $vatnum</p>";
+      echo "<p><strong>Name:</strong> $result->name</td></tr>";
+      echo "<p><strong>Address:</strong> $result->address</p>";
+    } else {
+      echo "VAT Number not valid!";
+    }   
+  }
+  function echoDetailsCompRegNum($cc, $compregnum) {
+    echo "<h2>Details from your Company Registry Number</h2>";
+    if ($cc != "NL") {
+      echo "<p>Sorry, we don't support the company registry of your country yet.</p>";
+      return;
+    }
+    echo "<p><strong>Company Registry Number:</strong> $compregnum</p>";
+    $client = new \GuzzleHttp\Client();
+    $apiURL = "https://developers.kvk.nl/test/api/v1/basisprofielen/$compregnum/hoofdvestiging?geoData=false";
+    $response = $client->request('GET', $apiURL);
+
+    $statusCode = $response->getStatusCode();
+    //echo $res->getHeader('content-type')[0];
+    $responseBody = (string) $response->getBody();
+    if ($statusCode == 200) {
+        if (strlen($responseBody) == 0) {
+            echo "Received empty response body from Company Registry.";
+        } else {
+          $data = json_decode($responseBody);
+          $websites = $data["websites"];
+          var_dump($websites);
+          
+        }
+    } else {
+        echo "Attempt to retrieve company registry data for KvK $compregnum resulted in a $statusCode response code.";
+    }
+  }
+
+  function getCountryCode() {
+    return (isset($_POST["cc"]) ? $_POST["cc"] : "NL");
+  }
+  function getCompRegNum() {
+    return (isset($_POST["compregnum"]) ? $_POST["compregnum"] : "90003942");
+  }
+  function getVatNum() {
+    return (isset($_POST["vatnum"]) ? $_POST["vatnum"] : "862637223B01");
+  }
+  function getWebID() {
+    return (isset($_POST["webid"]) ? $_POST["webid"] : "pondersource.com/id");
+  }
+
   function displayForm() {
-    $selected = (isset($_POST["cc"]) ? $_POST["cc"] : "NL");
-    $vatnum = (isset($_POST["vatnum"]) ? $_POST["vatnum"] : "862637223B01");
-    $webid = (isset($_POST["webid"]) ? $_POST["webid"] : "pondersource.com/id");
+    $selected = getCountryCode();
+    $compregnum = getCompRegNum();
+    $vatnum = getVatNum();
+    $webid = getWebID();
 ?>
     <header>
       <h2>Tell us your VAT number</h2>
@@ -86,6 +171,10 @@
           </select>
         </div>
         <div>
+          <label for="compregnum"><h3>Enter your company number in your country's registry (e.g. KvK in NL)<h3></label>
+          <input type="text" name="compregnum" value="<?php  echo $compregnum; ?>"/>
+        </div>
+        <div>
           <label for="vatnum"><h3>Enter your VAT number<h3></label>
           <input type="text" name="vatnum" value="<?php  echo $vatnum; ?>"/>
         </div>
@@ -101,16 +190,12 @@
     </article>
 <?php
 }
-if (isset($_POST["cc"]) && isset($_POST["vatnum"]) && isset($_POST["webid"])) {
-  $cc = (isset($_POST["cc"]) ? $_POST["cc"] : "NL");
-  $vatnum = (isset($_POST["vatnum"]) ? $_POST["vatnum"] : "862637223B01");
-  $webid = (isset($_POST["webid"]) ? $_POST["webid"] : "pondersource.com/id");
+if (isset($_POST["cc"])) {
+  $cc = getCountryCode();
+  $vatnum = getVatNum();
+  $compregnum = getCompRegNum();
+  $webid = getWebID();
 
-  $client = new SoapClient("http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl");
-  $result = $client->checkVat(array('countryCode' => $_POST["cc"], 'vatNumber' => $_POST["vatnum"]));
-  error_log(var_export($result, true));
-
-  if ($result->valid) {
     $countries = getCountries();
     $country = $countries[$cc];
 ?>
@@ -124,39 +209,11 @@ if (isset($_POST["cc"]) && isset($_POST["vatnum"]) && isset($_POST["webid"])) {
     echo "and set your AS4-to-Peppol gateway to:</p> <pre>http://fwd.connectyourbooks.com</pre>";
 
     echo "<h2>Your details:</h2>";
-    echo "<p><strong>Name:</strong> $result->name</td></tr>";
-    echo "<p><strong>Address:</strong> $result->address</p>";
     echo "<p><strong>Country:</strong> $country</p>";
-    echo "<p><strong>VAT Number:</strong> $vatnum</p>";
-    echo "<p><strong>WebID:</strong> $webid</p>";
 
-    $client = new \GuzzleHttp\Client();
-    if (!str_starts_with($webid, "http")) {
-      $webid = "https://" . $webid;
-    }
-    $response = $client->request('GET', $webid);
-  
-    $statusCode = $response->getStatusCode();
-    //echo $res->getHeader('content-type')[0];
-    $responseBody = (string) $response->getBody();
-    if($statusCode == 200) {
-      if(strlen($responseBody) == 0) {
-        echo "Received empty response body from $webid.";
-      } else {
-        // following https://stackoverflow.com/questions/31165989/parsing-turtle-rdf-from-string-to-array
-        $graph = new EasyRdf\Graph();
-        $graph->parse($responseBody,'turtle');
-        $array = $graph->toRdfPhp();
-        unset($graph);
-        $pubkey = $array['.']['http://federatedbookkeeping.org/ns/as4#pubkey'][0]['value'];
-        echo "<p><strong>AS4 pubkey parsed from your webid profile:</strong></p><pre>$pubkey</pre>";
-      }
-    } else {
-      echo "Attempt to retrieve cert from $webid resulted in a $statusCode response code.";
-    }
-  } else {
-    echo "Not valid!";
-  }
+    echoDetailsWebID($webid);
+    echoDetailsVatNum($cc, $vatnum);
+    echoDetailsCompRegNum($cc, $compregnum);
 } else {
   displayForm();
 }
