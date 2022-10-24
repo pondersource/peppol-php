@@ -1,7 +1,8 @@
+<?php
 // SPDX-FileCopyrightText: 2022 Ponder Source
 //
 // SPDX-License-Identifier: MIT
-
+?>
 <html>
   <head>
   <style>
@@ -83,10 +84,12 @@
             unset($graph);
             $pubkey = $array['.']['http://federatedbookkeeping.org/ns/as4#pubkey'][0]['value'];
             echo "<p><strong>AS4 pubkey parsed from your webid profile:</strong></p><pre>$pubkey</pre>";
+            return explode("/", $webid)[2];
         }
     } else {
         echo "Attempt to retrieve cert from $webid resulted in a $statusCode response code.";
     }
+    return "";
   }
 
   function echoDetailsVatNum($cc, $vatnum) {
@@ -99,9 +102,11 @@
       echo "<p><strong>VAT Number:</strong> $vatnum</p>";
       echo "<p><strong>Name:</strong> $result->name</td></tr>";
       echo "<p><strong>Address:</strong> $result->address</p>";
+      return $result->address;
     } else {
       echo "VAT Number not valid!";
-    }   
+    }
+    return "";
   }
   function echoDetailsCompRegNum($cc, $compregnum) {
     echo "<h2>Details from your Company Registry Number</h2>";
@@ -118,24 +123,51 @@
     //echo $res->getHeader('content-type')[0];
     $responseBody = (string) $response->getBody();
     if ($statusCode == 200) {
-        if (strlen($responseBody) == 0) {
-            echo "Received empty response body from Company Registry.";
-        } else {
-          $data = json_decode($responseBody);
-          $websites = $data["websites"];
-          var_dump($websites);
-          
-        }
+      if (strlen($responseBody) == 0) {
+          echo "Received empty response body from Company Registry.";
+      } else {
+        $data = json_decode($responseBody);
+        $websites = $data->websites;
+        if (is_array($websites)) {
+          echo "<p>Domain names found:</p><ul>";
+          for ($i = 0; $i < count($websites); $i++) {
+            echo "<li>" . $websites[$i] . "</li>";
+          }
+          echo "</ul>";
+          return $websites[0];
+        } 
+      }
     } else {
-        echo "Attempt to retrieve company registry data for KvK $compregnum resulted in a $statusCode response code.";
+      echo "Attempt to retrieve company registry data for KvK $compregnum resulted in a $statusCode response code.";
     }
+    return "";
+  }
+  function echoConclusion($domainUsed, $domainAvailable, $address) {
+    echo "<h2>Your KYC Status</h2>";
+    if (!strlen($domainUsed)) {
+      echo "<p>Please configure your WebID.</p>";
+      return;
+    }
+    if (!strlen($domainAvailable)) {
+      echo "<p>Please configure your website in your company registry record.</p>";
+      echo "<p>Alternatively, you can ask us to manually verify you by sending a letter to: $address.</p>";
+      return;
+    }
+    if ($domainAvailable == $domainUsed) {
+      echo "<p>Your request to join has been approved. ";
+      echo "Now please go to the settings in your bookkeeping system (e.g. the PeppolNext app in your Nextcloud server) ";
+      echo "and set your AS4-to-Peppol gateway to:</p> <pre>http://fwd.connectyourbooks.com</pre>";
+      return;
+    }
+    echo "<p>Please make sure your WebID domain ($domainUsed) matches the first website domain on your company registry ($domainAvailable).</p>";
+    echo "<p>Alternatively, you can ask us to manually verify you by sending a letter to: $address.</p>";
   }
 
   function getCountryCode() {
     return (isset($_POST["cc"]) ? $_POST["cc"] : "NL");
   }
   function getCompRegNum() {
-    return (isset($_POST["compregnum"]) ? $_POST["compregnum"] : "90003942");
+    return (isset($_POST["compregnum"]) ? $_POST["compregnum"] : "90006623");
   }
   function getVatNum() {
     return (isset($_POST["vatnum"]) ? $_POST["vatnum"] : "862637223B01");
@@ -151,7 +183,8 @@
     $webid = getWebID();
 ?>
     <header>
-      <h2>Tell us your VAT number</h2>
+      <h2>Let us forward your invoices!</h2>
+      <h2>But first, tell us about your organisation:</h2>
     </header>
     <article>
       <p></p>
@@ -204,16 +237,13 @@ if (isset($_POST["cc"])) {
     </header>
     <article>
 <?php
-    echo "<p>Your request to join has been approved. ";
-    echo "Now please go to the settings in your bookkeeping system (e.g. the PeppolNext app in your Nextcloud server)";
-    echo "and set your AS4-to-Peppol gateway to:</p> <pre>http://fwd.connectyourbooks.com</pre>";
-
     echo "<h2>Your details:</h2>";
     echo "<p><strong>Country:</strong> $country</p>";
 
-    echoDetailsWebID($webid);
-    echoDetailsVatNum($cc, $vatnum);
-    echoDetailsCompRegNum($cc, $compregnum);
+    $domainUsed = echoDetailsWebID($webid);
+    $address = echoDetailsVatNum($cc, $vatnum);
+    $domainAvailable = echoDetailsCompRegNum($cc, $compregnum);
+    echoConclusion($domainUsed, $domainAvailable, $address);
 } else {
   displayForm();
 }
