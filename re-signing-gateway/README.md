@@ -5,7 +5,7 @@ in milestone 4 of [the MoU](https://github.com/pondersource/peppol-php/blob/main
 Before you can forward invoices through it, the sender needs to register their public key against a country-issued
 company identifier.
 
-[![screenshot](screenshot-kyc.png "KYC process")]
+![screenshot](screenshot-kyc.png "KYC process")
 
 See also [this screencast](https://www.youtube.com/watch?v=OCeLXbKUxiE).
 
