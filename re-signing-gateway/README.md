@@ -4,7 +4,8 @@ This code module implements the functionality of the re-signing gateway as descr
 in milestone 4 of [the MoU](https://github.com/pondersource/peppol-php/blob/main/pftm-mou-annexe-milestones.pdf).
 Before you can forward invoices through it, the sender needs to register their public key against a country-issued
 company identifier.
-
+Here is an example where the domainname of the WebID does not match the domainname we found in the company registry,
+and so registration is denied:
 ![screenshot](screenshot-kyc.png "KYC process")
 
 See also [this screencast](https://www.youtube.com/watch?v=OCeLXbKUxiE).
