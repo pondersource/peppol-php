@@ -4,6 +4,7 @@ RUN apt update
 RUN DEBIAN_FRONTEND="noninteractive" apt install -yq \
   apache2 \
   build-essential \
+  composer \
   curl \
   git \
   libxml2 \
@@ -22,7 +23,8 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -yq \
   php-xdebug \
   php-zip \
   vim \
-  wget
+  wget \
+  zip
 # Trust all the certificates:
 ADD tls /tls
 RUN cp /tls/*.crt /usr/local/share/ca-certificates/

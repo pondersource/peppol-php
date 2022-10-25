@@ -1,7 +1,7 @@
 FROM apache-php
 ADD . /var/www/html
 WORKDIR /var/www/html
-RUN make composer
+RUN composer install
 ENV HOST=re-signing-gateway
 RUN ln -s /tls/$HOST.crt /tls/server.cert
 RUN ln -s /tls/$HOST.key /tls/server.key
