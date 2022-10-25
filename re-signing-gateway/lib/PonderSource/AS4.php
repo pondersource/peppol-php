@@ -4,7 +4,7 @@ namespace OCA\PeppolNext\PonderSource;
 // SPDX-FileCopyrightText: 2022 Ponder Source
 //
 // SPDX-License-Identifier: MIT
- 
+
 require_once(dirname(dirname(dirname(__FILE__))) . "/vendor/autoload.php");
 
 require_once(dirname(dirname(__FILE__)) . "/PayloadReader.php");

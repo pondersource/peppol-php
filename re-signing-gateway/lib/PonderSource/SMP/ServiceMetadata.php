@@ -1,5 +1,9 @@
 <?php
 
+// SPDX-FileCopyrightText: 2022 Ponder Source
+//
+// SPDX-License-Identifier: MIT
+
 namespace OCA\PeppolNext\PonderSource\SMP;
 
 use OCA\PeppolNext\PonderSource\Namespaces;

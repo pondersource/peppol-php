@@ -1,4 +1,9 @@
 <?php
+
+// SPDX-FileCopyrightText: 2022 Ponder Source
+//
+// SPDX-License-Identifier: MIT
+
 require_once("./lib/PonderSource/AS4.php");
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
   error_log("Hi");

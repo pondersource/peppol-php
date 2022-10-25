@@ -1,5 +1,9 @@
 <?php
 
+// SPDX-FileCopyrightText: 2022 Ponder Source
+//
+// SPDX-License-Identifier: MIT
+
 $countryCodes = array(
 'BE' => '0420429375',
 'BG' => '130460283',
