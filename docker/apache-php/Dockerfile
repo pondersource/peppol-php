@@ -16,6 +16,7 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -yq \
   php-mbstring \
   php-mysql \
   php-opcache \
+  php-soap \
   php-sqlite3 \
   php-xml \
   php-xdebug \
