@@ -77,8 +77,8 @@ Then run:
 
 ```
 ./scripts/start-to-Phase4.sh
-./scripts/start-resigning-gateway.sh
-docker run --name=client -e "AS4_END_POINT=http://resigning-gateway.docker" --network=testnet phase4-client
+./scripts/start-re-signing-gateway.sh
+docker run --name=client -e "AS4_END_POINT=http://re-signing-gateway.docker" --network=testnet phase4-client
 docker container cp client:/root/phase4/phase4-peppol-client/phase4-dumps .
 docker container cp server:/root/phase4/phase4-peppol-server-webapp/phase4-data/as4dump .
 cat phase4-dumps/outgoing/*/*/*/*.as4response
