@@ -392,7 +392,7 @@ class AS4 {
 		else {
 			// $as4_endpoint = 'http://188.208.143.130:8080/as4';
 			// $as4_endpoint = 'http://DESKTOP-H39H1N6.local:8080/as4'; // Endpoint of the receiver
-			$as4_endpoint = 'http://mesh.pondersource.org:8080/as4'; // server from scripts/start-to-Phase4.sh inside Docker testnet
+			$as4_endpoint = 'http://server:8080/as4'; // server from scripts/start-to-Phase4.sh inside Docker testnet
 			$cert_file = dirname(dirname(dirname(__FILE__))) . '/p12transport/receiver.cer';
 			// $cert_file = '/home/yasharpm/pondersource/keys/phase4_receiver.cer'; // Certificate of the receiver
 			$receiver_cert = new X509;

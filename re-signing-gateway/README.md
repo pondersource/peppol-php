@@ -17,9 +17,10 @@ To run it, you have two options: with or without Docker.
 git clone https://github.com/pondersource/peppol-php
 cd peppol-php
 ./scripts/gencerts.sh
-cd re-signing-gateway
-docker build -t re-signing-gateway .
-docker run -d re-signing-gateway
+./scripts/rebuild.sh
+docker run -d --network=testnet re-signing-gateway
+docker run -d --name=server --network=testnet -p 8080:8080 phase4-server
+docker run --name=client -e "AS4_END_POINT=http://re-signing-gateway" --network=testnet phase4-client
 ```
 
 ### Without Docker
