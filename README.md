@@ -1,6 +1,7 @@
 # An implementation of Peppol in PHP [![Join the chat at https://gitter.im/pondersource/peppol-php](https://badges.gitter.im/pondersource/peppol-php.svg)](https://gitter.im/pondersource/peppol-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [Funded by NLnet / NGI Assure](https://nlnet.nl/project/Peppol-Decentralised/)
+
 ![NLnet](https://nlnet.nl/image/logo_nlnet.svg)
 
 *** UNDER CONSTRUCTION ***

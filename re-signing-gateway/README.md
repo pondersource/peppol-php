@@ -1,6 +1,7 @@
 # Peppol for the Masses
 
 [Funded by NLnet / NGI Assure](https://nlnet.nl/project/Peppol-Decentralised/)
+
 ![NLnet](https://nlnet.nl/image/logo_nlnet.svg)
 
 ## Re-signing Gateway
