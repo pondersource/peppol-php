@@ -25,12 +25,7 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -yq \
   vim \
   wget \
   zip
-# Trust all the certificates:
-ADD tls /tls
-RUN cp /tls/*.crt /usr/local/share/ca-certificates/
-RUN update-ca-certificates
 
-RUN a2enmod ssl
 COPY site.conf /etc/apache2/sites-enabled/000-default.conf
 WORKDIR /var/www
 RUN chown www-data:www-data .

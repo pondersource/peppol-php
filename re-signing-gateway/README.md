@@ -16,12 +16,39 @@ To run it, you have two options: with or without Docker.
 ```
 git clone https://github.com/pondersource/peppol-php
 cd peppol-php
-./scripts/gencerts.sh
-./scripts/rebuild.sh
-docker run -d --network=testnet re-signing-gateway
+cd docker/phase4-mutual
+docker build -t phase4-mutual .
+
+cd ../phase4-client
+docker build -t phase4-client .
+
+cd ../phase4-server
+docker build -t phase4-server .
+
+cd ../apache-php
+docker build -t apache-php .
+
+cd ../../re-signing-gateway
+docker build -t re-signing-gateway .
+cd ..
+
+docker create network testnet
+docker run -d --name=re-signing-gateway --network=testnet re-signing-gateway
 docker run -d --name=server --network=testnet -p 8080:8080 phase4-server
-docker run --name=client -e "AS4_END_POINT=http://re-signing-gateway" --network=testnet phase4-client
+docker run -e "AS4_END_POINT=http://re-signing-gateway" --network=testnet phase4-client
 ```
+
+The SMP query to `http://B-c5dfca40c96105ec54e99c1103bbe603.iso6523-actorid-upis.acc.edelivery.tech.ec.europa.eu` sometimes times out
+with `Peppol send result: TRANSPORT_ERROR`, if that happens, just retry the last command.
+
+If you see `Peppol send result: SUCCESS` you can run:
+```
+docker exec re-signing-gateway cat /var/log/apache2/error.log
+docker logs server
+docker container cp server:/root/phase4/phase4-peppol-server-webapp/phase4-data/as4dump .
+ls as4dump/
+```
+To see the logs of the re-signing-gateway and of the final recipient.
 
 ### Without Docker
 You will need PHP v7 with the php-soap extension, and composer installed; then you should be able to:

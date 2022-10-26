@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
   header('Content-Type: application/soap+xml;charset=utf-8');
   header('Content-Disposition:');
   echo $response;
+  error_log("AS4 message was successfully forwarded to http://server/as4");
 } else {
 ?>
 <!DOCTYPE html>
