@@ -1,4 +1,8 @@
 # Peppol for the Masses
+
+[Funded by NLnet / NGI Assure](https://nlnet.nl/project/Peppol-Decentralised/)
+![NLnet](https://nlnet.nl/image/logo_nlnet.svg)
+
 ## Re-signing Gateway
 This code module implements the functionality of the re-signing gateway as described
 in milestone 4 of [the MoU](https://github.com/pondersource/peppol-php/blob/main/pftm-mou-annexe-milestones.pdf).
