@@ -28,9 +28,9 @@ docker build -t nc1 .
 cd ../nc2
 docker build -t nc2 .
 
-# image for resigning-gateway, which lives outside the docker/folder:
-cd ../../resigning-gateway
-docker build -t resigning-gateway .
+# image for re-signing-gateway, which lives outside the docker/folder:
+cd ../../re-signing-gateway
+docker build -t re-signing-gateway .
 
 # back to th repo root:
 cd ..
