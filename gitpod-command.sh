@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+docker network create testnet
 export PEPPOL_PHP_DIR=`pwd`
 ./scripts/start-to-Nextcloud.sh
 sleep 10
