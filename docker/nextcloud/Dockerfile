@@ -40,6 +40,7 @@ RUN bash -c 'source $HOME/.nvm/nvm.sh && nvm install 16 && nvm use 16'
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/groupfolders && nvm use 16 && npm install --save-dev webpack-cli'
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/groupfolders && nvm use 16 && make'
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/groupfolders && nvm use 16 && composer install --prefer-dist'
+RUN mkdir -p data ; touch data/nextcloud.log
 USER root
 RUN npm install -g eslint
 CMD /usr/sbin/apache2ctl -DFOREGROUND & tail -f /var/log/apache2/error.log & tail -f data/nextcloud.log
