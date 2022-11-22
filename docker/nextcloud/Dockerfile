@@ -42,3 +42,5 @@ RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/groupfolders && nvm use 16 && m
 RUN bash -c 'source $HOME/.nvm/nvm.sh && cd apps/groupfolders && nvm use 16 && composer install --prefer-dist'
 USER root
 RUN npm install -g eslint
+CMD /usr/sbin/apache2ctl -DFOREGROUND & tail -f /var/log/apache2/error.log & tail -f data/nextcloud.log
+

@@ -31,4 +31,5 @@ WORKDIR /var/www
 RUN chown www-data:www-data .
 ADD tls /tls
 EXPOSE 443
+RUN a2enmod rewrite
 CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
