@@ -29,5 +29,6 @@ RUN DEBIAN_FRONTEND="noninteractive" apt install -yq \
 COPY site.conf /etc/apache2/sites-enabled/000-default.conf
 WORKDIR /var/www
 RUN chown www-data:www-data .
+ADD tls /tls
 EXPOSE 443
 CMD ["/usr/sbin/apache2ctl", "-DFOREGROUND"]
