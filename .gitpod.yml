@@ -1,0 +1,3 @@
+tasks:
+  - init: ./gitpod-init.sh
+  - command: ./gitpod-command.sh
