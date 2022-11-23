@@ -12,3 +12,5 @@ cat phase4-dumps/outgoing/*/*/*/*.as4response
 # clean up for next run:
 docker rm client
 rm -rf phase4-dumps
+
+./scripts/start-tester-firefox.sh
