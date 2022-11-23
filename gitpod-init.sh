@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-cd nextcloud-app/peppolnext
-npm install
-cd ../..
+# cd nextcloud-app/peppolnext
+# npm install
+# cd ../..
 
 ./scripts/gencerts.sh
 ./scripts/rebuild.sh
