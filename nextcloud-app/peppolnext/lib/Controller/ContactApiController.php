@@ -29,8 +29,8 @@ class ContactApiController extends ApiController {
 	public function search(): DataResponse{
 
 		$needle = $this->request->getParam('needle');
-		$local = $this->contactService->readLocalPeppolContact($needle);
-		$remote = $this->contactService->readPeppolDirectory($needle);
+		$local = $this->contactService->readLocalPeppolContact($needle, ContactService::FLAG_CUSTOMER);
+		$remote = $this->contactService->readPeppolDirectory($needle, ContactService::FLAG_CUSTOMER);
 		foreach ($remote as $contact)
 		{
 			$existsInLocal =
@@ -43,6 +43,7 @@ class ContactApiController extends ApiController {
 		}
 		return new DataResponse( $local, Http::STATUS_OK);
 	}
+
 	/**
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
@@ -50,13 +51,27 @@ class ContactApiController extends ApiController {
 	 */
 	public function create() : DataResponse
 	{
-		$payload = $this->request->getParams("body");
+		$payload = $this->request->getParams("body")['body'];
 		$contact = new PeppolContactBuilder();
 		$contact->setPeppolId($payload["peppolEndpoint"])
-			->setFullname($payload["title"]);
+			->setFullname($payload["title"])
+			->setRelationship($payload["relationship"])
+			->setEndpoint($payload["endpoint"])
+			->setPublicKey($payload["public_key"]);
 		$this->contactService->addContact($contact);
 		return new DataResponse([], Http::STATUS_ACCEPTED);
 	}
 
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @param string $needle
+	 * @return DataResponse
+	 */
+	public function all(): DataResponse {
+		$relationship = $this->request->getParam('relationship');
+		$local = $this->contactService->readLocalPeppolContact('', $relationship);
+		return new DataResponse($local, Http::STATUS_OK);
+	}
 
 }

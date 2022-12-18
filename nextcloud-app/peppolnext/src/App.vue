@@ -1,36 +1,26 @@
 <template>
 	<div id="content">
 		<AppNavigation>
-			<AppNavigationNew text="Create New Invoice" icon="icon-add" @new-item="function(value){alert(value)}" />
+			<AppNavigationItem icon="icon-add" title="Create New Invoice" to="/message/new" />
 			<template #list>
-				<AppNavigationItem title="Messages" :allow-collapse="true" :open="true">
+				<!-- <AppNavigationItem title="Invoices" :allow-collapse="true" :open="true"> -->
 					<template>
-						<AppNavigationItem icon="icon-download" title="Inbox" to="/message/list/Inbox" />
-						<AppNavigationItem icon="icon-upload" title="Outbox" to="/message/list/Outbox" />
-						<AppNavigationItem icon="icon-group" title="Customers" to="/message/list/Customers" />
-						<AppNavigationItem icon="icon-public" title="Suppliers" to="/message/list/Suppliers" />
-						<AppNavigationItem icon="icon-add" title="Compose" to="/message/new" />
-						<AppNavigationItem icon="icon-delete" title="Trash" to="/message/list/Trash" />
-					</template>
-				</AppNavigationItem>
-
-				<AppNavigationItem title="Network" :allow-collapse="true" :open="true">
-					<template>
-						<AppNavigationItem title="Received Invoices" to="/connection/list">
+						<AppNavigationItem icon="icon-download" title="Bills" to="/connection/list">
 							<template #counter>
 								<CounterBubble v-if="notification.messages > 0" type="outlined">{{notification.messages}}</CounterBubble>
 							</template>
 						</AppNavigationItem>
-						<AppNavigationItem title="Connection Requests" to="/connection/list">
+						<AppNavigationItem icon="icon-public" title="Connection Requests" to="/connection/list">
 							<template #counter>
 								<CounterBubble v-if="notification.connection_requests > 0" type="outlined">{{notification.connection_requests}}</CounterBubble>
 							</template>
 						</AppNavigationItem>
-						<AppNavigationItem title="Sent Requests" to="/connection/list" />
-						<AppNavigationItem title="My Network" to="/connection/list" />
-						<AppNavigationItem title="Add Contact" to="/connection/new" />
+						<AppNavigationItem icon="icon-upload" title="Invoices" to="/message/list/Outbox" />
+						<AppNavigationItem icon="icon-group" title="Customers" to="/contact/list/customers" />
+						<AppNavigationItem icon="icon-group" title="Suppliers" to="/contact/list/suppliers" />
+						<AppNavigationItem icon="icon-delete" title="Trash" to="/message/list/Trash" />
 					</template>
-				</AppNavigationItem>
+				<!-- </AppNavigationItem> -->
 			</template>
 			<template #footer>
 				<AppNavigationSettings>

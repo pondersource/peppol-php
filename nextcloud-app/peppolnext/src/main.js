@@ -25,12 +25,20 @@ import App from './App'
 import ComposeMessage from './ComposeMessage'
 import MessageList from './MessageList'
 import ConnectionList from './ConnectionList'
+import CustomerList from './CustomerList'
+import SupplierList from './SupplierList'
+import NewCustomer from './NewCustomer'
+import NewSupplier from './NewSupplier'
 import VueRouter from 'vue-router'
 
 const routes = [
 	{ path: '/message/new', component: ComposeMessage },
 	{ path: '/message/list/:category', component: MessageList },
 	{ path: '/connection/list', component: ConnectionList },
+	{ path: '/contact/list/customers', component: CustomerList },
+	{ path: '/contact/list/suppliers', component: SupplierList },
+	{ path: '/contact/new/customer', component: NewCustomer },
+	{ path: '/contact/new/supplier', component: NewSupplier },
 ]
 
 const router = new VueRouter({

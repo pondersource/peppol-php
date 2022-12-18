@@ -23,6 +23,7 @@ return [
 
 		['name' => 'contact_api#search', 'url' => '/api/v1/contact', 'verb'=>'GET'],
 		['name' => 'contact_api#create', 'url' => '/api/v1/contact', 'verb'=>'POST'],
+		['name' => 'contact_api#all', 'url' => '/api/v1/contacts', 'verb'=>'GET'],
 
 		['name' => 'setting_api#index', 'url' => '/api/v1/setting', 'verb'=>'GET'],
 		['name' => 'setting_api#create', 'url' => '/api/v1/setting', 'verb'=>'POST'],
