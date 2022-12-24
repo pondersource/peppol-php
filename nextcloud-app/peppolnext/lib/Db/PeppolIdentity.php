@@ -5,12 +5,13 @@ use JsonSerializable;
 
 use OCP\AppFramework\Db\Entity;
 
-class AS4Direct extends Entity implements JsonSerializable {
+class PeppolIdentity extends Entity implements JsonSerializable {
 
     protected $userId;
     protected $scheme;
     protected $peppolId;
     protected $publicKey;
+    protected $serviceName;
 
     public function __construct() {
         $this->addType('id','integer');

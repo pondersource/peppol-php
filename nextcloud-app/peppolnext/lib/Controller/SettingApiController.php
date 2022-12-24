@@ -2,16 +2,23 @@
 
 namespace OCA\PeppolNext\Controller;
 
-use OC\AppFramework\Http;
 use OCA\PeppolNext\AppInfo\Application;
-use OCA\PeppolNext\Service\LetsPeppolService;
-use OCA\PeppolNext\Service\AS4DirectService;
+use OCA\PeppolNext\Db\PeppolIdentity;
+use OCA\PeppolNext\Service\Peppol\LetsPeppolService;
+use OCA\PeppolNext\Service\Peppol\AS4DirectService;
+
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
+use OCP\IURLGenerator;
+
+use OC\AppFramework\Http;
 
 class SettingApiController extends ApiController
 {
+
+	/** @var IURLGenerator */
+    private $urlGenerator;
 
 	/** @var LetsPeppolService  */
 	private $letsPeppolService;
@@ -20,10 +27,12 @@ class SettingApiController extends ApiController
 	private $as4DirectService;
 
 	public function __construct(IRequest $request
+		, IURLGenerator $urlGenerator
 		, LetsPeppolService $letsPeppolService
 		, AS4DirectService $as4DirectService)
 	{
 		parent::__construct(Application::APP_ID, $request);
+		$this->urlGenerator = $urlGenerator;
 		$this->letsPeppolService = $letsPeppolService;
 		$this->as4DirectService = $as4DirectService;
 	}
@@ -37,8 +46,8 @@ class SettingApiController extends ApiController
 		$as4DirectIdentity = $this->as4DirectService->getIdentity();
 
 		$result = [
-			'letspeppol' => $letsPeppolIdentity,
-			'as4direct' => $as4DirectIdentity
+			'letspeppol' => $this->identityToArray($letsPeppolIdentity),
+			'as4direct' => $this->identityToArray($as4DirectIdentity)
 		];
 
 		//$result = $this->settingManager->getAllSettings();
@@ -51,7 +60,7 @@ class SettingApiController extends ApiController
 	 */
 	public function createletspeppol() : DataResponse {
 		$letsPeppolIdentity = $this->letsPeppolService->generateIdentity();
-		return new DataResponse($letsPeppolIdentity, Http::STATUS_OK);
+		return new DataResponse($this->identityToArray($letsPeppolIdentity), Http::STATUS_OK);
 	}
 
 	/**
@@ -60,7 +69,26 @@ class SettingApiController extends ApiController
 	 */
 	public function createas4direct() : DataResponse {
 		$as4DirectIdentity = $this->as4DirectService->generateIdentity();
-		return new DataResponse($as4DirectIdentity, Http::STATUS_OK);
+		return new DataResponse($this->identityToArray($as4DirectIdentity), Http::STATUS_OK);
+	}
+
+	private function identityToArray(PeppolIdentity $identity): array {
+		if ($identity != null) {
+			return [
+				'scheme' => $identity->getScheme(),
+				'id' => $identity->getPeppolId(),
+				'endpoint' => $this->urlGenerator->linkToRouteAbsolute(Application::APP_ID.'.message_api.as4Endpoint'),
+				'public_key' => $identity->getPublicKey()
+			];
+		}
+		else {
+			return [
+				'scheme' => '',
+				'id' => '',
+				'endpoint' => '',
+				'public_key' => ''
+			];
+		}
 	}
 
 }

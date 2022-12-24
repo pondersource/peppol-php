@@ -2,14 +2,14 @@
 
   namespace OCA\PeppolNext\Migration;
   
-  use OCA\PeppolNext\Db\AS4DirectMapper;
+  use OCA\PeppolNext\Db\PeppolIdendityMapper;
 
   use Closure;
   use OCP\DB\ISchemaWrapper;
   use OCP\Migration\SimpleMigrationStep;
   use OCP\Migration\IOutput;
 
-  class Version180001Date20221223000000 extends SimpleMigrationStep {
+  class Version010000Date20221224000000 extends SimpleMigrationStep {
 
     /**
     * @param IOutput $output
@@ -21,8 +21,8 @@
         /** @var ISchemaWrapper $schema */
         $schema = $schemaClosure();
 
-        if (!$schema->hasTable(AS4DirectMapper::DB_NAME)) {
-            $table = $schema->createTable(AS4DirectMapper::DB_NAME);
+        if (!$schema->hasTable(PeppolIdendityMapper::DB_NAME)) {
+            $table = $schema->createTable(PeppolIdendityMapper::DB_NAME);
             $table->addColumn('id', 'integer', [
                 'autoincrement' => true,
                 'notnull' => true,
@@ -42,6 +42,10 @@
             $table->addColumn('public_key', 'text', [
                 'notnull' => true,
                 'default' => ''
+            ]);
+            $table->addColumn('service_name', 'string', [
+                'notnull' => true,
+                'length' => 200
             ]);
 
             $table->setPrimaryKey(['id']);

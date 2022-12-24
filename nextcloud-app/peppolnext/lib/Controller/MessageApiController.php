@@ -3,6 +3,7 @@
 namespace OCA\PeppolNext\Controller;
 
 use OC\AppFramework\Http;
+use OCA\PeppolNext\EnvelopeReader;
 use OCA\PeppolNext\PayloadReader;
 use OCA\PeppolNext\PonderSource\EBMS\MessageInfo;
 use OCA\PeppolNext\Service\MessageService;
@@ -190,9 +191,120 @@ class MessageApiController extends ApiController {
 	public function getNotification(){
 		return new DataResponse($this->messageService->getNotifications(), Http::STATUS_OK);
 	}
+	
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 * @CORS
+	 */
+	public function as4Endpoint() {
+		list($raw_envelope, $raw_payload) = $this->getEnvelopeAndPayload();
+		$envelope = EnvelopeReader::readEnvelope($raw_envelope);
 
-	private function getFileName($orderName) :string{
-		return $orderName."-". (new \DateTime())->format("Y-m-d").".xml";
+		list($sender, $receiver) = $envelope->getHeader()->getMessaging()->getUserMessage()->getPeppolSenderAndReceiver();
+
+		
+	}
+
+	/**
+	 * @NoAdminRequired
+	 * @NoCSRFRequired
+	 * @PublicPage
+	 * @CORS
+	 */
+	public function legacyAs4Endpoint() {
+		$peppolNext_identifier = '0106:80235875'; // TODO
+
+		list($envelope, $payload) = $this->getEnvelopeAndPayload();
+
+		$keystore_file = '/p12transport/test.p12'; // Private key of the receiver/us
+		// $keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
+		$passphrase = 'peppol';
+
+		if (!$cert_store = file_get_contents($keystore_file)) {
+			echo "Error: Unable to read the cert file\n";
+			exit;
+		}
+
+		if (openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
+		} else {
+			echo "Error: Unable to read the cert store.\n";
+			exit;
+		}
+
+		$private_key = RSA::loadPrivateKey($cert_info['pkey']);
+
+		$cert = new X509();
+		$cert->loadX509($cert_info['cert']);
+
+		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
+
+		$messageProperties = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageProperties();
+
+		$sender_id = false;
+		$recipient_id = false;
+
+		foreach ($messageProperties as $property) {
+			if ($property->getName() === 'originalSender') {
+				$sender_id = $property->getValue();
+			} elseif ($property->getName() === 'finalRecipient') {
+				$recipient_id = $property->getValue();
+			}
+		}
+
+		$useSMP = false;
+
+		if ($useSMP) {
+			$isProduction = false;
+			list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_id, $isProduction);
+		} else {
+			$sender_certificate = new X509(); // Sender's certificate
+			$sender_certificate->loadX509(file_get_contents('/p12transport/sender.cer'));
+			// $sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
+		}
+
+		$sender_public_key = $sender_certificate->getPublicKey();
+
+		$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
+		error_log('signature checked in AS4 endpoint: '.var_export($verifyResult, true));
+		if (!$verifyResult) {
+			return false;
+		}
+
+		$output = var_export($invoice, true);
+		// error_log($output);
+
+
+		/////////////// MESSAGE SAVING ///////////////////
+		$this->messageService->saveIncoming($decrypted_payload, 'invoice.xml');
+
+		error_log("invoice saved to Nextcloud Peppolnext MessageService");
+		//////////////////////////////////////////////////
+
+
+		/////////////// MESSAGE FORWARDING ///////////////
+		$should_forward = false;
+
+		if ($should_forward) {
+			error_log("forwarding to $recipient_id");
+			$success = $this->as4SendWithIdentifier($invoice, $recipient_id);
+			error_log("forward result is: $success");
+		}
+		//////////////////////////////////////////////////
+
+
+			// FIXME: are there really supposed to be two message ID's? One for the request and one for the response?
+			$theirMsgId = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageInfo()->getMessageId();
+		$ourMsgId = uniqid('peppolnext-msg-');
+		$ourBodyId = uniqid('id-');
+			
+		$nonRepudiationInformation = [];
+			
+		foreach ($envelope->getHeader()->getSecurity()->getSignature()->getSignedInfo()->getReferences() as $reference) {
+				$nonRepudiationInformation[] = (new MessagePartNRInformation())->addReference($reference);
+		}
+		return $this->generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert);
 	}
 
 	private function getEnvelopeAndPayload() {
@@ -236,6 +348,10 @@ class MessageApiController extends ApiController {
 		error_log("returning" . " " . $payloadStart . " " . $payloadEnd . " " . substr($body, $payloadStart, $payloadEnd - $payloadStart));
 		$payload = substr($body, $payloadStart, $payloadEnd - $payloadStart);
 		return [ $envelope, $payload ];
+	}
+
+	private function getFileName($orderName) :string{
+		return $orderName."-". (new \DateTime())->format("Y-m-d").".xml";
 	}
 
 	private function generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert) {
@@ -290,106 +406,6 @@ class MessageApiController extends ApiController {
 		]);
 		$response->addHeader('Content-Disposition', null);
 		return $response;
-	}
-
-	/**
-	 * @NoAdminRequired
-	 * @NoCSRFRequired
-	 * @PublicPage
-	 * @CORS
-	 */
-	public function as4Endpoint() {
-    $peppolNext_identifier = '0106:80235875'; // TODO
-
-    list($envelope, $payload) = $this->getEnvelopeAndPayload();
-
-    $keystore_file = '/p12transport/test.p12'; // Private key of the receiver/us
-    // $keystore_file = '/home/yasharpm/pondersource/keys/test.p12';
-    $passphrase = 'peppol';
-
-    if (!$cert_store = file_get_contents($keystore_file)) {
-        echo "Error: Unable to read the cert file\n";
-        exit;
-    }
-
-    if (openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
-    } else {
-        echo "Error: Unable to read the cert store.\n";
-        exit;
-    }
-
-    $private_key = RSA::loadPrivateKey($cert_info['pkey']);
-
-    $cert = new X509();
-    $cert->loadX509($cert_info['cert']);
-
-    list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
-
-    $messageProperties = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageProperties();
-
-    $sender_id = false;
-    $recipient_id = false;
-
-    foreach ($messageProperties as $property) {
-        if ($property->getName() === 'originalSender') {
-            $sender_id = $property->getValue();
-        } elseif ($property->getName() === 'finalRecipient') {
-            $recipient_id = $property->getValue();
-        }
-    }
-
-    $useSMP = false;
-
-    if ($useSMP) {
-        $isProduction = false;
-        list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_id, $isProduction);
-    } else {
-        $sender_certificate = new X509(); // Sender's certificate
-        $sender_certificate->loadX509(file_get_contents('/p12transport/sender.cer'));
-        // $sender_certificate->loadX509(file_get_contents('/home/yasharpm/pondersource/keys/sender.cer'));
-    }
-
-    $sender_public_key = $sender_certificate->getPublicKey();
-
-    $verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
-    error_log('signature checked in AS4 endpoint: '.var_export($verifyResult, true));
-    if (!$verifyResult) {
-        return false;
-    }
-
-    $output = var_export($invoice, true);
-    // error_log($output);
-
-
-    /////////////// MESSAGE SAVING ///////////////////
-    $this->messageService->saveIncoming($decrypted_payload, 'invoice.xml');
-
-    error_log("invoice saved to Nextcloud Peppolnext MessageService");
-    //////////////////////////////////////////////////
-
-
-    /////////////// MESSAGE FORWARDING ///////////////
-    $should_forward = false;
-
-    if ($should_forward) {
-        error_log("forwarding to $recipient_id");
-        $success = $this->as4SendWithIdentifier($invoice, $recipient_id);
-        error_log("forward result is: $success");
-    }
-    //////////////////////////////////////////////////
-
-
-		// FIXME: are there really supposed to be two message ID's? One for the request and one for the response?
-		$theirMsgId = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageInfo()->getMessageId();
-    $ourMsgId = uniqid('peppolnext-msg-');
-    $ourBodyId = uniqid('id-');
-		
-    $nonRepudiationInformation = [];
-		
-    foreach ($envelope->getHeader()->getSecurity()->getSignature()->getSignedInfo()->getReferences() as $reference) {
-			$nonRepudiationInformation[] = (new MessagePartNRInformation())->addReference($reference);
-    }
-		return $this->generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert);
 	}
 
 	/**

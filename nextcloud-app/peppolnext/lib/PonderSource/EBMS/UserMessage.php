@@ -85,6 +85,21 @@ class UserMessage {
         $this->messageProperties = $messageProperties;
         return $this;
     }
+    public function getPeppolSenderAndReceiver(){
+        $sender = null;
+        $receiver = null;
+
+        foreach ($this->messageProperties as $property) {
+            if ($property->getName() === 'originalSender') {
+                $sender = $property;
+            }
+            else if ($property->getName() === 'finalRecipient') {
+                $receiver = $property;
+            }
+        }
+
+        return [$sender, $receiver];
+    }
     public function getPayloadInfo(){
         return $this->payloadInfo;
     }
