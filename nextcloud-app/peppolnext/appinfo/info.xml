@@ -5,7 +5,7 @@
     <name>Peppol for nextcloud</name>
     <summary>app for connecting to peppol network</summary>
     <description><![CDATA[This is a tutorial app for taking notes to demonstrate the Nextcloud API]]></description>
-    <version>18.0.0</version>
+    <version>18.00.01</version>
     <licence>agpl</licence>
     <author mail="navid.pdp11@gmail.com" >Navid Shokri</author>
     <namespace>PeppolNext</namespace>

@@ -24,7 +24,37 @@
 			</template>
 			<template #footer>
 				<AppNavigationSettings>
+					<h4>Let's Peppol</h4>
 					<div class="row">
+						<div class="col-5">
+							<input type="text" placeholder="Scheme" v-model="letspeppol.scheme" />
+						</div>
+						<div class="col-5">
+							<input type="text" placeholder="Id" v-model="letspeppol.id" />
+						</div>
+					</div>
+					<div class="row">
+						<button id="newLetsPeppol" @click="newLetsPeppol">Get Let's Peppol ID</button>
+					</div>
+					<h4>AS4 Direct</h4>
+					<div class="row">
+						<div class="col-5">
+							<input type="text" placeholder="Scheme" v-model="as4direct.scheme" />
+						</div>
+						<div class="col-5">
+							<input type="text" placeholder="Id" v-model="as4direct.id" />
+						</div>
+					</div>
+					<div class="row">
+						<input type="text" placeholder="Endpoint" v-model="as4direct.endpoint" />
+					</div>
+					<div class="row">
+						<input type="text" placeholder="Public key" v-model="as4direct.public_key" />
+					</div>
+					<div class="row">
+						<button id="newAS4Direct" @click="newAS4Direct">Generate AS4 direct identity</button>
+					</div>
+					<!-- <div class="row">
 						<div class="col-5">
 							<input type="text" placeholder="Fullname" v-model="setting.fullname" />
 						</div>
@@ -79,7 +109,7 @@
 					</div>
 					<div class="row">
 						<button id="submit" @click="updateSettings">Submit</button>
-					</div>
+					</div>-->
 
 				</AppNavigationSettings>
 			</template>
@@ -115,7 +145,12 @@ export default {
 	},
 	data: () => {
 		return {
-			setting: {},
+			letspeppol: {
+
+			},
+			as4direct: {
+
+			},
 			notification: {
 				messages: 0,
 				connection_requests: 0
@@ -126,9 +161,26 @@ export default {
 		loadAllSettings(vm) {
 			axios.get('/index.php/apps/peppolnext/api/v1/setting')
 				.then(function(response) {
-					vm.setting = response.data
+					vm.letspeppol = response.data.letspeppol
+					vm.as4direct = response.data.as4direct
 				})
 				.catch(function(error) {})
+		},
+		newLetsPeppol:function() {
+			let vm1 = this;
+			const payload = { body: {} }
+			axios.post('/index.php/apps/peppolnext/api/v1/letspeppol', payload)
+				.then(function(response) {
+					vm1.letspeppol = response.data
+				}).catch(function(error) {})
+		},
+		newAS4Direct(vm) {
+			let vm2 = this;
+			const payload = { body: {} }
+			axios.post('/index.php/apps/peppolnext/api/v1/as4direct', payload)
+				.then(function(response) {
+					vm2.as4direct = response.data
+				}).catch(function(error) {})
 		},
 		updateSettings(vm) {
 			const payload = { body: this.setting }

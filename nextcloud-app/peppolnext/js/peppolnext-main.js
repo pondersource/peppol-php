@@ -11613,7 +11613,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      setting: {},
+      letspeppol: {},
+      as4direct: {},
       notification: {
         messages: 0,
         connection_requests: 0
@@ -11623,7 +11624,26 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     loadAllSettings: function loadAllSettings(vm) {
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].get('/index.php/apps/peppolnext/api/v1/setting').then(function (response) {
-        vm.setting = response.data;
+        vm.letspeppol = response.data.letspeppol;
+        vm.as4direct = response.data.as4direct;
+      }).catch(function (error) {});
+    },
+    newLetsPeppol: function newLetsPeppol() {
+      var vm1 = this;
+      var payload = {
+        body: {}
+      };
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/index.php/apps/peppolnext/api/v1/letspeppol', payload).then(function (response) {
+        vm1.letspeppol = response.data;
+      }).catch(function (error) {});
+    },
+    newAS4Direct: function newAS4Direct(vm) {
+      var vm2 = this;
+      var payload = {
+        body: {}
+      };
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/index.php/apps/peppolnext/api/v1/as4direct', payload).then(function (response) {
+        vm2.as4direct = response.data;
       }).catch(function (error) {});
     },
     updateSettings: function updateSettings(vm) {
@@ -12309,7 +12329,7 @@ var render = function render() {
     }, {
       key: "footer",
       fn: function fn() {
-        return [_c("AppNavigationSettings", [_c("div", {
+        return [_c("AppNavigationSettings", [_c("h4", [_vm._v("Let's Peppol")]), _vm._v(" "), _c("div", {
           staticClass: "row"
         }, [_c("div", {
           staticClass: "col-5"
@@ -12317,20 +12337,20 @@ var render = function render() {
           directives: [{
             name: "model",
             rawName: "v-model",
-            value: _vm.setting.fullname,
-            expression: "setting.fullname"
+            value: _vm.letspeppol.scheme,
+            expression: "letspeppol.scheme"
           }],
           attrs: {
             type: "text",
-            placeholder: "Fullname"
+            placeholder: "Scheme"
           },
           domProps: {
-            value: _vm.setting.fullname
+            value: _vm.letspeppol.scheme
           },
           on: {
             input: function input($event) {
               if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "fullname", $event.target.value);
+              _vm.$set(_vm.letspeppol, "scheme", $event.target.value);
             }
           }
         })]), _vm._v(" "), _c("div", {
@@ -12339,258 +12359,131 @@ var render = function render() {
           directives: [{
             name: "model",
             rawName: "v-model",
-            value: _vm.setting.email,
-            expression: "setting.email"
-          }],
-          attrs: {
-            type: "email",
-            placeholder: "Email"
-          },
-          domProps: {
-            value: _vm.setting.email
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "email", $event.target.value);
-            }
-          }
-        })])]), _vm._v(" "), _c("div", {
-          staticClass: "row"
-        }, [_c("div", {
-          staticClass: "col-5"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.peppolScheme,
-            expression: "setting.peppolScheme"
+            value: _vm.letspeppol.id,
+            expression: "letspeppol.id"
           }],
           attrs: {
             type: "text",
-            placeholder: "Peppol scheme"
+            placeholder: "Id"
           },
           domProps: {
-            value: _vm.setting.peppolScheme
+            value: _vm.letspeppol.id
           },
           on: {
             input: function input($event) {
               if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "peppolScheme", $event.target.value);
-            }
-          }
-        })]), _vm._v(" "), _c("div", {
-          staticClass: "col-5"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.peppolId,
-            expression: "setting.peppolId"
-          }],
-          attrs: {
-            type: "text",
-            placeholder: "Peppol Id"
-          },
-          domProps: {
-            value: _vm.setting.peppolId
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "peppolId", $event.target.value);
-            }
-          }
-        })])]), _vm._v(" "), _c("div", {
-          staticClass: "row"
-        }, [_c("div", {
-          staticClass: "col-5"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.phoneNo,
-            expression: "setting.phoneNo"
-          }],
-          attrs: {
-            type: "tel",
-            placeholder: "Phone no"
-          },
-          domProps: {
-            value: _vm.setting.phoneNo
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "phoneNo", $event.target.value);
-            }
-          }
-        })]), _vm._v(" "), _c("div", {
-          staticClass: "col-5"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.faxNo,
-            expression: "setting.faxNo"
-          }],
-          attrs: {
-            type: "tel",
-            placeholder: "Fax no"
-          },
-          domProps: {
-            value: _vm.setting.faxNo
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "faxNo", $event.target.value);
-            }
-          }
-        })])]), _vm._v(" "), _c("div", [_c("p", [_vm._v("Address:")]), _vm._v(" "), _c("div", {
-          staticClass: "row"
-        }, [_c("div", {
-          staticClass: "col-5"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.country,
-            expression: "setting.country"
-          }],
-          attrs: {
-            placeholder: "Country (ISO)"
-          },
-          domProps: {
-            value: _vm.setting.country
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "country", $event.target.value);
-            }
-          }
-        })]), _vm._v(" "), _c("div", {
-          staticClass: "col-5"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.city,
-            expression: "setting.city"
-          }],
-          attrs: {
-            placeholder: "City"
-          },
-          domProps: {
-            value: _vm.setting.city
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "city", $event.target.value);
-            }
-          }
-        })])]), _vm._v(" "), _c("div", {
-          staticClass: "row"
-        }, [_c("div", {
-          staticClass: "col-10"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.street,
-            expression: "setting.street"
-          }],
-          attrs: {
-            placeholder: "Street address"
-          },
-          domProps: {
-            value: _vm.setting.street
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "street", $event.target.value);
-            }
-          }
-        })])]), _vm._v(" "), _c("div", {
-          staticClass: "row"
-        }, [_c("div", {
-          staticClass: "col-10"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.additionStreet,
-            expression: "setting.additionStreet"
-          }],
-          attrs: {
-            placeholder: "Extended street address"
-          },
-          domProps: {
-            value: _vm.setting.additionStreet
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "additionStreet", $event.target.value);
-            }
-          }
-        })])])]), _vm._v(" "), _c("div", {
-          staticClass: "row"
-        }, [_c("div", {
-          staticClass: "col-6"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.postalZone,
-            expression: "setting.postalZone"
-          }],
-          attrs: {
-            placeholder: "Postal zone"
-          },
-          domProps: {
-            value: _vm.setting.postalZone
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "postalZone", $event.target.value);
-            }
-          }
-        })]), _vm._v(" "), _c("div", {
-          staticClass: "col-4"
-        }, [_c("input", {
-          directives: [{
-            name: "model",
-            rawName: "v-model",
-            value: _vm.setting.buildingNo,
-            expression: "setting.buildingNo"
-          }],
-          attrs: {
-            placeholder: "Building no"
-          },
-          domProps: {
-            value: _vm.setting.buildingNo
-          },
-          on: {
-            input: function input($event) {
-              if ($event.target.composing) return;
-              _vm.$set(_vm.setting, "buildingNo", $event.target.value);
+              _vm.$set(_vm.letspeppol, "id", $event.target.value);
             }
           }
         })])]), _vm._v(" "), _c("div", {
           staticClass: "row"
         }, [_c("button", {
           attrs: {
-            id: "submit"
+            id: "newLetsPeppol"
           },
           on: {
-            click: _vm.updateSettings
+            click: _vm.newLetsPeppol
           }
-        }, [_vm._v("Submit")])])])];
+        }, [_vm._v("Get Let's Peppol ID")])]), _vm._v(" "), _c("h4", [_vm._v("AS4 Direct")]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("div", {
+          staticClass: "col-5"
+        }, [_c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.as4direct.scheme,
+            expression: "as4direct.scheme"
+          }],
+          attrs: {
+            type: "text",
+            placeholder: "Scheme"
+          },
+          domProps: {
+            value: _vm.as4direct.scheme
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.as4direct, "scheme", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "col-5"
+        }, [_c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.as4direct.id,
+            expression: "as4direct.id"
+          }],
+          attrs: {
+            type: "text",
+            placeholder: "Id"
+          },
+          domProps: {
+            value: _vm.as4direct.id
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.as4direct, "id", $event.target.value);
+            }
+          }
+        })])]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.as4direct.endpoint,
+            expression: "as4direct.endpoint"
+          }],
+          attrs: {
+            type: "text",
+            placeholder: "Endpoint"
+          },
+          domProps: {
+            value: _vm.as4direct.endpoint
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.as4direct, "endpoint", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.as4direct.public_key,
+            expression: "as4direct.public_key"
+          }],
+          attrs: {
+            type: "text",
+            placeholder: "Public key"
+          },
+          domProps: {
+            value: _vm.as4direct.public_key
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.as4direct, "public_key", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("button", {
+          attrs: {
+            id: "newAS4Direct"
+          },
+          on: {
+            click: _vm.newAS4Direct
+          }
+        }, [_vm._v("Generate AS4 direct identity")])])])];
       },
       proxy: true
     }])
@@ -70389,4 +70282,4 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].mixin({
 
 /******/ })()
 ;
-//# sourceMappingURL=peppolnext-main.js.map?v=f5c71101f3f806059cc9
+//# sourceMappingURL=peppolnext-main.js.map?v=f0479428344c78a5d4cb

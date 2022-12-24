@@ -1,10 +1,17 @@
 <?php
 
 namespace OCA\PeppolNext\Service\Helper;
+
+use OCP\Files\File;
+use OCP\Files\Folder;
+use OCP\Files\IRootFolder;
+use OCP\Files\Node;
+use OCP\Files\NotFoundException;
+use OCP\IDBConnection;
+use OCP\IUserSession;
+
 use OCA\GroupFolders\Folder\FolderManager as GroupFolder;
 use OCA\PeppolNext\Service\Model\Constants;
-use OCP\Files\Folder;
-use OCP\IDBConnection;
 
 class FolderManager
 {
@@ -15,8 +22,45 @@ class FolderManager
 	private const INVOICE_FOLDER_NAME = "Invoices" ;
 	private const TEMP_INBOX_FOLDER_NAME = "PeppolTempInbox";
 
-	public function __construct(){
+	/** @var IRootFolder */
+	private $rootFolder;
 
+	/** @var IUserSession */
+    private $userSession;
+
+	public function __construct(IRootFolder $rootFolder, IUserSession $userSession) {
+		$this->rootFolder = $rootFolder;
+		$this->userSession = $userSession;
+	}
+
+	public function getPath(): string {
+		return $this->getRoot()->getPath();
+	}
+
+	public function get($path): ?Node {
+		$root = $this->getRoot();
+
+		try {
+			return $root->get($path);
+		} catch (NotFoundException $e) {
+			return null;
+		}
+	}
+
+	public function createFile($path, $content): File {
+		$root = $this->getRoot();
+		return $root->newFile($path, $content);
+	}
+
+	private function getRoot(): Folder {
+		$user = $this->userSession->getUser();
+		$userFolder = $this->rootFolder->getUserFolder($user->getUID());
+
+		if (!$userFolder->nodeExists(self::PEPPOL_NEXT_ROOT)) {
+			return $userFolder->newFolder(self::PEPPOL_NEXT_ROOT);
+		}
+
+		return $userFolder->get(self::PEPPOL_NEXT_ROOT);
 	}
 
 	public function getTempInbox() : string{

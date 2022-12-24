@@ -26,7 +26,8 @@ return [
 		['name' => 'contact_api#all', 'url' => '/api/v1/contacts', 'verb'=>'GET'],
 
 		['name' => 'setting_api#index', 'url' => '/api/v1/setting', 'verb'=>'GET'],
-		['name' => 'setting_api#create', 'url' => '/api/v1/setting', 'verb'=>'POST'],
+		['name' => 'setting_api#createletspeppol', 'url' => '/api/v1/letspeppol', 'verb'=>'POST'],
+		['name' => 'setting_api#createas4direct', 'url' => '/api/v1/as4direct', 'verb'=>'POST'],
 		['name' => 'setting_api#cert', 'url' => '/cert', 'verb'=> 'GET']
 
 	]
