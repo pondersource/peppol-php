@@ -72,7 +72,7 @@ class SettingApiController extends ApiController
 		return new DataResponse($this->identityToArray($as4DirectIdentity), Http::STATUS_OK);
 	}
 
-	private function identityToArray(PeppolIdentity $identity): array {
+	private function identityToArray(?PeppolIdentity $identity): array {
 		if ($identity != null) {
 			return [
 				'scheme' => $identity->getScheme(),

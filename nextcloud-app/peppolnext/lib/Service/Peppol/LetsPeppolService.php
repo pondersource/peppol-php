@@ -21,7 +21,7 @@ class LetsPeppolService implements IPeppolService {
 		return self::SERVICE_NAME;
 	}
 
-	public function getIdentity(): PeppolIdentity {
+	public function getIdentity(): ?PeppolIdentity {
 		$user = $this->userSession->getUser();
 		$email = $user->getEMailAddress();
 		$name = $user->getDisplayName();

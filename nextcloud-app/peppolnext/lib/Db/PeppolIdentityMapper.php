@@ -10,9 +10,9 @@ use OCP\AppFramework\Db\QBMapper;
 /**
  * @extends QBMapper<PeppolIdentity>
  */
-class PeppolIdendityMapper extends QBMapper {
+class PeppolIdentityMapper extends QBMapper {
 
-    public const DB_NAME = Application::APP_ID.'_peppolidentity';
+    public const DB_NAME = 'pn_peppolidentity';
 
     public function __construct(IDBConnection $db) {
         parent::__construct($db, self::DB_NAME, PeppolIdentity::class);

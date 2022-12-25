@@ -42,12 +42,12 @@ class AS4DirectService implements IPeppolService {
 		return self::SERVICE_NAME;
 	}
 
-	public function getIdentity(): PeppolIdentity {
+	public function getIdentity(): ?PeppolIdentity {
 		$user = $this->userSession->getUser();
 		$user_id = $user->getUID();
 
 		try {
-			$peppolIdentity = $this->peppolIdentityMapper->find($user_id);
+			$peppolIdentity = $this->peppolIdentityMapper->findUserIdentity($user_id, self::SERVICE_NAME);
 			return $peppolIdentity;
 
 			return [
@@ -91,18 +91,19 @@ class AS4DirectService implements IPeppolService {
 		$this->folderManager->createFile(self::KEYSTORE_FILE, $keystore_content);
 
 		try {
-			$peppolIdentity = $this->peppolIdentityMapper->find($user_id);
+			$peppolIdentity = $this->peppolIdentityMapper->findUserIdentity($user_id, self::SERVICE_NAME);
 			$peppolIdentity->setUserId($user_id);
 			$peppolIdentity->setScheme('iso6523-actorid-upis');
 			$peppolIdentity->setPeppolId(uniqid('as4direct-'));
 			$peppolIdentity->setPublicKey($publicKey->__toString());
 			$this->peppolIdentityMapper->update($peppolIdentity);
 		} catch(Exception $e) {
-			$peppolIdentity = new AS4Direct();
+			$peppolIdentity = new PeppolIdentity();
 			$peppolIdentity->setUserId($user_id);
 			$peppolIdentity->setScheme('iso6523-actorid-upis');
 			$peppolIdentity->setPeppolId(uniqid('as4direct-'));
 			$peppolIdentity->setPublicKey($publicKey->__toString());
+			$peppolIdentity->setServiceName(self::SERVICE_NAME);
 			$this->peppolIdentityMapper->insert($peppolIdentity);
 		}
 

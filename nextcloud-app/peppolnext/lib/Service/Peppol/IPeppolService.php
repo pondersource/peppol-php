@@ -18,7 +18,7 @@ interface IPeppolService {
      * Return the identity of the current user.
      * 
      */
-    public function getIdentity(): PeppolIdentity;
+    public function getIdentity(): ?PeppolIdentity;
 
     /**
      * Generate a new identity for the user and return it.

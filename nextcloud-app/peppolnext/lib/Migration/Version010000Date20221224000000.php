@@ -2,7 +2,7 @@
 
   namespace OCA\PeppolNext\Migration;
   
-  use OCA\PeppolNext\Db\PeppolIdendityMapper;
+  use OCA\PeppolNext\Db\PeppolIdentityMapper;
 
   use Closure;
   use OCP\DB\ISchemaWrapper;
@@ -21,8 +21,8 @@
         /** @var ISchemaWrapper $schema */
         $schema = $schemaClosure();
 
-        if (!$schema->hasTable(PeppolIdendityMapper::DB_NAME)) {
-            $table = $schema->createTable(PeppolIdendityMapper::DB_NAME);
+        if (!$schema->hasTable(PeppolIdentityMapper::DB_NAME)) {
+            $table = $schema->createTable(PeppolIdentityMapper::DB_NAME);
             $table->addColumn('id', 'integer', [
                 'autoincrement' => true,
                 'notnull' => true,
