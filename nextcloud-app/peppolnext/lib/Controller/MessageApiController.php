@@ -6,10 +6,12 @@ use OC\AppFramework\Http;
 use OCA\PeppolNext\EnvelopeReader;
 use OCA\PeppolNext\PayloadReader;
 use OCA\PeppolNext\PonderSource\EBMS\MessageInfo;
+use OCA\PeppolNext\Service\ContactService;
 use OCA\PeppolNext\Service\MessageService;
+use OCA\PeppolNext\Service\UploadService;
 use OCA\PeppolNext\Service\Model\Constants;
 use OCA\PeppolNext\Service\Model\MessageBuilder;
-use OCA\PeppolNext\Service\UploadService;
+use OCA\PeppolNext\Service\Peppol\PeppolManagerService;
 use OCA\PeppolNext\PonderSource\Envelope\Envelope;
 use OCA\PeppolNext\PonderSource\Envelope\Body;
 use OCA\PeppolNext\PonderSource\Envelope\Header;
@@ -90,13 +92,21 @@ class MessageApiController extends ApiController {
 
 	/** @var string */
 	private $userId;
+
 	/** @var IRootFolder */
 	private $rootFolder;
+
 	/** @var IManager */
 	private $contactManager;
 
 	/** @var MessageService */
 	private $messageService;
+
+	/** @var PeppolManagerService */
+	private $peppolManagerService;
+
+	/** @var ContactService */
+	private $contactService;
 
 	private UploadService $uploadService;
 	use Errors;
@@ -105,12 +115,16 @@ class MessageApiController extends ApiController {
 								IRootFolder $rootFolder,
 								MessageService $messageService,
 								UploadService $uploadService,
+								PeppolManagerService $peppolManagerService,
+								ContactService $contactService,
 								$userId) {
 		parent::__construct("peppolnext", $request);
 		$this->userId = $userId;
 		$this->rootFolder = $rootFolder;
 		$this->messageService = $messageService;
 		$this->uploadService = $uploadService;
+		$this->peppolManagerService = $peppolManagerService;
+		$this->contactService = $contactService;
 	}
 
 	/**
@@ -204,7 +218,45 @@ class MessageApiController extends ApiController {
 
 		list($sender, $receiver) = $envelope->getHeader()->getMessaging()->getUserMessage()->getPeppolSenderAndReceiver();
 
-		
+		if ($sender == null || $receiver == null) {
+			// TODO return bad request
+			return new DataDisplayResponse('Bad request!', Http::STATUS_BAD_REQUEST);
+		}
+
+		$receiver_identity = $this->peppolManagerService->findPeppolIdentity($receiver);
+
+		if ($receiver_identity == null) {
+			// TODO redirect?
+			// TODO return proper response.
+			return new DataDisplayResponse('Recipient is not on this server!', Http::STATUS_NOT_ACCEPTABLE);
+		}
+
+		// Is sender a supplier?
+		$sender_id = $sender->getValue();
+		$sender_scheme = $sender->getType();
+		$sender_contact = $this->contactService->findContact($sender_id, ContactService::FLAG_SUPPLIER);
+
+		if ($sender_contact != null && $sender_scheme === $sender_contact->getPeppolScheme()) {
+			// Yes -> verify signatures -> put in the inbox folder
+			$sender_public_key = $sender_contact->public_key;
+
+			if (!isset($sender_public_key)) {
+				try {
+					list($sender_endpoint, $sender_public_key) = SMP::lookup($sender_scheme, $sender_id, true);
+				} catch (Exception $e) {
+					// It wasn't neccessary but AS4 direct failed to find sender's info on EU's SMP.
+					// TODO Sender not registered on EU's SMP
+					return new DataDisplayResponse('Sender not registered on EU\'s SMP', Http::STATUS_NOT_ACCEPTABLE);
+				}
+			}
+
+			//
+		}
+
+
+
+		// No -> put it in the request folder
+		// Return success response
 	}
 
 	/**

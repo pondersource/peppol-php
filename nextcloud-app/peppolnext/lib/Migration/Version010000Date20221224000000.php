@@ -40,7 +40,7 @@
                 'length' => 200
             ]);
             $table->addColumn('public_key', 'text', [
-                'notnull' => true,
+                'notnull' => false,
                 'default' => ''
             ]);
             $table->addColumn('service_name', 'string', [

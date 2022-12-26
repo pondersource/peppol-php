@@ -8,8 +8,8 @@ use phpseclib3\File\X509;
 class SMP 
 {
 
-    public static function lookup($participantId, $isProduction) {
-        $smpEndpoint = SMP::getDocumentEndpoint($participantId, $isProduction);
+    public static function lookup($participantScheme, $participantId, $isProduction) {
+        $smpEndpoint = SMP::getDocumentEndpoint($participantScheme, $participantId, $isProduction);
 
         $client = new \GuzzleHttp\Client();
 		$response = $client->request('GET', $smpEndpoint)->getBody();
@@ -136,13 +136,11 @@ class SMP
         return $participantEndpoint;
     }
 
-    public static function getSMPHost($participantId, $isProduction) {
-        $participantIdentifierScheme = 'iso6523-actorid-upis';
-
+    public static function getSMPHost($participantScheme, $participantId, $isProduction) {
         $dnsZone = $isProduction ? 'edelivery.tech.ec.europa.eu' : 'acc.edelivery.tech.ec.europa.eu';
 
         $dnsPart = ($participantId === '*') ? '*' : 'b-'.md5($participantId);
-        $smpHost = "http://$dnsPart.$participantIdentifierScheme.$dnsZone/";
+        $smpHost = "http://$dnsPart.$participantScheme.$dnsZone/";
 
         return $smpHost;
     }

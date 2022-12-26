@@ -8,21 +8,48 @@ use OCA\PeppolNext\Service\Model\PeppolContact;
 use OCA\PeppolNext\Service\Model\PeppolContactBuilder;
 use OCP\Contacts\IManager;
 
-class ContactService
-{
+class ContactService {
+	
+	public const FLAG_CUSTOMER = 1;
+	public const FLAG_SUPPLIER = 2;
+
 	const SOCIAL_PROFILE_KEY = 'X-SOCIALPROFILE';
 	const AS4_RELATIONSHIP = 'AS4-RELATIONSHIP';
 	const AS4_DIRECT_ENDPOINT = 'AS4-DIRECT-ENDPOINT';
 	const AS4_DIRECT_PUBLIC_KEY = 'AS4-DIRECT-PUBLICKEY';
 	
 	const PEPPOL_DIRECTORY_ADDRESS = 'https://directory.peppol.eu/search/1.0/json';
-	
-	const FLAG_CUSTOMER = 1;
-	const FLAG_SUPPLIER = 2;
 
 	private IManager $contactManager;
-	public function __construct(IManager $contactManager){
+	
+	public function __construct(IManager $contactManager) {
 		$this->contactManager = $contactManager;
+	}
+
+	public function findContact(string $peppol_id, int $contact_relationship): ?PeppolContact {
+		$items = $this->contactManager->search($pattern, [self::SOCIAL_PROFILE_KEY], ['limit'=>10, 'types'=>true]);
+		
+		foreach ($items as $contact){
+			if (isset($contact[self::SOCIAL_PROFILE_KEY])) {
+				if (is_array($contact[self::SOCIAL_PROFILE_KEY])) {
+					$contact_id = $this->getPeppolConnection($contact[self::SOCIAL_PROFILE_KEY]);
+					
+					if ($contact_id !== "") {
+						$contact_id = substr($contact_id, 8);
+
+						if ($contact_id === $peppol_id) {
+							$relationship = $contact[self::AS4_RELATIONSHIP];
+
+							if ($contact_relationship & $relationship > 0) {
+								return new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_PUBLIC_KEY]);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		return null;
 	}
 
 	public function readLocalPeppolContact(string $pattern, int $contact_relationship) :array{

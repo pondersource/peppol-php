@@ -2,9 +2,8 @@
 
 namespace OCA\PeppolNext\Service\Model;
 
+class PeppolContact {
 
-class PeppolContact
-{
 	public function __construct(string $title, string $peppolId, int $relationship, bool $isLocal, string $uid="", string $endpoint="", string $public_key=""){
 		$this->title = $title;
 		$this->peppolEndpoint = $peppolId;
@@ -23,13 +22,14 @@ class PeppolContact
 	public string $endpoint;
 	public string $public_key;
 
-	public function getPeppolId() : string{
+	public function getPeppolId() : string {
 		$rawEndpoint = str_replace(Constants::PEPPOL_INDICATOR,"", $this->peppolEndpoint);
 		return explode(":", $rawEndpoint)[1];
 	}
 
-	public function getPeppolScheme(): string{
+	public function getPeppolScheme(): string {
 		$rawEndpoint = str_replace(Constants::PEPPOL_INDICATOR,"", $this->peppolEndpoint);
 		return explode(":", $rawEndpoint)[0];
 	}
+
 }
