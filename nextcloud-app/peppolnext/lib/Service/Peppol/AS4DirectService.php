@@ -54,7 +54,7 @@ class AS4DirectService implements IPeppolService {
 				'scheme' => $peppolIdentity->getScheme(),
 				'id' => $peppolIdentity->getPeppolId(),
 				'endpoint' => $this->urlGenerator->linkToRouteAbsolute(Application::APP_ID.'.message_api.as4Endpoint'),
-				'public_key' => $peppolIdentity->getPublicKey()
+				'certificate' => $peppolIdentity->getCertificate()
 			];
 		} catch(Exception $e) {
 			return null;
@@ -95,14 +95,14 @@ class AS4DirectService implements IPeppolService {
 			$peppolIdentity->setUserId($user_id);
 			$peppolIdentity->setScheme('iso6523-actorid-upis');
 			$peppolIdentity->setPeppolId(uniqid('as4direct-'));
-			$peppolIdentity->setPublicKey($publicKey->__toString());
+			$peppolIdentity->setCertificate($certificate);
 			$this->peppolIdentityMapper->update($peppolIdentity);
 		} catch(Exception $e) {
 			$peppolIdentity = new PeppolIdentity();
 			$peppolIdentity->setUserId($user_id);
 			$peppolIdentity->setScheme('iso6523-actorid-upis');
 			$peppolIdentity->setPeppolId(uniqid('as4direct-'));
-			$peppolIdentity->setPublicKey($publicKey->__toString());
+			$peppolIdentity->setCertificate($certificate);
 			$peppolIdentity->setServiceName(self::SERVICE_NAME);
 			$this->peppolIdentityMapper->insert($peppolIdentity);
 		}

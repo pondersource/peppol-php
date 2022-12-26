@@ -26,9 +26,9 @@
 			</div>
 			<div class="row">
 				<div class="col-10">
-					<label for="txt-public-key">AS4 Direct Public Key</label>
-					<input id="txt-public-key"
-						v-model="contact.public_key"
+					<label for="txt-certificate">AS4 Direct Certificate</label>
+					<input id="txt-certificate"
+						v-model="contact.certificate"
 						type="text"> </input>
 				</div>
 			</div>
@@ -58,7 +58,7 @@ export default {
 				title: '',
 				peppolEndpoint: '',
 				endpoint: '',
-				public_key: '',
+				certificate: '',
 				relationship: 2
 			},
 		}

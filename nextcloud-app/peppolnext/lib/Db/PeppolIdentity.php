@@ -10,7 +10,7 @@ class PeppolIdentity extends Entity implements JsonSerializable {
     protected $userId;
     protected $scheme;
     protected $peppolId;
-    protected $publicKey;
+    protected $certificate;
     protected $serviceName;
 
     public function __construct() {
@@ -21,7 +21,7 @@ class PeppolIdentity extends Entity implements JsonSerializable {
         return [
             'scheme' => $this->scheme,
             'id' => $this->peppolId,
-            'public_key' => $this->publicKey
+            'certificate' => $this->certificate
         ];
     }
     

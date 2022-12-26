@@ -49,7 +49,7 @@
 						<input type="text" placeholder="Endpoint" v-model="as4direct.endpoint" />
 					</div>
 					<div class="row">
-						<input type="text" placeholder="Public key" v-model="as4direct.public_key" />
+						<input type="text" placeholder="Certificate" v-model="as4direct.certificate" />
 					</div>
 					<div class="row">
 						<button id="newAS4Direct" @click="newAS4Direct">Generate AS4 direct identity</button>

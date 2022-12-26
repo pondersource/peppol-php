@@ -238,11 +238,11 @@ class MessageApiController extends ApiController {
 
 		if ($sender_contact != null && $sender_scheme === $sender_contact->getPeppolScheme()) {
 			// Yes -> verify signatures -> put in the inbox folder
-			$sender_public_key = $sender_contact->public_key;
+			$sender_certificate = $sender_contact->certificate;
 
-			if (!isset($sender_public_key)) {
+			if (!isset($sender_certificate)) {
 				try {
-					list($sender_endpoint, $sender_public_key) = SMP::lookup($sender_scheme, $sender_id, true);
+					list($sender_endpoint, $sender_certificate) = SMP::lookup($sender_scheme, $sender_id, true);
 				} catch (Exception $e) {
 					// It wasn't neccessary but AS4 direct failed to find sender's info on EU's SMP.
 					// TODO Sender not registered on EU's SMP

@@ -78,7 +78,7 @@ class SettingApiController extends ApiController
 				'scheme' => $identity->getScheme(),
 				'id' => $identity->getPeppolId(),
 				'endpoint' => $this->urlGenerator->linkToRouteAbsolute(Application::APP_ID.'.message_api.as4Endpoint'),
-				'public_key' => $identity->getPublicKey()
+				'certificate' => $identity->getCertificate()
 			];
 		}
 		else {
@@ -86,7 +86,7 @@ class SettingApiController extends ApiController
 				'scheme' => '',
 				'id' => '',
 				'endpoint' => '',
-				'public_key' => ''
+				'certificate' => ''
 			];
 		}
 	}

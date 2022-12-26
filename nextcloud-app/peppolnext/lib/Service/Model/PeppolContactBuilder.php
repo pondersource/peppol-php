@@ -10,7 +10,7 @@ class PeppolContactBuilder
 	private $peppolId;
 	private $relatipnship;
 	private $endpoint = '';
-	private $public_key = '';
+	private $certificate = '';
 
 	public function setFullname(string $fullname) : PeppolContactBuilder{
 		$this->fullname = $fullname;
@@ -33,8 +33,8 @@ class PeppolContactBuilder
 		return $this;
 	}
 
-	public function setPublicKey(string $public_key) : PeppolContactBuilder{
-		$this->public_key = $public_key;
+	public function setCertificate(string $certificate) : PeppolContactBuilder{
+		$this->certificate = $certificate;
 		return $this;
 	}
 
@@ -45,7 +45,7 @@ class PeppolContactBuilder
 			ContactService::SOCIAL_PROFILE_KEY => Constants::PEPPOL_INDICATOR.$this->peppolId,
 			ContactService::AS4_RELATIONSHIP => $this->relatipnship,
 			ContactService::AS4_DIRECT_ENDPOINT => $this->endpoint,
-			ContactService::AS4_DIRECT_PUBLIC_KEY => $this->public_key
+			ContactService::AS4_DIRECT_CERTIFICATE => $this->certificate
 		];
 	}
 

@@ -16,7 +16,7 @@ class ContactService {
 	const SOCIAL_PROFILE_KEY = 'X-SOCIALPROFILE';
 	const AS4_RELATIONSHIP = 'AS4-RELATIONSHIP';
 	const AS4_DIRECT_ENDPOINT = 'AS4-DIRECT-ENDPOINT';
-	const AS4_DIRECT_PUBLIC_KEY = 'AS4-DIRECT-PUBLICKEY';
+	const AS4_DIRECT_CERTIFICATE = 'AS4-DIRECT-CERTIFICATE';
 	
 	const PEPPOL_DIRECTORY_ADDRESS = 'https://directory.peppol.eu/search/1.0/json';
 
@@ -41,7 +41,7 @@ class ContactService {
 							$relationship = $contact[self::AS4_RELATIONSHIP];
 
 							if ($contact_relationship & $relationship > 0) {
-								return new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_PUBLIC_KEY]);
+								return new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE]);
 							}
 						}
 					}
@@ -65,7 +65,7 @@ class ContactService {
 						$relationship = $contact[self::AS4_RELATIONSHIP];
 
 						if ($contact_relationship & $relationship > 0) {
-							$result[] = new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_PUBLIC_KEY]);
+							$result[] = new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE]);
 						}
 					}
 				}

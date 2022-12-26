@@ -39,7 +39,7 @@
                 'notnull' => true,
                 'length' => 200
             ]);
-            $table->addColumn('public_key', 'text', [
+            $table->addColumn('certificate', 'text', [
                 'notnull' => false,
                 'default' => ''
             ]);
