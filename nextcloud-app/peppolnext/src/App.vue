@@ -5,7 +5,7 @@
 			<template #list>
 				<!-- <AppNavigationItem title="Invoices" :allow-collapse="true" :open="true"> -->
 					<template>
-						<AppNavigationItem icon="icon-download" title="Bills" to="/connection/list">
+						<AppNavigationItem icon="icon-download" title="Bills" to="/message/list/Inbox">
 							<template #counter>
 								<CounterBubble v-if="notification.messages > 0" type="outlined">{{notification.messages}}</CounterBubble>
 							</template>

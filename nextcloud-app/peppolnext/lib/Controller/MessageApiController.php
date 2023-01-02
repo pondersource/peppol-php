@@ -5,6 +5,7 @@ namespace OCA\PeppolNext\Controller;
 use OC\AppFramework\Http;
 use OCA\PeppolNext\EnvelopeReader;
 use OCA\PeppolNext\PayloadReader;
+use OCA\PeppolNext\Db\Message;
 use OCA\PeppolNext\PonderSource\EBMS\MessageInfo;
 use OCA\PeppolNext\Service\ContactService;
 use OCA\PeppolNext\Service\MessageService;
@@ -131,15 +132,46 @@ class MessageApiController extends ApiController {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function index(): DataDisplayResponse {
+	public function index($page): DataDisplayResponse {
 		$type = $this->request->getParam("type");
-		$direction = ($type === "Inbox") ? Constants::RECEIVE_DIRECTION : Constants::SEND_DIRECTION;
-		$response = $this->messageService->getAllInvoices($direction);
-		return new DataDisplayResponse(
+		$category = ($type === "Inbox") ? Message::CATEGORY_INBOX : Message::CATEGORY_CONNECTION_REQUEST;
+		$messages = $this->messageService->getMessages($category, $page);
+
+		$response = [];
+
+		foreach ($messages as $message) {
+			$item = [];
+
+			if ($mesage->getContactName() != null) {
+				$item['supplier'] = $mesage->getContactName();
+			}
+			else if ($message->getContactId() != null) {
+				$supplier = $this->contactService->findContact($sender_id, ContactService::FLAG_SUPPLIER);
+
+				if ($supplier != null) {
+					$item['supplier'] = $supplier->title;
+				}
+				else {
+					// Probably a removed contact?
+					$item['supplier'] = 'REMOVED CONTACT';
+				}
+			}
+			else {
+				// This should be impossible!
+				$item['supplier'] = 'UNKNOWN';
+			}
+
+			$item['title'] = $message->getTitle();
+			$item['creationTime'] = $message->getCreatedAt();
+
+			$response[] = $item;
+		}
+
+		return new DataResponse(
 			[
 				"items" => $response,
-				"totalCount" => count($response)
-			]);
+				"totalCount" => $this->messageService->getMessageCount($category)
+			], Http::STATUS_OK);
 	}
 
 	/**
@@ -230,6 +262,18 @@ class MessageApiController extends ApiController {
 			// TODO return proper response.
 			return new DataDisplayResponse('Recipient is not on this server!', Http::STATUS_NOT_ACCEPTABLE);
 		}
+		
+		$cert_store = $this->peppolManagerService->getCertificateStore($receiver_identity);
+		$passphrase = $receiver_identity->getUserId();
+		list($private_key, $cert) = isset($cert_store) ? $this->getPrivateKeyAndCertificate($cert_store, $passphrase) : [null, null];
+
+		if (!isset($private_key) || !isset($cert)) {
+			// Failed to read user/receiver's cert store!
+			// TODO return proper response
+			return new DataDisplayResponse('Failed to read user/receiver\'s cert store!', Http::STATUS_INTERNAL_SERVER_ERROR);
+		}
+
+		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($raw_envelope, $raw_payload, $cert, $private_key);
 
 		// Is sender a supplier?
 		$sender_id = $sender->getValue();
@@ -250,13 +294,50 @@ class MessageApiController extends ApiController {
 				}
 			}
 
-			//
+			$sender_cert = new X509();
+			$sender_cert->loadX509($sender_certificate);
+			$sender_public_key = $sender_cert->getPublicKey();
+
+			$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
+			error_log('signature checked in AS4 endpoint: '.var_export($verifyResult, true));
+
+			if (!$verifyResult) {
+				// This is not an authentic message!
+				// TODO send proper response
+				return new DataDisplayResponse('This is not an authentic message!', Http::STATUS_NOT_ACCEPTABLE);;
+			}
+
+			$this->messageService->saveIncoming(
+				$sender_contact,
+				$receiver_identity,
+				Message::TYPE_INVOICE,
+				'test title',
+				$raw_envelope,
+				$decrypted_payload);
+		}
+		else {
+			$this->messageService->saveConnectionRequest(
+				$sender_id,
+				$receiver_identity,
+				Message::TYPE_INVOICE,
+				'test title',
+				$raw_envelope,
+				$decrypted_payload);
 		}
 
-
-
-		// No -> put it in the request folder
 		// Return success response
+		// FIXME: are there really supposed to be two message ID's? One for the request and one for the response?
+		$theirMsgId = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageInfo()->getMessageId();
+		$ourMsgId = uniqid('peppolnext-msg-');
+		$ourBodyId = uniqid('id-');
+			
+		$nonRepudiationInformation = [];
+			
+		foreach ($envelope->getHeader()->getSecurity()->getSignature()->getSignedInfo()->getReferences() as $reference) {
+				$nonRepudiationInformation[] = (new MessagePartNRInformation())->addReference($reference);
+		}
+		
+		return $this->generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert);
 	}
 
 	/**
@@ -279,16 +360,7 @@ class MessageApiController extends ApiController {
 			exit;
 		}
 
-		if (openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
-		} else {
-			echo "Error: Unable to read the cert store.\n";
-			exit;
-		}
-
-		$private_key = RSA::loadPrivateKey($cert_info['pkey']);
-
-		$cert = new X509();
-		$cert->loadX509($cert_info['cert']);
+		list($private_key, $cert) = $this->getPrivateKeyAndCertificate($cert_store, $passphrase);
 
 		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($envelope, $payload, $cert, $private_key);
 
@@ -346,8 +418,8 @@ class MessageApiController extends ApiController {
 		//////////////////////////////////////////////////
 
 
-			// FIXME: are there really supposed to be two message ID's? One for the request and one for the response?
-			$theirMsgId = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageInfo()->getMessageId();
+		// FIXME: are there really supposed to be two message ID's? One for the request and one for the response?
+		$theirMsgId = $envelope->getHeader()->getMessaging()->getUserMessage()->getMessageInfo()->getMessageId();
 		$ourMsgId = uniqid('peppolnext-msg-');
 		$ourBodyId = uniqid('id-');
 			
@@ -357,6 +429,20 @@ class MessageApiController extends ApiController {
 				$nonRepudiationInformation[] = (new MessagePartNRInformation())->addReference($reference);
 		}
 		return $this->generateResponse($theirMsgId, $ourMsgId, $ourBodyId, $nonRepudiationInformation, $private_key, $cert);
+	}
+
+	private function getPrivateKeyAndCertificate($cert_store, $passphrase) {
+		if (!openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
+			echo "Error: Unable to read the cert store.\n";
+			return [null, null];
+		}
+
+		$private_key = RSA::loadPrivateKey($cert_info['pkey']);
+
+		$cert = new X509();
+		$cert->loadX509($cert_info['cert']);
+
+		return [$private_key, $cert];
 	}
 
 	private function getEnvelopeAndPayload() {

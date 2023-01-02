@@ -2,7 +2,7 @@
 
   namespace OCA\PeppolNext\Migration;
   
-  use OCA\PeppolNext\Db\PeppolIdentityMapper;
+  use OCA\PeppolNext\Db\MessageMapper;
 
   use Closure;
   use OCP\DB\ISchemaWrapper;
@@ -21,8 +21,8 @@
         /** @var ISchemaWrapper $schema */
         $schema = $schemaClosure();
 
-        if (!$schema->hasTable(PeppolIdentityMapper::DB_NAME)) {
-            $table = $schema->createTable(PeppolIdentityMapper::DB_NAME);
+        if (!$schema->hasTable(MessageMapper::DB_NAME)) {
+            $table = $schema->createTable(MessageMapper::DB_NAME);
             $table->addColumn('id', 'integer', [
                 'autoincrement' => true,
                 'notnull' => true,
@@ -31,29 +31,38 @@
                 'notnull' => true,
                 'length' => 200,
             ]);
-            $table->addColumn('scheme', 'string', [
-                'notnull' => true,
+            $table->addColumn('contact_id', 'string', [
+                'notnull' => false,
                 'length' => 200
             ]);
-            $table->addColumn('peppol_id', 'string', [
+            $table->addColumn('contact_name', 'text', [
                 'notnull' => true,
-                'length' => 200
+                'default' => ''
             ]);
-            $table->addColumn('certificate', 'text', [
+            $table->addColumn('title', 'text', [
                 'notnull' => false,
                 'default' => ''
             ]);
-            $table->addColumn('service_name', 'string', [
+            $table->addColumn('message_type', 'integer', [
+                'notnull' => true
+            ]);
+            $table->addColumn('category', 'string', [
                 'notnull' => true,
                 'length' => 200
+            ]);
+            $table->addColumn('createdAt', 'datetime', [
+                'notnull' => true,
+                'default' => 'CURRENT_TIMESTAMP'
             ]);
 
             $table->setPrimaryKey(['id']);
             $table->addIndex(['user_id'], 'user_id_index');
-            $table->addIndex(['peppol_id'], 'peppol_id_index');
+            $table->addIndex(['contact_id'], 'contact_id_index');
+            $table->addIndex(['message_type'], 'message_type_index');
+            $table->addIndex(['category'], 'category_index');
         }
-        
+
         return $schema;
     }
-
+    
 }

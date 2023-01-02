@@ -61,6 +61,12 @@ class AS4DirectService implements IPeppolService {
 		}
 	}
 
+	public function getCertificateStore(PeppolIdentity $identity): ?string {
+		$file = $this->folderManager->getForUser(self::KEYSTORE_FILE, $identity->getUserId());
+
+		return $file->getContent();
+	}
+
 	public function generateIdentity(): PeppolIdentity {
 		$user = $this->userSession->getUser();
 		$user_id = $user->getUID();

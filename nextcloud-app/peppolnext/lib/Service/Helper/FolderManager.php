@@ -7,6 +7,7 @@ use OCP\Files\Folder;
 use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\Files\NotFoundException;
+use OCP\Files\Storage;
 use OCP\IDBConnection;
 use OCP\IUserSession;
 
@@ -37,8 +38,18 @@ class FolderManager
 		return $this->getRoot()->getPath();
 	}
 
-	public function get($path): ?Node {
+	public function get(string $path): ?Node {
 		$root = $this->getRoot();
+
+		try {
+			return $root->get($path);
+		} catch (NotFoundException $e) {
+			return null;
+		}
+	}
+
+	public function getForUser(string $path, string $userId): ?Node {
+		$root = $this->getRootForUser($userId);
 
 		try {
 			return $root->get($path);
@@ -49,18 +60,55 @@ class FolderManager
 
 	public function createFile($path, $content): File {
 		$root = $this->getRoot();
+
+		self::mkdirs($root, $path, false);
+
 		return $root->newFile($path, $content);
 	}
 
 	private function getRoot(): Folder {
 		$user = $this->userSession->getUser();
-		$userFolder = $this->rootFolder->getUserFolder($user->getUID());
+
+		return $this->getRootForUser($user->getUID());
+	}
+
+	private function getRootForUser(string $userId): Folder {
+		$userFolder = $this->rootFolder->getUserFolder($userId);
 
 		if (!$userFolder->nodeExists(self::PEPPOL_NEXT_ROOT)) {
 			return $userFolder->newFolder(self::PEPPOL_NEXT_ROOT);
 		}
 
 		return $userFolder->get(self::PEPPOL_NEXT_ROOT);
+	}
+
+	private static function mkdirs(Folder $root, string $path, bool $all_dirs): bool {
+		$path_elements = explode('/', $path);
+		$path_elements = array_filter($path_elements, "strlen");
+
+		if (!$all_dirs) {
+			if (count($path_elements) == 0) {
+				return true;
+			}
+
+			$path_elements = array_slice($path_elements, 0, -1);
+		}
+
+		foreach ($path_elements as $path_element) {
+			if ($root->nodeExists($path_element)) {
+				if ($root->getType() === Node::TYPE_FOLDER) {
+					$root = $root->get($path_element);
+				}
+				else {
+					return false;
+				}
+			}
+			else {
+				$root = $root->newFolder($path_element);
+			}
+		}
+
+		return true;
 	}
 
 	public function getTempInbox() : string{

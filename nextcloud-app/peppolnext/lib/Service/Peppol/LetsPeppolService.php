@@ -35,6 +35,11 @@ class LetsPeppolService implements IPeppolService {
 		return $identity;
 	}
 
+	public function getCertificateStore(PeppolIdentity $identity): ?string {
+		// TODO!
+		return null;
+	}
+
 	public function generateIdentity(): PeppolIdentity {
 		$user = $this->userSession->getUser();
 		$email = $user->getEMailAddress();

@@ -2,26 +2,39 @@
 
 namespace OCA\PeppolNext\Service;
 
-use Exception;
-use JMS\Serializer\SerializerBuilder;
-use OC\Files\Node\File;
-use OC\Files\Node\Folder;
-use OCA\DAV\Connector\Sabre\Node;
+use OCA\PeppolNext\Db\Message;
+use OCA\PeppolNext\Db\MessageMapper;
+use OCA\PeppolNext\Db\PeppolIdentity;
 use OCA\PeppolNext\Service\Helper\FolderManager;
 use OCA\PeppolNext\Service\Helper\VCardInterpreter;
 use OCA\PeppolNext\Service\Model\Constants;
 use OCA\PeppolNext\Service\Model\InvoiceSummary;
 use OCA\PeppolNext\Service\Model\MessageBuilder;
+use OCA\PeppolNext\Service\Model\PeppolContact;
 use OCA\PeppolNext\Settings\AppSettingManager;
+
+use OC\Files\Node\File;
+use OC\Files\Node\Folder;
+use OCA\DAV\Connector\Sabre\Node;
+use OCP\IDBConnection;
 use OCP\Contacts\IManager;
 use OCP\Files\IRootFolder;
 use OCP\Files\NotPermittedException;
-use OCP\IDBConnection;
 use OCP\Lock\ILockingProvider;
+
+use JMS\Serializer\SerializerBuilder;
 use PhpParser\Error;
 use Safe\DateTime;
 
+use Exception;
+
 class MessageService {
+
+	private const MESSAGE_FOLDER = 'messages';
+	private const MESSAGE_FILE = 'message.xml';
+	private const PAYLOAD_FILE = 'payload.xml';
+
+	private const PAGE_SIZE = 5;
 
 	/** @var IRootFolder*/
 	private IRootFolder $rootFolder;
@@ -32,6 +45,9 @@ class MessageService {
 	/** @var AppSettingManager */
 	private $appSettingManager;
 
+	/** @var MessageMapper */
+	private $messageMapper;
+
 	private IDBConnection $dbConnection;
 	private IManager $contactManager;
 	private UploadService $uploadService;
@@ -41,6 +57,7 @@ class MessageService {
 	public function __construct(IRootFolder $rootFolder
 		, AppSettingManager $settingManager
 		, FolderManager $foldermanager
+		, MessageMapper $messageMapper
 		, IManager $contacManager
 		, IDBConnection $dbConnection
 		, UploadService $uploadService
@@ -54,6 +71,7 @@ class MessageService {
 		} else {
 			$this->folderManager->createAllFolders(null, $rootFolder, $dbConnection);
 		}
+		$this->messageMapper = $messageMapper;
 		$this->appSettingManager = $settingManager;
 		$this->contactManager = $contacManager;
 		$this->dbConnection = $dbConnection;
@@ -85,19 +103,64 @@ class MessageService {
 		}
 	}
 
-	/**
-	 * This method is used from the public upload / AS4 endpoint
-	 * @param string $content
-	 * @param string $fileName
-	 * @return void
-	 * @throws NotPermittedException
-	 * @throws \OC\User\NoUserException
-	 */
-	public function saveIncoming($contents, $filename) {
-		error_log("saveIncoming");
-		$sharedFolderAddress = FolderManager::getSharedFolderAddress($this->dbConnection);
-		$sharedFolder = $this->rootFolder->get($sharedFolderAddress);
-		$sharedFolder->newFile($filename, $contents);
+	public function saveIncoming(PeppolContact $sender
+			, PeppolIdentity $receiver
+			, int $messageType
+			, ?string $title
+			, string $header
+			, string $payload): bool {
+		$message = new Message();
+		$message->setUserId($receiver->getUserId());
+		$message->setContactId($sender->uid);
+		$message->setContactName($sender->title);
+		$message->setTitle($title);
+		$message->setMessageType($messageType);
+		$message->setCategory(Message::CATEGORY_INBOX);
+
+		return $this->saveMessage($message, $header, $payload);
+	}
+
+	public function saveConnectionRequest(string $sender_identity
+			, PeppolIdentity $receiver
+			, int $messageType
+			, ?string $title
+			, string $header
+			, string $payload): bool {
+		$message = new Message();
+		$message->setUserId($receiver->getUserId());
+		$message->setContactId(null);
+		$message->setContactName($sender_identity);
+		$message->setTitle($title);
+		$message->setMessageType($messageType);
+		$message->setCategory(Message::CATEGORY_CONNECTION_REQUEST);
+
+		return $this->saveMessage($message, $header, $payload);
+	}
+
+	private function saveMessage(Message $message, string $header, string $payload): bool {
+		$this->dbConnection->beginTransaction();
+		$message = $this->messageMapper->insert($message);
+
+		try {
+			$path = self::MESSAGE_FOLDER . '/' . $message->getId() . '/';
+			$this->folderManager->createFile($path . self::MESSAGE_FILE, $header);
+			$this->folderManager->createFile($path . self::PAYLOAD_FILE, $payload);
+		} catch (Exception $e) {
+			$this->dbConnection->rollBack();
+			return false;
+		}
+
+		$this->dbConnection->commit();
+		return true;
+	}
+
+	public function getMessages(int $category, int $page): array {
+		$start = ($page - 1) * self::PAGE_SIZE;
+		return $this->messageMapper->getAll($category, $start, self::PAGE_SIZE);
+	}
+
+	public function getMessageCount(int $category) {
+		return $this->messageMapper->getCount($category);
 	}
 
 	public function serializeXML(MessageBuilder $messageBuilder):string{

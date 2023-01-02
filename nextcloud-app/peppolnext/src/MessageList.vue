@@ -9,32 +9,20 @@
 					<thead>
 					<td>#</td>
 					<td class="col-1">
-						Order Reference
+						Supplier
 					</td>
 					<td class="col-1">
-						Sender CHANGED BY MICHIEL
+						Title
 					</td>
 					<td class="col-1">
-						Amount
-					</td>
-					<td class="col-1">
-						File
-					</td>
-					<td class="col-2">
-						Note
-					</td>
-					<td class="col-1">
-						Rec. Date
+						Date
 					</td>
 					</thead>
 					<tbody>
 					<tr v-for="(item, key) in items" :key="key">
 						<td>{{ key+1 }}</td>
-						<td>{{ item.orderId }}</td>
-						<td>{{ item.sender }}</td>
-						<td>{{ item.amount }}</td>
-						<td>{{ item.fileName }}</td>
-						<td>{{ item.note }}</td>
+						<td>{{ item.supplier }}</td>
+						<td>{{ item.title }}</td>
 						<td>{{ item.creationTime }}</td>
 					</tr>
 					</tbody>

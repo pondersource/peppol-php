@@ -13,8 +13,19 @@ class PeppolManagerService {
     /** @var PeppolIdentityMapper */
     private $peppolIdentityMapper;
 
-    public function __construct(PeppolIdentityMapper $peppolIdentityMapper) {
+    private $services = [];
+
+    public function __construct(PeppolIdentityMapper $peppolIdentityMapper
+        , AS4DirectService $aS4DirectService
+        , LetsPeppolService $letsPeppolService) {
         $this->peppolIdentityMapper = $peppolIdentityMapper;
+
+        $this->registerService($aS4DirectService);
+        $this->registerService($letsPeppolService);
+    }
+
+    private function registerService(IPeppolService $service) {
+        $services[$service->getServiceName()] = $service;
     }
 
     public function findPeppolIdentity(Property $property): ?PeppolIdentity {
@@ -31,6 +42,15 @@ class PeppolManagerService {
         }
 
         return $identity;
+    }
+
+    public function getCertificateStore(PeppolIdentity $identity): ?string {
+        $service = $this->getPeppolServiceForName($identity->getServiceName());
+        return $service->getCertificateStore($identity);
+    }
+
+    private function getPeppolServiceForName(string $serviceName): IPeppolService {
+        return $this->services[$serviceName];
     }
 
 }

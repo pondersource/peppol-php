@@ -20,6 +20,8 @@ interface IPeppolService {
      */
     public function getIdentity(): ?PeppolIdentity;
 
+    public function getCertificateStore(PeppolIdentity $identity): ?string;
+
     /**
      * Generate a new identity for the user and return it.
      */
