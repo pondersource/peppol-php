@@ -42,9 +42,6 @@ class MessageService {
 	/** @var FolderManager*/
 	private FolderManager $folderManager;
 
-	/** @var AppSettingManager */
-	private $appSettingManager;
-
 	/** @var MessageMapper */
 	private $messageMapper;
 
@@ -55,7 +52,6 @@ class MessageService {
 
 
 	public function __construct(IRootFolder $rootFolder
-		, AppSettingManager $settingManager
 		, FolderManager $foldermanager
 		, MessageMapper $messageMapper
 		, IManager $contacManager
@@ -72,7 +68,6 @@ class MessageService {
 			$this->folderManager->createAllFolders(null, $rootFolder, $dbConnection);
 		}
 		$this->messageMapper = $messageMapper;
-		$this->appSettingManager = $settingManager;
 		$this->contactManager = $contacManager;
 		$this->dbConnection = $dbConnection;
 		$this->uploadService = $uploadService;

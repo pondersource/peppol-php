@@ -12044,12 +12044,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* provided dependency */ var console = __webpack_require__(/*! ./node_modules/console-browserify/index.js */ "./node_modules/console-browserify/index.js");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'MessageList',
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
+    console.log('beforeRouteUpdate');
     this.category = to.params.category;
     this.loadData(to.params.category, this);
     next();
+  },
+  mounted: function mounted() {
+    console.log('mounted');
+    this.category = this.$route.params.category;
+    this.loadData(this.category, this);
   },
   data: function data() {
     return {
@@ -12060,14 +12067,15 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    loadData: _.debounce(function (category, vm) {
+    loadData: function loadData(category, vm) {
+      console.log('loadData: ' + category);
       fetch("/index.php/apps/peppolnext/api/v1/message/".concat(vm.currentPage, "?type=").concat(category)).then(function (res) {
         res.json().then(function (json) {
           vm.items = json.items;
           vm.totalCount = json.totalCount;
         });
       });
-    }, 350),
+    },
     pageChanged: function pageChanged(page) {
       this.currentPage = page;
       this.loadData(this.category, this);
@@ -12099,7 +12107,7 @@ __webpack_require__.r(__webpack_exports__);
         title: '',
         peppolEndpoint: '',
         endpoint: '',
-        public_key: '',
+        certificate: '',
         relationship: 1
       }
     };
@@ -12138,7 +12146,7 @@ __webpack_require__.r(__webpack_exports__);
         title: '',
         peppolEndpoint: '',
         endpoint: '',
-        public_key: '',
+        certificate: '',
         relationship: 2
       }
     };
@@ -12269,7 +12277,7 @@ var render = function render() {
           attrs: {
             icon: "icon-download",
             title: "Bills",
-            to: "/connection/list"
+            to: "/message/list/Inbox"
           },
           scopedSlots: _vm._u([{
             key: "counter",
@@ -12458,20 +12466,20 @@ var render = function render() {
           directives: [{
             name: "model",
             rawName: "v-model",
-            value: _vm.as4direct.public_key,
-            expression: "as4direct.public_key"
+            value: _vm.as4direct.certificate,
+            expression: "as4direct.certificate"
           }],
           attrs: {
             type: "text",
-            placeholder: "Public key"
+            placeholder: "Certificate"
           },
           domProps: {
-            value: _vm.as4direct.public_key
+            value: _vm.as4direct.certificate
           },
           on: {
             input: function input($event) {
               if ($event.target.composing) return;
-              _vm.$set(_vm.as4direct, "public_key", $event.target.value);
+              _vm.$set(_vm.as4direct, "certificate", $event.target.value);
             }
           }
         })]), _vm._v(" "), _c("div", {
@@ -13171,7 +13179,11 @@ __webpack_require__.r(__webpack_exports__);
 var render = function render() {
   var _vm = this,
     _c = _vm._self._c;
-  return _c("div", [_c("h1", [_vm._v(" " + _vm._s(_vm.$route.params.category) + " page")]), _vm._v(" "), _c("div", {
+  return _c("div", [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("h1", [_vm._v(" " + _vm._s(_vm.$route.params.category) + " page")])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-1"
@@ -13185,7 +13197,7 @@ var render = function render() {
   }, [_vm._m(0), _vm._v(" "), _c("tbody", _vm._l(_vm.items, function (item, key) {
     return _c("tr", {
       key: key
-    }, [_c("td", [_vm._v(_vm._s(key + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.orderId))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.sender))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.amount))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.fileName))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.note))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.creationTime))])]);
+    }, [_c("td", [_vm._v(_vm._s(key + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.supplier))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.creationTime))])]);
   }), 0)])]), _vm._v(" "), _c("div", {
     staticClass: "col-2"
   })])]);
@@ -13195,17 +13207,11 @@ var staticRenderFns = [function () {
     _c = _vm._self._c;
   return _c("thead", [_c("td", [_vm._v("#")]), _vm._v(" "), _c("td", {
     staticClass: "col-1"
-  }, [_vm._v("\n\t\t\t\t\tOrder Reference\n\t\t\t\t")]), _vm._v(" "), _c("td", {
+  }, [_vm._v("\n\t\t\t\t\tSupplier\n\t\t\t\t")]), _vm._v(" "), _c("td", {
     staticClass: "col-1"
-  }, [_vm._v("\n\t\t\t\t\tSender CHANGED BY MICHIEL\n\t\t\t\t")]), _vm._v(" "), _c("td", {
+  }, [_vm._v("\n\t\t\t\t\tTitle\n\t\t\t\t")]), _vm._v(" "), _c("td", {
     staticClass: "col-1"
-  }, [_vm._v("\n\t\t\t\t\tAmount\n\t\t\t\t")]), _vm._v(" "), _c("td", {
-    staticClass: "col-1"
-  }, [_vm._v("\n\t\t\t\t\tFile\n\t\t\t\t")]), _vm._v(" "), _c("td", {
-    staticClass: "col-2"
-  }, [_vm._v("\n\t\t\t\t\tNote\n\t\t\t\t")]), _vm._v(" "), _c("td", {
-    staticClass: "col-1"
-  }, [_vm._v("\n\t\t\t\t\tRec. Date\n\t\t\t\t")])]);
+  }, [_vm._v("\n\t\t\t\t\tDate\n\t\t\t\t")])]);
 }];
 render._withStripped = true;
 
@@ -13322,26 +13328,26 @@ var render = function render() {
     staticClass: "col-10"
   }, [_c("label", {
     attrs: {
-      for: "txt-public-key"
+      for: "txt-certificate"
     }
-  }, [_vm._v("AS4 Direct Public Key")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("AS4 Direct Certificate")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.contact.public_key,
-      expression: "contact.public_key"
+      value: _vm.contact.certificate,
+      expression: "contact.certificate"
     }],
     attrs: {
-      id: "txt-public-key",
+      id: "txt-certificate",
       type: "text"
     },
     domProps: {
-      value: _vm.contact.public_key
+      value: _vm.contact.certificate
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.contact, "public_key", $event.target.value);
+        _vm.$set(_vm.contact, "certificate", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -13472,26 +13478,26 @@ var render = function render() {
     staticClass: "col-10"
   }, [_c("label", {
     attrs: {
-      for: "txt-public-key"
+      for: "txt-certificate"
     }
-  }, [_vm._v("AS4 Direct Public Key")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("AS4 Direct Certificate")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.contact.public_key,
-      expression: "contact.public_key"
+      value: _vm.contact.certificate,
+      expression: "contact.certificate"
     }],
     attrs: {
-      id: "txt-public-key",
+      id: "txt-certificate",
       type: "text"
     },
     domProps: {
-      value: _vm.contact.public_key
+      value: _vm.contact.certificate
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.contact, "public_key", $event.target.value);
+        _vm.$set(_vm.contact, "certificate", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -70282,4 +70288,4 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].mixin({
 
 /******/ })()
 ;
-//# sourceMappingURL=peppolnext-main.js.map?v=f0479428344c78a5d4cb
+//# sourceMappingURL=peppolnext-main.js.map?v=0cff5e9e270d77c44e13

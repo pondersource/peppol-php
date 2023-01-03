@@ -1,6 +1,9 @@
 <template>
 	<div>
-		<h1> {{ $route.params.category }} page</h1>
+		<div class="row">
+			<div class="col-1" />
+			<h1> {{ $route.params.category }} page</h1>
+		</div>
 
 		<div class="row">
 			<div class="col-1" />
@@ -44,9 +47,15 @@
 export default {
 	name: 'MessageList',
 	beforeRouteUpdate(to, from, next) {
+		console.log('beforeRouteUpdate')
 		this.category = to.params.category
 		this.loadData(to.params.category, this)
 		next()
+	},
+	mounted() {
+		console.log('mounted')
+		this.category = this.$route.params.category
+		this.loadData(this.category, this)
 	},
 	data() {
 		return {
@@ -59,7 +68,8 @@ export default {
 	},
 
 	methods: {
-		loadData: _.debounce((category, vm) => {
+		loadData(category, vm) {
+			console.log('loadData: ' + category)
 			fetch(`/index.php/apps/peppolnext/api/v1/message/${vm.currentPage}?type=${category}`)
 				.then(res => {
 					res.json().then(json => {
@@ -67,7 +77,7 @@ export default {
 						vm.totalCount = json.totalCount
 					})
 				})
-		}, 350),
+		},
 	    pageChanged(page) {
 			this.currentPage = page
 			this.loadData(this.category, this)
