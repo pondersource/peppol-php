@@ -57,7 +57,7 @@ class ContactApiController extends ApiController {
 			->setFullname($payload["title"])
 			->setRelationship($payload["relationship"])
 			->setEndpoint($payload["endpoint"])
-			->setPublicKey($payload["public_key"]);
+			->setCertificate($payload["public_key"]);
 		$this->contactService->addContact($contact);
 		return new DataResponse([], Http::STATUS_ACCEPTED);
 	}
