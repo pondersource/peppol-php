@@ -15,6 +15,63 @@ class Invoice // https://docs.peppol.eu/poacc/billing/3.0/syntax/ubl-invoice/
 {
 
     /**
+     * Minimum invoice requires:
+     * cbc:ID - Invoice number
+     * cbc:IssueDate - Invoice issue date
+     * cbc:InvoiceTypeCode - Invoice type code
+     * cbc:DocumentCurrencyCode - Invoice currency code
+     * cac:AccountingSupplierParty - SELLER
+     *     cac:Party - PARTY
+     *         cbc:EndpointID - Seller electronic address
+     *         cac:PostalAddress - SELLER POSTAL ADDRESS
+     *         cac:PartyLegalEntity - PARTY LEGAL ENTITY
+     *             cbc:RegistrationName - Seller name
+     * cac:AccountingCustomerParty - BUYER
+     *     cac:Party - PARTY
+     *         cbc:EndpointID - Buyer electronic address
+     *         cac:PostalAddress - BUYER POSTAL ADDRESS
+     *         cac:PartyLegalEntity - PARTY LEGAL ENTITY
+     *             cbc:RegistrationName - Buyer name
+     * cac:TaxTotal - TAX TOTAL
+     *     cbc:TaxAmount - Invoice total VAT amount, Invoice total VAT amount in accounting currency
+     * cac:LegalMonetaryTotal - DOCUMENT TOTALS
+     *     cbc:LineExtensionAmount - Sum of Invoice line net amount
+     *     cbc:TaxExclusiveAmount - Invoice total amount without VAT
+     *     cbc:TaxInclusiveAmount - Invoice total amount with VAT
+     *     cbc:PayableAmount - Amount due for payment
+     * cac:InvoiceLine - INVOICE LINE
+     *     cbc:ID - Invoice line identifier
+     *     cbc:InvoicedQuantity - Invoiced quantity
+     *     cbc:LineExtensionAmount - Invoice line net amount
+     *     cac:Item - ITEM INFORMATION
+     *         cbc:Name - Item name
+     *         cac:ClassifiedTaxCategory - LINE VAT INFORMATION
+     *             cbc:ID - Invoiced item VAT category code
+     *     cac:Price - PRICE DETAILS
+     *         cbc:PriceAmount - Item net price
+     * 
+     * 
+     * Summerized inputs from the minimum above:
+     * Invoice number
+     * Invoice type code
+     * Invoice currency code
+     * Supplier
+     *     Seller electronic address
+     *     SELLER POSTAL ADDRESS
+     *     Seller name
+     * Customer
+     *     Buyer electronic address
+     *     BUYER POSTAL ADDRESS
+     *     Buyer name
+     * VAT amount
+     * Invoice lines
+     *     Invoiced quantity
+     *     Item name
+     *     Invoiced item VAT category code
+     *     Item net price
+     */
+
+    /**
      * @SerializedName("UBLVersionID")
      * @XmlElement(cdata=false, namespace=Namespaces::CBC)
      * @Type("string")

@@ -11587,9 +11587,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _nextcloud_vue_dist_Components_AppContent__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue_dist_Components_AppContent__WEBPACK_IMPORTED_MODULE_3__);
 /* harmony import */ var _nextcloud_vue_dist_Components_AppNavigationSettings__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @nextcloud/vue/dist/Components/AppNavigationSettings */ "./node_modules/@nextcloud/vue/dist/Components/AppNavigationSettings.js");
 /* harmony import */ var _nextcloud_vue_dist_Components_AppNavigationSettings__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue_dist_Components_AppNavigationSettings__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
-/* harmony import */ var _nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @nextcloud/vue/dist/Components/CounterBubble */ "./node_modules/@nextcloud/vue/dist/Components/CounterBubble.js");
-/* harmony import */ var _nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var _nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @nextcloud/vue/dist/Components/CounterBubble */ "./node_modules/@nextcloud/vue/dist/Components/CounterBubble.js");
+/* harmony import */ var _nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(_nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_8__);
+
+
 
 
 
@@ -11605,7 +11610,8 @@ __webpack_require__.r(__webpack_exports__);
     AppNavigationNew: (_nextcloud_vue_dist_Components_AppNavigationNew__WEBPACK_IMPORTED_MODULE_2___default()),
     AppContent: (_nextcloud_vue_dist_Components_AppContent__WEBPACK_IMPORTED_MODULE_3___default()),
     AppNavigationSettings: (_nextcloud_vue_dist_Components_AppNavigationSettings__WEBPACK_IMPORTED_MODULE_4___default()),
-    CounterBubble: (_nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_6___default())
+    CounterBubble: (_nextcloud_vue_dist_Components_CounterBubble__WEBPACK_IMPORTED_MODULE_8___default()),
+    vSelect: (vue_select__WEBPACK_IMPORTED_MODULE_5___default())
   },
   mounted: function mounted() {
     this.loadAllSettings(this);
@@ -11613,8 +11619,763 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      countries: [{
+        code: "AD",
+        name: "Andorra"
+      }, {
+        code: "AE",
+        name: "United Arab Emirates"
+      }, {
+        code: "AF",
+        name: "Afghanistan"
+      }, {
+        code: "AG",
+        name: "Antigua and Barbuda"
+      }, {
+        code: "AI",
+        name: "Anguilla"
+      }, {
+        code: "AL",
+        name: "Albania"
+      }, {
+        code: "AM",
+        name: "Armenia"
+      }, {
+        code: "AO",
+        name: "Angola"
+      }, {
+        code: "AQ",
+        name: "Antarctica"
+      }, {
+        code: "AR",
+        name: "Argentina"
+      }, {
+        code: "AS",
+        name: "American Samoa"
+      }, {
+        code: "AT",
+        name: "Austria"
+      }, {
+        code: "AU",
+        name: "Australia"
+      }, {
+        code: "AW",
+        name: "Aruba"
+      }, {
+        code: "AX",
+        name: "Åland Islands"
+      }, {
+        code: "AZ",
+        name: "Azerbaijan"
+      }, {
+        code: "BA",
+        name: "Bosnia and Herzegovina"
+      }, {
+        code: "BB",
+        name: "Barbados"
+      }, {
+        code: "BD",
+        name: "Bangladesh"
+      }, {
+        code: "BE",
+        name: "Belgium"
+      }, {
+        code: "BF",
+        name: "Burkina Faso"
+      }, {
+        code: "BG",
+        name: "Bulgaria"
+      }, {
+        code: "BH",
+        name: "Bahrain"
+      }, {
+        code: "BI",
+        name: "Burundi"
+      }, {
+        code: "BJ",
+        name: "Benin"
+      }, {
+        code: "BL",
+        name: "Saint Barthélemy"
+      }, {
+        code: "BM",
+        name: "Bermuda"
+      }, {
+        code: "BN",
+        name: "Brunei Darussalam"
+      }, {
+        code: "BO",
+        name: "Bolivia, Plurinational State of"
+      }, {
+        code: "BQ",
+        name: "Bonaire, Sint Eustatius and Saba"
+      }, {
+        code: "BR",
+        name: "Brazil"
+      }, {
+        code: "BS",
+        name: "Bahamas"
+      }, {
+        code: "BT",
+        name: "Bhutan"
+      }, {
+        code: "BV",
+        name: "Bouvet Island"
+      }, {
+        code: "BW",
+        name: "Botswana"
+      }, {
+        code: "BY",
+        name: "Belarus"
+      }, {
+        code: "BZ",
+        name: "Belize"
+      }, {
+        code: "CA",
+        name: "Canada"
+      }, {
+        code: "CC",
+        name: "Cocos (Keeling) Islands"
+      }, {
+        code: "CD",
+        name: "Congo, the Democratic Republic of the"
+      }, {
+        code: "CF",
+        name: "Central African Republic"
+      }, {
+        code: "CG",
+        name: "Congo"
+      }, {
+        code: "CH",
+        name: "Switzerland"
+      }, {
+        code: "CI",
+        name: "Côte d'Ivoire"
+      }, {
+        code: "CK",
+        name: "Cook Islands"
+      }, {
+        code: "CL",
+        name: "Chile"
+      }, {
+        code: "CM",
+        name: "Cameroon"
+      }, {
+        code: "CN",
+        name: "China"
+      }, {
+        code: "CO",
+        name: "Colombia"
+      }, {
+        code: "CR",
+        name: "Costa Rica"
+      }, {
+        code: "CU",
+        name: "Cuba"
+      }, {
+        code: "CV",
+        name: "Cabo Verde"
+      }, {
+        code: "CW",
+        name: "Curaçao"
+      }, {
+        code: "CX",
+        name: "Christmas Island"
+      }, {
+        code: "CY",
+        name: "Cyprus"
+      }, {
+        code: "CZ",
+        name: "Czechia"
+      }, {
+        code: "DE",
+        name: "Germany"
+      }, {
+        code: "DJ",
+        name: "Djibouti"
+      }, {
+        code: "DK",
+        name: "Denmark"
+      }, {
+        code: "DM",
+        name: "Dominica"
+      }, {
+        code: "DO",
+        name: "Dominican Republic"
+      }, {
+        code: "DZ",
+        name: "Algeria"
+      }, {
+        code: "EC",
+        name: "Ecuador"
+      }, {
+        code: "EE",
+        name: "Estonia"
+      }, {
+        code: "EG",
+        name: "Egypt"
+      }, {
+        code: "EH",
+        name: "Western Sahara"
+      }, {
+        code: "ER",
+        name: "Eritrea"
+      }, {
+        code: "ES",
+        name: "Spain"
+      }, {
+        code: "ET",
+        name: "Ethiopia"
+      }, {
+        code: "FI",
+        name: "Finland"
+      }, {
+        code: "FJ",
+        name: "Fiji"
+      }, {
+        code: "FK",
+        name: "Falkland Islands (Malvinas)"
+      }, {
+        code: "FM",
+        name: "Micronesia, Federated States of"
+      }, {
+        code: "FO",
+        name: "Faroe Islands"
+      }, {
+        code: "FR",
+        name: "France"
+      }, {
+        code: "GA",
+        name: "Gabon"
+      }, {
+        code: "GB",
+        name: "United Kingdom of Great Britain and Northern Ireland"
+      }, {
+        code: "GD",
+        name: "Grenada"
+      }, {
+        code: "GE",
+        name: "Georgia"
+      }, {
+        code: "GF",
+        name: "French Guiana"
+      }, {
+        code: "GG",
+        name: "Guernsey"
+      }, {
+        code: "GH",
+        name: "Ghana"
+      }, {
+        code: "GI",
+        name: "Gibraltar"
+      }, {
+        code: "GL",
+        name: "Greenland"
+      }, {
+        code: "GM",
+        name: "Gambia"
+      }, {
+        code: "GN",
+        name: "Guinea"
+      }, {
+        code: "GP",
+        name: "Guadeloupe"
+      }, {
+        code: "GQ",
+        name: "Equatorial Guinea"
+      }, {
+        code: "GR",
+        name: "Greece"
+      }, {
+        code: "GS",
+        name: "South Georgia and the South Sandwich Islands"
+      }, {
+        code: "GT",
+        name: "Guatemala"
+      }, {
+        code: "GU",
+        name: "Guam"
+      }, {
+        code: "GW",
+        name: "Guinea-Bissau"
+      }, {
+        code: "GY",
+        name: "Guyana"
+      }, {
+        code: "HK",
+        name: "Hong Kong"
+      }, {
+        code: "HM",
+        name: "Heard Island and McDonald Islands"
+      }, {
+        code: "HN",
+        name: "Honduras"
+      }, {
+        code: "HR",
+        name: "Croatia"
+      }, {
+        code: "HT",
+        name: "Haiti"
+      }, {
+        code: "HU",
+        name: "Hungary"
+      }, {
+        code: "ID",
+        name: "Indonesia"
+      }, {
+        code: "IE",
+        name: "Ireland"
+      }, {
+        code: "IL",
+        name: "Israel"
+      }, {
+        code: "IM",
+        name: "Isle of Man"
+      }, {
+        code: "IN",
+        name: "India"
+      }, {
+        code: "IO",
+        name: "British Indian Ocean Territory"
+      }, {
+        code: "IQ",
+        name: "Iraq"
+      }, {
+        code: "IR",
+        name: "Iran"
+      }, {
+        code: "IS",
+        name: "Iceland"
+      }, {
+        code: "IT",
+        name: "Italy"
+      }, {
+        code: "JE",
+        name: "Jersey"
+      }, {
+        code: "JM",
+        name: "Jamaica"
+      }, {
+        code: "JO",
+        name: "Jordan"
+      }, {
+        code: "JP",
+        name: "Japan"
+      }, {
+        code: "KE",
+        name: "Kenya"
+      }, {
+        code: "KG",
+        name: "Kyrgyzstan"
+      }, {
+        code: "KH",
+        name: "Cambodia"
+      }, {
+        code: "KI",
+        name: "Kiribati"
+      }, {
+        code: "KM",
+        name: "Comoros"
+      }, {
+        code: "KN",
+        name: "Saint Kitts and Nevis"
+      }, {
+        code: "KP",
+        name: "Korea, Democratic People's Republic of"
+      }, {
+        code: "KR",
+        name: "Korea, Republic of"
+      }, {
+        code: "KW",
+        name: "Kuwait"
+      }, {
+        code: "KY",
+        name: "Cayman Islands"
+      }, {
+        code: "KZ",
+        name: "Kazakhstan"
+      }, {
+        code: "LA",
+        name: "Lao People's Democratic Republic"
+      }, {
+        code: "LB",
+        name: "Lebanon"
+      }, {
+        code: "LC",
+        name: "Saint Lucia"
+      }, {
+        code: "LI",
+        name: "Liechtenstein"
+      }, {
+        code: "LK",
+        name: "Sri Lanka"
+      }, {
+        code: "LR",
+        name: "Liberia"
+      }, {
+        code: "LS",
+        name: "Lesotho"
+      }, {
+        code: "LT",
+        name: "Lithuania"
+      }, {
+        code: "LU",
+        name: "Luxembourg"
+      }, {
+        code: "LV",
+        name: "Latvia"
+      }, {
+        code: "LY",
+        name: "Libya"
+      }, {
+        code: "MA",
+        name: "Morocco"
+      }, {
+        code: "MC",
+        name: "Monaco"
+      }, {
+        code: "MD",
+        name: "Moldova, Republic of"
+      }, {
+        code: "ME",
+        name: "Montenegro"
+      }, {
+        code: "MF",
+        name: "Saint Martin (French part)"
+      }, {
+        code: "MG",
+        name: "Madagascar"
+      }, {
+        code: "MH",
+        name: "Marshall Islands"
+      }, {
+        code: "MK",
+        name: "Macedonia, the former Yugoslav Republic of"
+      }, {
+        code: "ML",
+        name: "Mali"
+      }, {
+        code: "MM",
+        name: "Myanmar"
+      }, {
+        code: "MN",
+        name: "Mongolia"
+      }, {
+        code: "MO",
+        name: "Macao"
+      }, {
+        code: "MP",
+        name: "Northern Mariana Islands"
+      }, {
+        code: "MQ",
+        name: "Martinique"
+      }, {
+        code: "MR",
+        name: "Mauritania"
+      }, {
+        code: "MS",
+        name: "Montserrat"
+      }, {
+        code: "MT",
+        name: "Malta"
+      }, {
+        code: "MU",
+        name: "Mauritius"
+      }, {
+        code: "MV",
+        name: "Maldives"
+      }, {
+        code: "MW",
+        name: "Malawi"
+      }, {
+        code: "MX",
+        name: "Mexico"
+      }, {
+        code: "MY",
+        name: "Malaysia"
+      }, {
+        code: "MZ",
+        name: "Mozambique"
+      }, {
+        code: "NA",
+        name: "Namibia"
+      }, {
+        code: "NC",
+        name: "New Caledonia"
+      }, {
+        code: "NE",
+        name: "Niger"
+      }, {
+        code: "NF",
+        name: "Norfolk Island"
+      }, {
+        code: "NG",
+        name: "Nigeria"
+      }, {
+        code: "NI",
+        name: "Nicaragua"
+      }, {
+        code: "NL",
+        name: "Netherlands"
+      }, {
+        code: "NO",
+        name: "Norway"
+      }, {
+        code: "NP",
+        name: "Nepal"
+      }, {
+        code: "NR",
+        name: "Nauru"
+      }, {
+        code: "NU",
+        name: "Niue"
+      }, {
+        code: "NZ",
+        name: "New Zealand"
+      }, {
+        code: "OM",
+        name: "Oman"
+      }, {
+        code: "PA",
+        name: "Panama"
+      }, {
+        code: "PE",
+        name: "Peru"
+      }, {
+        code: "PF",
+        name: "French Polynesia"
+      }, {
+        code: "PG",
+        name: "Papua New Guinea"
+      }, {
+        code: "PH",
+        name: "Philippines"
+      }, {
+        code: "PK",
+        name: "Pakistan"
+      }, {
+        code: "PL",
+        name: "Poland"
+      }, {
+        code: "PM",
+        name: "Saint Pierre and Miquelon"
+      }, {
+        code: "PN",
+        name: "Pitcairn"
+      }, {
+        code: "PR",
+        name: "Puerto Rico"
+      }, {
+        code: "PS",
+        name: "Palestine, State of"
+      }, {
+        code: "PT",
+        name: "Portugal"
+      }, {
+        code: "PW",
+        name: "Palau"
+      }, {
+        code: "PY",
+        name: "Paraguay"
+      }, {
+        code: "QA",
+        name: "Qatar"
+      }, {
+        code: "RE",
+        name: "Réunion"
+      }, {
+        code: "RO",
+        name: "Romania"
+      }, {
+        code: "RS",
+        name: "Serbia"
+      }, {
+        code: "RU",
+        name: "Russian Federation"
+      }, {
+        code: "RW",
+        name: "Rwanda"
+      }, {
+        code: "SA",
+        name: "Saudi Arabia"
+      }, {
+        code: "SB",
+        name: "Solomon Islands"
+      }, {
+        code: "SC",
+        name: "Seychelles"
+      }, {
+        code: "SD",
+        name: "Sudan"
+      }, {
+        code: "SE",
+        name: "Sweden"
+      }, {
+        code: "SG",
+        name: "Singapore"
+      }, {
+        code: "SH",
+        name: "Saint Helena, Ascension and Tristan da Cunha"
+      }, {
+        code: "SI",
+        name: "Slovenia"
+      }, {
+        code: "SJ",
+        name: "Svalbard and Jan Mayen"
+      }, {
+        code: "SK",
+        name: "Slovakia"
+      }, {
+        code: "SL",
+        name: "Sierra Leone"
+      }, {
+        code: "SM",
+        name: "San Marino"
+      }, {
+        code: "SN",
+        name: "Senegal"
+      }, {
+        code: "SO",
+        name: "Somalia"
+      }, {
+        code: "SR",
+        name: "Suriname"
+      }, {
+        code: "SS",
+        name: "South Sudan"
+      }, {
+        code: "ST",
+        name: "Sao Tome and Principe"
+      }, {
+        code: "SV",
+        name: "El Salvador"
+      }, {
+        code: "SX",
+        name: "Sint Maarten (Dutch part)"
+      }, {
+        code: "SY",
+        name: "Syrian Arab Republic"
+      }, {
+        code: "SZ",
+        name: "Swaziland"
+      }, {
+        code: "TC",
+        name: "Turks and Caicos Islands"
+      }, {
+        code: "TD",
+        name: "Chad"
+      }, {
+        code: "TF",
+        name: "French Southern Territories"
+      }, {
+        code: "TG",
+        name: "Togo"
+      }, {
+        code: "TH",
+        name: "Thailand"
+      }, {
+        code: "TJ",
+        name: "Tajikistan"
+      }, {
+        code: "TK",
+        name: "Tokelau"
+      }, {
+        code: "TL",
+        name: "Timor-Leste"
+      }, {
+        code: "TM",
+        name: "Turkmenistan"
+      }, {
+        code: "TN",
+        name: "Tunisia"
+      }, {
+        code: "TO",
+        name: "Tonga"
+      }, {
+        code: "TR",
+        name: "Turkey"
+      }, {
+        code: "TT",
+        name: "Trinidad and Tobago"
+      }, {
+        code: "TV",
+        name: "Tuvalu"
+      }, {
+        code: "TW",
+        name: "Taiwan, Province of China"
+      }, {
+        code: "TZ",
+        name: "Tanzania, United Republic of"
+      }, {
+        code: "UA",
+        name: "Ukraine"
+      }, {
+        code: "UG",
+        name: "Uganda"
+      }, {
+        code: "UM",
+        name: "United States Minor Outlying Islands"
+      }, {
+        code: "US",
+        name: "United States of America"
+      }, {
+        code: "UY",
+        name: "Uruguay"
+      }, {
+        code: "UZ",
+        name: "Uzbekistan"
+      }, {
+        code: "VA",
+        name: "Holy See"
+      }, {
+        code: "VC",
+        name: "Saint Vincent and the Grenadines"
+      }, {
+        code: "VE",
+        name: "Venezuela, Bolivarian Republic of"
+      }, {
+        code: "VG",
+        name: "Virgin Islands, British"
+      }, {
+        code: "VI",
+        name: "Virgin Islands, U.S."
+      }, {
+        code: "VN",
+        name: "Viet Nam"
+      }, {
+        code: "VU",
+        name: "Vanuatu"
+      }, {
+        code: "WF",
+        name: "Wallis and Futuna"
+      }, {
+        code: "WS",
+        name: "Samoa"
+      }, {
+        code: "YE",
+        name: "Yemen"
+      }, {
+        code: "YT",
+        name: "Mayotte"
+      }, {
+        code: "ZA",
+        name: "South Africa"
+      }, {
+        code: "ZM",
+        name: "Zambia"
+      }, {
+        code: "ZW",
+        name: "Zimbabwe"
+      }, {
+        code: "1A",
+        name: "Kosovo"
+      }, {
+        code: "XI",
+        name: "United Kingdom (Northern Ireland)"
+      }],
       letspeppol: {},
       as4direct: {},
+      address: {},
       notification: {
         messages: 0,
         connection_requests: 0
@@ -11623,9 +12384,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     loadAllSettings: function loadAllSettings(vm) {
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].get('/index.php/apps/peppolnext/api/v1/setting').then(function (response) {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__["default"].get('/index.php/apps/peppolnext/api/v1/setting').then(function (response) {
         vm.letspeppol = response.data.letspeppol;
         vm.as4direct = response.data.as4direct;
+        vm.address = response.data.address;
       }).catch(function (error) {});
     },
     newLetsPeppol: function newLetsPeppol() {
@@ -11633,7 +12395,7 @@ __webpack_require__.r(__webpack_exports__);
       var payload = {
         body: {}
       };
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/index.php/apps/peppolnext/api/v1/letspeppol', payload).then(function (response) {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__["default"].post('/index.php/apps/peppolnext/api/v1/letspeppol', payload).then(function (response) {
         vm1.letspeppol = response.data;
       }).catch(function (error) {});
     },
@@ -11642,18 +12404,27 @@ __webpack_require__.r(__webpack_exports__);
       var payload = {
         body: {}
       };
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/index.php/apps/peppolnext/api/v1/as4direct', payload).then(function (response) {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__["default"].post('/index.php/apps/peppolnext/api/v1/as4direct', payload).then(function (response) {
         vm2.as4direct = response.data;
+      }).catch(function (error) {});
+    },
+    setAddress: function setAddress(vm) {
+      var vm3 = this;
+      var payload = {
+        body: this.address
+      };
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__["default"].post('/index.php/apps/peppolnext/api/v1/address', payload).then(function (response) {
+        vm3.address = response.data;
       }).catch(function (error) {});
     },
     updateSettings: function updateSettings(vm) {
       var payload = {
         body: this.setting
       };
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].post('/index.php/apps/peppolnext/api/v1/setting', payload).then(function (response) {}).catch(function (error) {});
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__["default"].post('/index.php/apps/peppolnext/api/v1/setting', payload).then(function (response) {}).catch(function (error) {});
     },
     getNotifications: function getNotifications(vm) {
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_5__["default"].get('/index.php/apps/peppolnext/api/v1/message/notifications').then(function (response) {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__["default"].get('/index.php/apps/peppolnext/api/v1/message/notifications').then(function (response) {
         vm.notification.messages = response.data.messages;
         vm.notification.connection_requests = response.data.connection_requests;
       }).catch(function (error) {});
@@ -11674,8 +12445,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'InvoiceItem',
+  components: {
+    vSelect: (vue_select__WEBPACK_IMPORTED_MODULE_0___default())
+  },
   props: {
     rowNumber: {
       type: Number,
@@ -11687,10 +12466,51 @@ __webpack_require__.r(__webpack_exports__);
       invoiceItem: {
         title: '',
         quantity: 0,
-        description: '',
+        vat_category: {},
         totalPrice: 0,
         fee: 0
-      }
+      },
+      vatCategories: [{
+        code: "AE",
+        title: "Vat Reverse Charge",
+        description: "Code specifying that the standard VAT rate is levied from the invoicee."
+      }, {
+        code: "E",
+        title: "Exempt from Tax",
+        description: "Code specifying that taxes are not applicable."
+      }, {
+        code: "S",
+        title: "Standard rate",
+        description: "Code specifying the standard rate."
+      }, {
+        code: "Z",
+        title: "Zero rated goods",
+        description: "Code specifying that the goods are at a zero rate."
+      }, {
+        code: "G",
+        title: "Free export item, VAT not charged",
+        description: "Code specifying that the item is free export and taxes are not charged."
+      }, {
+        code: "O",
+        title: "Services outside scope of tax",
+        description: "Code specifying that taxes are not applicable to the services."
+      }, {
+        code: "K",
+        title: "VAT exempt for EEA intra-community supply of goods and services",
+        description: "A tax category code indicating the item is VAT exempt due to an intra-community supply in the European Economic Area."
+      }, {
+        code: "L",
+        title: "Canary Islands general indirect tax",
+        description: "Impuesto General Indirecto Canario (IGIC) is an indirect tax levied on goods and services supplied in the Canary Islands (Spain) by traders and professionals, as well as on import of goods."
+      }, {
+        code: "M",
+        title: "Tax for production, services and importation in Ceuta and Melilla",
+        description: "Impuesto sobre la Producción, los Servicios y la Importación (IPSI) is an indirect municipal tax, levied on the production, processing and import of all kinds of movable tangible property, the supply of services and the transfer of immovable property located in the cities of Ceuta and Melilla."
+      }, {
+        code: "B",
+        title: "Transferred (VAT), In Italy",
+        description: "VAT not to be paid to the issuer of the invoice but directly to relevant tax authority. This code is allowed in the EN 16931 for Italy only based on the Italian A-deviation."
+      }]
     };
   },
   computed: {
@@ -11818,6 +12638,1386 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      invoiceTypes: [{
+        id: 71,
+        title: "Request for payment",
+        hint: "Document/message issued by a creditor to a debtor to request payment of one or more invoices past due."
+      }, {
+        id: 80,
+        title: "Debit note related to goods or services",
+        hint: "Debit information related to a transaction for goods or services to the relevant party."
+      }, {
+        id: 82,
+        title: "Metered services invoice",
+        hint: "Document/message claiming payment for the supply of metered services (e.g., gas, electricity, etc.) supplied to a fixed meter whose consumption is measured over a period of time."
+      }, {
+        id: 84,
+        title: "Debit note related to financial adjustments",
+        hint: "Document/message for providing debit information related to financial adjustments to the relevant party."
+      }, {
+        id: 102,
+        title: "Tax notification",
+        hint: "Used to specify that the message is a tax notification."
+      }, {
+        id: 218,
+        title: "Final payment request based on completion of work",
+        hint: "The final payment request of a series of payment requests submitted upon completion of all the work."
+      }, {
+        id: 219,
+        title: "Payment request for completed units",
+        hint: "A request for payment for completed units."
+      }, {
+        id: 331,
+        title: "Commercial invoice which includes a packing list",
+        hint: "Commercial transaction (invoice) will include a packing list."
+      }, {
+        id: 380,
+        title: "Commercial invoice",
+        hint: "(1334) Document/message claiming payment for goods or services supplied under conditions agreed between seller and buyer."
+      }, {
+        id: 382,
+        title: "Commission note",
+        hint: "Document/message in which a seller specifies the amount of commission, the percentage of the invoice amount, or some other basis for the calculation of the commission to which a sales agent is entitled."
+      }, {
+        id: 383,
+        title: "Debit note",
+        hint: "Document/message for providing debit information to the relevant party."
+      }, {
+        id: 386,
+        title: "Prepayment invoice",
+        hint: "An invoice to pay amounts for goods and services in advance; these amounts will be subtracted from the final invoice."
+      }, {
+        id: 388,
+        title: "Tax invoice",
+        hint: "An invoice for tax purposes."
+      }, {
+        id: 393,
+        title: "Factored invoice",
+        hint: "Invoice assigned to a third party for collection."
+      }, {
+        id: 395,
+        title: "Consignment invoice",
+        hint: "Commercial invoice that covers a transaction other than one involving a sale."
+      }, {
+        id: 553,
+        title: "Forwarder's invoice discrepancy report",
+        hint: "Document/message reporting invoice discrepancies indentified by the forwarder."
+      }, {
+        id: 575,
+        title: "Insurer's invoice",
+        hint: "Document/message issued by an insurer specifying the cost of an insurance which has been effected and claiming payment therefore."
+      }, {
+        id: 623,
+        title: "Forwarder's invoice",
+        hint: "Invoice issued by a freight forwarder specifying services rendered and costs incurred and claiming payment therefore."
+      }, {
+        id: 780,
+        title: "Freight invoice",
+        hint: "Document/message issued by a transport operation specifying freight costs and charges incurred for a transport operation and stating conditions of payment."
+      }, {
+        id: 817,
+        title: "Claim notification",
+        hint: "Document notifying a claim."
+      }, {
+        id: 870,
+        title: "Consular invoice",
+        hint: "Document/message to be prepared by an exporter in his country and presented to a diplomatic representation of the importing country for endorsement and subsequently to be presented by the importer in connection with the import of the goods described therein."
+      }, {
+        id: 875,
+        title: "Partial construction invoice",
+        hint: "Partial invoice in the context of a specific construction project."
+      }, {
+        id: 876,
+        title: "Partial final construction invoice",
+        hint: "Invoice concluding all previous partial construction invoices of a completed partial rendered service in the context of a specific construction project."
+      }, {
+        id: 877,
+        title: "Final construction invoice",
+        hint: "Invoice concluding all previous partial invoices and partial final construction invoices in the context of a specific construction project."
+      }],
+      invoiceCurrencies: [{
+        name: "AED",
+        hint: "UAE Dirham"
+      }, {
+        name: "AFN",
+        hint: "Afghani"
+      }, {
+        name: "ALL",
+        hint: "Lek"
+      }, {
+        name: "AMD",
+        hint: "Armenian Dram"
+      }, {
+        name: "ANG",
+        hint: "Netherlands Antillean Guilder"
+      }, {
+        name: "AOA",
+        hint: "Kwanza"
+      }, {
+        name: "ARS",
+        hint: "Argentine Peso"
+      }, {
+        name: "AUD",
+        hint: "Australian Dollar"
+      }, {
+        name: "AWG",
+        hint: "Aruban Florin"
+      }, {
+        name: "AZN",
+        hint: "Azerbaijan Manat"
+      }, {
+        name: "BAM",
+        hint: "Convertible Mark"
+      }, {
+        name: "BBD",
+        hint: "Barbados Dollar"
+      }, {
+        name: "BDT",
+        hint: "Taka"
+      }, {
+        name: "BGN",
+        hint: "Bulgarian Lev"
+      }, {
+        name: "BHD",
+        hint: "Bahraini Dinar"
+      }, {
+        name: "BIF",
+        hint: "Burundi Franc"
+      }, {
+        name: "BMD",
+        hint: "Bermudian Dollar"
+      }, {
+        name: "BND",
+        hint: "Brunei Dollar"
+      }, {
+        name: "BOB",
+        hint: "Boliviano"
+      }, {
+        name: "BOV",
+        hint: "Mvdol"
+      }, {
+        name: "BRL",
+        hint: "Brazilian Real"
+      }, {
+        name: "BSD",
+        hint: "Bahamian Dollar"
+      }, {
+        name: "BTN",
+        hint: "Ngultrum"
+      }, {
+        name: "BWP",
+        hint: "Pula"
+      }, {
+        name: "BYN",
+        hint: "Belarusian Ruble"
+      }, {
+        name: "BZD",
+        hint: "Belize Dollar"
+      }, {
+        name: "CAD",
+        hint: "Canadian Dollar"
+      }, {
+        name: "CDF",
+        hint: "Congolese Franc"
+      }, {
+        name: "CHE",
+        hint: "WIR Euro"
+      }, {
+        name: "CHF",
+        hint: "Swiss Franc"
+      }, {
+        name: "CHW",
+        hint: "WIR Franc"
+      }, {
+        name: "CLF",
+        hint: "Unidad de Fomento"
+      }, {
+        name: "CLP",
+        hint: "Chilean Peso"
+      }, {
+        name: "CNY",
+        hint: "Yuan Renminbi"
+      }, {
+        name: "COP",
+        hint: "Colombian Peso"
+      }, {
+        name: "COU",
+        hint: "Unidad de Valor Real"
+      }, {
+        name: "CRC",
+        hint: "Costa Rican Colon"
+      }, {
+        name: "CUC",
+        hint: "Peso Convertible"
+      }, {
+        name: "CUP",
+        hint: "Cuban Peso"
+      }, {
+        name: "CVE",
+        hint: "Cabo Verde Escudo"
+      }, {
+        name: "CZK",
+        hint: "Czech Koruna"
+      }, {
+        name: "DJF",
+        hint: "Djibouti Franc"
+      }, {
+        name: "DKK",
+        hint: "Danish Krone"
+      }, {
+        name: "DOP",
+        hint: "Dominican Peso"
+      }, {
+        name: "DZD",
+        hint: "Algerian Dinar"
+      }, {
+        name: "EGP",
+        hint: "Egyptian Pound"
+      }, {
+        name: "ERN",
+        hint: "Nakfa"
+      }, {
+        name: "ETB",
+        hint: "Ethiopian Birr"
+      }, {
+        name: "EUR",
+        hint: "Euro"
+      }, {
+        name: "FJD",
+        hint: "Fiji Dollar"
+      }, {
+        name: "FKP",
+        hint: "Falkland Islands Pound"
+      }, {
+        name: "GBP",
+        hint: "Pound Sterling"
+      }, {
+        name: "GEL",
+        hint: "Lari"
+      }, {
+        name: "GHS",
+        hint: "Ghana Cedi"
+      }, {
+        name: "GIP",
+        hint: "Gibraltar Pound"
+      }, {
+        name: "GMD",
+        hint: "Dalasi"
+      }, {
+        name: "GNF",
+        hint: "Guinean Franc"
+      }, {
+        name: "GTQ",
+        hint: "Quetzal"
+      }, {
+        name: "GYD",
+        hint: "Guyana Dollar"
+      }, {
+        name: "HKD",
+        hint: "Hong Kong Dollar"
+      }, {
+        name: "HNL",
+        hint: "Lempira"
+      }, {
+        name: "HRK",
+        hint: "Kuna"
+      }, {
+        name: "HTG",
+        hint: "Gourde"
+      }, {
+        name: "HUF",
+        hint: "Forint"
+      }, {
+        name: "IDR",
+        hint: "Rupiah"
+      }, {
+        name: "INR",
+        hint: "Indian Rupee"
+      }, {
+        name: "IQD",
+        hint: "Iraqi Dinar"
+      }, {
+        name: "IRR",
+        hint: "Iranian Rial"
+      }, {
+        name: "ISK",
+        hint: "Iceland Krona"
+      }, {
+        name: "JMD",
+        hint: "Jamaican Dollar"
+      }, {
+        name: "JOD",
+        hint: "Jordanian Dinar"
+      }, {
+        name: "JPY",
+        hint: "Yen"
+      }, {
+        name: "KES",
+        hint: "Kenyan Shilling"
+      }, {
+        name: "KGS",
+        hint: "Som"
+      }, {
+        name: "KHR",
+        hint: "Riel"
+      }, {
+        name: "KMF",
+        hint: "Comorian Franc"
+      }, {
+        name: "KPW",
+        hint: "North Korean Won"
+      }, {
+        name: "KRW",
+        hint: "Won"
+      }, {
+        name: "KWD",
+        hint: "Kuwaiti Dinar"
+      }, {
+        name: "KYD",
+        hint: "Cayman Islands Dollar"
+      }, {
+        name: "KZT",
+        hint: "Tenge"
+      }, {
+        name: "LAK",
+        hint: "Lao Kip"
+      }, {
+        name: "LBP",
+        hint: "Lebanese Pound"
+      }, {
+        name: "LKR",
+        hint: "Sri Lanka Rupee"
+      }, {
+        name: "LRD",
+        hint: "Liberian Dollar"
+      }, {
+        name: "LSL",
+        hint: "Loti"
+      }, {
+        name: "LYD",
+        hint: "Libyan Dinar"
+      }, {
+        name: "MAD",
+        hint: "Moroccan Dirham"
+      }, {
+        name: "MDL",
+        hint: "Moldovan Leu"
+      }, {
+        name: "MGA",
+        hint: "Malagasy Ariary"
+      }, {
+        name: "MKD",
+        hint: "Denar"
+      }, {
+        name: "MMK",
+        hint: "Kyat"
+      }, {
+        name: "MNT",
+        hint: "Tugrik"
+      }, {
+        name: "MOP",
+        hint: "Pataca"
+      }, {
+        name: "MRU",
+        hint: "Ouguiya"
+      }, {
+        name: "MUR",
+        hint: "Mauritius Rupee"
+      }, {
+        name: "MVR",
+        hint: "Rufiyaa"
+      }, {
+        name: "MWK",
+        hint: "Malawi Kwacha"
+      }, {
+        name: "MXN",
+        hint: "Mexican Peso"
+      }, {
+        name: "MXV",
+        hint: "Mexican Unidad de Inversion (UDI)"
+      }, {
+        name: "MYR",
+        hint: "Malaysian Ringgit"
+      }, {
+        name: "MZN",
+        hint: "Mozambique Metical"
+      }, {
+        name: "NAD",
+        hint: "Namibia Dollar"
+      }, {
+        name: "NGN",
+        hint: "Naira"
+      }, {
+        name: "NIO",
+        hint: "Cordoba Oro"
+      }, {
+        name: "NOK",
+        hint: "Norwegian Krone"
+      }, {
+        name: "NPR",
+        hint: "Nepalese Rupee"
+      }, {
+        name: "NZD",
+        hint: "New Zealand Dollar"
+      }, {
+        name: "OMR",
+        hint: "Rial Omani"
+      }, {
+        name: "PAB",
+        hint: "Balboa"
+      }, {
+        name: "PEN",
+        hint: "Sol"
+      }, {
+        name: "PGK",
+        hint: "Kina"
+      }, {
+        name: "PHP",
+        hint: "Philippine Piso"
+      }, {
+        name: "PKR",
+        hint: "Pakistan Rupee"
+      }, {
+        name: "PLN",
+        hint: "Zloty"
+      }, {
+        name: "PYG",
+        hint: "Guarani"
+      }, {
+        name: "QAR",
+        hint: "Qatari Rial"
+      }, {
+        name: "RON",
+        hint: "Romanian Leu"
+      }, {
+        name: "RSD",
+        hint: "Serbian Dinar"
+      }, {
+        name: "RUB",
+        hint: "Russian Ruble"
+      }, {
+        name: "RWF",
+        hint: "Rwanda Franc"
+      }, {
+        name: "SAR",
+        hint: "Saudi Riyal"
+      }, {
+        name: "SBD",
+        hint: "Solomon Islands Dollar"
+      }, {
+        name: "SCR",
+        hint: "Seychelles Rupee"
+      }, {
+        name: "SDG",
+        hint: "Sudanese Pound"
+      }, {
+        name: "SEK",
+        hint: "Swedish Krona"
+      }, {
+        name: "SGD",
+        hint: "Singapore Dollar"
+      }, {
+        name: "SHP",
+        hint: "Saint Helena Pound"
+      }, {
+        name: "SLL",
+        hint: "Leone"
+      }, {
+        name: "SOS",
+        hint: "Somali Shilling"
+      }, {
+        name: "SRD",
+        hint: "Surinam Dollar"
+      }, {
+        name: "SSP",
+        hint: "South Sudanese Pound"
+      }, {
+        name: "STN",
+        hint: "Dobra"
+      }, {
+        name: "SVC",
+        hint: "El Salvador Colon"
+      }, {
+        name: "SYP",
+        hint: "Syrian Pound"
+      }, {
+        name: "SZL",
+        hint: "Lilangeni"
+      }, {
+        name: "THB",
+        hint: "Baht"
+      }, {
+        name: "TJS",
+        hint: "Somoni"
+      }, {
+        name: "TMT",
+        hint: "Turkmenistan New Manat"
+      }, {
+        name: "TND",
+        hint: "Tunisian Dinar"
+      }, {
+        name: "TOP",
+        hint: "Pa’anga"
+      }, {
+        name: "TRY",
+        hint: "Turkish Lira"
+      }, {
+        name: "TTD",
+        hint: "Trinidad and Tobago Dollar"
+      }, {
+        name: "TWD",
+        hint: "New Taiwan Dollar"
+      }, {
+        name: "TZS",
+        hint: "Tanzanian Shilling"
+      }, {
+        name: "UAH",
+        hint: "Hryvnia"
+      }, {
+        name: "UGX",
+        hint: "Uganda Shilling"
+      }, {
+        name: "USD",
+        hint: "US Dollar"
+      }, {
+        name: "USN",
+        hint: "US Dollar (Next day)"
+      }, {
+        name: "UYI",
+        hint: "Uruguay Peso en Unidades Indexadas (URUIURUI)"
+      }, {
+        name: "UYU",
+        hint: "Peso Uruguayo"
+      }, {
+        name: "UZS",
+        hint: "Uzbekistan Sum"
+      }, {
+        name: "VEF",
+        hint: "Bolívar"
+      }, {
+        name: "VND",
+        hint: "Dong"
+      }, {
+        name: "VUV",
+        hint: "Vatu"
+      }, {
+        name: "WST",
+        hint: "Tala"
+      }, {
+        name: "XAF",
+        hint: "CFA Franc BEAC"
+      }, {
+        name: "XAG",
+        hint: "Silver"
+      }, {
+        name: "XAU",
+        hint: "Gold"
+      }, {
+        name: "XBA",
+        hint: "Bond Markets Unit European Composite Unit (EURCO)"
+      }, {
+        name: "XBB",
+        hint: "Bond Markets Unit European Monetary Unit (E.M.U.-6)"
+      }, {
+        name: "XBC",
+        hint: "Bond Markets Unit European Unit of Account 9 (E.U.A.-9)"
+      }, {
+        name: "XBD",
+        hint: "Bond Markets Unit European Unit of Account 17 (E.U.A.-17)"
+      }, {
+        name: "XCD",
+        hint: "East Caribbean Dollar"
+      }, {
+        name: "XDR",
+        hint: "SDR (Special Drawing Right)"
+      }, {
+        name: "XOF",
+        hint: "CFA Franc BCEAO"
+      }, {
+        name: "XPD",
+        hint: "Palladium"
+      }, {
+        name: "XPF",
+        hint: "CFP Franc"
+      }, {
+        name: "XPT",
+        hint: "Platinum"
+      }, {
+        name: "XSU",
+        hint: "Sucre"
+      }, {
+        name: "XTS",
+        hint: "Codes specifically reserved for testing purposes"
+      }, {
+        name: "XUA",
+        hint: "ADB Unit of Account"
+      }, {
+        name: "YER",
+        hint: "Yemeni Rial"
+      }, {
+        name: "ZAR",
+        hint: "Rand"
+      }, {
+        name: "ZMW",
+        hint: "Zambian Kwacha"
+      }, {
+        name: "ZWL",
+        hint: "Zimbabwe Dollar"
+      }],
+      countries: [{
+        code: "AD",
+        name: "Andorra"
+      }, {
+        code: "AE",
+        name: "United Arab Emirates"
+      }, {
+        code: "AF",
+        name: "Afghanistan"
+      }, {
+        code: "AG",
+        name: "Antigua and Barbuda"
+      }, {
+        code: "AI",
+        name: "Anguilla"
+      }, {
+        code: "AL",
+        name: "Albania"
+      }, {
+        code: "AM",
+        name: "Armenia"
+      }, {
+        code: "AO",
+        name: "Angola"
+      }, {
+        code: "AQ",
+        name: "Antarctica"
+      }, {
+        code: "AR",
+        name: "Argentina"
+      }, {
+        code: "AS",
+        name: "American Samoa"
+      }, {
+        code: "AT",
+        name: "Austria"
+      }, {
+        code: "AU",
+        name: "Australia"
+      }, {
+        code: "AW",
+        name: "Aruba"
+      }, {
+        code: "AX",
+        name: "Åland Islands"
+      }, {
+        code: "AZ",
+        name: "Azerbaijan"
+      }, {
+        code: "BA",
+        name: "Bosnia and Herzegovina"
+      }, {
+        code: "BB",
+        name: "Barbados"
+      }, {
+        code: "BD",
+        name: "Bangladesh"
+      }, {
+        code: "BE",
+        name: "Belgium"
+      }, {
+        code: "BF",
+        name: "Burkina Faso"
+      }, {
+        code: "BG",
+        name: "Bulgaria"
+      }, {
+        code: "BH",
+        name: "Bahrain"
+      }, {
+        code: "BI",
+        name: "Burundi"
+      }, {
+        code: "BJ",
+        name: "Benin"
+      }, {
+        code: "BL",
+        name: "Saint Barthélemy"
+      }, {
+        code: "BM",
+        name: "Bermuda"
+      }, {
+        code: "BN",
+        name: "Brunei Darussalam"
+      }, {
+        code: "BO",
+        name: "Bolivia, Plurinational State of"
+      }, {
+        code: "BQ",
+        name: "Bonaire, Sint Eustatius and Saba"
+      }, {
+        code: "BR",
+        name: "Brazil"
+      }, {
+        code: "BS",
+        name: "Bahamas"
+      }, {
+        code: "BT",
+        name: "Bhutan"
+      }, {
+        code: "BV",
+        name: "Bouvet Island"
+      }, {
+        code: "BW",
+        name: "Botswana"
+      }, {
+        code: "BY",
+        name: "Belarus"
+      }, {
+        code: "BZ",
+        name: "Belize"
+      }, {
+        code: "CA",
+        name: "Canada"
+      }, {
+        code: "CC",
+        name: "Cocos (Keeling) Islands"
+      }, {
+        code: "CD",
+        name: "Congo, the Democratic Republic of the"
+      }, {
+        code: "CF",
+        name: "Central African Republic"
+      }, {
+        code: "CG",
+        name: "Congo"
+      }, {
+        code: "CH",
+        name: "Switzerland"
+      }, {
+        code: "CI",
+        name: "Côte d'Ivoire"
+      }, {
+        code: "CK",
+        name: "Cook Islands"
+      }, {
+        code: "CL",
+        name: "Chile"
+      }, {
+        code: "CM",
+        name: "Cameroon"
+      }, {
+        code: "CN",
+        name: "China"
+      }, {
+        code: "CO",
+        name: "Colombia"
+      }, {
+        code: "CR",
+        name: "Costa Rica"
+      }, {
+        code: "CU",
+        name: "Cuba"
+      }, {
+        code: "CV",
+        name: "Cabo Verde"
+      }, {
+        code: "CW",
+        name: "Curaçao"
+      }, {
+        code: "CX",
+        name: "Christmas Island"
+      }, {
+        code: "CY",
+        name: "Cyprus"
+      }, {
+        code: "CZ",
+        name: "Czechia"
+      }, {
+        code: "DE",
+        name: "Germany"
+      }, {
+        code: "DJ",
+        name: "Djibouti"
+      }, {
+        code: "DK",
+        name: "Denmark"
+      }, {
+        code: "DM",
+        name: "Dominica"
+      }, {
+        code: "DO",
+        name: "Dominican Republic"
+      }, {
+        code: "DZ",
+        name: "Algeria"
+      }, {
+        code: "EC",
+        name: "Ecuador"
+      }, {
+        code: "EE",
+        name: "Estonia"
+      }, {
+        code: "EG",
+        name: "Egypt"
+      }, {
+        code: "EH",
+        name: "Western Sahara"
+      }, {
+        code: "ER",
+        name: "Eritrea"
+      }, {
+        code: "ES",
+        name: "Spain"
+      }, {
+        code: "ET",
+        name: "Ethiopia"
+      }, {
+        code: "FI",
+        name: "Finland"
+      }, {
+        code: "FJ",
+        name: "Fiji"
+      }, {
+        code: "FK",
+        name: "Falkland Islands (Malvinas)"
+      }, {
+        code: "FM",
+        name: "Micronesia, Federated States of"
+      }, {
+        code: "FO",
+        name: "Faroe Islands"
+      }, {
+        code: "FR",
+        name: "France"
+      }, {
+        code: "GA",
+        name: "Gabon"
+      }, {
+        code: "GB",
+        name: "United Kingdom of Great Britain and Northern Ireland"
+      }, {
+        code: "GD",
+        name: "Grenada"
+      }, {
+        code: "GE",
+        name: "Georgia"
+      }, {
+        code: "GF",
+        name: "French Guiana"
+      }, {
+        code: "GG",
+        name: "Guernsey"
+      }, {
+        code: "GH",
+        name: "Ghana"
+      }, {
+        code: "GI",
+        name: "Gibraltar"
+      }, {
+        code: "GL",
+        name: "Greenland"
+      }, {
+        code: "GM",
+        name: "Gambia"
+      }, {
+        code: "GN",
+        name: "Guinea"
+      }, {
+        code: "GP",
+        name: "Guadeloupe"
+      }, {
+        code: "GQ",
+        name: "Equatorial Guinea"
+      }, {
+        code: "GR",
+        name: "Greece"
+      }, {
+        code: "GS",
+        name: "South Georgia and the South Sandwich Islands"
+      }, {
+        code: "GT",
+        name: "Guatemala"
+      }, {
+        code: "GU",
+        name: "Guam"
+      }, {
+        code: "GW",
+        name: "Guinea-Bissau"
+      }, {
+        code: "GY",
+        name: "Guyana"
+      }, {
+        code: "HK",
+        name: "Hong Kong"
+      }, {
+        code: "HM",
+        name: "Heard Island and McDonald Islands"
+      }, {
+        code: "HN",
+        name: "Honduras"
+      }, {
+        code: "HR",
+        name: "Croatia"
+      }, {
+        code: "HT",
+        name: "Haiti"
+      }, {
+        code: "HU",
+        name: "Hungary"
+      }, {
+        code: "ID",
+        name: "Indonesia"
+      }, {
+        code: "IE",
+        name: "Ireland"
+      }, {
+        code: "IL",
+        name: "Israel"
+      }, {
+        code: "IM",
+        name: "Isle of Man"
+      }, {
+        code: "IN",
+        name: "India"
+      }, {
+        code: "IO",
+        name: "British Indian Ocean Territory"
+      }, {
+        code: "IQ",
+        name: "Iraq"
+      }, {
+        code: "IR",
+        name: "Iran"
+      }, {
+        code: "IS",
+        name: "Iceland"
+      }, {
+        code: "IT",
+        name: "Italy"
+      }, {
+        code: "JE",
+        name: "Jersey"
+      }, {
+        code: "JM",
+        name: "Jamaica"
+      }, {
+        code: "JO",
+        name: "Jordan"
+      }, {
+        code: "JP",
+        name: "Japan"
+      }, {
+        code: "KE",
+        name: "Kenya"
+      }, {
+        code: "KG",
+        name: "Kyrgyzstan"
+      }, {
+        code: "KH",
+        name: "Cambodia"
+      }, {
+        code: "KI",
+        name: "Kiribati"
+      }, {
+        code: "KM",
+        name: "Comoros"
+      }, {
+        code: "KN",
+        name: "Saint Kitts and Nevis"
+      }, {
+        code: "KP",
+        name: "Korea, Democratic People's Republic of"
+      }, {
+        code: "KR",
+        name: "Korea, Republic of"
+      }, {
+        code: "KW",
+        name: "Kuwait"
+      }, {
+        code: "KY",
+        name: "Cayman Islands"
+      }, {
+        code: "KZ",
+        name: "Kazakhstan"
+      }, {
+        code: "LA",
+        name: "Lao People's Democratic Republic"
+      }, {
+        code: "LB",
+        name: "Lebanon"
+      }, {
+        code: "LC",
+        name: "Saint Lucia"
+      }, {
+        code: "LI",
+        name: "Liechtenstein"
+      }, {
+        code: "LK",
+        name: "Sri Lanka"
+      }, {
+        code: "LR",
+        name: "Liberia"
+      }, {
+        code: "LS",
+        name: "Lesotho"
+      }, {
+        code: "LT",
+        name: "Lithuania"
+      }, {
+        code: "LU",
+        name: "Luxembourg"
+      }, {
+        code: "LV",
+        name: "Latvia"
+      }, {
+        code: "LY",
+        name: "Libya"
+      }, {
+        code: "MA",
+        name: "Morocco"
+      }, {
+        code: "MC",
+        name: "Monaco"
+      }, {
+        code: "MD",
+        name: "Moldova, Republic of"
+      }, {
+        code: "ME",
+        name: "Montenegro"
+      }, {
+        code: "MF",
+        name: "Saint Martin (French part)"
+      }, {
+        code: "MG",
+        name: "Madagascar"
+      }, {
+        code: "MH",
+        name: "Marshall Islands"
+      }, {
+        code: "MK",
+        name: "Macedonia, the former Yugoslav Republic of"
+      }, {
+        code: "ML",
+        name: "Mali"
+      }, {
+        code: "MM",
+        name: "Myanmar"
+      }, {
+        code: "MN",
+        name: "Mongolia"
+      }, {
+        code: "MO",
+        name: "Macao"
+      }, {
+        code: "MP",
+        name: "Northern Mariana Islands"
+      }, {
+        code: "MQ",
+        name: "Martinique"
+      }, {
+        code: "MR",
+        name: "Mauritania"
+      }, {
+        code: "MS",
+        name: "Montserrat"
+      }, {
+        code: "MT",
+        name: "Malta"
+      }, {
+        code: "MU",
+        name: "Mauritius"
+      }, {
+        code: "MV",
+        name: "Maldives"
+      }, {
+        code: "MW",
+        name: "Malawi"
+      }, {
+        code: "MX",
+        name: "Mexico"
+      }, {
+        code: "MY",
+        name: "Malaysia"
+      }, {
+        code: "MZ",
+        name: "Mozambique"
+      }, {
+        code: "NA",
+        name: "Namibia"
+      }, {
+        code: "NC",
+        name: "New Caledonia"
+      }, {
+        code: "NE",
+        name: "Niger"
+      }, {
+        code: "NF",
+        name: "Norfolk Island"
+      }, {
+        code: "NG",
+        name: "Nigeria"
+      }, {
+        code: "NI",
+        name: "Nicaragua"
+      }, {
+        code: "NL",
+        name: "Netherlands"
+      }, {
+        code: "NO",
+        name: "Norway"
+      }, {
+        code: "NP",
+        name: "Nepal"
+      }, {
+        code: "NR",
+        name: "Nauru"
+      }, {
+        code: "NU",
+        name: "Niue"
+      }, {
+        code: "NZ",
+        name: "New Zealand"
+      }, {
+        code: "OM",
+        name: "Oman"
+      }, {
+        code: "PA",
+        name: "Panama"
+      }, {
+        code: "PE",
+        name: "Peru"
+      }, {
+        code: "PF",
+        name: "French Polynesia"
+      }, {
+        code: "PG",
+        name: "Papua New Guinea"
+      }, {
+        code: "PH",
+        name: "Philippines"
+      }, {
+        code: "PK",
+        name: "Pakistan"
+      }, {
+        code: "PL",
+        name: "Poland"
+      }, {
+        code: "PM",
+        name: "Saint Pierre and Miquelon"
+      }, {
+        code: "PN",
+        name: "Pitcairn"
+      }, {
+        code: "PR",
+        name: "Puerto Rico"
+      }, {
+        code: "PS",
+        name: "Palestine, State of"
+      }, {
+        code: "PT",
+        name: "Portugal"
+      }, {
+        code: "PW",
+        name: "Palau"
+      }, {
+        code: "PY",
+        name: "Paraguay"
+      }, {
+        code: "QA",
+        name: "Qatar"
+      }, {
+        code: "RE",
+        name: "Réunion"
+      }, {
+        code: "RO",
+        name: "Romania"
+      }, {
+        code: "RS",
+        name: "Serbia"
+      }, {
+        code: "RU",
+        name: "Russian Federation"
+      }, {
+        code: "RW",
+        name: "Rwanda"
+      }, {
+        code: "SA",
+        name: "Saudi Arabia"
+      }, {
+        code: "SB",
+        name: "Solomon Islands"
+      }, {
+        code: "SC",
+        name: "Seychelles"
+      }, {
+        code: "SD",
+        name: "Sudan"
+      }, {
+        code: "SE",
+        name: "Sweden"
+      }, {
+        code: "SG",
+        name: "Singapore"
+      }, {
+        code: "SH",
+        name: "Saint Helena, Ascension and Tristan da Cunha"
+      }, {
+        code: "SI",
+        name: "Slovenia"
+      }, {
+        code: "SJ",
+        name: "Svalbard and Jan Mayen"
+      }, {
+        code: "SK",
+        name: "Slovakia"
+      }, {
+        code: "SL",
+        name: "Sierra Leone"
+      }, {
+        code: "SM",
+        name: "San Marino"
+      }, {
+        code: "SN",
+        name: "Senegal"
+      }, {
+        code: "SO",
+        name: "Somalia"
+      }, {
+        code: "SR",
+        name: "Suriname"
+      }, {
+        code: "SS",
+        name: "South Sudan"
+      }, {
+        code: "ST",
+        name: "Sao Tome and Principe"
+      }, {
+        code: "SV",
+        name: "El Salvador"
+      }, {
+        code: "SX",
+        name: "Sint Maarten (Dutch part)"
+      }, {
+        code: "SY",
+        name: "Syrian Arab Republic"
+      }, {
+        code: "SZ",
+        name: "Swaziland"
+      }, {
+        code: "TC",
+        name: "Turks and Caicos Islands"
+      }, {
+        code: "TD",
+        name: "Chad"
+      }, {
+        code: "TF",
+        name: "French Southern Territories"
+      }, {
+        code: "TG",
+        name: "Togo"
+      }, {
+        code: "TH",
+        name: "Thailand"
+      }, {
+        code: "TJ",
+        name: "Tajikistan"
+      }, {
+        code: "TK",
+        name: "Tokelau"
+      }, {
+        code: "TL",
+        name: "Timor-Leste"
+      }, {
+        code: "TM",
+        name: "Turkmenistan"
+      }, {
+        code: "TN",
+        name: "Tunisia"
+      }, {
+        code: "TO",
+        name: "Tonga"
+      }, {
+        code: "TR",
+        name: "Turkey"
+      }, {
+        code: "TT",
+        name: "Trinidad and Tobago"
+      }, {
+        code: "TV",
+        name: "Tuvalu"
+      }, {
+        code: "TW",
+        name: "Taiwan, Province of China"
+      }, {
+        code: "TZ",
+        name: "Tanzania, United Republic of"
+      }, {
+        code: "UA",
+        name: "Ukraine"
+      }, {
+        code: "UG",
+        name: "Uganda"
+      }, {
+        code: "UM",
+        name: "United States Minor Outlying Islands"
+      }, {
+        code: "US",
+        name: "United States of America"
+      }, {
+        code: "UY",
+        name: "Uruguay"
+      }, {
+        code: "UZ",
+        name: "Uzbekistan"
+      }, {
+        code: "VA",
+        name: "Holy See"
+      }, {
+        code: "VC",
+        name: "Saint Vincent and the Grenadines"
+      }, {
+        code: "VE",
+        name: "Venezuela, Bolivarian Republic of"
+      }, {
+        code: "VG",
+        name: "Virgin Islands, British"
+      }, {
+        code: "VI",
+        name: "Virgin Islands, U.S."
+      }, {
+        code: "VN",
+        name: "Viet Nam"
+      }, {
+        code: "VU",
+        name: "Vanuatu"
+      }, {
+        code: "WF",
+        name: "Wallis and Futuna"
+      }, {
+        code: "WS",
+        name: "Samoa"
+      }, {
+        code: "YE",
+        name: "Yemen"
+      }, {
+        code: "YT",
+        name: "Mayotte"
+      }, {
+        code: "ZA",
+        name: "South Africa"
+      }, {
+        code: "ZM",
+        name: "Zambia"
+      }, {
+        code: "ZW",
+        name: "Zimbabwe"
+      }, {
+        code: "1A",
+        name: "Kosovo"
+      }, {
+        code: "XI",
+        name: "United Kingdom (Northern Ireland)"
+      }],
       invoiceLines: {},
       options: [],
       mediaOptions: [{
@@ -11832,26 +14032,29 @@ __webpack_require__.r(__webpack_exports__);
       }],
       message: {
         orderReference: '',
-        dueDate: null,
+        type: '',
+        currency: '',
+        supplier: {
+          name: '',
+          email: '',
+          address: {}
+        },
+        customer: {
+          name: '',
+          email: '',
+          address: {}
+        },
         recipient: '',
-        subject: '',
-        body: '',
-        amount: 0,
-        file: null,
-        mediaType: '',
+        vat: '',
         invoiceLines: {}
       }
     };
   },
-  computed: {
-    showAddButton: function showAddButton() {
-      return this.message.recipient !== null && this.message.recipient !== '' && !this.message.recipient.isLocal;
-    }
+  mounted: function mounted() {
+    this.message.orderReference = this.getRandomRefNumber();
+    this.loadUserInfo(this);
   },
   methods: {
-    setFile: function setFile(event) {
-      this.message.file = event.target.filesp[0];
-    },
     submit: function submit() {
       var payload = {
         body: this.message
@@ -11870,9 +14073,20 @@ __webpack_require__.r(__webpack_exports__);
         });
         loading(false);
       });
-    }, 350),
-    addContact: function addContact() {
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/index.php/apps/peppolnext/api/v1/contact', this.message.recipient).then(function (response) {}).catch(function (error) {});
+    }, 100),
+    loadUserInfo: function loadUserInfo(vm) {
+      fetch("/index.php/apps/peppolnext/api/v1/setting/asSupplier").then(function (res) {
+        res.json().then(function (json) {
+          vm.message.supplier = json;
+        });
+      });
+    },
+    getRandomRefNumber: function getRandomRefNumber() {
+      var now = new Date();
+      return this.fn(now.getFullYear()) + this.fn(now.getMonth() + 1) + this.fn(now.getUTCDate()) + this.fn(now.getHours()) + this.fn(now.getMinutes()) + this.fn(now.getSeconds());
+    },
+    fn: function fn(n) {
+      return n < 10 ? '0' + n : n;
     }
   }
 });
@@ -12491,7 +14705,183 @@ var render = function render() {
           on: {
             click: _vm.newAS4Direct
           }
-        }, [_vm._v("Generate AS4 direct identity")])])])];
+        }, [_vm._v("Generate AS4 direct identity")])]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("div", {
+          staticClass: "col-5"
+        }, [_vm._v("Address")])]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("div", {
+          staticClass: "col-1"
+        }), _vm._v(" "), _c("div", {
+          staticClass: "col-9"
+        }, [_c("div", {
+          staticClass: "row"
+        }, [_c("label", {
+          attrs: {
+            for: "customer-address-line1"
+          }
+        }, [_vm._v("Line1:")]), _vm._v(" "), _c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.address.line1,
+            expression: "address.line1"
+          }],
+          attrs: {
+            id: "customer-address-line1"
+          },
+          domProps: {
+            value: _vm.address.line1
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.address, "line1", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("label", {
+          attrs: {
+            for: "customer-address-line2"
+          }
+        }, [_vm._v("Line2:")]), _vm._v(" "), _c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.address.line2,
+            expression: "address.line2"
+          }],
+          attrs: {
+            id: "customer-address-line2"
+          },
+          domProps: {
+            value: _vm.address.line2
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.address, "line2", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("label", {
+          attrs: {
+            for: "customer-address-city"
+          }
+        }, [_vm._v("City:")]), _vm._v(" "), _c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.address.city,
+            expression: "address.city"
+          }],
+          attrs: {
+            id: "customer-address-city"
+          },
+          domProps: {
+            value: _vm.address.city
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.address, "city", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("label", {
+          attrs: {
+            for: "customer-address-postcode"
+          }
+        }, [_vm._v("PostCode:")]), _vm._v(" "), _c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.address.post_code,
+            expression: "address.post_code"
+          }],
+          attrs: {
+            id: "customer-address-postcode"
+          },
+          domProps: {
+            value: _vm.address.post_code
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.address, "post_code", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("label", {
+          attrs: {
+            for: "customer-address-state"
+          }
+        }, [_vm._v("State:")]), _vm._v(" "), _c("input", {
+          directives: [{
+            name: "model",
+            rawName: "v-model",
+            value: _vm.address.state,
+            expression: "address.state"
+          }],
+          attrs: {
+            id: "customer-address-state"
+          },
+          domProps: {
+            value: _vm.address.state
+          },
+          on: {
+            input: function input($event) {
+              if ($event.target.composing) return;
+              _vm.$set(_vm.address, "state", $event.target.value);
+            }
+          }
+        })]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("label", {
+          attrs: {
+            for: "customer-address-country"
+          }
+        }, [_vm._v("Country:")]), _vm._v(" "), _c("v-select", {
+          staticClass: "fullwidth",
+          attrs: {
+            id: "customer-address-country",
+            label: "name",
+            options: _vm.countries
+          },
+          scopedSlots: _vm._u([{
+            key: "option",
+            fn: function fn(option) {
+              return [_c("div", {
+                staticClass: "cmb-item-container"
+              }, [_c("div", {
+                staticClass: "cmb-item-data"
+              }, [_c("div", {
+                staticClass: "cmb-item-title"
+              }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t\t\t\t\t\t\t\t\t")])])])];
+            }
+          }]),
+          model: {
+            value: _vm.address.country,
+            callback: function callback($$v) {
+              _vm.$set(_vm.address, "country", $$v);
+            },
+            expression: "address.country"
+          }
+        })], 1)])]), _vm._v(" "), _c("div", {
+          staticClass: "row"
+        }, [_c("button", {
+          attrs: {
+            id: "setAddress"
+          },
+          on: {
+            click: _vm.setAddress
+          }
+        }, [_vm._v("Update address")])])])];
       },
       proxy: true
     }])
@@ -12624,27 +15014,38 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "description"
-  }, [_c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.invoiceItem.description,
-      expression: "invoiceItem.description"
-    }],
+  }, [_c("v-select", {
+    staticClass: "input",
     attrs: {
-      placeholder: "description"
-    },
-    domProps: {
-      value: _vm.invoiceItem.description
+      id: "customer-address-country",
+      label: "title",
+      options: _vm.vatCategories
     },
     on: {
-      change: _vm.notifyDataChange,
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.invoiceItem, "description", $event.target.value);
+      change: _vm.notifyDataChange
+    },
+    scopedSlots: _vm._u([{
+      key: "option",
+      fn: function fn(option) {
+        return [_c("div", {
+          staticClass: "cmb-item-container"
+        }, [_c("div", {
+          staticClass: "cmb-item-data"
+        }, [_c("div", {
+          staticClass: "cmb-item-title"
+        }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(option.title) + "\n\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
+          staticClass: "cmb-item-hint"
+        }, [_vm._v("\n\t\t\t\t\t\t\t" + _vm._s(option.description) + "\n\t\t\t\t\t\t")])])])];
       }
+    }]),
+    model: {
+      value: _vm.invoiceItem.vat_category,
+      callback: function callback($$v) {
+        _vm.$set(_vm.invoiceItem, "vat_category", $$v);
+      },
+      expression: "invoiceItem.vat_category"
     }
-  })]), _vm._v(" "), _c("div", [_c("button", {
+  })], 1), _vm._v(" "), _c("div", [_c("button", {
     attrs: {
       type: "button"
     },
@@ -12727,7 +15128,7 @@ var staticRenderFns = [function () {
     staticClass: "total-header"
   }, [_vm._v("Total")]), _vm._v(" "), _c("div", {
     staticClass: "description-header"
-  }, [_vm._v("Description")])]);
+  }, [_vm._v("VAT Category")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -12790,33 +15191,286 @@ var render = function render() {
         _vm.$set(_vm.message, "orderReference", $event.target.value);
       }
     }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-5"
+  })])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("v-select", {
+    staticClass: "fullwidth",
+    attrs: {
+      id: "txt-invoice-type",
+      label: "title",
+      options: _vm.invoiceTypes
+    },
+    scopedSlots: _vm._u([{
+      key: "option",
+      fn: function fn(option) {
+        return [_c("div", {
+          staticClass: "cmb-item-container"
+        }, [_c("div", {
+          staticClass: "cmb-item-data"
+        }, [_c("div", {
+          staticClass: "cmb-item-title"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(option.title) + "\n\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
+          staticClass: "cmb-item-hint"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(option.hint) + "\n\t\t\t\t\t\t\t")])])])];
+      }
+    }]),
+    model: {
+      value: _vm.message.type,
+      callback: function callback($$v) {
+        _vm.$set(_vm.message, "type", $$v);
+      },
+      expression: "message.type"
+    }
+  })], 1), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("v-select", {
+    staticClass: "fullwidth",
+    attrs: {
+      id: "txt-invoice-currency",
+      label: "name",
+      options: _vm.invoiceCurrencies
+    },
+    scopedSlots: _vm._u([{
+      key: "option",
+      fn: function fn(option) {
+        return [_c("div", {
+          staticClass: "cmb-item-container"
+        }, [_c("div", {
+          staticClass: "cmb-item-data"
+        }, [_c("div", {
+          staticClass: "cmb-item-title"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t\t\t\t\t")]), _vm._v(" "), _c("div", {
+          staticClass: "cmb-item-hint"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t" + _vm._s(option.hint) + "\n\t\t\t\t\t\t\t")])])])];
+      }
+    }]),
+    model: {
+      value: _vm.message.currency,
+      callback: function callback($$v) {
+        _vm.$set(_vm.message, "currency", $$v);
+      },
+      expression: "message.currency"
+    }
+  })], 1), _vm._v(" "), _vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-9"
+  }, [_c("div", {
+    staticClass: "row"
   }, [_c("label", {
     attrs: {
-      for: "txt-due-date"
+      for: "supplier-name"
     }
-  }, [_vm._v("InvoiceDate:")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Name:")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.message.dueDate,
-      expression: "message.dueDate"
+      value: _vm.message.supplier.name,
+      expression: "message.supplier.name"
     }],
     attrs: {
-      id: "txt-due-date",
-      type: "date"
+      id: "supplier-name"
     },
     domProps: {
-      value: _vm.message.dueDate
+      value: _vm.message.supplier.name
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.message, "dueDate", $event.target.value);
+        _vm.$set(_vm.message.supplier, "name", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "supplier-email"
+    }
+  }, [_vm._v("Email:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.supplier.email,
+      expression: "message.supplier.email"
+    }],
+    attrs: {
+      id: "supplier-email"
+    },
+    domProps: {
+      value: _vm.message.supplier.email
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.supplier, "email", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-9"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "supplier-address-line1"
+    }
+  }, [_vm._v("Line1:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.supplier.address.line1,
+      expression: "message.supplier.address.line1"
+    }],
+    attrs: {
+      id: "supplier-address-line1"
+    },
+    domProps: {
+      value: _vm.message.supplier.address.line1
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.supplier.address, "line1", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "supplier-address-line2"
+    }
+  }, [_vm._v("Line2:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.supplier.address.line2,
+      expression: "message.supplier.address.line2"
+    }],
+    attrs: {
+      id: "supplier-address-line2"
+    },
+    domProps: {
+      value: _vm.message.supplier.address.line2
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.supplier.address, "line2", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "supplier-address-city"
+    }
+  }, [_vm._v("City:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.supplier.address.city,
+      expression: "message.supplier.address.city"
+    }],
+    attrs: {
+      id: "supplier-address-city"
+    },
+    domProps: {
+      value: _vm.message.supplier.address.city
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.supplier.address, "city", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "supplier-address-postcode"
+    }
+  }, [_vm._v("PostCode:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.supplier.address.post_code,
+      expression: "message.supplier.address.post_code"
+    }],
+    attrs: {
+      id: "supplier-address-postcode"
+    },
+    domProps: {
+      value: _vm.message.supplier.address.post_code
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.supplier.address, "post_code", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "supplier-address-state"
+    }
+  }, [_vm._v("State:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.supplier.address.state,
+      expression: "message.supplier.address.state"
+    }],
+    attrs: {
+      id: "supplier-address-state"
+    },
+    domProps: {
+      value: _vm.message.supplier.address.state
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.supplier.address, "state", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "supplier-address-country"
+    }
+  }, [_vm._v("Country:")]), _vm._v(" "), _c("v-select", {
+    staticClass: "fullwidth",
+    attrs: {
+      id: "supplier-address-country",
+      label: "name",
+      options: _vm.countries
+    },
+    scopedSlots: _vm._u([{
+      key: "option",
+      fn: function fn(option) {
+        return [_c("div", {
+          staticClass: "cmb-item-container"
+        }, [_c("div", {
+          staticClass: "cmb-item-data"
+        }, [_c("div", {
+          staticClass: "cmb-item-title"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t\t\t\t\t\t\t\t\t")])])])];
+      }
+    }]),
+    model: {
+      value: _vm.message.supplier.address.country,
+      callback: function callback($$v) {
+        _vm.$set(_vm.message.supplier.address, "country", $$v);
+      },
+      expression: "message.supplier.address.country"
+    }
+  })], 1)])])])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-8"
@@ -12855,67 +15509,250 @@ var render = function render() {
       },
       expression: "message.recipient"
     }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-2"
-  }, [_vm.showAddButton ? _c("div", [_c("button", {
-    on: {
-      click: _vm.addContact
-    }
-  }, [_vm._v("\n\t\t\t\t\t\t+\n\t\t\t\t\t")])]) : _vm._e()])]), _vm._v(" "), _c("div", {
+  })], 1)]), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-10"
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-9"
+  }, [_c("div", {
+    staticClass: "row"
   }, [_c("label", {
     attrs: {
-      for: "txt-subject"
+      for: "customer-name"
     }
-  }, [_vm._v("Subject")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Name:")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.message.subject,
-      expression: "message.subject"
+      value: _vm.message.customer.name,
+      expression: "message.customer.name"
     }],
     attrs: {
-      id: "txt-subject",
-      type: "text"
+      id: "customer-name"
     },
     domProps: {
-      value: _vm.message.subject
+      value: _vm.message.customer.name
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.message, "subject", $event.target.value);
+        _vm.$set(_vm.message.customer, "name", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })]), _vm._v(" "), _c("div", {
     staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-10"
   }, [_c("label", {
     attrs: {
-      for: "txt-message"
+      for: "customer-email"
     }
-  }, [_vm._v("Message")]), _vm._v(" "), _c("textarea", {
+  }, [_vm._v("Email:")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.message.body,
-      expression: "message.body"
+      value: _vm.message.customer.email,
+      expression: "message.customer.email"
     }],
     attrs: {
-      id: "txt-message",
-      placeholder: "type your message",
-      rows: "1"
+      id: "customer-email"
     },
     domProps: {
-      value: _vm.message.body
+      value: _vm.message.customer.email
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.message, "body", $event.target.value);
+        _vm.$set(_vm.message.customer, "email", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _vm._m(5), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-9"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-line1"
+    }
+  }, [_vm._v("Line1:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.customer.address.line1,
+      expression: "message.customer.address.line1"
+    }],
+    attrs: {
+      id: "customer-address-line1"
+    },
+    domProps: {
+      value: _vm.message.customer.address.line1
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.customer.address, "line1", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-line2"
+    }
+  }, [_vm._v("Line2:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.customer.address.line2,
+      expression: "message.customer.address.line2"
+    }],
+    attrs: {
+      id: "customer-address-line2"
+    },
+    domProps: {
+      value: _vm.message.customer.address.line2
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.customer.address, "line2", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-city"
+    }
+  }, [_vm._v("City:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.customer.address.city,
+      expression: "message.customer.address.city"
+    }],
+    attrs: {
+      id: "customer-address-city"
+    },
+    domProps: {
+      value: _vm.message.customer.address.city
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.customer.address, "city", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-postcode"
+    }
+  }, [_vm._v("PostCode:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.customer.address.post_code,
+      expression: "message.customer.address.post_code"
+    }],
+    attrs: {
+      id: "customer-address-postcode"
+    },
+    domProps: {
+      value: _vm.message.customer.address.post_code
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.customer.address, "post_code", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-state"
+    }
+  }, [_vm._v("State:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.customer.address.state,
+      expression: "message.customer.address.state"
+    }],
+    attrs: {
+      id: "customer-address-state"
+    },
+    domProps: {
+      value: _vm.message.customer.address.state
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message.customer.address, "state", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-country"
+    }
+  }, [_vm._v("Country:")]), _vm._v(" "), _c("v-select", {
+    staticClass: "fullwidth",
+    attrs: {
+      id: "customer-address-country",
+      label: "name",
+      options: _vm.countries
+    },
+    scopedSlots: _vm._u([{
+      key: "option",
+      fn: function fn(option) {
+        return [_c("div", {
+          staticClass: "cmb-item-container"
+        }, [_c("div", {
+          staticClass: "cmb-item-data"
+        }, [_c("div", {
+          staticClass: "cmb-item-title"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t\t\t\t\t\t\t\t\t")])])])];
+      }
+    }]),
+    model: {
+      value: _vm.message.customer.address.country,
+      callback: function callback($$v) {
+        _vm.$set(_vm.message.customer.address, "country", $$v);
+      },
+      expression: "message.customer.address.country"
+    }
+  })], 1)])])])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-5"
+  }, [_c("label", {
+    attrs: {
+      for: "txt-vat"
+    }
+  }, [_vm._v("VAT amount:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.message.vat,
+      expression: "message.vat"
+    }],
+    attrs: {
+      id: "txt-vat"
+    },
+    domProps: {
+      value: _vm.message.vat
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.message, "vat", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("div", {
@@ -12938,60 +15775,6 @@ var render = function render() {
   })], 1)])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-10"
-  }, [_c("label", {
-    attrs: {
-      for: "file"
-    }
-  }, [_vm._v("Choose a XML file")]), _vm._v(" "), _c("input", {
-    attrs: {
-      id: "file",
-      type: "file",
-      placeholder: "Choose a file or drop it here..."
-    },
-    on: {
-      chane: _vm.setFile
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-5"
-  }, [_c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.message.mediaType,
-      expression: "message.mediaType"
-    }],
-    staticClass: "mt-3",
-    attrs: {
-      id: "cmb-media-type",
-      size: "sm"
-    },
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.message, "mediaType", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      value: "",
-      disabled: ""
-    }
-  }, [_vm._v("\n\t\t\t\t\t\tSelect sending media\n\t\t\t\t\t")]), _vm._v(" "), _vm._l(_vm.mediaOptions, function (item) {
-    return _c("option", {
-      key: item.value,
-      domProps: {
-        value: item.value
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t" + _vm._s(item.text) + "\n\t\t\t\t\t")]);
-  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-5"
   }, [_c("button", {
     on: {
@@ -13001,7 +15784,59 @@ var render = function render() {
     staticClass: "col-3"
   })]);
 };
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "txt-invoice-type"
+    }
+  }, [_vm._v("Invoice Type:")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "txt-invoice-currency"
+    }
+  }, [_vm._v("Invoice Currency:")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-5"
+  }, [_vm._v("Supplier")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-5"
+  }, [_vm._v("Address")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-5"
+  }, [_vm._v("Customer")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-5"
+  }, [_vm._v("Address")])]);
+}];
 render._withStripped = true;
 
 
@@ -19073,7 +21908,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-3909be00] {\n\twidth: 80%;\n\tmargin: 0 10% 0 10%;\n}\n.item-body[data-v-3909be00]{\n\tdisplay: flex;\n}\n.row-number[data-v-3909be00]{\n\ttext-align: center;\n}\n.title[data-v-3909be00]{\n\tflex: 0.2;\n}\n.fee[data-v-3909be00]{\n\tflex: 0.1;\n}\n.quantity[data-v-3909be00]{\n\tflex: 0.1;\n}\n.total[data-v-3909be00]{\n\tflex: 0.1;\n}\n.description[data-v-3909be00]{\n\tflex: 0.4;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ninput[data-v-3909be00] {\n\twidth: 80%;\n\tmargin: 0 10% 0 10%;\n}\n.item-body[data-v-3909be00]{\n\tdisplay: flex;\n}\n.row-number[data-v-3909be00]{\n\ttext-align: center;\n}\n.title[data-v-3909be00]{\n\tflex: 0.2;\n}\n.fee[data-v-3909be00]{\n\tflex: 0.1;\n}\n.quantity[data-v-3909be00]{\n\tflex: 0.1;\n}\n.total[data-v-3909be00]{\n\tflex: 0.1;\n}\n.description[data-v-3909be00]{\n\tflex: 0.5;\n}\n.input[data-v-3909be00] {\n\twidth: 95%;\n\tmargin: 0 5% 0 0%;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -19100,7 +21935,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_noSourceMaps_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.header[data-v-7c2d5fbe]{\n\tdisplay: flex;\n}\n.row-number-header[data-v-7c2d5fbe] {\n\ttext-align: center;\n}\n.title-header[data-v-7c2d5fbe] {\n\tflex: 0.2;\n\ttext-align: center;\n}\n.fee-header[data-v-7c2d5fbe] {\n\tflex: 0.1;\n\ttext-align: center;\n}\n.quantity-header[data-v-7c2d5fbe] {\n\tflex: 0.1;\n\ttext-align: center;\n}\n.total-header[data-v-7c2d5fbe] {\n\tflex: 0.1;\n\ttext-align: center;\n}\n.description-header[data-v-7c2d5fbe] {\n\tflex: 0.4;\n\ttext-align: center;\n}\n.footer[data-v-7c2d5fbe]{\n\tdisplay: flex;\n\tmargin-top: 1%;\n}\n.btn-plus[data-v-7c2d5fbe]{\n\tflex: 0.1;\n}\n.gap[data-v-7c2d5fbe]{\n\tflex: .4;\n}\n.total-cap[data-v-7c2d5fbe]{\n\tflex: .3;\n\ttext-align: center;\n\tbackground-color: lightgray;\n}\n.total-amount[data-v-7c2d5fbe]{\n\tflex: .3;\n\ttext-align: center;\n}\n.text-total[data-v-7c2d5fbe]{\n\tpadding-top: 4% ;\n}\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.header[data-v-7c2d5fbe]{\n\tdisplay: flex;\n}\n.row-number-header[data-v-7c2d5fbe] {\n\ttext-align: center;\n}\n.title-header[data-v-7c2d5fbe] {\n\tflex: 0.2;\n\ttext-align: center;\n}\n.fee-header[data-v-7c2d5fbe] {\n\tflex: 0.1;\n\ttext-align: center;\n}\n.quantity-header[data-v-7c2d5fbe] {\n\tflex: 0.1;\n\ttext-align: center;\n}\n.total-header[data-v-7c2d5fbe] {\n\tflex: 0.1;\n\ttext-align: center;\n}\n.description-header[data-v-7c2d5fbe] {\n\tflex: 0.5;\n\ttext-align: center;\n}\n.footer[data-v-7c2d5fbe]{\n\tdisplay: flex;\n\tmargin-top: 1%;\n}\n.btn-plus[data-v-7c2d5fbe]{\n\tflex: 0.1;\n}\n.gap[data-v-7c2d5fbe]{\n\tflex: .4;\n}\n.total-cap[data-v-7c2d5fbe]{\n\tflex: .3;\n\ttext-align: center;\n\tbackground-color: lightgray;\n}\n.total-amount[data-v-7c2d5fbe]{\n\tflex: .3;\n\ttext-align: center;\n}\n.text-total[data-v-7c2d5fbe]{\n\tpadding-top: 4% ;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -70288,4 +73123,4 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].mixin({
 
 /******/ })()
 ;
-//# sourceMappingURL=peppolnext-main.js.map?v=0cff5e9e270d77c44e13
+//# sourceMappingURL=peppolnext-main.js.map?v=f1e0f1f8f811a2ed5556

@@ -6,7 +6,7 @@
 			<div class="fee-header">Fee</div>
 			<div class="quantity-header">Quantity</div>
 			<div class="total-header">Total</div>
-			<div class="description-header">Description</div>
+			<div class="description-header">VAT Category</div>
 		</div>
 		<div id="item-container" v-for="(obj, index) in rows" v-bind:key="index">
 			<InvoiceItem
@@ -120,7 +120,7 @@ export default {
 		text-align: center;
 	}
 	.description-header {
-		flex: 0.4;
+		flex: 0.5;
 		text-align: center;
 	}
 	.footer{

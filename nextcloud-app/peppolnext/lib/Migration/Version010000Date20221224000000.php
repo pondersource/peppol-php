@@ -2,6 +2,7 @@
 
   namespace OCA\PeppolNext\Migration;
   
+  use OCA\PeppolNext\Db\NextUserMapper;
   use OCA\PeppolNext\Db\PeppolIdentityMapper;
   use OCA\PeppolNext\Db\MessageMapper;
 
@@ -21,6 +22,25 @@
     public function changeSchema(IOutput $output, Closure $schemaClosure, array $options) {
         /** @var ISchemaWrapper $schema */
         $schema = $schemaClosure();
+
+        if (!$schema->hasTable(NextUserMapper::DB_NAME)) {
+            $table = $schema->createTable(NextUserMapper::DB_NAME);
+            $table->addColumn('id', 'integer', [
+                'autoincrement' => true,
+                'notnull' => true,
+            ]);
+            $table->addColumn('user_id', 'string', [
+                'notnull' => true,
+                'length' => 200,
+            ]);
+            $table->addColumn('address', 'text', [
+                'notnull' => false,
+                'default' => ''
+            ]);
+
+            $table->setPrimaryKey(['id']);
+            $table->addIndex(['user_id'], 'user_id_index');
+        }
 
         if (!$schema->hasTable(PeppolIdentityMapper::DB_NAME)) {
             $table = $schema->createTable(PeppolIdentityMapper::DB_NAME);

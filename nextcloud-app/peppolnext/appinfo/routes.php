@@ -28,6 +28,8 @@ return [
 		['name' => 'setting_api#index', 'url' => '/api/v1/setting', 'verb'=>'GET'],
 		['name' => 'setting_api#createletspeppol', 'url' => '/api/v1/letspeppol', 'verb'=>'POST'],
 		['name' => 'setting_api#createas4direct', 'url' => '/api/v1/as4direct', 'verb'=>'POST'],
+		['name' => 'setting_api#updateAddress', 'url' => '/api/v1/address', 'verb'=>'POST'],
+		['name' => 'setting_api#asSupplier', 'url' => '/api/v1/setting/asSupplier', 'verb'=>'GET'],
 		['name' => 'setting_api#cert', 'url' => '/cert', 'verb'=> 'GET']
 
 	]
