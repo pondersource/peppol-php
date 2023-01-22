@@ -1,16 +1,18 @@
 <?php
 namespace OCA\PeppolNext\Service\Model;
 
-
 use OCA\PeppolNext\Service\ContactService;
+use OCA\PeppolNext\Service\Helper\PostalAddress;
 
 class PeppolContactBuilder
 {
+
 	private $fullname;
 	private $peppolId;
 	private $relatipnship;
 	private $endpoint = '';
 	private $certificate = '';
+	private ?PostalAddress $address = null;
 
 	public function setFullname(string $fullname) : PeppolContactBuilder{
 		$this->fullname = $fullname;
@@ -38,10 +40,16 @@ class PeppolContactBuilder
 		return $this;
 	}
 
+	public function setAddress(PostalAddress $address): PeppolContactBuilder {
+		$this->address = $address;
+		return $this;
+	}
+
 	public function getSerialized(): array
 	{
 		return [
 			"FN" => $this->fullname,
+			"ADR" => [$this->address->asVCardAddress()],
 			ContactService::SOCIAL_PROFILE_KEY => Constants::PEPPOL_INDICATOR.$this->peppolId,
 			ContactService::AS4_RELATIONSHIP => $this->relatipnship,
 			ContactService::AS4_DIRECT_ENDPOINT => $this->endpoint,

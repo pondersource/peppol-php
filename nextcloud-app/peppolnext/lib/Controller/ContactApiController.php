@@ -2,6 +2,7 @@
 namespace OCA\PeppolNext\Controller;
 
 use OCA\PeppolNext\Service\ContactService;
+use OCA\PeppolNext\Service\Helper\PostalAddress;
 use OCA\PeppolNext\Service\Model\Constants;
 use OCA\PeppolNext\Service\Model\PeppolContactBuilder;
 use OCP\AppFramework\ApiController;
@@ -27,7 +28,6 @@ class ContactApiController extends ApiController {
 	 * @return DataResponse
 	 */
 	public function search(): DataResponse{
-
 		$needle = $this->request->getParam('needle');
 		$local = $this->contactService->readLocalPeppolContact($needle, ContactService::FLAG_CUSTOMER);
 		$remote = $this->contactService->readPeppolDirectory($needle, ContactService::FLAG_CUSTOMER);
@@ -57,8 +57,21 @@ class ContactApiController extends ApiController {
 			->setFullname($payload["title"])
 			->setRelationship($payload["relationship"])
 			->setEndpoint($payload["endpoint"])
-			->setCertificate($payload["certificate"]);
+			->setCertificate($payload["certificate"])
+			->setAddress(PostalAddress::fromPeppolAddress($payload["address"]));
 		$this->contactService->addContact($contact);
+		return new DataResponse([], Http::STATUS_ACCEPTED);
+	}
+
+	/**
+	 * @NoCSRFRequired
+	 * @NoAdminRequired
+	 * @return DataResponse
+	 */
+	public function removeContact($uid) : DataResponse
+	{
+		$relationship = $this->request->getParam('relationship');
+		$this->contactService->removeContact($uid, $relationship);
 		return new DataResponse([], Http::STATUS_ACCEPTED);
 	}
 

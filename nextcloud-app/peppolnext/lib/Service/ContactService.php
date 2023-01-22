@@ -3,6 +3,7 @@
 namespace OCA\PeppolNext\Service;
 
 use GuzzleHttp\Client;
+use OCA\PeppolNext\Service\Helper\VCardInterpreter;
 use OCA\PeppolNext\Service\Model\Constants;
 use OCA\PeppolNext\Service\Model\PeppolContact;
 use OCA\PeppolNext\Service\Model\PeppolContactBuilder;
@@ -41,7 +42,9 @@ class ContactService {
 							$relationship = $contact[self::AS4_RELATIONSHIP];
 
 							if ($contact_relationship & $relationship > 0) {
-								return new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE]);
+								$interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
+								$address = $interpreter->getAddress()->asPeppolAddress();
+								return new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE], $address);
 							}
 						}
 					}
@@ -65,7 +68,9 @@ class ContactService {
 						$relationship = $contact[self::AS4_RELATIONSHIP];
 
 						if ($contact_relationship & $relationship > 0) {
-							$result[] = new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE]);
+							$interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
+							$address = $interpreter->getAddress()->asPeppolAddress();
+							$result[] = new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE], $address);
 						}
 					}
 				}
@@ -76,7 +81,47 @@ class ContactService {
 
 	public function addContact(PeppolContactBuilder $contact) : void{
 		$addressBook = $this->contactManager->getUserAddressBooks()[1];
-		$addressBook->createOrUpdate($contact->getSerialized());
+		$result = $addressBook->createOrUpdate($contact->getSerialized());
+		//throw new \Exception(json_encode($result));
+		//throw new \Exception(json_encode($contact->getSerialized()));
+	}
+
+	public function removeContact(string $uid, int $relationship) {
+		$result = $this->contactManager->search($uid, ["UID"], ['limit'=>1]);
+
+		if (empty($result)) {
+			throw new \Exception('not found');
+			return;
+		}
+
+		$contact = $result[0];
+		
+		if (!isset($contact[self::AS4_RELATIONSHIP]) || $contact[self::AS4_RELATIONSHIP] & $relationship === 0) {
+			throw new \Exception('not related');
+			return;
+		}
+
+		$contactId = $contact['UID'];
+		$addressBookId = $contact['addressbook-key'];
+
+		$addressBooks = $this->contactManager->getUserAddressBooks();
+		$addressBook = $addressBooks[$addressBookId];
+		
+		//$result = $addressBook->search($uid, ["UID"], ['limit'=>1]);
+		//throw new \Exception(json_encode($result, true));
+
+		if ($contact[self::AS4_RELATIONSHIP] == $relationship) {
+			// Remove the contact
+			//$result = $this->contactManager->delete($conactId, $addressBookId - 1);
+			$result = $addressBook->delete($conactId);
+			throw new \Exception('removed >' . $contactId . '< >' . $addressBookId . '< ' . ($result ? 'yes' : 'no'));
+		}
+		else {
+			// Update the contact
+			$contact[self::AS4_RELATIONSHIP] = $contact[self::AS4_RELATIONSHIP] & ~$relationship;
+			$this->contactManager->createOrUpdate($contact, $addressBookId);
+			throw new \Exception('updated');
+		}
 	}
 
 	public function readPeppolDirectory(string $pattern, int $contact_relationship) : array{

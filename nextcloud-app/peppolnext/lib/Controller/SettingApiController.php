@@ -95,9 +95,12 @@ class SettingApiController extends ApiController
 
 		if ($next_user == null) {
 			$next_user = new NextUser();
+
+			$user = $this->userSession->getUser();
+			$next_user->setUserId($user->getUID());
 		}
 
-		$address = $this->request->getParams("body")['body'];
+		$address = $this->request->getParams("body");
 
 		$next_user->setAddress(json_encode($address));
 
@@ -129,7 +132,14 @@ class SettingApiController extends ApiController
 			return json_decode($next_user->getAddress(), true);
 		}
 		else {
-			return [];
+			return [
+				'line1' => '',
+				'line2' => '',
+				'city' => '',
+				'post_code' => '',
+				'state' => '',
+				'country' => []
+			];
 		}
 	}
 

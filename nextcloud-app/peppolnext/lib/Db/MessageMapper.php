@@ -24,9 +24,9 @@ class MessageMapper extends QBMapper {
         $qb->select('*')
              ->from($this->getTableName())
              ->where($qb->expr()->eq('category', $qb->createNamedParameter($category)))
+             ->orderBy('createdAt', 'DESC')
              ->setFirstResult($start)
-             ->setMaxResults($count)
-             ->orderBy('createdAt', 'DESC');
+             ->setMaxResults($count);
 
         return $this->findEntities($qb);
     }
@@ -37,7 +37,7 @@ class MessageMapper extends QBMapper {
 	    $qb->select($qb->createFunction("COUNT(*)"))
 	       ->from($table_name)
            ->where($qb->expr()->eq('category', $qb->createNamedParameter($category)));
-	    return $qb->getSQL();
+	    return array_values($this->findOneQuery($qb))[0];
     }
 
 }

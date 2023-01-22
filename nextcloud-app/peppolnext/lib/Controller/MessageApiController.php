@@ -13,6 +13,7 @@ use OCA\PeppolNext\Service\UploadService;
 use OCA\PeppolNext\Service\Model\Constants;
 use OCA\PeppolNext\Service\Model\MessageBuilder;
 use OCA\PeppolNext\Service\Peppol\PeppolManagerService;
+use OCA\PeppolNext\Service\Peppol\AS4DirectService;
 use OCA\PeppolNext\PonderSource\Envelope\Envelope;
 use OCA\PeppolNext\PonderSource\Envelope\Body;
 use OCA\PeppolNext\PonderSource\Envelope\Header;
@@ -132,7 +133,7 @@ class MessageApiController extends ApiController {
 	 * @NoCSRFRequired
 	 * @NoAdminRequired
 	 */
-	public function index($page): DataDisplayResponse {
+	public function index($page): DataResponse {
 		$type = $this->request->getParam("type");
 		$category = ($type === "Inbox") ? Message::CATEGORY_INBOX : Message::CATEGORY_CONNECTION_REQUEST;
 		$messages = $this->messageService->getMessages($category, $page);
@@ -142,8 +143,8 @@ class MessageApiController extends ApiController {
 		foreach ($messages as $message) {
 			$item = [];
 
-			if ($mesage->getContactName() != null) {
-				$item['supplier'] = $mesage->getContactName();
+			if ($ضmessage->getContactName() != null) {
+				$item['supplier'] = $message->getContactName();
 			}
 			else if ($message->getContactId() != null) {
 				$supplier = $this->contactService->findContact($sender_id, ContactService::FLAG_SUPPLIER);
@@ -179,16 +180,144 @@ class MessageApiController extends ApiController {
 	 * @NoCSRFRequired
 	 */
 	public function create() {
-		$body = $this->request->getParam("body");
-		$messageBuilder = new MessageBuilder($body);
-		if ($messageBuilder->hasError()){
-			return new DataResponse(["success"=> false, "errors" => $messageBuilder->getErrors()]);
+		$message = $this->request->getParams("body");
+
+		$invoice = $this->invoiceFromMessage($message);
+
+		$endpoint = $message['recipient']['endpoint'];
+		
+		//$receiver_id = explode(":", $message['recipient']['peppolEndpoint'])[1];
+		//$receiver_scheme = explode(":", $message['recipient']['peppolEndpoint'])[0];
+		$receiver_scheme = 'iso6523-actorid-upis';
+		$receiver_id = $message['recipient']['peppolEndpoint'];
+
+		$receiver_certificate = $message['recipient']['certificate'];
+
+		if (empty($receiver_id) || empty($receiver_scheme)) {
+			// TODO Return proper response
+			throw new \Exception('No receiver identifier specified');
 		}
-		$fileName = $this->getFileName($messageBuilder->getOrderReference());
-		$content = $this->messageService->serializeXML($messageBuilder);
-		$this->messageService->save($content, $fileName);
-		$this->messageService->send($messageBuilder->getReceiver()->uid, $fileName, $messageBuilder->getMediaType());
-		return new DataResponse(["success"=> true, "errors"=>[]]);
+
+		if (empty($endpoint) || empty($receiver_certificate)) {
+			// TODO Try LetsPeppol
+			return new DataResponse(["success"=> false]);
+		}
+		
+		$r_cert = new X509();
+		$r_cert->loadX509($receiver_certificate);
+
+		list($result, $sender_identity, $raw_envelope, $raw_payload) =
+			$this->as4DirectSendWithReceiver($invoice, $endpoint, $receiver_scheme, $receiver_id, $r_cert);
+		
+		$this->messageService->saveOutbox(
+			$sender_identity,
+			$receiver_id,
+			Message::TYPE_INVOICE,
+			'test title', // TODO Fix title
+			$raw_envelope,
+			$raw_payload);
+
+		return new DataResponse(["success"=> true, "verification_result"=>$result]);
+	}
+	
+	private function as4DirectSendWithReceiver($invoice, $endpoint, $r_scheme, $r_id, $r_cert) {
+		$peppolService = $this->peppolManagerService->getPeppolServiceForName(AS4DirectService::SERVICE_NAME);
+
+		$sender_identity = $peppolService->getIdentity();
+
+		if (!isset($sender_identity)) {
+			// TODO Return propert response
+			throw new \Exception('AS4 direct identity is not set up.');
+		}
+		
+		$cert_store = $this->peppolManagerService->getCertificateStore($sender_identity);
+		$passphrase = $sender_identity->getUserId();
+		list($private_key, $cert) = isset($cert_store) ? $this->getPrivateKeyAndCertificate($cert_store, $passphrase) : [null, null];
+
+		$s_scheme = $sender_identity->getScheme();
+		$s_id = $sender_identity->getPeppolId();
+		$s_key = $private_key;
+
+		list($result, $raw_envelope, $raw_payload) =
+			$this->as4SendWithFullInfo($invoice, $endpoint, $r_scheme, $r_id, $r_cert, $s_scheme, $s_id, $s_key);
+
+		return [$result, $sender_identity, $raw_envelope, $raw_payload];
+	}
+
+	private function invoiceFromMessage($message): Invoice {
+		$currency = $message['currency']['name'];
+
+		$seller_address = new PostalAddress();
+		$seller_address->setStreetName($message['supplier']['address']['line1']);
+		$seller_address->setAdditionalStreetName($message['supplier']['address']['line2']);
+		$seller_address->setCityName($message['supplier']['address']['city']);
+		$seller_address->setPostalZone($message['supplier']['address']['post_code']);
+		$seller_address->setCountrySubentity($message['supplier']['address']['state']);
+		$seller_address->setCountry(new Country($message['supplier']['address']['country']['code']));
+		
+		$seller_party = new InvoiceParty();
+		$seller_party->setEndpointID(new EndpointID($message['supplier']['email'], '0007'));
+		$seller_party->setPostalAddress($seller_address);
+		$seller_party->setPartyLegalEntity(new PartyLegalEntity($message['supplier']['name']));
+
+		$buyer_address = new PostalAddress();
+		$buyer_address->setStreetName($message['customer']['address']['line1']);
+		$buyer_address->setAdditionalStreetName($message['customer']['address']['line2']);
+		$buyer_address->setCityName($message['customer']['address']['city']);
+		$buyer_address->setPostalZone($message['customer']['address']['post_code']);
+		$buyer_address->setCountrySubentity($message['customer']['address']['state']);
+		$buyer_address->setCountry(new Country($message['customer']['address']['country']['code']));
+		
+		$buyer_party = new InvoiceParty();
+		$buyer_party->setEndpointID(new EndpointID($message['customer']['email'], '0007'));
+		$buyer_party->setPostalAddress($buyer_address);
+		$buyer_party->setPartyLegalEntity(new PartyLegalEntity($message['customer']['name']));
+		
+		$invoice_lines = [];
+		$invoice_total = 0;
+
+		$line_id = 1;
+
+		foreach ($message['invoiceLines'] as $line) {
+			$line_total = $line['price'] * $line['quantity'];
+			$invoice_total += $line_total;
+
+			$item = new Item();
+			$item->setName($line['title']);
+			$item->setClassifiedTaxCategory(
+				new ClassifiedTaxCategory(
+					$line['vat_category']['code'],
+					null,
+					new TaxScheme()));
+
+			$invoice_line = new InvoiceLine();
+			$invoice_line->setId($line_id++);
+			$invoice_line->setInvoicedQuantity($line['quantity']);
+			$invoice_line->setLineExtensionAmount(new Amount($currency, $line_total));
+			$invoice_line->setItem($item);
+			$invoice_line->setPrice(new Price(new Amount($currency, $line['price'])));
+
+			$invoice_lines[] = $invoice_line;
+		}
+
+		$legal_total = new LegalMonetaryTotal();
+		$legal_total->setLineExtensionAmount(new Amount($currency, $invoice_total));
+		$legal_total->setTaxExclusiveAmount(new Amount($currency, $invoice_total));
+		$legal_total->setTaxInclusiveAmount(new Amount($currency, $invoice_total + $message['vat']));
+		$legal_total->setPayableAmount(new Amount($currency, $invoice_total));
+
+		$invoice = new Invoice();
+		$invoice->setId($message['orderReference']);
+		$invoice->setIssueDate(new \DateTime());
+		$invoice->setInvoiceTypeCode($message['type']['id']);
+		$invoice->setDocumentCurrencyCode($currency);
+		$invoice->setAccountingSupplierParty(new AccountingSupplierParty($seller_party));
+		$invoice->setAccountingCustomerParty(new AccountingCustomerParty($buyer_party));
+		$invoice->setTaxTotal(new TaxTotal(new Amount($currency, $message['vat'])));
+		$invoice->setLegalMonetaryTotal($legal_total);
+		$invoice->setInvoiceLines($invoice_lines);
+
+		return $invoice;
 	}
 
 	/**
@@ -311,7 +440,7 @@ class MessageApiController extends ApiController {
 				$sender_contact,
 				$receiver_identity,
 				Message::TYPE_INVOICE,
-				'test title',
+				'test title', // TODO Proper title!
 				$raw_envelope,
 				$decrypted_payload);
 		}
@@ -621,7 +750,7 @@ class MessageApiController extends ApiController {
 		return [ $private_key, $cert ];
 	}
 
-	private function prepareEnvelope($messagingId, $messageId, $peppolNext_identifier, $payloadId, $bodyId) {
+	private function prepareEnvelope($messagingId, $messageId, $s_scheme, $s_id, $r_scheme, $r_id, $payloadId, $bodyId) {
 		return new Envelope(
 			new Header(
 				new Security(
@@ -640,8 +769,8 @@ class MessageApiController extends ApiController {
 						'phase4@Conv-3221508681736967991'
 					),
 					[
-						new Property($peppolNext_identifier, 'originalSender', 'iso6523-actorid-upis'),
-						new Property('9915:helger', 'finalRecipient', 'iso6523-actorid-upis')
+						new Property($s_id, 'originalSender', $s_scheme),
+						new Property($r_id, 'finalRecipient', $r_scheme)
 					],
 					new PayloadInfo(new PartInfo(
 						'cid:'.$payloadId,
@@ -655,58 +784,60 @@ class MessageApiController extends ApiController {
 			new Body($bodyId)
 		);
 	}
-	private function preparePayload($envelope, $peppolNext_identifier, $receiver_identifier, $invoice, $messagingId, $bodyId, $payloadId, $private_key, $receiver_cert) {
-    $payloadKey = Random::string(32);
 
-    $sha256 = new SHA256();
-    $c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
+	private function preparePayload($envelope, $s_scheme, $s_id, $r_scheme, $r_id, $invoice, $messagingId, $bodyId, $payloadId, $s_key, $r_cert) {
+		$payloadKey = Random::string(32);
 
-    $serializer = SerializerBuilder::create()->build();
-    $serializedMessaging = $serializer->serialize($envelope->getHeader()->getMessaging(), 'xml');
-    $serializedBody = $serializer->serialize($envelope->getBody(), 'xml');
+		$sha256 = new SHA256();
+		$c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
 
-    $instanceIdentifier = uniqid(); // TODO ?
-    $standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
-        '1.0',
-        new Sender(new Identifier('iso6523-actorid-upis', $peppolNext_identifier)),
-        new Receiver(new Identifier('iso6523-actorid-upis', $receiver_identifier)),
-        new DocumentIdentification(
-            'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
-            '2.1',
-            $instanceIdentifier,
-            'Invoice',
-            new \DateTime()
-        ),
-        [
-            new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
-            new Scope('PROCESSID', 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0', 'cenbii-procid-ubl')
-        ]
-    ), $invoice);
-    $payload = $serializer->serialize($standardBusinessDocument, 'xml');
-    $payload = $c14ne->transform($payload);
-    $payload = str_replace("\n", '', $payload);
-    $payload = str_replace("  ", '', $payload);
+		$serializer = SerializerBuilder::create()->build();
+		$serializedMessaging = $serializer->serialize($envelope->getHeader()->getMessaging(), 'xml');
+		$serializedBody = $serializer->serialize($envelope->getBody(), 'xml');
 
-    $payload = gzencode($payload);
+		$instanceIdentifier = uniqid(); // TODO ?
+		$standardBusinessDocument = new StandardBusinessDocument(new StandardBusinessDocumentHeader(
+			'1.0',
+			new Sender(new Identifier($s_scheme, $s_id)),
+			new Receiver(new Identifier($r_scheme, $r_id)),
+			new DocumentIdentification(
+				'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2',
+				'2.1',
+				$instanceIdentifier,
+				'Invoice',
+				new \DateTime()
+			),
+			[
+				new Scope('DOCUMENTID', 'urn:oasis:names:specification:ubl:schema:xsd:Invoice-2::Invoice##urn:cen.eu:en16931:2017#compliant#urn:fdc:peppol.eu:2017:poacc:billing:3.0::2.1', 'busdox-docid-qns'),
+				new Scope('PROCESSID', 'urn:fdc:peppol.eu:2017:poacc:billing:01:1.0', 'cenbii-procid-ubl')
+			]
+		), $invoice);
+		$raw_payload = $serializer->serialize($standardBusinessDocument, 'xml');
+		$raw_payload = $c14ne->transform($raw_payload);
+		$raw_payload = str_replace("\n", '', $raw_payload);
+		$raw_payload = str_replace("  ", '', $raw_payload);
+
+		$payload = gzencode($raw_payload);
 		$references = [
 			new DSigReference("#$messagingId", $serializedMessaging, [$c14ne], $sha256),
 			new DSigReference("#$bodyId", $serializedBody, [$c14ne], $sha256),
 			new DSigReference("cid:$payloadId", $payload, [new Transform('http://docs.oasis-open.org/wss/oasis-wss-SwAProfile-1.1#Attachment-Content-Signature-Transform')], $sha256)
 		];
 
-		$envelope->getHeader()->getSecurity()->generateSignature($private_key, $receiver_cert, $references, new C14NExclusive(), new RsaSha256(), $envelope);
-		return $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $receiver_cert, "cid:$payloadId", $payload);
+		$envelope->getHeader()->getSecurity()->generateSignature($s_key, $r_cert, $references, new C14NExclusive(), new RsaSha256(), $envelope);
+		$payload = $envelope->getHeader()->getSecurity()->encryptData($payloadKey, $r_cert, "cid:$payloadId", $payload);
+		return [$raw_payload, $payload];
 	}
 
-	private function prepareBody($peppolNext_identifier, $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry) {
+	private function prepareBody($s_scheme, $s_id, $r_scheme, $r_id, $invoice, $s_key, $r_cert, $boundry) {
 		// Prepare the request
 		$messagingId = uniqid('peppolnext-msg-');
 		$messageId = uniqid().'@peppolnext';
 		$bodyId = uniqid('id-');
 		$payloadId = uniqid('peppolnext-att-').'@cid';
 
-		$envelope = $this->prepareEnvelope($messagingId, $messageId, $peppolNext_identifier, $payloadId, $bodyId);
-		$payload = $this->preparePayload($envelope, $peppolNext_identifier, $receiver_identifier, $invoice, $messagingId, $bodyId, $payloadId, $private_key, $receiver_cert);
+		$envelope = $this->prepareEnvelope($messagingId, $messageId, $s_scheme, $s_id, $r_scheme, $r_id, $payloadId, $bodyId);
+		list($raw_payload, $payload) = $this->preparePayload($envelope, $s_scheme, $s_id, $r_scheme, $r_id, $invoice, $messagingId, $bodyId, $payloadId, $s_key, $r_cert);
 
 		$serializer = SerializerBuilder::create()->build();
 		$c14ne = new Transform("http://www.w3.org/2001/10/xml-exc-c14n#");  //C14NExcTransform();
@@ -715,15 +846,56 @@ class MessageApiController extends ApiController {
 		$serializedEnvelope = str_replace("\n", '', $serializedEnvelope);
 		$serializedEnvelope = str_replace("  ", '', $serializedEnvelope);
 		
-		return "\r\n--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry--\r\n";		
+		$body = "\r\n--$boundry\r\nContent-Type: application/soap+xml;charset=UTF-8\r\nContent-Transfer-Encoding: binary\r\n\r\n$serializedEnvelope\r\n--$boundry\r\nContent-Type: application/octet-stream\r\nContent-Transfer-Encoding: binary\r\nContent-Description: Attachment\r\nContent-ID: <$payloadId>\r\n\r\n$payload\r\n--$boundry--\r\n";
+
+		return [$body, $serializedEnvelope, $raw_payload];
+	}
+
+	private function as4SendWithFullInfo($invoice, $endpoint, $r_scheme, $r_id, $r_cert, $s_scheme, $s_id, $s_key) {
+		$boundry = '----=_Part_'.uniqid();
+		list($body, $raw_envelope, $raw_payload) = $this->prepareBody($s_scheme, $s_id, $r_scheme, $r_id, $invoice, $s_key, $r_cert, $boundry);
+		$client = new \GuzzleHttp\Client();
+		$headers = [
+			'Message-Id' => '<'.uniqid().'>',
+			'MIME-Version' => '1.0',
+			'Content-Type' => "multipart/related;    boundary=\"$boundry\";    type=\"application/soap+xml\"; charset=UTF-8"
+		];
+		// error_log("POSTING! $endpoint");
+		// error_log(var_export($headers, true));
+		// file_put_contents('body.txt', $body);
+		try {
+			$response = $client->request('POST', $endpoint, [
+				'headers' => $headers,
+				'body' => $body
+			]);
+		} catch (\Exception $e) {
+			$message = $e->getResponse()->getBody()->getContents();
+			$index = strpos($message, 'Message:');
+			$message = substr($message, $index + 8);
+			throw new \Exception('X> '.$message);
+		}
+
+		$statusCode = $response->getStatusCode();
+		//echo $res->getHeader('content-type')[0];
+		$responseBody = $response->getBody();
+
+		$serializer = SerializerBuilder::create()->build();
+		$response = $serializer->deserialize($responseBody,'OCA\PeppolNext\PonderSource\Envelope\Envelope::class', 'xml');
+		error_log("statusCode $statusCode - Response: ".var_export($response, true));
+
+		$receiver_public_key = $r_cert->getPublicKey();
+		$verifyResult = $response->getHeader()->getSecurity()->getSignature()->verify($response, null, $receiver_public_key);
+		error_log('signature checked in MessageApiController: ' . var_export($verifyResult, true));
+
+		return [$verifyResult, $raw_envelope, $raw_payload];
 	}
 
 	public function as4SendWithIdentifier($invoice, $receiver_identifier, $interceptor) {
 		$peppolNext_identifier = '0106:80235875';
 		list($as4_endpoint, $receiver_cert) = $this->getRecipient($receiver_identifier);
-    list ($private_key, $cert) = $this->getMyCertificate();
+    	list ($private_key, $cert) = $this->getMyCertificate();
 		$boundry = '----=_Part_'.uniqid();
-		$body = $this->prepareBody($peppolNext_identifier, $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry);
+		list($body, $raw_envelope, $raw_payload) = $this->prepareBody('iso6523-actorid-upis', $peppolNext_identifier, 'iso6523-actorid-upis', $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry);
 		$client = new \GuzzleHttp\Client();
 		$headers = [
 			'Message-Id' => '<'.uniqid().'>',

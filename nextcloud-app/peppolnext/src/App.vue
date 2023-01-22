@@ -233,7 +233,12 @@ export default {
 
 			},
 			address: {
-
+				line1: '',
+				line2: '',
+				city: '',
+				post_code: '',
+				state: '',
+				country: {}
 			},
 			notification: {
 				messages: 0,
@@ -268,8 +273,8 @@ export default {
 				}).catch(function(error) {})
 		},
 		setAddress(vm) {
-			let vm3 = this;
-			const payload = { body: this.address }
+			let vm3 = this
+			const payload = this.address
 			axios.post('/index.php/apps/peppolnext/api/v1/address', payload)
 				.then(function(response) {
 					vm3.address = response.data

@@ -25,7 +25,7 @@ class PeppolManagerService {
     }
 
     private function registerService(IPeppolService $service) {
-        $services[$service->getServiceName()] = $service;
+        $this->services[$service->getServiceName()] = $service;
     }
 
     public function findPeppolIdentity(Property $property): ?PeppolIdentity {
@@ -49,7 +49,7 @@ class PeppolManagerService {
         return $service->getCertificateStore($identity);
     }
 
-    private function getPeppolServiceForName(string $serviceName): IPeppolService {
+    public function getPeppolServiceForName(string $serviceName): IPeppolService {
         return $this->services[$serviceName];
     }
 

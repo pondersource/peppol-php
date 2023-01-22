@@ -430,33 +430,40 @@ export default {
 					value: 'PeppolNext',
 				},
 			],
-			message: {
-				orderReference: '',
-				type: '',
-				currency: '',
-				supplier: {
-					name: '',
-					email: '',
-					address: {}
-				},
-				customer: {
-					name: '',
-					email: '',
-					address: {}
-				},
-				recipient: '',
-				vat: '',
-				invoiceLines: {},
-			},
+			message: {"orderReference":"20230118124231","type":{"id":71,"title":"Request for payment","hint":"Document/message issued by a creditor to a debtor to request payment of one or more invoices past due."},"currency":{"name":"USD","hint":"US Dollar"},"supplier":{"name":"marie","email":null,"address":{"_route":"peppolnext.setting_api.updateAddress","line1":"l1","line2":"l2","city":"Tehran","post_code":"1234","state":"Tehran","country":{"code":"IR","name":"Iran"}}},"customer":{"name":"Myself","email":"","address":{"country":{"code":"IR","name":"Iran"}}},"recipient":{"title":"Myself","peppolEndpoint":"as4direct-63c143a09d7cd","relationship":1,"isLocal":true,"uid":"62db3148-e57a-40de-8bfc-5c7e014f2557","endpoint":"http://nc2.docker/index.php/apps/peppolnext/api/v1/as4","certificate":"-----BEGIN CERTIFICATE-----MIICrDCCAZSgAwIBAgIUL3oIvQBy2eR2pV3/MoFR016rW+MwDQYJKoZIhvcNAQELBQAwEDEOMAwGA1UECgwFbWFyaWUwHhcNMjMwMTEzMTE0MjIyWhcNMjQwMTEzMTE0MjIyWjAQMQ4wDAYDVQQKDAVtYXJpZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAK7ZPilnTYV6yIpIIk7tvB3me2me6bD9z0zYpg/oWfrZoBr1mhGR3hPRr4F4SYrIeiVic7JEUbq0Yet2q5aqsWvkY2UdG5XC+L6+QoRH0wQvDtZcfv3yzHIOndqty7AdjsZJuf1NOUdvHvrDBR1GItyr/HNaWTB4hsREhl+DeFF/ma/NAGCKRvsAKHQpkO5Mnd6lshJLxQFFDbZk8VG/9urIPICfapdYUjkI+OLXG/C37jXI8buQMtqX/DvqUnbXXmdq7pwa+joamlUw7HuAd+WlvJbf0/hX/krffhGlQoQBnvlLFV55ee2ZFzzTK6YbTYnHCYakNUbiL16j0SrdNVkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAKzl/7fffpUZB/mL17uONf2mMawS1XeiGmBRjbDd9sZYjp9Vd6pDTQ6YCUSqB+MYMDTHj+KLNKrnH9SezjjdekGkQLPlbrtAjDIgDwJWnao2LWZICVNY5A95516LLedvmtolKmhKQiQZ37P38JVksLdtnI0jdLOny0IjZpTcLze7R7DOaz5FDMzff6q80pkBi6ppWJiNcuyUw5L6hTgYpwU3mZwheCOoP1SeXbM9S7d8urhhnZq1g4IPwLUDoGbz59Psuo+nzJdBhnVXMArIABMb2REtDcQ9Ku8yhHPMjhkk9VYe5galiDW5cCPOHfveTOebjwHUZ1wPqmyOEGDUWcQ==-----END CERTIFICATE-----","address":{"line1":"s1\\;\\;s2\\;Tehran\\;Tehran\\;4321\\;Iran","line2":"","city":"","post_code":"","state":"","country":[]}},"vat":"0","invoiceLines":{"items":[{"title":"test","quantity":"01","vat_category":{"code":"AE","title":"Vat Reverse Charge","description":"Code specifying that the standard VAT rate is levied from the invoicee."},"totalPrice":10,"price":"10"}],"total":10}},
+			// message: {
+			// 	orderReference: '',
+			// 	type: '',
+			// 	currency: '',
+			// 	supplier: {
+			// 		name: '',
+			// 		email: '',
+			// 		address: {}
+			// 	},
+			// 	customer: {
+			// 		name: '',
+			// 		email: '',
+			// 		address: {}
+			// 	},
+			// 	recipient: {},
+			// 	vat: '',
+			// 	invoiceLines: {},
+			// },
 		}
 	},
 	mounted: function() {
 		this.message.orderReference = this.getRandomRefNumber()
 		this.loadUserInfo(this)
 	},
+	watch: {
+		recipient(newRecipient, oldRecipient) {
+			this.customer.name = newRecipient.title
+			this.customer.address = newRecipient.address
+		}
+	},
 	methods: {
 		submit() {
-			const payload = { body: this.message }
+			const payload = this.message
 			axios.post('/index.php/apps/peppolnext/api/v1/message', payload)
 				.then(function(response) {
 

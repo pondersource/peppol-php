@@ -112,7 +112,7 @@ class MessageService {
 		$message->setMessageType($messageType);
 		$message->setCategory(Message::CATEGORY_INBOX);
 
-		return $this->saveMessage($message, $header, $payload);
+		return $this->saveMessage($receiver->getUserId(), $message, $header, $payload);
 	}
 
 	public function saveConnectionRequest(string $sender_identity
@@ -129,17 +129,34 @@ class MessageService {
 		$message->setMessageType($messageType);
 		$message->setCategory(Message::CATEGORY_CONNECTION_REQUEST);
 
-		return $this->saveMessage($message, $header, $payload);
+		return $this->saveMessage($receiver->getUserId(), $message, $header, $payload);
 	}
 
-	private function saveMessage(Message $message, string $header, string $payload): bool {
+	public function saveOutbox(PeppolIdentity $sender
+			, string $receiver_identity
+			, int $messageType
+			, ?string $title
+			, string $header
+			, string $payload): bool {
+		$message = new Message();
+		$message->setUserId($sender->getUserId());
+		$message->setContactId(null);
+		$message->setContactName($receiver_identity);
+		$message->setTitle($title);
+		$message->setMessageType($messageType);
+		$message->setCategory(Message::CATEGORY_OUTBOX);
+
+		return $this->saveMessage($sender->getUserId(), $message, $header, $payload);
+	}
+
+	private function saveMessage(string $user_id, Message $message, string $header, string $payload): bool {
 		$this->dbConnection->beginTransaction();
 		$message = $this->messageMapper->insert($message);
 
 		try {
 			$path = self::MESSAGE_FOLDER . '/' . $message->getId() . '/';
-			$this->folderManager->createFile($path . self::MESSAGE_FILE, $header);
-			$this->folderManager->createFile($path . self::PAYLOAD_FILE, $payload);
+			$this->folderManager->createFileForUser($path . self::MESSAGE_FILE, $header, $user_id);
+			$this->folderManager->createFileForUser($path . self::PAYLOAD_FILE, $payload, $user_id);
 		} catch (Exception $e) {
 			$this->dbConnection->rollBack();
 			return false;

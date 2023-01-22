@@ -12,8 +12,8 @@
 				@change="notifyDataChange"
 				type="number"
 				step="0.01"
-				placeholder="Fee"
-				v-model="invoiceItem.fee">
+				placeholder="Price"
+				v-model="invoiceItem.price">
 		</div>
 		<div class="quantity">
 			<input

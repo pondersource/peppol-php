@@ -20,6 +20,7 @@ class Message extends Entity implements JsonSerializable {
     protected $title;
     protected $messageType;
     protected $category;
+    protected $createdAt;
 
     public function __construct() {
         $this->addType('id','integer');

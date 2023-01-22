@@ -20,7 +20,7 @@ class VCardInterpreter
 	 * @param string $type
 	 * @return array
 	 */
-	public function getAddress(string $type = ''): PostalAddress{
+	public function getAddress(string $type = ''): PostalAddress {
 		$address = [];
 		if (!isset($this->card['ADR']))
 			return new PostalAddress();
@@ -39,12 +39,13 @@ class VCardInterpreter
 		$parts = explode(";", $rawAddress);
 
 		$postalAddress = new PostalAddress();
-		$postalAddress->country = str_replace("!_!","\;",$parts[6]??"");
-		$postalAddress->city = str_replace("!_!","\;",$parts[3]??"");
+		$postalAddress->postOfficeAddress = str_replace("!_!","\;",$parts[0]??"");
+		$postalAddress->extendedAddress = str_replace("!_!","\;",$parts[1]??"");
 		$postalAddress ->street = str_replace("!_!","\;",$parts[2]??"");
-		$postalAddress->additionalStreet = str_replace("!_!","\;",$parts[1]??"");
-		$postalAddress->postalZone = str_replace("!_!","\;",$parts[5]??"");
-		$postalAddress->buildingNo = str_replace("!_!","\;",$parts[0]??"");
+		$postalAddress->locality = str_replace("!_!","\;",$parts[3]??"");
+		$postalAddress->region = str_replace("!_!","\;",$parts[4]??"");
+		$postalAddress->postalCode = str_replace("!_!","\;",$parts[5]??"");
+		$postalAddress->country = str_replace("!_!","\;",$parts[6]??"");
 
 		return $postalAddress;
 	}

@@ -66,6 +66,14 @@ class FolderManager
 		return $root->newFile($path, $content);
 	}
 
+	public function createFileForUser($path, $content, $userId): File {
+		$root = $this->getRootForUser($userId);
+
+		self::mkdirs($root, $path, false);
+
+		return $root->newFile($path, $content);
+	}
+
 	private function getRoot(): Folder {
 		$user = $this->userSession->getUser();
 

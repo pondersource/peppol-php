@@ -12375,7 +12375,14 @@ __webpack_require__.r(__webpack_exports__);
       }],
       letspeppol: {},
       as4direct: {},
-      address: {},
+      address: {
+        line1: '',
+        line2: '',
+        city: '',
+        post_code: '',
+        state: '',
+        country: {}
+      },
       notification: {
         messages: 0,
         connection_requests: 0
@@ -12410,9 +12417,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     setAddress: function setAddress(vm) {
       var vm3 = this;
-      var payload = {
-        body: this.address
-      };
+      var payload = this.address;
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_7__["default"].post('/index.php/apps/peppolnext/api/v1/address', payload).then(function (response) {
         vm3.address = response.data;
       }).catch(function (error) {});
@@ -14031,34 +14036,109 @@ __webpack_require__.r(__webpack_exports__);
         value: 'PeppolNext'
       }],
       message: {
-        orderReference: '',
-        type: '',
-        currency: '',
-        supplier: {
-          name: '',
-          email: '',
-          address: {}
+        "orderReference": "20230118124231",
+        "type": {
+          "id": 71,
+          "title": "Request for payment",
+          "hint": "Document/message issued by a creditor to a debtor to request payment of one or more invoices past due."
         },
-        customer: {
-          name: '',
-          email: '',
-          address: {}
+        "currency": {
+          "name": "USD",
+          "hint": "US Dollar"
         },
-        recipient: '',
-        vat: '',
-        invoiceLines: {}
+        "supplier": {
+          "name": "marie",
+          "email": null,
+          "address": {
+            "_route": "peppolnext.setting_api.updateAddress",
+            "line1": "l1",
+            "line2": "l2",
+            "city": "Tehran",
+            "post_code": "1234",
+            "state": "Tehran",
+            "country": {
+              "code": "IR",
+              "name": "Iran"
+            }
+          }
+        },
+        "customer": {
+          "name": "Myself",
+          "email": "",
+          "address": {
+            "country": {
+              "code": "IR",
+              "name": "Iran"
+            }
+          }
+        },
+        "recipient": {
+          "title": "Myself",
+          "peppolEndpoint": "as4direct-63c143a09d7cd",
+          "relationship": 1,
+          "isLocal": true,
+          "uid": "62db3148-e57a-40de-8bfc-5c7e014f2557",
+          "endpoint": "http://nc2.docker/index.php/apps/peppolnext/api/v1/as4",
+          "certificate": "-----BEGIN CERTIFICATE-----MIICrDCCAZSgAwIBAgIUL3oIvQBy2eR2pV3/MoFR016rW+MwDQYJKoZIhvcNAQELBQAwEDEOMAwGA1UECgwFbWFyaWUwHhcNMjMwMTEzMTE0MjIyWhcNMjQwMTEzMTE0MjIyWjAQMQ4wDAYDVQQKDAVtYXJpZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAK7ZPilnTYV6yIpIIk7tvB3me2me6bD9z0zYpg/oWfrZoBr1mhGR3hPRr4F4SYrIeiVic7JEUbq0Yet2q5aqsWvkY2UdG5XC+L6+QoRH0wQvDtZcfv3yzHIOndqty7AdjsZJuf1NOUdvHvrDBR1GItyr/HNaWTB4hsREhl+DeFF/ma/NAGCKRvsAKHQpkO5Mnd6lshJLxQFFDbZk8VG/9urIPICfapdYUjkI+OLXG/C37jXI8buQMtqX/DvqUnbXXmdq7pwa+joamlUw7HuAd+WlvJbf0/hX/krffhGlQoQBnvlLFV55ee2ZFzzTK6YbTYnHCYakNUbiL16j0SrdNVkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAKzl/7fffpUZB/mL17uONf2mMawS1XeiGmBRjbDd9sZYjp9Vd6pDTQ6YCUSqB+MYMDTHj+KLNKrnH9SezjjdekGkQLPlbrtAjDIgDwJWnao2LWZICVNY5A95516LLedvmtolKmhKQiQZ37P38JVksLdtnI0jdLOny0IjZpTcLze7R7DOaz5FDMzff6q80pkBi6ppWJiNcuyUw5L6hTgYpwU3mZwheCOoP1SeXbM9S7d8urhhnZq1g4IPwLUDoGbz59Psuo+nzJdBhnVXMArIABMb2REtDcQ9Ku8yhHPMjhkk9VYe5galiDW5cCPOHfveTOebjwHUZ1wPqmyOEGDUWcQ==-----END CERTIFICATE-----",
+          "address": {
+            "line1": "s1\\;\\;s2\\;Tehran\\;Tehran\\;4321\\;Iran",
+            "line2": "",
+            "city": "",
+            "post_code": "",
+            "state": "",
+            "country": []
+          }
+        },
+        "vat": "0",
+        "invoiceLines": {
+          "items": [{
+            "title": "test",
+            "quantity": "01",
+            "vat_category": {
+              "code": "AE",
+              "title": "Vat Reverse Charge",
+              "description": "Code specifying that the standard VAT rate is levied from the invoicee."
+            },
+            "totalPrice": 10,
+            "price": "10"
+          }],
+          "total": 10
+        }
       }
+      // message: {
+      // 	orderReference: '',
+      // 	type: '',
+      // 	currency: '',
+      // 	supplier: {
+      // 		name: '',
+      // 		email: '',
+      // 		address: {}
+      // 	},
+      // 	customer: {
+      // 		name: '',
+      // 		email: '',
+      // 		address: {}
+      // 	},
+      // 	recipient: {},
+      // 	vat: '',
+      // 	invoiceLines: {},
+      // },
     };
   },
+
   mounted: function mounted() {
     this.message.orderReference = this.getRandomRefNumber();
     this.loadUserInfo(this);
   },
+  watch: {
+    recipient: function recipient(newRecipient, oldRecipient) {
+      this.customer.name = newRecipient.title;
+      this.customer.address = newRecipient.address;
+    }
+  },
   methods: {
     submit: function submit() {
-      var payload = {
-        body: this.message
-      };
+      var payload = this.message;
       _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/index.php/apps/peppolnext/api/v1/message', payload).then(function (response) {}).catch(function (error) {});
     },
     fetchOptions: function fetchOptions(search, loading, vm) {
@@ -14209,39 +14289,12 @@ __webpack_require__.r(__webpack_exports__);
         vm.contacts = response.data;
       }).catch();
     },
-    setAsRead: function setAsRead(filename) {
-      var payload = {
-        filename: filename
-      };
+    deleteContact: function deleteContact(uid) {
       var opt = this;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].put('/index.php/apps/peppolnext/api/v1/message', payload).then(function (response) {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]('/index.php/apps/peppolnext/api/v1/contact/' + uid + '?relationship=1').then(function (response) {
         opt.getAllNewInvoices(opt);
       }).catch(function (error) {});
-    },
-    deleteFile: function deleteFile(filename) {
-      var payload = {
-        filename: filename
-      };
-      var opt = this;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]('/index.php/apps/peppolnext/api/v1/message', {
-        data: payload
-      }).then(function (response) {
-        opt.getAllNewInvoices(opt);
-      }).catch(function (error) {});
-    },
-    newCustomer: function newCustomer(vm) {
-      //vm.$router.push('/contact/new/customer')
     }
-  },
-  watch: {
-    // '$route.params.relationship': {
-    //     handler(newValue) {
-    // 		console.log('watcher watched: ' + newValue)
-    // 		this.relationship = this.$route.params.relationship
-    //         this.getAllContacts(this)
-    //     },
-    //     immediate: true,
-    // }
   }
 });
 
@@ -14310,19 +14363,781 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'NewCustomer',
-  components: {},
+  components: {
+    vSelect: (vue_select__WEBPACK_IMPORTED_MODULE_0___default())
+  },
   data: function data() {
     return {
+      countries: [{
+        code: "AD",
+        name: "Andorra"
+      }, {
+        code: "AE",
+        name: "United Arab Emirates"
+      }, {
+        code: "AF",
+        name: "Afghanistan"
+      }, {
+        code: "AG",
+        name: "Antigua and Barbuda"
+      }, {
+        code: "AI",
+        name: "Anguilla"
+      }, {
+        code: "AL",
+        name: "Albania"
+      }, {
+        code: "AM",
+        name: "Armenia"
+      }, {
+        code: "AO",
+        name: "Angola"
+      }, {
+        code: "AQ",
+        name: "Antarctica"
+      }, {
+        code: "AR",
+        name: "Argentina"
+      }, {
+        code: "AS",
+        name: "American Samoa"
+      }, {
+        code: "AT",
+        name: "Austria"
+      }, {
+        code: "AU",
+        name: "Australia"
+      }, {
+        code: "AW",
+        name: "Aruba"
+      }, {
+        code: "AX",
+        name: "Åland Islands"
+      }, {
+        code: "AZ",
+        name: "Azerbaijan"
+      }, {
+        code: "BA",
+        name: "Bosnia and Herzegovina"
+      }, {
+        code: "BB",
+        name: "Barbados"
+      }, {
+        code: "BD",
+        name: "Bangladesh"
+      }, {
+        code: "BE",
+        name: "Belgium"
+      }, {
+        code: "BF",
+        name: "Burkina Faso"
+      }, {
+        code: "BG",
+        name: "Bulgaria"
+      }, {
+        code: "BH",
+        name: "Bahrain"
+      }, {
+        code: "BI",
+        name: "Burundi"
+      }, {
+        code: "BJ",
+        name: "Benin"
+      }, {
+        code: "BL",
+        name: "Saint Barthélemy"
+      }, {
+        code: "BM",
+        name: "Bermuda"
+      }, {
+        code: "BN",
+        name: "Brunei Darussalam"
+      }, {
+        code: "BO",
+        name: "Bolivia, Plurinational State of"
+      }, {
+        code: "BQ",
+        name: "Bonaire, Sint Eustatius and Saba"
+      }, {
+        code: "BR",
+        name: "Brazil"
+      }, {
+        code: "BS",
+        name: "Bahamas"
+      }, {
+        code: "BT",
+        name: "Bhutan"
+      }, {
+        code: "BV",
+        name: "Bouvet Island"
+      }, {
+        code: "BW",
+        name: "Botswana"
+      }, {
+        code: "BY",
+        name: "Belarus"
+      }, {
+        code: "BZ",
+        name: "Belize"
+      }, {
+        code: "CA",
+        name: "Canada"
+      }, {
+        code: "CC",
+        name: "Cocos (Keeling) Islands"
+      }, {
+        code: "CD",
+        name: "Congo, the Democratic Republic of the"
+      }, {
+        code: "CF",
+        name: "Central African Republic"
+      }, {
+        code: "CG",
+        name: "Congo"
+      }, {
+        code: "CH",
+        name: "Switzerland"
+      }, {
+        code: "CI",
+        name: "Côte d'Ivoire"
+      }, {
+        code: "CK",
+        name: "Cook Islands"
+      }, {
+        code: "CL",
+        name: "Chile"
+      }, {
+        code: "CM",
+        name: "Cameroon"
+      }, {
+        code: "CN",
+        name: "China"
+      }, {
+        code: "CO",
+        name: "Colombia"
+      }, {
+        code: "CR",
+        name: "Costa Rica"
+      }, {
+        code: "CU",
+        name: "Cuba"
+      }, {
+        code: "CV",
+        name: "Cabo Verde"
+      }, {
+        code: "CW",
+        name: "Curaçao"
+      }, {
+        code: "CX",
+        name: "Christmas Island"
+      }, {
+        code: "CY",
+        name: "Cyprus"
+      }, {
+        code: "CZ",
+        name: "Czechia"
+      }, {
+        code: "DE",
+        name: "Germany"
+      }, {
+        code: "DJ",
+        name: "Djibouti"
+      }, {
+        code: "DK",
+        name: "Denmark"
+      }, {
+        code: "DM",
+        name: "Dominica"
+      }, {
+        code: "DO",
+        name: "Dominican Republic"
+      }, {
+        code: "DZ",
+        name: "Algeria"
+      }, {
+        code: "EC",
+        name: "Ecuador"
+      }, {
+        code: "EE",
+        name: "Estonia"
+      }, {
+        code: "EG",
+        name: "Egypt"
+      }, {
+        code: "EH",
+        name: "Western Sahara"
+      }, {
+        code: "ER",
+        name: "Eritrea"
+      }, {
+        code: "ES",
+        name: "Spain"
+      }, {
+        code: "ET",
+        name: "Ethiopia"
+      }, {
+        code: "FI",
+        name: "Finland"
+      }, {
+        code: "FJ",
+        name: "Fiji"
+      }, {
+        code: "FK",
+        name: "Falkland Islands (Malvinas)"
+      }, {
+        code: "FM",
+        name: "Micronesia, Federated States of"
+      }, {
+        code: "FO",
+        name: "Faroe Islands"
+      }, {
+        code: "FR",
+        name: "France"
+      }, {
+        code: "GA",
+        name: "Gabon"
+      }, {
+        code: "GB",
+        name: "United Kingdom of Great Britain and Northern Ireland"
+      }, {
+        code: "GD",
+        name: "Grenada"
+      }, {
+        code: "GE",
+        name: "Georgia"
+      }, {
+        code: "GF",
+        name: "French Guiana"
+      }, {
+        code: "GG",
+        name: "Guernsey"
+      }, {
+        code: "GH",
+        name: "Ghana"
+      }, {
+        code: "GI",
+        name: "Gibraltar"
+      }, {
+        code: "GL",
+        name: "Greenland"
+      }, {
+        code: "GM",
+        name: "Gambia"
+      }, {
+        code: "GN",
+        name: "Guinea"
+      }, {
+        code: "GP",
+        name: "Guadeloupe"
+      }, {
+        code: "GQ",
+        name: "Equatorial Guinea"
+      }, {
+        code: "GR",
+        name: "Greece"
+      }, {
+        code: "GS",
+        name: "South Georgia and the South Sandwich Islands"
+      }, {
+        code: "GT",
+        name: "Guatemala"
+      }, {
+        code: "GU",
+        name: "Guam"
+      }, {
+        code: "GW",
+        name: "Guinea-Bissau"
+      }, {
+        code: "GY",
+        name: "Guyana"
+      }, {
+        code: "HK",
+        name: "Hong Kong"
+      }, {
+        code: "HM",
+        name: "Heard Island and McDonald Islands"
+      }, {
+        code: "HN",
+        name: "Honduras"
+      }, {
+        code: "HR",
+        name: "Croatia"
+      }, {
+        code: "HT",
+        name: "Haiti"
+      }, {
+        code: "HU",
+        name: "Hungary"
+      }, {
+        code: "ID",
+        name: "Indonesia"
+      }, {
+        code: "IE",
+        name: "Ireland"
+      }, {
+        code: "IL",
+        name: "Israel"
+      }, {
+        code: "IM",
+        name: "Isle of Man"
+      }, {
+        code: "IN",
+        name: "India"
+      }, {
+        code: "IO",
+        name: "British Indian Ocean Territory"
+      }, {
+        code: "IQ",
+        name: "Iraq"
+      }, {
+        code: "IR",
+        name: "Iran"
+      }, {
+        code: "IS",
+        name: "Iceland"
+      }, {
+        code: "IT",
+        name: "Italy"
+      }, {
+        code: "JE",
+        name: "Jersey"
+      }, {
+        code: "JM",
+        name: "Jamaica"
+      }, {
+        code: "JO",
+        name: "Jordan"
+      }, {
+        code: "JP",
+        name: "Japan"
+      }, {
+        code: "KE",
+        name: "Kenya"
+      }, {
+        code: "KG",
+        name: "Kyrgyzstan"
+      }, {
+        code: "KH",
+        name: "Cambodia"
+      }, {
+        code: "KI",
+        name: "Kiribati"
+      }, {
+        code: "KM",
+        name: "Comoros"
+      }, {
+        code: "KN",
+        name: "Saint Kitts and Nevis"
+      }, {
+        code: "KP",
+        name: "Korea, Democratic People's Republic of"
+      }, {
+        code: "KR",
+        name: "Korea, Republic of"
+      }, {
+        code: "KW",
+        name: "Kuwait"
+      }, {
+        code: "KY",
+        name: "Cayman Islands"
+      }, {
+        code: "KZ",
+        name: "Kazakhstan"
+      }, {
+        code: "LA",
+        name: "Lao People's Democratic Republic"
+      }, {
+        code: "LB",
+        name: "Lebanon"
+      }, {
+        code: "LC",
+        name: "Saint Lucia"
+      }, {
+        code: "LI",
+        name: "Liechtenstein"
+      }, {
+        code: "LK",
+        name: "Sri Lanka"
+      }, {
+        code: "LR",
+        name: "Liberia"
+      }, {
+        code: "LS",
+        name: "Lesotho"
+      }, {
+        code: "LT",
+        name: "Lithuania"
+      }, {
+        code: "LU",
+        name: "Luxembourg"
+      }, {
+        code: "LV",
+        name: "Latvia"
+      }, {
+        code: "LY",
+        name: "Libya"
+      }, {
+        code: "MA",
+        name: "Morocco"
+      }, {
+        code: "MC",
+        name: "Monaco"
+      }, {
+        code: "MD",
+        name: "Moldova, Republic of"
+      }, {
+        code: "ME",
+        name: "Montenegro"
+      }, {
+        code: "MF",
+        name: "Saint Martin (French part)"
+      }, {
+        code: "MG",
+        name: "Madagascar"
+      }, {
+        code: "MH",
+        name: "Marshall Islands"
+      }, {
+        code: "MK",
+        name: "Macedonia, the former Yugoslav Republic of"
+      }, {
+        code: "ML",
+        name: "Mali"
+      }, {
+        code: "MM",
+        name: "Myanmar"
+      }, {
+        code: "MN",
+        name: "Mongolia"
+      }, {
+        code: "MO",
+        name: "Macao"
+      }, {
+        code: "MP",
+        name: "Northern Mariana Islands"
+      }, {
+        code: "MQ",
+        name: "Martinique"
+      }, {
+        code: "MR",
+        name: "Mauritania"
+      }, {
+        code: "MS",
+        name: "Montserrat"
+      }, {
+        code: "MT",
+        name: "Malta"
+      }, {
+        code: "MU",
+        name: "Mauritius"
+      }, {
+        code: "MV",
+        name: "Maldives"
+      }, {
+        code: "MW",
+        name: "Malawi"
+      }, {
+        code: "MX",
+        name: "Mexico"
+      }, {
+        code: "MY",
+        name: "Malaysia"
+      }, {
+        code: "MZ",
+        name: "Mozambique"
+      }, {
+        code: "NA",
+        name: "Namibia"
+      }, {
+        code: "NC",
+        name: "New Caledonia"
+      }, {
+        code: "NE",
+        name: "Niger"
+      }, {
+        code: "NF",
+        name: "Norfolk Island"
+      }, {
+        code: "NG",
+        name: "Nigeria"
+      }, {
+        code: "NI",
+        name: "Nicaragua"
+      }, {
+        code: "NL",
+        name: "Netherlands"
+      }, {
+        code: "NO",
+        name: "Norway"
+      }, {
+        code: "NP",
+        name: "Nepal"
+      }, {
+        code: "NR",
+        name: "Nauru"
+      }, {
+        code: "NU",
+        name: "Niue"
+      }, {
+        code: "NZ",
+        name: "New Zealand"
+      }, {
+        code: "OM",
+        name: "Oman"
+      }, {
+        code: "PA",
+        name: "Panama"
+      }, {
+        code: "PE",
+        name: "Peru"
+      }, {
+        code: "PF",
+        name: "French Polynesia"
+      }, {
+        code: "PG",
+        name: "Papua New Guinea"
+      }, {
+        code: "PH",
+        name: "Philippines"
+      }, {
+        code: "PK",
+        name: "Pakistan"
+      }, {
+        code: "PL",
+        name: "Poland"
+      }, {
+        code: "PM",
+        name: "Saint Pierre and Miquelon"
+      }, {
+        code: "PN",
+        name: "Pitcairn"
+      }, {
+        code: "PR",
+        name: "Puerto Rico"
+      }, {
+        code: "PS",
+        name: "Palestine, State of"
+      }, {
+        code: "PT",
+        name: "Portugal"
+      }, {
+        code: "PW",
+        name: "Palau"
+      }, {
+        code: "PY",
+        name: "Paraguay"
+      }, {
+        code: "QA",
+        name: "Qatar"
+      }, {
+        code: "RE",
+        name: "Réunion"
+      }, {
+        code: "RO",
+        name: "Romania"
+      }, {
+        code: "RS",
+        name: "Serbia"
+      }, {
+        code: "RU",
+        name: "Russian Federation"
+      }, {
+        code: "RW",
+        name: "Rwanda"
+      }, {
+        code: "SA",
+        name: "Saudi Arabia"
+      }, {
+        code: "SB",
+        name: "Solomon Islands"
+      }, {
+        code: "SC",
+        name: "Seychelles"
+      }, {
+        code: "SD",
+        name: "Sudan"
+      }, {
+        code: "SE",
+        name: "Sweden"
+      }, {
+        code: "SG",
+        name: "Singapore"
+      }, {
+        code: "SH",
+        name: "Saint Helena, Ascension and Tristan da Cunha"
+      }, {
+        code: "SI",
+        name: "Slovenia"
+      }, {
+        code: "SJ",
+        name: "Svalbard and Jan Mayen"
+      }, {
+        code: "SK",
+        name: "Slovakia"
+      }, {
+        code: "SL",
+        name: "Sierra Leone"
+      }, {
+        code: "SM",
+        name: "San Marino"
+      }, {
+        code: "SN",
+        name: "Senegal"
+      }, {
+        code: "SO",
+        name: "Somalia"
+      }, {
+        code: "SR",
+        name: "Suriname"
+      }, {
+        code: "SS",
+        name: "South Sudan"
+      }, {
+        code: "ST",
+        name: "Sao Tome and Principe"
+      }, {
+        code: "SV",
+        name: "El Salvador"
+      }, {
+        code: "SX",
+        name: "Sint Maarten (Dutch part)"
+      }, {
+        code: "SY",
+        name: "Syrian Arab Republic"
+      }, {
+        code: "SZ",
+        name: "Swaziland"
+      }, {
+        code: "TC",
+        name: "Turks and Caicos Islands"
+      }, {
+        code: "TD",
+        name: "Chad"
+      }, {
+        code: "TF",
+        name: "French Southern Territories"
+      }, {
+        code: "TG",
+        name: "Togo"
+      }, {
+        code: "TH",
+        name: "Thailand"
+      }, {
+        code: "TJ",
+        name: "Tajikistan"
+      }, {
+        code: "TK",
+        name: "Tokelau"
+      }, {
+        code: "TL",
+        name: "Timor-Leste"
+      }, {
+        code: "TM",
+        name: "Turkmenistan"
+      }, {
+        code: "TN",
+        name: "Tunisia"
+      }, {
+        code: "TO",
+        name: "Tonga"
+      }, {
+        code: "TR",
+        name: "Turkey"
+      }, {
+        code: "TT",
+        name: "Trinidad and Tobago"
+      }, {
+        code: "TV",
+        name: "Tuvalu"
+      }, {
+        code: "TW",
+        name: "Taiwan, Province of China"
+      }, {
+        code: "TZ",
+        name: "Tanzania, United Republic of"
+      }, {
+        code: "UA",
+        name: "Ukraine"
+      }, {
+        code: "UG",
+        name: "Uganda"
+      }, {
+        code: "UM",
+        name: "United States Minor Outlying Islands"
+      }, {
+        code: "US",
+        name: "United States of America"
+      }, {
+        code: "UY",
+        name: "Uruguay"
+      }, {
+        code: "UZ",
+        name: "Uzbekistan"
+      }, {
+        code: "VA",
+        name: "Holy See"
+      }, {
+        code: "VC",
+        name: "Saint Vincent and the Grenadines"
+      }, {
+        code: "VE",
+        name: "Venezuela, Bolivarian Republic of"
+      }, {
+        code: "VG",
+        name: "Virgin Islands, British"
+      }, {
+        code: "VI",
+        name: "Virgin Islands, U.S."
+      }, {
+        code: "VN",
+        name: "Viet Nam"
+      }, {
+        code: "VU",
+        name: "Vanuatu"
+      }, {
+        code: "WF",
+        name: "Wallis and Futuna"
+      }, {
+        code: "WS",
+        name: "Samoa"
+      }, {
+        code: "YE",
+        name: "Yemen"
+      }, {
+        code: "YT",
+        name: "Mayotte"
+      }, {
+        code: "ZA",
+        name: "South Africa"
+      }, {
+        code: "ZM",
+        name: "Zambia"
+      }, {
+        code: "ZW",
+        name: "Zimbabwe"
+      }, {
+        code: "1A",
+        name: "Kosovo"
+      }, {
+        code: "XI",
+        name: "United Kingdom (Northern Ireland)"
+      }],
       contact: {
         title: '',
         peppolEndpoint: '',
         endpoint: '',
         certificate: '',
-        relationship: 1
+        relationship: 1,
+        address: {}
       }
     };
   },
@@ -14331,7 +15146,7 @@ __webpack_require__.r(__webpack_exports__);
       var payload = {
         body: this.contact
       };
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/index.php/apps/peppolnext/api/v1/contact', payload).then(function (response) {}).catch(function (error) {});
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/index.php/apps/peppolnext/api/v1/contact', payload).then(function (response) {}).catch(function (error) {});
     }
   }
 });
@@ -14349,19 +15164,781 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-select */ "./node_modules/vue-select/dist/vue-select.js");
+/* harmony import */ var vue_select__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_select__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_select_dist_vue_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-select/dist/vue-select.css */ "./node_modules/vue-select/dist/vue-select.css");
+/* harmony import */ var _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @nextcloud/axios */ "./node_modules/@nextcloud/axios/dist/index.js");
+
+
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: 'NewSupplier',
-  components: {},
+  components: {
+    vSelect: (vue_select__WEBPACK_IMPORTED_MODULE_0___default())
+  },
   data: function data() {
     return {
+      countries: [{
+        code: "AD",
+        name: "Andorra"
+      }, {
+        code: "AE",
+        name: "United Arab Emirates"
+      }, {
+        code: "AF",
+        name: "Afghanistan"
+      }, {
+        code: "AG",
+        name: "Antigua and Barbuda"
+      }, {
+        code: "AI",
+        name: "Anguilla"
+      }, {
+        code: "AL",
+        name: "Albania"
+      }, {
+        code: "AM",
+        name: "Armenia"
+      }, {
+        code: "AO",
+        name: "Angola"
+      }, {
+        code: "AQ",
+        name: "Antarctica"
+      }, {
+        code: "AR",
+        name: "Argentina"
+      }, {
+        code: "AS",
+        name: "American Samoa"
+      }, {
+        code: "AT",
+        name: "Austria"
+      }, {
+        code: "AU",
+        name: "Australia"
+      }, {
+        code: "AW",
+        name: "Aruba"
+      }, {
+        code: "AX",
+        name: "Åland Islands"
+      }, {
+        code: "AZ",
+        name: "Azerbaijan"
+      }, {
+        code: "BA",
+        name: "Bosnia and Herzegovina"
+      }, {
+        code: "BB",
+        name: "Barbados"
+      }, {
+        code: "BD",
+        name: "Bangladesh"
+      }, {
+        code: "BE",
+        name: "Belgium"
+      }, {
+        code: "BF",
+        name: "Burkina Faso"
+      }, {
+        code: "BG",
+        name: "Bulgaria"
+      }, {
+        code: "BH",
+        name: "Bahrain"
+      }, {
+        code: "BI",
+        name: "Burundi"
+      }, {
+        code: "BJ",
+        name: "Benin"
+      }, {
+        code: "BL",
+        name: "Saint Barthélemy"
+      }, {
+        code: "BM",
+        name: "Bermuda"
+      }, {
+        code: "BN",
+        name: "Brunei Darussalam"
+      }, {
+        code: "BO",
+        name: "Bolivia, Plurinational State of"
+      }, {
+        code: "BQ",
+        name: "Bonaire, Sint Eustatius and Saba"
+      }, {
+        code: "BR",
+        name: "Brazil"
+      }, {
+        code: "BS",
+        name: "Bahamas"
+      }, {
+        code: "BT",
+        name: "Bhutan"
+      }, {
+        code: "BV",
+        name: "Bouvet Island"
+      }, {
+        code: "BW",
+        name: "Botswana"
+      }, {
+        code: "BY",
+        name: "Belarus"
+      }, {
+        code: "BZ",
+        name: "Belize"
+      }, {
+        code: "CA",
+        name: "Canada"
+      }, {
+        code: "CC",
+        name: "Cocos (Keeling) Islands"
+      }, {
+        code: "CD",
+        name: "Congo, the Democratic Republic of the"
+      }, {
+        code: "CF",
+        name: "Central African Republic"
+      }, {
+        code: "CG",
+        name: "Congo"
+      }, {
+        code: "CH",
+        name: "Switzerland"
+      }, {
+        code: "CI",
+        name: "Côte d'Ivoire"
+      }, {
+        code: "CK",
+        name: "Cook Islands"
+      }, {
+        code: "CL",
+        name: "Chile"
+      }, {
+        code: "CM",
+        name: "Cameroon"
+      }, {
+        code: "CN",
+        name: "China"
+      }, {
+        code: "CO",
+        name: "Colombia"
+      }, {
+        code: "CR",
+        name: "Costa Rica"
+      }, {
+        code: "CU",
+        name: "Cuba"
+      }, {
+        code: "CV",
+        name: "Cabo Verde"
+      }, {
+        code: "CW",
+        name: "Curaçao"
+      }, {
+        code: "CX",
+        name: "Christmas Island"
+      }, {
+        code: "CY",
+        name: "Cyprus"
+      }, {
+        code: "CZ",
+        name: "Czechia"
+      }, {
+        code: "DE",
+        name: "Germany"
+      }, {
+        code: "DJ",
+        name: "Djibouti"
+      }, {
+        code: "DK",
+        name: "Denmark"
+      }, {
+        code: "DM",
+        name: "Dominica"
+      }, {
+        code: "DO",
+        name: "Dominican Republic"
+      }, {
+        code: "DZ",
+        name: "Algeria"
+      }, {
+        code: "EC",
+        name: "Ecuador"
+      }, {
+        code: "EE",
+        name: "Estonia"
+      }, {
+        code: "EG",
+        name: "Egypt"
+      }, {
+        code: "EH",
+        name: "Western Sahara"
+      }, {
+        code: "ER",
+        name: "Eritrea"
+      }, {
+        code: "ES",
+        name: "Spain"
+      }, {
+        code: "ET",
+        name: "Ethiopia"
+      }, {
+        code: "FI",
+        name: "Finland"
+      }, {
+        code: "FJ",
+        name: "Fiji"
+      }, {
+        code: "FK",
+        name: "Falkland Islands (Malvinas)"
+      }, {
+        code: "FM",
+        name: "Micronesia, Federated States of"
+      }, {
+        code: "FO",
+        name: "Faroe Islands"
+      }, {
+        code: "FR",
+        name: "France"
+      }, {
+        code: "GA",
+        name: "Gabon"
+      }, {
+        code: "GB",
+        name: "United Kingdom of Great Britain and Northern Ireland"
+      }, {
+        code: "GD",
+        name: "Grenada"
+      }, {
+        code: "GE",
+        name: "Georgia"
+      }, {
+        code: "GF",
+        name: "French Guiana"
+      }, {
+        code: "GG",
+        name: "Guernsey"
+      }, {
+        code: "GH",
+        name: "Ghana"
+      }, {
+        code: "GI",
+        name: "Gibraltar"
+      }, {
+        code: "GL",
+        name: "Greenland"
+      }, {
+        code: "GM",
+        name: "Gambia"
+      }, {
+        code: "GN",
+        name: "Guinea"
+      }, {
+        code: "GP",
+        name: "Guadeloupe"
+      }, {
+        code: "GQ",
+        name: "Equatorial Guinea"
+      }, {
+        code: "GR",
+        name: "Greece"
+      }, {
+        code: "GS",
+        name: "South Georgia and the South Sandwich Islands"
+      }, {
+        code: "GT",
+        name: "Guatemala"
+      }, {
+        code: "GU",
+        name: "Guam"
+      }, {
+        code: "GW",
+        name: "Guinea-Bissau"
+      }, {
+        code: "GY",
+        name: "Guyana"
+      }, {
+        code: "HK",
+        name: "Hong Kong"
+      }, {
+        code: "HM",
+        name: "Heard Island and McDonald Islands"
+      }, {
+        code: "HN",
+        name: "Honduras"
+      }, {
+        code: "HR",
+        name: "Croatia"
+      }, {
+        code: "HT",
+        name: "Haiti"
+      }, {
+        code: "HU",
+        name: "Hungary"
+      }, {
+        code: "ID",
+        name: "Indonesia"
+      }, {
+        code: "IE",
+        name: "Ireland"
+      }, {
+        code: "IL",
+        name: "Israel"
+      }, {
+        code: "IM",
+        name: "Isle of Man"
+      }, {
+        code: "IN",
+        name: "India"
+      }, {
+        code: "IO",
+        name: "British Indian Ocean Territory"
+      }, {
+        code: "IQ",
+        name: "Iraq"
+      }, {
+        code: "IR",
+        name: "Iran"
+      }, {
+        code: "IS",
+        name: "Iceland"
+      }, {
+        code: "IT",
+        name: "Italy"
+      }, {
+        code: "JE",
+        name: "Jersey"
+      }, {
+        code: "JM",
+        name: "Jamaica"
+      }, {
+        code: "JO",
+        name: "Jordan"
+      }, {
+        code: "JP",
+        name: "Japan"
+      }, {
+        code: "KE",
+        name: "Kenya"
+      }, {
+        code: "KG",
+        name: "Kyrgyzstan"
+      }, {
+        code: "KH",
+        name: "Cambodia"
+      }, {
+        code: "KI",
+        name: "Kiribati"
+      }, {
+        code: "KM",
+        name: "Comoros"
+      }, {
+        code: "KN",
+        name: "Saint Kitts and Nevis"
+      }, {
+        code: "KP",
+        name: "Korea, Democratic People's Republic of"
+      }, {
+        code: "KR",
+        name: "Korea, Republic of"
+      }, {
+        code: "KW",
+        name: "Kuwait"
+      }, {
+        code: "KY",
+        name: "Cayman Islands"
+      }, {
+        code: "KZ",
+        name: "Kazakhstan"
+      }, {
+        code: "LA",
+        name: "Lao People's Democratic Republic"
+      }, {
+        code: "LB",
+        name: "Lebanon"
+      }, {
+        code: "LC",
+        name: "Saint Lucia"
+      }, {
+        code: "LI",
+        name: "Liechtenstein"
+      }, {
+        code: "LK",
+        name: "Sri Lanka"
+      }, {
+        code: "LR",
+        name: "Liberia"
+      }, {
+        code: "LS",
+        name: "Lesotho"
+      }, {
+        code: "LT",
+        name: "Lithuania"
+      }, {
+        code: "LU",
+        name: "Luxembourg"
+      }, {
+        code: "LV",
+        name: "Latvia"
+      }, {
+        code: "LY",
+        name: "Libya"
+      }, {
+        code: "MA",
+        name: "Morocco"
+      }, {
+        code: "MC",
+        name: "Monaco"
+      }, {
+        code: "MD",
+        name: "Moldova, Republic of"
+      }, {
+        code: "ME",
+        name: "Montenegro"
+      }, {
+        code: "MF",
+        name: "Saint Martin (French part)"
+      }, {
+        code: "MG",
+        name: "Madagascar"
+      }, {
+        code: "MH",
+        name: "Marshall Islands"
+      }, {
+        code: "MK",
+        name: "Macedonia, the former Yugoslav Republic of"
+      }, {
+        code: "ML",
+        name: "Mali"
+      }, {
+        code: "MM",
+        name: "Myanmar"
+      }, {
+        code: "MN",
+        name: "Mongolia"
+      }, {
+        code: "MO",
+        name: "Macao"
+      }, {
+        code: "MP",
+        name: "Northern Mariana Islands"
+      }, {
+        code: "MQ",
+        name: "Martinique"
+      }, {
+        code: "MR",
+        name: "Mauritania"
+      }, {
+        code: "MS",
+        name: "Montserrat"
+      }, {
+        code: "MT",
+        name: "Malta"
+      }, {
+        code: "MU",
+        name: "Mauritius"
+      }, {
+        code: "MV",
+        name: "Maldives"
+      }, {
+        code: "MW",
+        name: "Malawi"
+      }, {
+        code: "MX",
+        name: "Mexico"
+      }, {
+        code: "MY",
+        name: "Malaysia"
+      }, {
+        code: "MZ",
+        name: "Mozambique"
+      }, {
+        code: "NA",
+        name: "Namibia"
+      }, {
+        code: "NC",
+        name: "New Caledonia"
+      }, {
+        code: "NE",
+        name: "Niger"
+      }, {
+        code: "NF",
+        name: "Norfolk Island"
+      }, {
+        code: "NG",
+        name: "Nigeria"
+      }, {
+        code: "NI",
+        name: "Nicaragua"
+      }, {
+        code: "NL",
+        name: "Netherlands"
+      }, {
+        code: "NO",
+        name: "Norway"
+      }, {
+        code: "NP",
+        name: "Nepal"
+      }, {
+        code: "NR",
+        name: "Nauru"
+      }, {
+        code: "NU",
+        name: "Niue"
+      }, {
+        code: "NZ",
+        name: "New Zealand"
+      }, {
+        code: "OM",
+        name: "Oman"
+      }, {
+        code: "PA",
+        name: "Panama"
+      }, {
+        code: "PE",
+        name: "Peru"
+      }, {
+        code: "PF",
+        name: "French Polynesia"
+      }, {
+        code: "PG",
+        name: "Papua New Guinea"
+      }, {
+        code: "PH",
+        name: "Philippines"
+      }, {
+        code: "PK",
+        name: "Pakistan"
+      }, {
+        code: "PL",
+        name: "Poland"
+      }, {
+        code: "PM",
+        name: "Saint Pierre and Miquelon"
+      }, {
+        code: "PN",
+        name: "Pitcairn"
+      }, {
+        code: "PR",
+        name: "Puerto Rico"
+      }, {
+        code: "PS",
+        name: "Palestine, State of"
+      }, {
+        code: "PT",
+        name: "Portugal"
+      }, {
+        code: "PW",
+        name: "Palau"
+      }, {
+        code: "PY",
+        name: "Paraguay"
+      }, {
+        code: "QA",
+        name: "Qatar"
+      }, {
+        code: "RE",
+        name: "Réunion"
+      }, {
+        code: "RO",
+        name: "Romania"
+      }, {
+        code: "RS",
+        name: "Serbia"
+      }, {
+        code: "RU",
+        name: "Russian Federation"
+      }, {
+        code: "RW",
+        name: "Rwanda"
+      }, {
+        code: "SA",
+        name: "Saudi Arabia"
+      }, {
+        code: "SB",
+        name: "Solomon Islands"
+      }, {
+        code: "SC",
+        name: "Seychelles"
+      }, {
+        code: "SD",
+        name: "Sudan"
+      }, {
+        code: "SE",
+        name: "Sweden"
+      }, {
+        code: "SG",
+        name: "Singapore"
+      }, {
+        code: "SH",
+        name: "Saint Helena, Ascension and Tristan da Cunha"
+      }, {
+        code: "SI",
+        name: "Slovenia"
+      }, {
+        code: "SJ",
+        name: "Svalbard and Jan Mayen"
+      }, {
+        code: "SK",
+        name: "Slovakia"
+      }, {
+        code: "SL",
+        name: "Sierra Leone"
+      }, {
+        code: "SM",
+        name: "San Marino"
+      }, {
+        code: "SN",
+        name: "Senegal"
+      }, {
+        code: "SO",
+        name: "Somalia"
+      }, {
+        code: "SR",
+        name: "Suriname"
+      }, {
+        code: "SS",
+        name: "South Sudan"
+      }, {
+        code: "ST",
+        name: "Sao Tome and Principe"
+      }, {
+        code: "SV",
+        name: "El Salvador"
+      }, {
+        code: "SX",
+        name: "Sint Maarten (Dutch part)"
+      }, {
+        code: "SY",
+        name: "Syrian Arab Republic"
+      }, {
+        code: "SZ",
+        name: "Swaziland"
+      }, {
+        code: "TC",
+        name: "Turks and Caicos Islands"
+      }, {
+        code: "TD",
+        name: "Chad"
+      }, {
+        code: "TF",
+        name: "French Southern Territories"
+      }, {
+        code: "TG",
+        name: "Togo"
+      }, {
+        code: "TH",
+        name: "Thailand"
+      }, {
+        code: "TJ",
+        name: "Tajikistan"
+      }, {
+        code: "TK",
+        name: "Tokelau"
+      }, {
+        code: "TL",
+        name: "Timor-Leste"
+      }, {
+        code: "TM",
+        name: "Turkmenistan"
+      }, {
+        code: "TN",
+        name: "Tunisia"
+      }, {
+        code: "TO",
+        name: "Tonga"
+      }, {
+        code: "TR",
+        name: "Turkey"
+      }, {
+        code: "TT",
+        name: "Trinidad and Tobago"
+      }, {
+        code: "TV",
+        name: "Tuvalu"
+      }, {
+        code: "TW",
+        name: "Taiwan, Province of China"
+      }, {
+        code: "TZ",
+        name: "Tanzania, United Republic of"
+      }, {
+        code: "UA",
+        name: "Ukraine"
+      }, {
+        code: "UG",
+        name: "Uganda"
+      }, {
+        code: "UM",
+        name: "United States Minor Outlying Islands"
+      }, {
+        code: "US",
+        name: "United States of America"
+      }, {
+        code: "UY",
+        name: "Uruguay"
+      }, {
+        code: "UZ",
+        name: "Uzbekistan"
+      }, {
+        code: "VA",
+        name: "Holy See"
+      }, {
+        code: "VC",
+        name: "Saint Vincent and the Grenadines"
+      }, {
+        code: "VE",
+        name: "Venezuela, Bolivarian Republic of"
+      }, {
+        code: "VG",
+        name: "Virgin Islands, British"
+      }, {
+        code: "VI",
+        name: "Virgin Islands, U.S."
+      }, {
+        code: "VN",
+        name: "Viet Nam"
+      }, {
+        code: "VU",
+        name: "Vanuatu"
+      }, {
+        code: "WF",
+        name: "Wallis and Futuna"
+      }, {
+        code: "WS",
+        name: "Samoa"
+      }, {
+        code: "YE",
+        name: "Yemen"
+      }, {
+        code: "YT",
+        name: "Mayotte"
+      }, {
+        code: "ZA",
+        name: "South Africa"
+      }, {
+        code: "ZM",
+        name: "Zambia"
+      }, {
+        code: "ZW",
+        name: "Zimbabwe"
+      }, {
+        code: "1A",
+        name: "Kosovo"
+      }, {
+        code: "XI",
+        name: "United Kingdom (Northern Ireland)"
+      }],
       contact: {
         title: '',
         peppolEndpoint: '',
         endpoint: '',
         certificate: '',
-        relationship: 2
+        relationship: 2,
+        address: {}
       }
     };
   },
@@ -14370,7 +15947,7 @@ __webpack_require__.r(__webpack_exports__);
       var payload = {
         body: this.contact
       };
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].post('/index.php/apps/peppolnext/api/v1/contact', payload).then(function (response) {}).catch(function (error) {});
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_2__["default"].post('/index.php/apps/peppolnext/api/v1/contact', payload).then(function (response) {}).catch(function (error) {});
     }
   }
 });
@@ -14429,36 +16006,12 @@ __webpack_require__.r(__webpack_exports__);
         vm.contacts = response.data;
       }).catch();
     },
-    setAsRead: function setAsRead(filename) {
-      var payload = {
-        filename: filename
-      };
+    deleteContact: function deleteContact(uid) {
       var opt = this;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"].put('/index.php/apps/peppolnext/api/v1/message', payload).then(function (response) {
-        opt.getAllNewInvoices(opt);
-      }).catch(function (error) {});
-    },
-    deleteFile: function deleteFile(filename) {
-      var payload = {
-        filename: filename
-      };
-      var opt = this;
-      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]('/index.php/apps/peppolnext/api/v1/message', {
-        data: payload
-      }).then(function (response) {
+      _nextcloud_axios__WEBPACK_IMPORTED_MODULE_0__["default"]["delete"]('/index.php/apps/peppolnext/api/v1/contact/' + uid + '?relationship=2').then(function (response) {
         opt.getAllNewInvoices(opt);
       }).catch(function (error) {});
     }
-  },
-  watch: {
-    // '$route.params.relationship': {
-    //     handler(newValue) {
-    // 		console.log('watcher watched: ' + newValue)
-    // 		this.relationship = this.$route.params.relationship
-    //         this.getAllContacts(this)
-    //     },
-    //     immediate: true,
-    // }
   }
 });
 
@@ -14946,22 +16499,22 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.invoiceItem.fee,
-      expression: "invoiceItem.fee"
+      value: _vm.invoiceItem.price,
+      expression: "invoiceItem.price"
     }],
     attrs: {
       type: "number",
       step: "0.01",
-      placeholder: "Fee"
+      placeholder: "Price"
     },
     domProps: {
-      value: _vm.invoiceItem.fee
+      value: _vm.invoiceItem.price
     },
     on: {
       change: _vm.notifyDataChange,
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.invoiceItem, "fee", $event.target.value);
+        _vm.$set(_vm.invoiceItem, "price", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -15947,20 +17500,11 @@ var render = function render() {
       key: key
     }, [_c("td", [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.peppolEndpoint))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.endpoint))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.public_key))]), _vm._v(" "), _c("td", [_c("Actions", [_c("ActionButton", {
       attrs: {
-        icon: "icon-checkmark"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.setAsRead(item.fileName);
-        }
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tMark as read\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("ActionButton", {
-      attrs: {
         icon: "icon-delete"
       },
       on: {
         click: function click($event) {
-          return _vm.deleteFile(item.fileName);
+          return _vm.deleteContact(item.uid);
         }
       }
     }, [_vm._v("\n\t\t\t\t\t\t\t\t\tDelete\n\t\t\t\t\t\t\t\t")])], 1)], 1)]);
@@ -16185,7 +17729,170 @@ var render = function render() {
         _vm.$set(_vm.contact, "certificate", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-9"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-line1"
+    }
+  }, [_vm._v("Line1:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.line1,
+      expression: "contact.address.line1"
+    }],
+    attrs: {
+      id: "customer-address-line1"
+    },
+    domProps: {
+      value: _vm.contact.address.line1
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "line1", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-line2"
+    }
+  }, [_vm._v("Line2:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.line2,
+      expression: "contact.address.line2"
+    }],
+    attrs: {
+      id: "customer-address-line2"
+    },
+    domProps: {
+      value: _vm.contact.address.line2
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "line2", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-city"
+    }
+  }, [_vm._v("City:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.city,
+      expression: "contact.address.city"
+    }],
+    attrs: {
+      id: "customer-address-city"
+    },
+    domProps: {
+      value: _vm.contact.address.city
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "city", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-postcode"
+    }
+  }, [_vm._v("PostCode:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.post_code,
+      expression: "contact.address.post_code"
+    }],
+    attrs: {
+      id: "customer-address-postcode"
+    },
+    domProps: {
+      value: _vm.contact.address.post_code
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "post_code", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-state"
+    }
+  }, [_vm._v("State:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.state,
+      expression: "contact.address.state"
+    }],
+    attrs: {
+      id: "customer-address-state"
+    },
+    domProps: {
+      value: _vm.contact.address.state
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "state", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-country"
+    }
+  }, [_vm._v("Country:")]), _vm._v(" "), _c("v-select", {
+    staticClass: "fullwidth",
+    attrs: {
+      id: "customer-address-country",
+      label: "name",
+      options: _vm.countries
+    },
+    scopedSlots: _vm._u([{
+      key: "option",
+      fn: function fn(option) {
+        return [_c("div", {
+          staticClass: "cmb-item-container"
+        }, [_c("div", {
+          staticClass: "cmb-item-data"
+        }, [_c("div", {
+          staticClass: "cmb-item-title"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t\t\t\t\t\t\t")])])])];
+      }
+    }]),
+    model: {
+      value: _vm.contact.address.country,
+      callback: function callback($$v) {
+        _vm.$set(_vm.contact.address, "country", $$v);
+      },
+      expression: "contact.address.country"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-10"
@@ -16197,7 +17904,15 @@ var render = function render() {
     staticClass: "col-3"
   })]);
 };
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-5"
+  }, [_vm._v("Address")])]);
+}];
 render._withStripped = true;
 
 
@@ -16335,7 +18050,170 @@ var render = function render() {
         _vm.$set(_vm.contact, "certificate", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
+  })])]), _vm._v(" "), _vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-1"
+  }), _vm._v(" "), _c("div", {
+    staticClass: "col-9"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-line1"
+    }
+  }, [_vm._v("Line1:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.line1,
+      expression: "contact.address.line1"
+    }],
+    attrs: {
+      id: "customer-address-line1"
+    },
+    domProps: {
+      value: _vm.contact.address.line1
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "line1", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-line2"
+    }
+  }, [_vm._v("Line2:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.line2,
+      expression: "contact.address.line2"
+    }],
+    attrs: {
+      id: "customer-address-line2"
+    },
+    domProps: {
+      value: _vm.contact.address.line2
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "line2", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-city"
+    }
+  }, [_vm._v("City:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.city,
+      expression: "contact.address.city"
+    }],
+    attrs: {
+      id: "customer-address-city"
+    },
+    domProps: {
+      value: _vm.contact.address.city
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "city", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-postcode"
+    }
+  }, [_vm._v("PostCode:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.post_code,
+      expression: "contact.address.post_code"
+    }],
+    attrs: {
+      id: "customer-address-postcode"
+    },
+    domProps: {
+      value: _vm.contact.address.post_code
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "post_code", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-state"
+    }
+  }, [_vm._v("State:")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.contact.address.state,
+      expression: "contact.address.state"
+    }],
+    attrs: {
+      id: "customer-address-state"
+    },
+    domProps: {
+      value: _vm.contact.address.state
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.contact.address, "state", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("label", {
+    attrs: {
+      for: "customer-address-country"
+    }
+  }, [_vm._v("Country:")]), _vm._v(" "), _c("v-select", {
+    staticClass: "fullwidth",
+    attrs: {
+      id: "customer-address-country",
+      label: "name",
+      options: _vm.countries
+    },
+    scopedSlots: _vm._u([{
+      key: "option",
+      fn: function fn(option) {
+        return [_c("div", {
+          staticClass: "cmb-item-container"
+        }, [_c("div", {
+          staticClass: "cmb-item-data"
+        }, [_c("div", {
+          staticClass: "cmb-item-title"
+        }, [_vm._v("\n\t\t\t\t\t\t\t\t\t\t" + _vm._s(option.name) + "\n\t\t\t\t\t\t\t\t\t")])])])];
+      }
+    }]),
+    model: {
+      value: _vm.contact.address.country,
+      callback: function callback($$v) {
+        _vm.$set(_vm.contact.address, "country", $$v);
+      },
+      expression: "contact.address.country"
+    }
+  })], 1)])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-10"
@@ -16347,7 +18225,15 @@ var render = function render() {
     staticClass: "col-3"
   })]);
 };
-var staticRenderFns = [];
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-5"
+  }, [_vm._v("Address")])]);
+}];
 render._withStripped = true;
 
 
@@ -16384,20 +18270,11 @@ var render = function render() {
       key: key
     }, [_c("td", [_vm._v(_vm._s(item.title))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.peppolEndpoint))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.endpoint))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.public_key))]), _vm._v(" "), _c("td", [_c("Actions", [_c("ActionButton", {
       attrs: {
-        icon: "icon-checkmark"
-      },
-      on: {
-        click: function click($event) {
-          return _vm.setAsRead(item.fileName);
-        }
-      }
-    }, [_vm._v("\n\t\t\t\t\t\t\t\t\tMark as read\n\t\t\t\t\t\t\t\t")]), _vm._v(" "), _c("ActionButton", {
-      attrs: {
         icon: "icon-delete"
       },
       on: {
         click: function click($event) {
-          return _vm.deleteFile(item.fileName);
+          return _vm.deleteContact(item.uid);
         }
       }
     }, [_vm._v("\n\t\t\t\t\t\t\t\t\tDelete\n\t\t\t\t\t\t\t\t")])], 1)], 1)]);
@@ -73123,4 +75000,4 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].mixin({
 
 /******/ })()
 ;
-//# sourceMappingURL=peppolnext-main.js.map?v=f1e0f1f8f811a2ed5556
+//# sourceMappingURL=peppolnext-main.js.map?v=cd908a634ac75d907b64

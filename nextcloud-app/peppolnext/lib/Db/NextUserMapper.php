@@ -23,7 +23,7 @@ class NextUserMapper extends QBMapper {
 
         $qb->select('*')
              ->from($this->getTableName())
-             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($category)));
+             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
 
         return $this->findEntity($qb);
     }

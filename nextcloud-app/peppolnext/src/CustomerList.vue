@@ -27,10 +27,7 @@
 							<td>{{ item.public_key }}</td>
 							<td>
 								<Actions>
-									<ActionButton icon="icon-checkmark" @click="setAsRead(item.fileName)">
-										Mark as read
-									</ActionButton>
-									<ActionButton icon="icon-delete" @click="deleteFile(item.fileName)">
+									<ActionButton icon="icon-delete" @click="deleteContact(item.uid)">
 										Delete
 									</ActionButton>
 								</Actions>
@@ -82,38 +79,15 @@ export default {
 				})
 				.catch()
 		},
-		setAsRead(filename) {
-			const payload = { filename }
+		deleteContact(uid) {
 			const opt = this
-			axios.put('/index.php/apps/peppolnext/api/v1/message', payload)
-				.then(function(response) {
-					opt.getAllNewInvoices(opt)
-				})
-				.catch(function(error) {})
-		},
-		deleteFile(filename) {
-			const payload = { filename: filename }
-			const opt = this
-			axios.delete('/index.php/apps/peppolnext/api/v1/message', { data: payload })
+			axios.delete('/index.php/apps/peppolnext/api/v1/contact/'+uid+'?relationship=1')
 				.then(function(response) {
 					opt.getAllNewInvoices(opt)
 				})
 				.catch(function(error) { })
-		},
-		newCustomer(vm) {
-			//vm.$router.push('/contact/new/customer')
-		},
-	},
-	watch: {
-    // '$route.params.relationship': {
-    //     handler(newValue) {
-	// 		console.log('watcher watched: ' + newValue)
-	// 		this.relationship = this.$route.params.relationship
-    //         this.getAllContacts(this)
-    //     },
-    //     immediate: true,
-    // }
-}
+		}
+	}
 }
 </script>
 

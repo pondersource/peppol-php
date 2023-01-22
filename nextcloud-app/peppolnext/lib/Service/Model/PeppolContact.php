@@ -2,9 +2,28 @@
 
 namespace OCA\PeppolNext\Service\Model;
 
+use OCA\PeppolNext\Service\Helper\PostalAddress;
+
 class PeppolContact {
 
-	public function __construct(string $title, string $peppolId, int $relationship, bool $isLocal, string $uid="", string $endpoint="", string $certificate=""){
+	public string $title = '';
+	public string $peppolEndpoint = '';
+	public int $relationship = 1;
+	public bool $isLocal = true;
+	public string $uid = '';
+	public string $endpoint = '';
+	public string $certificate = '';
+
+	public array $address;
+
+	public function __construct(string $title=''
+			, string $peppolId=''
+			, int $relationship=1
+			, bool $isLocal=true
+			, string $uid=""
+			, string $endpoint=""
+			, string $certificate=""
+			, array $address=[]) {
 		$this->title = $title;
 		$this->peppolEndpoint = $peppolId;
 		$this->relationship = $relationship;
@@ -12,15 +31,13 @@ class PeppolContact {
 		$this->uid = $uid;
 		$this->endpoint = $endpoint;
 		$this->certificate = $certificate;
-	}
 
-	public string $title;
-	public string $peppolEndpoint;
-	public int $relationship;
-	public bool $isLocal;
-	public string $uid;
-	public string $endpoint;
-	public string $certificate;
+		// if ($address == null) {
+		// 	$address = new PostalAddress();
+		// }
+
+		$this->address = $address;//->asPeppolAddress();
+	}
 
 	public function getPeppolId() : string {
 		$rawEndpoint = str_replace(Constants::PEPPOL_INDICATOR,"", $this->peppolEndpoint);
