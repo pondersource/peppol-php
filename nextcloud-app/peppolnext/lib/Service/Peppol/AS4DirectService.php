@@ -77,11 +77,11 @@ class AS4DirectService implements IPeppolService {
 		
 		$subject = new X509();
 		$subject->setPublicKey($publicKey);
-		$subject->setDN("/O=$name");
+		$subject->setDN("/CN=$name");
 
 		$issuer = new X509();
 		$issuer->setPrivateKey($privateKey);
-		$issuer->setDN("/O=$name");
+		$issuer->setDN("/CN=$name");
 
 		$x509 = new X509();
 		$result = $x509->sign($issuer, $subject); 

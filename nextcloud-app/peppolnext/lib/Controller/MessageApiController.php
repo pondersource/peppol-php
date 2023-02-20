@@ -237,9 +237,10 @@ class MessageApiController extends ApiController {
 		$s_scheme = $sender_identity->getScheme();
 		$s_id = $sender_identity->getPeppolId();
 		$s_key = $private_key;
+		$s_cn = $cert->getDNProp('CN');
 
 		list($result, $raw_envelope, $raw_payload) =
-			$this->as4SendWithFullInfo($invoice, $endpoint, $r_scheme, $r_id, $r_cert, $s_scheme, $s_id, $s_key);
+			$this->as4SendWithFullInfo($invoice, $endpoint, $r_scheme, $r_id, $r_cert, $s_scheme, $s_id, $s_key, $s_cn);
 
 		return [$result, $sender_identity, $raw_envelope, $raw_payload];
 	}
@@ -750,7 +751,7 @@ class MessageApiController extends ApiController {
 		return [ $private_key, $cert ];
 	}
 
-	private function prepareEnvelope($messagingId, $messageId, $s_scheme, $s_id, $r_scheme, $r_id, $payloadId, $bodyId) {
+	private function prepareEnvelope($messagingId, $messageId, $s_scheme, $s_id, $s_cn, $r_scheme, $r_id, $r_cn, $payloadId, $bodyId) {
 		return new Envelope(
 			new Header(
 				new Security(
@@ -759,8 +760,8 @@ class MessageApiController extends ApiController {
 				new Messaging(new UserMessage(
 					new MessageInfo(new \DateTime(), $messageId),
 					new PartyInfo(
-						new Party(new PartyId('POP000306', 'urn:fdc:peppol.eu:2017:identifiers:ap'), 'http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/initiator'),
-						new Party(new PartyId('POP000306', 'urn:fdc:peppol.eu:2017:identifiers:ap'), 'http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/responder')
+						new Party(new PartyId($s_cn, 'urn:fdc:peppol.eu:2017:identifiers:ap'), 'http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/initiator'),
+						new Party(new PartyId($r_cn, 'urn:fdc:peppol.eu:2017:identifiers:ap'), 'http://docs.oasis-open.org/ebxml-msg/ebms/v3.0/ns/core/200704/responder')
 						),
 					new CollaborationInfo(
 						'urn:fdc:peppol.eu:2017:agreements:tia:ap_provider',
@@ -829,14 +830,14 @@ class MessageApiController extends ApiController {
 		return [$raw_payload, $payload];
 	}
 
-	private function prepareBody($s_scheme, $s_id, $r_scheme, $r_id, $invoice, $s_key, $r_cert, $boundry) {
+	private function prepareBody($s_scheme, $s_id, $s_cn, $r_scheme, $r_id, $r_cn, $invoice, $s_key, $r_cert, $boundry) {
 		// Prepare the request
 		$messagingId = uniqid('peppolnext-msg-');
 		$messageId = uniqid().'@peppolnext';
 		$bodyId = uniqid('id-');
 		$payloadId = uniqid('peppolnext-att-').'@cid';
 
-		$envelope = $this->prepareEnvelope($messagingId, $messageId, $s_scheme, $s_id, $r_scheme, $r_id, $payloadId, $bodyId);
+		$envelope = $this->prepareEnvelope($messagingId, $messageId, $s_scheme, $s_id, $s_cn, $r_scheme, $r_id, $r_cn, $payloadId, $bodyId);
 		list($raw_payload, $payload) = $this->preparePayload($envelope, $s_scheme, $s_id, $r_scheme, $r_id, $invoice, $messagingId, $bodyId, $payloadId, $s_key, $r_cert);
 
 		$serializer = SerializerBuilder::create()->build();
@@ -851,9 +852,10 @@ class MessageApiController extends ApiController {
 		return [$body, $serializedEnvelope, $raw_payload];
 	}
 
-	private function as4SendWithFullInfo($invoice, $endpoint, $r_scheme, $r_id, $r_cert, $s_scheme, $s_id, $s_key) {
+	private function as4SendWithFullInfo($invoice, $endpoint, $r_scheme, $r_id, $r_cert, $s_scheme, $s_id, $s_key, $s_cn) {
 		$boundry = '----=_Part_'.uniqid();
-		list($body, $raw_envelope, $raw_payload) = $this->prepareBody($s_scheme, $s_id, $r_scheme, $r_id, $invoice, $s_key, $r_cert, $boundry);
+		$r_cn = $r_cert->getDNProp('CN');
+		list($body, $raw_envelope, $raw_payload) = $this->prepareBody($s_scheme, $s_id, $s_cn, $r_scheme, $r_id, $r_cn, $invoice, $s_key, $r_cert, $boundry);
 		$client = new \GuzzleHttp\Client();
 		$headers = [
 			'Message-Id' => '<'.uniqid().'>',
@@ -895,7 +897,7 @@ class MessageApiController extends ApiController {
 		list($as4_endpoint, $receiver_cert) = $this->getRecipient($receiver_identifier);
     	list ($private_key, $cert) = $this->getMyCertificate();
 		$boundry = '----=_Part_'.uniqid();
-		list($body, $raw_envelope, $raw_payload) = $this->prepareBody('iso6523-actorid-upis', $peppolNext_identifier, 'iso6523-actorid-upis', $receiver_identifier, $invoice, $private_key, $receiver_cert, $boundry);
+		list($body, $raw_envelope, $raw_payload) = $this->prepareBody('iso6523-actorid-upis', $peppolNext_identifier, 'POP000306', 'iso6523-actorid-upis', $receiver_identifier, 'POP000306', $invoice, $private_key, $receiver_cert, $boundry);
 		$client = new \GuzzleHttp\Client();
 		$headers = [
 			'Message-Id' => '<'.uniqid().'>',
