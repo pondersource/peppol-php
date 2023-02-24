@@ -12,6 +12,7 @@ class PeppolIdentity extends Entity implements JsonSerializable {
     protected $peppolId;
     protected $certificate;
     protected $serviceName;
+    protected $data;
 
     public function __construct() {
         $this->addType('id','integer');

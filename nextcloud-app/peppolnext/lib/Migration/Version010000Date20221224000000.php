@@ -68,6 +68,10 @@
                 'notnull' => true,
                 'length' => 200
             ]);
+            $table->addColumn('data', 'string', [
+                'notnull' => false,
+                'length' => 200
+            ]);
 
             $table->setPrimaryKey(['id']);
             $table->addIndex(['user_id'], 'user_id_index');

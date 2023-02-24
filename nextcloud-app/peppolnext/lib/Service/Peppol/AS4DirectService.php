@@ -53,7 +53,6 @@ class AS4DirectService implements IPeppolService {
 			return [
 				'scheme' => $peppolIdentity->getScheme(),
 				'id' => $peppolIdentity->getPeppolId(),
-				'endpoint' => $this->urlGenerator->linkToRouteAbsolute(Application::APP_ID.'.message_api.as4Endpoint'),
 				'certificate' => $peppolIdentity->getCertificate()
 			];
 		} catch(Exception $e) {

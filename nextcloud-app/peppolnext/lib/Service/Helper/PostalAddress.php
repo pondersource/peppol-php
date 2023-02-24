@@ -6,6 +6,23 @@ namespace OCA\PeppolNext\Service\Helper;
  */
 class PostalAddress {
 
+	public static function streetFromAddress(array $address): string {
+		if (isset($address['line1']) && strlen($address['line1']) > 0) {
+			if (isset($address['line2']) && strlen($address['line2']) > 0) {
+				return $address['line1'].', '.$address['line2'];
+			}
+			else {
+				return $address['line1'];
+			}
+		}
+		else if (isset($address['line2']) && strlen($address['line2']) > 0) {
+			return $address['line2'];
+		}
+		else {
+			return '';
+		}
+	}
+
 	public static function fromPeppolAddress(array $address): PostalAddress {
 		$adr = new PostalAddress();
 
