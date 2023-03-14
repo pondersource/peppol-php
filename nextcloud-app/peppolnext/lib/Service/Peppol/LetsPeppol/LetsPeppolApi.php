@@ -6,7 +6,7 @@ use phpseclib3\Crypt\Common\AsymmetricKey;
 
 class LetsPeppolApi {
 
-    private const BASE_URL = '';
+    private const BASE_URL = 'https://8000-pondersource-cyb-rueqzbqdswa.ws-us90.gitpod.io/api';
     private const LETS_PEPPOL_BASE_URL = self::BASE_URL.'/connector/lets_peppol';
     private const INFO_URL = self::LETS_PEPPOL_BASE_URL.'/as4direct/info';
     private const IDENTITY_URL = self::LETS_PEPPOL_BASE_URL.'/identity';
@@ -48,8 +48,8 @@ class LetsPeppolApi {
      *      "as4direct_endpoint"
      *      "as4direct_public_key"
      *      "kyc_status"
-     *      "identifierScheme"
-     *      "identifierValue"
+     *      "identifier_scheme"
+     *      "identifier_value"
      *      "as4direct_certificate"
      * }
      */
@@ -92,8 +92,8 @@ class LetsPeppolApi {
     public function getIdentity(string $id, AsymmetricKey $private_key): array {
         $client = new \GuzzleHttp\Client();
 
-        $signature = base64_encode($private_key->sign('I want identity id '.$id));
-        $endpoint = self::IDENTITY_URL."/$id&signature=$signature";
+        $signature = urlencode(base64_encode($private_key->sign('I want identity id '.$id)));
+        $endpoint = self::IDENTITY_URL."/$id?signature=$signature";
 
         try {
             $response = $client->request('GET', $endpoint);

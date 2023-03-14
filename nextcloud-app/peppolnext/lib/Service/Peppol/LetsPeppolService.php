@@ -2,6 +2,7 @@
 
 namespace OCA\PeppolNext\Service\Peppol;
 
+use OCA\PeppolNext\AppInfo\Application;
 use OCA\PeppolNext\Db\PeppolIdentity;
 use OCA\PeppolNext\Db\PeppolIdentityMapper;
 use OCA\PeppolNext\Service\Helper\FolderManager;
@@ -72,27 +73,20 @@ class LetsPeppolService implements IPeppolService {
 					$keystore = $keystore_file->getContent();
 
 					if (!openssl_pkcs12_read($keystore, $cert_info, $user_id)) {
-						echo "Error: Unable to read the key store.\n";
-						return [null, null];
+						throw new \Exception('Error: Unable to read the key store.');
 					}
 			
 					$private_key = RSA::loadPrivateKey($cert_info['pkey']);
 
 					$letspeppol_identity = $this->api->getIdentity($identity->getData(), $private_key);
-
+					
 					if ($letspeppol_identity['kyc_status'] === 2) {
-						$identity->setScheme($letspeppol_identity['identifierScheme']);
-						$identity->setPeppolId($letspeppol_identity['identifierValue']);
+						$identity->setScheme($letspeppol_identity['identifier_scheme']);
+						$identity->setPeppolId($letspeppol_identity['identifier_value']);
 
 						$certificate = $letspeppol_identity['as4direct_certificate'];
-						$keystore_password = $user_id;
-						$keystore_content = null;
 				
-						if (!openssl_pkcs12_export($certificate, $keystore_content, $private_key->__toString(), $keystore_password)) {
-							throw new Exception("Error Processing Request", 1);
-						}
-				
-						$this->folderManager->createFile(self::CERTIFICATE_FILE, $keystore_content);
+						$this->folderManager->createFile(self::CERTIFICATE_FILE, $certificate);
 						$this->peppolIdentityMapper->update($identity);
 					}
 					else if ($letspeppol_identity['kyc_status'] === 1) {
@@ -104,15 +98,30 @@ class LetsPeppolService implements IPeppolService {
 			}
 
 			return $identity;
-		} catch(Exception $e) {
+		} catch(\Exception $e) {
 			return null;
 		}
 	}
 
-	public function getCertificateStore(PeppolIdentity $identity): ?string {
+	public function getPrivateKeyAndCertificate(PeppolIdentity $identity): ?array {
 		$file = $this->folderManager->getForUser(self::KEYSTORE_FILE, $identity->getUserId());
+		$cert_store = $file->getContent();
+		$passphrase = $identity->getUserId();
 
-		return $file->getContent();
+		if (!openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
+			echo "Error: Unable to read the cert store.\n";
+			return [null, null];
+		}
+
+		$private_key = RSA::loadPrivateKey($cert_info['pkey']);
+
+		$file = $this->folderManager->getForUser(self::CERTIFICATE_FILE, $identity->getUserId());
+		$certificate = $file->getContent();
+
+		$cert = new X509();
+		$cert->loadX509($certificate);
+
+		return [$private_key, $cert];
 	}
 
 	public function generateIdentity(): PeppolIdentity {
@@ -178,6 +187,7 @@ class LetsPeppolService implements IPeppolService {
 		$identity->setUserId($user_id);
 		$identity->setScheme('');
 		$identity->setPeppolId('');
+		$identity->setServiceName(self::SERVICE_NAME);
 		$identity->setData($letspeppol_identity['id']);
 		$this->peppolIdentityMapper->insert($identity);
 

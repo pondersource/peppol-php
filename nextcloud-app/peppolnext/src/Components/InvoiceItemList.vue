@@ -3,10 +3,11 @@
 		<div class="header">
 			<div class="row-number-header">#</div>
 			<div class="title-header">Title</div>
-			<div class="fee-header">Fee</div>
+			<div class="fee-header">Price</div>
 			<div class="quantity-header">Quantity</div>
-			<div class="total-header">Total</div>
+			<div class="total-header">Tax %</div>
 			<div class="description-header">VAT Category</div>
+			<div class="total-header">Total</div>
 		</div>
 		<div id="item-container" v-for="(obj, index) in rows" v-bind:key="index">
 			<InvoiceItem
@@ -50,7 +51,7 @@ export default {
 				quantity: 0,
 				description: '',
 				totalPrice: 0,
-				fee: 0,
+				price: 0,
 			}],
 			sumOfItems: 0,
 		}
@@ -67,7 +68,7 @@ export default {
 				quantity: 0,
 				description: '',
 				totalPrice: 0,
-				fee: 0,
+				price: 0,
 			})
 		},
 		calculateSum: function() {

@@ -25,11 +25,10 @@
 		<div class="total">
 			<input
 				type="number"
-				step="0.001"
+				step="1"
 				@change="notifyDataChange"
-				readonly="true"
-				placeholder="Total"
-				v-model="price">
+				placeholder="Tax %"
+				v-model="taxPercentage">
 		</div>
 		<div class="description">
 			<v-select id="customer-address-country"
@@ -51,6 +50,15 @@
 					</div>
 				</template>
 			</v-select>
+		</div>
+		<div class="total">
+			<input
+				type="number"
+				step="0.01"
+				@change="notifyDataChange"
+				readonly="true"
+				placeholder="Total"
+				v-model="totalPrice">
 		</div>
 		<div>
 			<button type="button" @click="notifyRowDeleted">-</button>
@@ -77,9 +85,10 @@ export default {
 			invoiceItem: {
 				title: '',
 				quantity: 0,
+				taxPercentage: 0,
 				vat_category: {},
 				totalPrice: 0,
-				fee: 0
+				price: 0
 			},
 			vatCategories: [
 				{code:"AE",title:"Vat Reverse Charge",description:"Code specifying that the standard VAT rate is levied from the invoicee."},
@@ -96,13 +105,13 @@ export default {
 		}
 	},
 	computed: {
-		price: function() {
-			return this.invoiceItem.quantity * this.invoiceItem.fee
+		totalPrice: function() {
+			return this.invoiceItem.quantity * this.invoiceItem.price
 		}
 	},
 	methods: {
 		notifyDataChange: function() {
-			this.invoiceItem.totalPrice = this.price
+			this.invoiceItem.totalPrice = this.totalPrice
 			this.$emit('row-data-changed', {
 				index: this.rowNumber-1,
 				data: this.invoiceItem

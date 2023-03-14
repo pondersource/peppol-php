@@ -42,7 +42,7 @@ class DocumentIdentification
     /**
      * @SerializedName("CreationDateAndTime")
      * @XmlElement(cdata=false, namespace=Namespaces::SBD)
-     * @Type("DateTime<'Y-m-d\TH:i:s.vP'>")
+     * @Type("DateTime<'Y-m-d\TH:i:sO'>")
      */
     private $creationDateAndTime;
 

@@ -6,6 +6,7 @@ use OC\AppFramework\Http;
 use OCA\PeppolNext\EnvelopeReader;
 use OCA\PeppolNext\PayloadReader;
 use OCA\PeppolNext\Db\Message;
+use OCA\PeppolNext\Db\PeppolIdentity;
 use OCA\PeppolNext\PonderSource\EBMS\MessageInfo;
 use OCA\PeppolNext\Service\ContactService;
 use OCA\PeppolNext\Service\MessageService;
@@ -14,6 +15,8 @@ use OCA\PeppolNext\Service\Model\Constants;
 use OCA\PeppolNext\Service\Model\MessageBuilder;
 use OCA\PeppolNext\Service\Peppol\PeppolManagerService;
 use OCA\PeppolNext\Service\Peppol\AS4DirectService;
+use OCA\PeppolNext\Service\Peppol\LetsPeppolService;
+use OCA\PeppolNext\Service\Peppol\LetsPeppol\LetsPeppolApi;
 use OCA\PeppolNext\PonderSource\Envelope\Envelope;
 use OCA\PeppolNext\PonderSource\Envelope\Body;
 use OCA\PeppolNext\PonderSource\Envelope\Header;
@@ -110,6 +113,9 @@ class MessageApiController extends ApiController {
 	/** @var ContactService */
 	private $contactService;
 
+	/** @var LetsPeppolApi */
+	private $letsPeppolApi;
+
 	private UploadService $uploadService;
 	use Errors;
 
@@ -119,6 +125,7 @@ class MessageApiController extends ApiController {
 								UploadService $uploadService,
 								PeppolManagerService $peppolManagerService,
 								ContactService $contactService,
+								LetsPeppolApi $letsPeppolApi,
 								$userId) {
 		parent::__construct("peppolnext", $request);
 		$this->userId = $userId;
@@ -127,6 +134,7 @@ class MessageApiController extends ApiController {
 		$this->uploadService = $uploadService;
 		$this->peppolManagerService = $peppolManagerService;
 		$this->contactService = $contactService;
+		$this->letsPeppolApi = $letsPeppolApi;
 	}
 
 	/**
@@ -182,8 +190,6 @@ class MessageApiController extends ApiController {
 	public function create() {
 		$message = $this->request->getParams("body");
 
-		$invoice = $this->invoiceFromMessage($message);
-
 		$endpoint = $message['recipient']['endpoint'];
 		
 		//$receiver_id = explode(":", $message['recipient']['peppolEndpoint'])[1];
@@ -198,16 +204,33 @@ class MessageApiController extends ApiController {
 			throw new \Exception('No receiver identifier specified');
 		}
 
+		$service = AS4DirectService::SERVICE_NAME;
+
 		if (empty($endpoint) || empty($receiver_certificate)) {
-			// TODO Try LetsPeppol
-			return new DataResponse(["success"=> false]);
+			$letsPeppolInfo = $this->letsPeppolApi->getInfo();
+			
+			$endpoint = $letsPeppolInfo['endpoint'];
+			$receiver_certificate = $letsPeppolInfo['certificate'];
+
+			$service = LetsPeppolService::SERVICE_NAME;
 		}
+
+		$peppolService = $this->peppolManagerService->getPeppolServiceForName($service);
+
+		$sender_identity = $peppolService->getIdentity();
+
+		if (!isset($sender_identity)) {
+			// TODO Return propert response
+			throw new \Exception('AS4 direct identity is not set up.');
+		}
+
+		$invoice = $this->invoiceFromMessage($message, $sender_identity);
 		
 		$r_cert = new X509();
 		$r_cert->loadX509($receiver_certificate);
 
 		list($result, $sender_identity, $raw_envelope, $raw_payload) =
-			$this->as4DirectSendWithReceiver($invoice, $endpoint, $receiver_scheme, $receiver_id, $r_cert);
+			$this->as4DirectSendWithReceiver($sender_identity, $invoice, $endpoint, $receiver_scheme, $receiver_id, $r_cert);
 		
 		$this->messageService->saveOutbox(
 			$sender_identity,
@@ -220,19 +243,8 @@ class MessageApiController extends ApiController {
 		return new DataResponse(["success"=> true, "verification_result"=>$result]);
 	}
 	
-	private function as4DirectSendWithReceiver($invoice, $endpoint, $r_scheme, $r_id, $r_cert) {
-		$peppolService = $this->peppolManagerService->getPeppolServiceForName(AS4DirectService::SERVICE_NAME);
-
-		$sender_identity = $peppolService->getIdentity();
-
-		if (!isset($sender_identity)) {
-			// TODO Return propert response
-			throw new \Exception('AS4 direct identity is not set up.');
-		}
-		
-		$cert_store = $this->peppolManagerService->getCertificateStore($sender_identity);
-		$passphrase = $sender_identity->getUserId();
-		list($private_key, $cert) = isset($cert_store) ? $this->getPrivateKeyAndCertificate($cert_store, $passphrase) : [null, null];
+	private function as4DirectSendWithReceiver($sender_identity, $invoice, $endpoint, $r_scheme, $r_id, $r_cert) {
+		list($private_key, $cert) = $this->peppolManagerService->getPrivateKeyAndCertificate($sender_identity);
 
 		$s_scheme = $sender_identity->getScheme();
 		$s_id = $sender_identity->getPeppolId();
@@ -245,7 +257,7 @@ class MessageApiController extends ApiController {
 		return [$result, $sender_identity, $raw_envelope, $raw_payload];
 	}
 
-	private function invoiceFromMessage($message): Invoice {
+	private function invoiceFromMessage(array $message, PeppolIdentity $seller_identity): Invoice {
 		$currency = $message['currency']['name'];
 
 		$seller_address = new PostalAddress();
@@ -257,7 +269,8 @@ class MessageApiController extends ApiController {
 		$seller_address->setCountry(new Country($message['supplier']['address']['country']['code']));
 		
 		$seller_party = new InvoiceParty();
-		$seller_party->setEndpointID(new EndpointID($message['supplier']['email'], '0007'));
+		$seller_identifier = explode(':', $seller_identity->getPeppolId());
+		$seller_party->setEndpointID(new EndpointID($seller_identifier[1], $seller_identifier[0]));
 		$seller_party->setPostalAddress($seller_address);
 		$seller_party->setPartyLegalEntity(new PartyLegalEntity($message['supplier']['name']));
 
@@ -270,42 +283,61 @@ class MessageApiController extends ApiController {
 		$buyer_address->setCountry(new Country($message['customer']['address']['country']['code']));
 		
 		$buyer_party = new InvoiceParty();
-		$buyer_party->setEndpointID(new EndpointID($message['customer']['email'], '0007'));
+		$buyer_identifier = explode(':', $message['recipient']['peppolEndpoint']);
+		$buyer_party->setEndpointID(new EndpointID($buyer_identifier[1], $buyer_identifier[0]));
 		$buyer_party->setPostalAddress($buyer_address);
 		$buyer_party->setPartyLegalEntity(new PartyLegalEntity($message['customer']['name']));
 		
 		$invoice_lines = [];
 		$invoice_total = 0;
 
+		$tax_subtotals = [];
+		$tax_total = 0;
+
 		$line_id = 1;
 
-		foreach ($message['invoiceLines'] as $line) {
+		foreach ($message['invoiceLines']['items'] as $line) {
 			$line_total = $line['price'] * $line['quantity'];
 			$invoice_total += $line_total;
+			$tax_category_code = $line['vat_category']['code'];
 
 			$item = new Item();
 			$item->setName($line['title']);
 			$item->setClassifiedTaxCategory(
 				new ClassifiedTaxCategory(
-					$line['vat_category']['code'],
-					null,
+					$tax_category_code,
+					$line['taxPercentage'],
 					new TaxScheme()));
 
 			$invoice_line = new InvoiceLine();
 			$invoice_line->setId($line_id++);
-			$invoice_line->setInvoicedQuantity($line['quantity']);
+			$invoice_line->setInvoicedQuantity(new Quantity('B19', $line['quantity']));
 			$invoice_line->setLineExtensionAmount(new Amount($currency, $line_total));
 			$invoice_line->setItem($item);
 			$invoice_line->setPrice(new Price(new Amount($currency, $line['price'])));
 
 			$invoice_lines[] = $invoice_line;
+			
+			if (!isset($tax_subtotals[$tax_category_code])) {
+				$tax_subtotals[$tax_category_code] = new TaxSubtotal(
+						new Amount($currency, 0),
+						new Amount($currency, 0),
+						new TaxCategory($tax_category_code, $line['taxPercentage'], null, null, new TaxScheme()));
+			}
+
+			$category_taxable_amount = $line['price'] + $tax_subtotals[$tax_category_code]->getTaxableAmount()->getValue();
+			$category_tax_amount = $category_taxable_amount * $line['taxPercentage'];
+			$tax_total += $category_tax_amount - $tax_subtotals[$tax_category_code]->getTaxAmount()->getValue();
+
+			$tax_subtotals[$tax_category_code]->setTaxableAmount(new Amount($currency, $category_taxable_amount));
+			$tax_subtotals[$tax_category_code]->setTaxAmount(new Amount($currency, $category_tax_amount));
 		}
 
 		$legal_total = new LegalMonetaryTotal();
 		$legal_total->setLineExtensionAmount(new Amount($currency, $invoice_total));
 		$legal_total->setTaxExclusiveAmount(new Amount($currency, $invoice_total));
-		$legal_total->setTaxInclusiveAmount(new Amount($currency, $invoice_total + $message['vat']));
-		$legal_total->setPayableAmount(new Amount($currency, $invoice_total));
+		$legal_total->setTaxInclusiveAmount(new Amount($currency, $invoice_total + $tax_total));
+		$legal_total->setPayableAmount(new Amount($currency, $invoice_total + $tax_total));
 
 		$invoice = new Invoice();
 		$invoice->setId($message['orderReference']);
@@ -314,7 +346,7 @@ class MessageApiController extends ApiController {
 		$invoice->setDocumentCurrencyCode($currency);
 		$invoice->setAccountingSupplierParty(new AccountingSupplierParty($seller_party));
 		$invoice->setAccountingCustomerParty(new AccountingCustomerParty($buyer_party));
-		$invoice->setTaxTotal(new TaxTotal(new Amount($currency, $message['vat'])));
+		$invoice->setTaxTotal(new TaxTotal(new Amount($currency, $message['vat']), array_values($tax_subtotals)));
 		$invoice->setLegalMonetaryTotal($legal_total);
 		$invoice->setInvoiceLines($invoice_lines);
 
@@ -393,9 +425,7 @@ class MessageApiController extends ApiController {
 			return new DataDisplayResponse('Recipient is not on this server!', Http::STATUS_NOT_ACCEPTABLE);
 		}
 		
-		$cert_store = $this->peppolManagerService->getCertificateStore($receiver_identity);
-		$passphrase = $receiver_identity->getUserId();
-		list($private_key, $cert) = isset($cert_store) ? $this->getPrivateKeyAndCertificate($cert_store, $passphrase) : [null, null];
+		list($private_key, $cert) = $this->peppolManagerService->getPrivateKeyAndCertificate($receiver_identity);
 
 		if (!isset($private_key) || !isset($cert)) {
 			// Failed to read user/receiver's cert store!

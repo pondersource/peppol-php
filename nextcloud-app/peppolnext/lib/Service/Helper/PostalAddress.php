@@ -56,12 +56,12 @@ class PostalAddress {
 		return $adr;
 	}
 
-	public string $postOfficeAddress = '';
-	public string $extendedAddress = '';
-	public string $street = '';
-	public string $locality = ''; // city
-	public string $region = '';
-	public string $postalCode = '';
+	public ?string $postOfficeAddress = '';
+	public ?string $extendedAddress = '';
+	public ?string $street = '';
+	public ?string $locality = ''; // city
+	public ?string $region = '';
+	public ?string $postalCode = '';
 	public string $country = '';
 
 	public function asVCardAddress(): array {

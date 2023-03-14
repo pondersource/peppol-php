@@ -36,7 +36,12 @@ class NextUserService {
 	}
 
 	public function updateNextUser(NextUser $nextUser): NextUser {
-		return $this->nextUserMapper->insertOrUpdate($nextUser);
+		if (isset($nextUser->id)) {
+			return $this->nextUserMapper->update($nextUser);
+		}
+		else {
+			return $this->nextUserMapper->insert($nextUser);
+		}
 	}
 
 }

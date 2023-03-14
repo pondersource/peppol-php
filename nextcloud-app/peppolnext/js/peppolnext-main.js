@@ -12471,9 +12471,10 @@ __webpack_require__.r(__webpack_exports__);
       invoiceItem: {
         title: '',
         quantity: 0,
+        taxPercentage: 0,
         vat_category: {},
         totalPrice: 0,
-        fee: 0
+        price: 0
       },
       vatCategories: [{
         code: "AE",
@@ -12519,13 +12520,13 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   computed: {
-    price: function price() {
-      return this.invoiceItem.quantity * this.invoiceItem.fee;
+    totalPrice: function totalPrice() {
+      return this.invoiceItem.quantity * this.invoiceItem.price;
     }
   },
   methods: {
     notifyDataChange: function notifyDataChange() {
-      this.invoiceItem.totalPrice = this.price;
+      this.invoiceItem.totalPrice = this.totalPrice;
       this.$emit('row-data-changed', {
         index: this.rowNumber - 1,
         data: this.invoiceItem
@@ -12564,7 +12565,7 @@ __webpack_require__.r(__webpack_exports__);
         quantity: 0,
         description: '',
         totalPrice: 0,
-        fee: 0
+        price: 0
       }],
       sumOfItems: 0
     };
@@ -12583,7 +12584,7 @@ __webpack_require__.r(__webpack_exports__);
         quantity: 0,
         description: '',
         totalPrice: 0,
-        fee: 0
+        price: 0
       });
     },
     calculateSum: function calculateSum() {
@@ -14063,46 +14064,44 @@ __webpack_require__.r(__webpack_exports__);
           }
         },
         "customer": {
-          "name": "Myself",
+          "name": "Client Company Name",
           "email": "",
           "address": {
+            "line1": "Lisk Center Utreht",
+            "line2": "De Burren",
+            "city": "Utreht",
+            "post_code": "3521",
+            "state": "",
             "country": {
-              "code": "IR",
-              "name": "Iran"
+              "code": "NL",
+              "name": "Netherland"
             }
           }
         },
         "recipient": {
-          "title": "Myself",
-          "peppolEndpoint": "as4direct-63c143a09d7cd",
+          "title": "Phase4",
+          "peppolEndpoint": "9915:phase4-test-sender",
           "relationship": 1,
           "isLocal": true,
           "uid": "62db3148-e57a-40de-8bfc-5c7e014f2557",
-          "endpoint": "http://nc2.docker/index.php/apps/peppolnext/api/v1/as4",
-          "certificate": "-----BEGIN CERTIFICATE-----MIICrDCCAZSgAwIBAgIUL3oIvQBy2eR2pV3/MoFR016rW+MwDQYJKoZIhvcNAQELBQAwEDEOMAwGA1UECgwFbWFyaWUwHhcNMjMwMTEzMTE0MjIyWhcNMjQwMTEzMTE0MjIyWjAQMQ4wDAYDVQQKDAVtYXJpZTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAK7ZPilnTYV6yIpIIk7tvB3me2me6bD9z0zYpg/oWfrZoBr1mhGR3hPRr4F4SYrIeiVic7JEUbq0Yet2q5aqsWvkY2UdG5XC+L6+QoRH0wQvDtZcfv3yzHIOndqty7AdjsZJuf1NOUdvHvrDBR1GItyr/HNaWTB4hsREhl+DeFF/ma/NAGCKRvsAKHQpkO5Mnd6lshJLxQFFDbZk8VG/9urIPICfapdYUjkI+OLXG/C37jXI8buQMtqX/DvqUnbXXmdq7pwa+joamlUw7HuAd+WlvJbf0/hX/krffhGlQoQBnvlLFV55ee2ZFzzTK6YbTYnHCYakNUbiL16j0SrdNVkCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAKzl/7fffpUZB/mL17uONf2mMawS1XeiGmBRjbDd9sZYjp9Vd6pDTQ6YCUSqB+MYMDTHj+KLNKrnH9SezjjdekGkQLPlbrtAjDIgDwJWnao2LWZICVNY5A95516LLedvmtolKmhKQiQZ37P38JVksLdtnI0jdLOny0IjZpTcLze7R7DOaz5FDMzff6q80pkBi6ppWJiNcuyUw5L6hTgYpwU3mZwheCOoP1SeXbM9S7d8urhhnZq1g4IPwLUDoGbz59Psuo+nzJdBhnVXMArIABMb2REtDcQ9Ku8yhHPMjhkk9VYe5galiDW5cCPOHfveTOebjwHUZ1wPqmyOEGDUWcQ==-----END CERTIFICATE-----",
+          "endpoint": null,
+          "certificate": null,
           "address": {
-            "line1": "s1\\;\\;s2\\;Tehran\\;Tehran\\;4321\\;Iran",
-            "line2": "",
-            "city": "",
-            "post_code": "",
+            "line1": "Lisk Center Utreht",
+            "line2": "De Burren",
+            "city": "Utreht",
+            "post_code": "3521",
             "state": "",
-            "country": []
+            "country": {
+              "code": "NL",
+              "name": "Netherland"
+            }
           }
         },
         "vat": "0",
         "invoiceLines": {
-          "items": [{
-            "title": "test",
-            "quantity": "01",
-            "vat_category": {
-              "code": "AE",
-              "title": "Vat Reverse Charge",
-              "description": "Code specifying that the standard VAT rate is levied from the invoicee."
-            },
-            "totalPrice": 10,
-            "price": "10"
-          }],
-          "total": 10
+          "items": [],
+          "total": 0
         }
       }
       // message: {
@@ -14129,6 +14128,11 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.message.orderReference = this.getRandomRefNumber();
     this.loadUserInfo(this);
+  },
+  computed: {
+    recipient: function recipient() {
+      return this.message.recipient;
+    }
   },
   watch: {
     recipient: function recipient(newRecipient, oldRecipient) {
@@ -16546,23 +16550,22 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.price,
-      expression: "price"
+      value: _vm.taxPercentage,
+      expression: "taxPercentage"
     }],
     attrs: {
       type: "number",
-      step: "0.001",
-      readonly: "true",
-      placeholder: "Total"
+      step: "1",
+      placeholder: "Tax %"
     },
     domProps: {
-      value: _vm.price
+      value: _vm.taxPercentage
     },
     on: {
       change: _vm.notifyDataChange,
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.price = $event.target.value;
+        _vm.taxPercentage = $event.target.value;
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -16598,7 +16601,32 @@ var render = function render() {
       },
       expression: "invoiceItem.vat_category"
     }
-  })], 1), _vm._v(" "), _c("div", [_c("button", {
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "total"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.totalPrice,
+      expression: "totalPrice"
+    }],
+    attrs: {
+      type: "number",
+      step: "0.01",
+      readonly: "true",
+      placeholder: "Total"
+    },
+    domProps: {
+      value: _vm.totalPrice
+    },
+    on: {
+      change: _vm.notifyDataChange,
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.totalPrice = $event.target.value;
+      }
+    }
+  })]), _vm._v(" "), _c("div", [_c("button", {
     attrs: {
       type: "button"
     },
@@ -16675,13 +16703,15 @@ var staticRenderFns = [function () {
     staticClass: "title-header"
   }, [_vm._v("Title")]), _vm._v(" "), _c("div", {
     staticClass: "fee-header"
-  }, [_vm._v("Fee")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Price")]), _vm._v(" "), _c("div", {
     staticClass: "quantity-header"
   }, [_vm._v("Quantity")]), _vm._v(" "), _c("div", {
     staticClass: "total-header"
-  }, [_vm._v("Total")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("Tax %")]), _vm._v(" "), _c("div", {
     staticClass: "description-header"
-  }, [_vm._v("VAT Category")])]);
+  }, [_vm._v("VAT Category")]), _vm._v(" "), _c("div", {
+    staticClass: "total-header"
+  }, [_vm._v("Total")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -75000,4 +75030,4 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].mixin({
 
 /******/ })()
 ;
-//# sourceMappingURL=peppolnext-main.js.map?v=cd908a634ac75d907b64
+//# sourceMappingURL=peppolnext-main.js.map?v=7d404893b733bdc6499b

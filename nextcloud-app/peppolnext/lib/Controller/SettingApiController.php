@@ -92,7 +92,7 @@ class SettingApiController extends ApiController
 	 */
 	public function updateAddress() : DataResponse {
 		$next_user = $this->nextUserService->getNextUser();
-
+		
 		if ($next_user == null) {
 			$next_user = new NextUser();
 
@@ -103,7 +103,7 @@ class SettingApiController extends ApiController
 		$address = $this->request->getParams("body");
 
 		$next_user->setAddress(json_encode($address));
-
+		
 		$next_user = $this->nextUserService->updateNextUser($next_user);
 
 		return new DataResponse($address, Http::STATUS_OK);

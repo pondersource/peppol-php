@@ -27,19 +27,19 @@ class Quantity
      */
     private $value;
     
-    public function __construct($schemeID = null, $value = null) {
-        $this->schemeID = $schemeID;
+    public function __construct($unitCode = null, $value = null) {
+        $this->unitCode = $unitCode;
         $this->value = $value;
         return $this;
     }
 
-    public function setSchemeID($schemeID) {
-        $this->schemeID = $schemeID;
+    public function setUnitCode($unitCode) {
+        $this->unitCode = $unitCode;
         return $this;
     }
 
-    public function getSchemeID() {
-        return $this->schemeID;
+    public function getUnitCode() {
+        return $this->unitCode;
     }
 
     public function setValue($value) {

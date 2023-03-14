@@ -60,10 +60,22 @@ class AS4DirectService implements IPeppolService {
 		}
 	}
 
-	public function getCertificateStore(PeppolIdentity $identity): ?string {
+	public function getPrivateKeyAndCertificate(PeppolIdentity $identity): ?array {
 		$file = $this->folderManager->getForUser(self::KEYSTORE_FILE, $identity->getUserId());
+		$cert_store = $file->getContent();
+		$passphrase = $identity->getUserId();
 
-		return $file->getContent();
+		if (!openssl_pkcs12_read($cert_store, $cert_info, $passphrase)) {
+			echo "Error: Unable to read the cert store.\n";
+			return [null, null];
+		}
+
+		$private_key = RSA::loadPrivateKey($cert_info['pkey']);
+
+		$cert = new X509();
+		$cert->loadX509($cert_info['cert']);
+
+		return [$private_key, $cert];
 	}
 
 	public function generateIdentity(): PeppolIdentity {

@@ -44,9 +44,9 @@ class PeppolManagerService {
         return $identity;
     }
 
-    public function getCertificateStore(PeppolIdentity $identity): ?string {
+    public function getPrivateKeyAndCertificate(PeppolIdentity $identity): ?array {
         $service = $this->getPeppolServiceForName($identity->getServiceName());
-        return $service->getCertificateStore($identity);
+        return $service->getPrivateKeyAndCertificate($identity);
     }
 
     public function getPeppolServiceForName(string $serviceName): IPeppolService {

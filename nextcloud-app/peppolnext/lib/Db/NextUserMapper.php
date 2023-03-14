@@ -18,12 +18,12 @@ class NextUserMapper extends QBMapper {
         parent::__construct($db, self::DB_NAME, NextUser::class);
     }
 
-    public function get(string $userId) {
+    public function get(string $user_id) {
         $qb = $this->db->getQueryBuilder();
 
         $qb->select('*')
              ->from($this->getTableName())
-             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($userId)));
+             ->where($qb->expr()->eq('user_id', $qb->createNamedParameter($user_id)));
 
         return $this->findEntity($qb);
     }

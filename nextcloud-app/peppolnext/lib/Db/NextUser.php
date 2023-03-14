@@ -7,7 +7,7 @@ use OCP\AppFramework\Db\Entity;
 
 class NextUser extends Entity implements JsonSerializable {
 
-    protected $userId;
+    public $userId;
     protected $address;
 
     public function __construct() {
@@ -16,7 +16,7 @@ class NextUser extends Entity implements JsonSerializable {
 
     public function jsonSerialize() {
         return [
-            'userId' => $this->userId,
+            'user_id' => $this->userId,
             'address' => $this->address
         ];
     }
