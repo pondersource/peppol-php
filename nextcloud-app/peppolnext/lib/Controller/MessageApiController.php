@@ -261,11 +261,21 @@ class MessageApiController extends ApiController {
 		$currency = $message['currency']['name'];
 
 		$seller_address = new PostalAddress();
-		$seller_address->setStreetName($message['supplier']['address']['line1']);
-		$seller_address->setAdditionalStreetName($message['supplier']['address']['line2']);
-		$seller_address->setCityName($message['supplier']['address']['city']);
-		$seller_address->setPostalZone($message['supplier']['address']['post_code']);
-		$seller_address->setCountrySubentity($message['supplier']['address']['state']);
+		if (!empty(trim($message['supplier']['address']['line1']))) {
+			$seller_address->setStreetName($message['supplier']['address']['line1']);
+		}
+		if (!empty(trim($message['supplier']['address']['line2']))) {
+			$seller_address->setAdditionalStreetName($message['supplier']['address']['line2']);
+		}
+		if (!empty(trim($message['supplier']['address']['city']))) {
+			$seller_address->setCityName($message['supplier']['address']['city']);
+		}
+		if (!empty(trim($message['supplier']['address']['post_code']))) {
+			$seller_address->setPostalZone($message['supplier']['address']['post_code']);
+		}
+		if (!empty(trim($message['supplier']['address']['state']))) {
+			$seller_address->setCountrySubentity($message['supplier']['address']['state']);
+		}
 		$seller_address->setCountry(new Country($message['supplier']['address']['country']['code']));
 		
 		$seller_party = new InvoiceParty();
@@ -278,11 +288,21 @@ class MessageApiController extends ApiController {
 		]);
 
 		$buyer_address = new PostalAddress();
-		$buyer_address->setStreetName($message['customer']['address']['line1']);
-		$buyer_address->setAdditionalStreetName($message['customer']['address']['line2']);
-		$buyer_address->setCityName($message['customer']['address']['city']);
-		$buyer_address->setPostalZone($message['customer']['address']['post_code']);
-		$buyer_address->setCountrySubentity($message['customer']['address']['state']);
+		if (!empty(trim($message['customer']['address']['line1']))) {
+			$buyer_address->setStreetName($message['customer']['address']['line1']);
+		}
+		if (!empty(trim($message['customer']['address']['line2']))) {
+			$buyer_address->setAdditionalStreetName($message['customer']['address']['line2']);
+		}
+		if (!empty(trim($message['customer']['address']['city']))) {
+			$buyer_address->setCityName($message['customer']['address']['city']);
+		}
+		if (!empty(trim($message['customer']['address']['post_code']))) {
+			$buyer_address->setPostalZone($message['customer']['address']['post_code']);
+		}
+		if (!empty(trim($message['customer']['address']['state']))) {
+			$buyer_address->setCountrySubentity($message['customer']['address']['state']);
+		}
 		$buyer_address->setCountry(new Country($message['customer']['address']['country']['code']));
 		
 		$buyer_party = new InvoiceParty();
