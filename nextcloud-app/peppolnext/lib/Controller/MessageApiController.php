@@ -370,6 +370,7 @@ class MessageApiController extends ApiController {
 		$invoice->setIssueDate(new \DateTime());
 		$invoice->setDueDate(new \DateTime($message['dueDate']));
 		$invoice->setInvoiceTypeCode($message['type']['id']);
+		$invoice->setBuyerReference($message['buyerReference']);
 		$invoice->setDocumentCurrencyCode($currency);
 		$invoice->setAccountingSupplierParty(new AccountingSupplierParty($seller_party));
 		$invoice->setAccountingCustomerParty(new AccountingCustomerParty($buyer_party));
