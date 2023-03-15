@@ -165,10 +165,10 @@
 						<label for="customer-name">Name:</label>
 						<input id="customer-name" v-model="message.customer.name"> </input>
 					</div>
-					<div class="row">
+					<!-- <div class="row">
 						<label for="customer-vat">VAT ID:</label>
 						<input id="customer-vat" v-model="message.customer.vatIdentifier"> </input>
-					</div>
+					</div> -->
 					<div class="row">
 						<div class="col-5">Address</div>
 					</div>

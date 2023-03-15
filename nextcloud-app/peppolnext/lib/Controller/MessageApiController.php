@@ -310,9 +310,9 @@ class MessageApiController extends ApiController {
 		$buyer_party->setEndpointID(new EndpointID($buyer_identifier[1], $buyer_identifier[0]));
 		$buyer_party->setPostalAddress($buyer_address);
 		$buyer_party->setPartyLegalEntity(new PartyLegalEntity($message['customer']['name']));
-		$buyer_party->setPartyTaxSchemes([
-			new PartyTaxScheme($message['customer']['vatIdentifier'], new TaxScheme())
-		]);
+		// $buyer_party->setPartyTaxSchemes([
+		// 	new PartyTaxScheme($message['customer']['vatIdentifier'], new TaxScheme())
+		// ]);
 		
 		$invoice_lines = [];
 		$invoice_total = 0;
