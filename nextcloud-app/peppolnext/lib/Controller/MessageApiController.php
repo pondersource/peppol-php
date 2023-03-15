@@ -143,7 +143,17 @@ class MessageApiController extends ApiController {
 	 */
 	public function index($page): DataResponse {
 		$type = $this->request->getParam("type");
-		$category = ($type === "Inbox") ? Message::CATEGORY_INBOX : Message::CATEGORY_CONNECTION_REQUEST;
+
+		if ($type === "Inbox") {
+			$category = Message::CATEGORY_INBOX;
+		}
+		else if ($type === "Outbox") {
+			$category = Message::CATEGORY_OUTBOX;
+		}
+		else {
+			$category = Message::CATEGORY_CONNECTION_REQUEST;
+		}
+		
 		$messages = $this->messageService->getMessages($category, $page);
 
 		$response = [];
@@ -151,7 +161,7 @@ class MessageApiController extends ApiController {
 		foreach ($messages as $message) {
 			$item = [];
 
-			if ($ضmessage->getContactName() != null) {
+			if ($message->getContactName() != null) {
 				$item['supplier'] = $message->getContactName();
 			}
 			else if ($message->getContactId() != null) {
@@ -236,7 +246,7 @@ class MessageApiController extends ApiController {
 			$sender_identity,
 			$receiver_id,
 			Message::TYPE_INVOICE,
-			'test title', // TODO Fix title
+			$invoice->getId(),
 			$raw_envelope,
 			$raw_payload);
 
@@ -499,7 +509,7 @@ class MessageApiController extends ApiController {
 				$sender_contact,
 				$receiver_identity,
 				Message::TYPE_INVOICE,
-				'test title', // TODO Proper title!
+				$invoice->getId(),
 				$raw_envelope,
 				$decrypted_payload);
 		}
@@ -508,7 +518,7 @@ class MessageApiController extends ApiController {
 				$sender_id,
 				$receiver_identity,
 				Message::TYPE_INVOICE,
-				'test title',
+				$invoice->getId(),
 				$raw_envelope,
 				$decrypted_payload);
 		}

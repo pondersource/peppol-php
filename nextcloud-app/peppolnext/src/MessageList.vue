@@ -7,15 +7,18 @@
 
 		<div class="row">
 			<div class="col-1" />
-			<div class="col-8">
+			<div class="col-9">
 				<table id="table" class="data-list">
 					<thead>
 					<td>#</td>
-					<td class="col-1">
+					<td class="col-1" v-if="$route.params.category==='Outbox'">
+						Customer
+					</td>
+					<td class="col-1" v-else>
 						Supplier
 					</td>
 					<td class="col-1">
-						Title
+						Order Reference
 					</td>
 					<td class="col-1">
 						Date
@@ -69,7 +72,7 @@ export default {
 
 	methods: {
 		loadData(category, vm) {
-			console.log('loadData: ' + category)
+			console.log('loadData: ' + `/index.php/apps/peppolnext/api/v1/message/${vm.currentPage}?type=${category}`)
 			fetch(`/index.php/apps/peppolnext/api/v1/message/${vm.currentPage}?type=${category}`)
 				.then(res => {
 					res.json().then(json => {
