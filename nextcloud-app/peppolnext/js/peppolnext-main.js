@@ -14049,9 +14049,8 @@ __webpack_require__.r(__webpack_exports__);
         },
         "supplier": {
           "name": "marie",
-          "email": null,
+          "vatIdentifier": "NO999888777",
           "address": {
-            "_route": "peppolnext.setting_api.updateAddress",
             "line1": "l1",
             "line2": "l2",
             "city": "Tehran",
@@ -14065,7 +14064,7 @@ __webpack_require__.r(__webpack_exports__);
         },
         "customer": {
           "name": "Client Company Name",
-          "email": "",
+          "vatIdentifier": "NO999888777",
           "address": {
             "line1": "Lisk Center Utreht",
             "line2": "De Burren",
@@ -14110,12 +14109,12 @@ __webpack_require__.r(__webpack_exports__);
       // 	currency: '',
       // 	supplier: {
       // 		name: '',
-      // 		email: '',
+      // 		vatIdentifier: '',
       // 		address: {}
       // 	},
       // 	customer: {
       // 		name: '',
-      // 		email: '',
+      // 		vatIdentifier: '',
       // 		address: {}
       // 	},
       // 	recipient: {},
@@ -16746,7 +16745,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "col-1"
   }), _vm._v(" "), _c("div", {
-    staticClass: "col-6"
+    staticClass: "col-9"
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
@@ -16869,25 +16868,25 @@ var render = function render() {
     staticClass: "row"
   }, [_c("label", {
     attrs: {
-      for: "supplier-email"
+      for: "supplier-vat"
     }
-  }, [_vm._v("Email:")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("VAT ID:")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.message.supplier.email,
-      expression: "message.supplier.email"
+      value: _vm.message.supplier.vatIdentifier,
+      expression: "message.supplier.vatIdentifier"
     }],
     attrs: {
-      id: "supplier-email"
+      id: "supplier-vat"
     },
     domProps: {
-      value: _vm.message.supplier.email
+      value: _vm.message.supplier.vatIdentifier
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.message.supplier, "email", $event.target.value);
+        _vm.$set(_vm.message.supplier, "vatIdentifier", $event.target.value);
       }
     }
   })]), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("div", {
@@ -17127,25 +17126,25 @@ var render = function render() {
     staticClass: "row"
   }, [_c("label", {
     attrs: {
-      for: "customer-email"
+      for: "customer-vat"
     }
-  }, [_vm._v("Email:")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("VAT ID:")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.message.customer.email,
-      expression: "message.customer.email"
+      value: _vm.message.customer.vatIdentifier,
+      expression: "message.customer.vatIdentifier"
     }],
     attrs: {
-      id: "customer-email"
+      id: "customer-vat"
     },
     domProps: {
-      value: _vm.message.customer.email
+      value: _vm.message.customer.vatIdentifier
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.message.customer, "email", $event.target.value);
+        _vm.$set(_vm.message.customer, "vatIdentifier", $event.target.value);
       }
     }
   })]), _vm._v(" "), _vm._m(5), _vm._v(" "), _c("div", {
@@ -75030,4 +75029,4 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].mixin({
 
 /******/ })()
 ;
-//# sourceMappingURL=peppolnext-main.js.map?v=7d404893b733bdc6499b
+//# sourceMappingURL=peppolnext-main.js.map?v=31c50f1d602523300d94

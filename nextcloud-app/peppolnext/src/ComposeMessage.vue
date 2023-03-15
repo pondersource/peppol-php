@@ -1,7 +1,7 @@
 <template>
 	<div class="row">
 		<div class="col-1" />
-		<div class="col-6">
+		<div class="col-9">
 			<div class="row">
 				<div class="col-5">
 					<label for="txt-order-ref">Order Reference:</label>
@@ -65,8 +65,8 @@
 						<input id="supplier-name" v-model="message.supplier.name"> </input>
 					</div>
 					<div class="row">
-						<label for="supplier-email">Email:</label>
-						<input id="supplier-email" v-model="message.supplier.email"> </input>
+						<label for="supplier-vat">VAT ID:</label>
+						<input id="supplier-vat" v-model="message.supplier.vatIdentifier"> </input>
 					</div>
 					<div class="row">
 						<div class="col-5">Address</div>
@@ -151,8 +151,8 @@
 						<input id="customer-name" v-model="message.customer.name"> </input>
 					</div>
 					<div class="row">
-						<label for="customer-email">Email:</label>
-						<input id="customer-email" v-model="message.customer.email"> </input>
+						<label for="customer-vat">VAT ID:</label>
+						<input id="customer-vat" v-model="message.customer.vatIdentifier"> </input>
 					</div>
 					<div class="row">
 						<div class="col-5">Address</div>
@@ -430,19 +430,19 @@ export default {
 					value: 'PeppolNext',
 				},
 			],
-			message: {"orderReference":"20230118124231","type":{"id":71,"title":"Request for payment","hint":"Document/message issued by a creditor to a debtor to request payment of one or more invoices past due."},"currency":{"name":"USD","hint":"US Dollar"},"supplier":{"name":"marie","email":null,"address":{"_route":"peppolnext.setting_api.updateAddress","line1":"l1","line2":"l2","city":"Tehran","post_code":"1234","state":"Tehran","country":{"code":"IR","name":"Iran"}}},"customer":{"name":"Client Company Name","email":"","address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"recipient":{"title":"Phase4","peppolEndpoint":"9915:phase4-test-sender","relationship":1,"isLocal":true,"uid":"62db3148-e57a-40de-8bfc-5c7e014f2557","endpoint":null,"certificate":null,"address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"vat":"0","invoiceLines":{"items":[],"total":0}},
+			message: {"orderReference":"20230118124231","type":{"id":71,"title":"Request for payment","hint":"Document/message issued by a creditor to a debtor to request payment of one or more invoices past due."},"currency":{"name":"USD","hint":"US Dollar"},"supplier":{"name":"marie","vatIdentifier":"NO999888777","address":{"line1":"l1","line2":"l2","city":"Tehran","post_code":"1234","state":"Tehran","country":{"code":"IR","name":"Iran"}}},"customer":{"name":"Client Company Name","vatIdentifier":"NO999888777","address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"recipient":{"title":"Phase4","peppolEndpoint":"9915:phase4-test-sender","relationship":1,"isLocal":true,"uid":"62db3148-e57a-40de-8bfc-5c7e014f2557","endpoint":null,"certificate":null,"address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"vat":"0","invoiceLines":{"items":[],"total":0}},
 			// message: {
 			// 	orderReference: '',
 			// 	type: '',
 			// 	currency: '',
 			// 	supplier: {
 			// 		name: '',
-			// 		email: '',
+			// 		vatIdentifier: '',
 			// 		address: {}
 			// 	},
 			// 	customer: {
 			// 		name: '',
-			// 		email: '',
+			// 		vatIdentifier: '',
 			// 		address: {}
 			// 	},
 			// 	recipient: {},

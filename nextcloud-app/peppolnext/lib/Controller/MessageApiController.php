@@ -273,6 +273,9 @@ class MessageApiController extends ApiController {
 		$seller_party->setEndpointID(new EndpointID($seller_identifier[1], $seller_identifier[0]));
 		$seller_party->setPostalAddress($seller_address);
 		$seller_party->setPartyLegalEntity(new PartyLegalEntity($message['supplier']['name']));
+		$seller_party->setPartyTaxSchemes([
+			new PartyTaxScheme($message['supplier']['vatIdentifier'], new TaxScheme())
+		]);
 
 		$buyer_address = new PostalAddress();
 		$buyer_address->setStreetName($message['customer']['address']['line1']);
@@ -287,6 +290,9 @@ class MessageApiController extends ApiController {
 		$buyer_party->setEndpointID(new EndpointID($buyer_identifier[1], $buyer_identifier[0]));
 		$buyer_party->setPostalAddress($buyer_address);
 		$buyer_party->setPartyLegalEntity(new PartyLegalEntity($message['customer']['name']));
+		$buyer_party->setPartyTaxSchemes([
+			new PartyTaxScheme($message['customer']['vatIdentifier'], new TaxScheme())
+		]);
 		
 		$invoice_lines = [];
 		$invoice_total = 0;
