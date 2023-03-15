@@ -14097,7 +14097,6 @@ __webpack_require__.r(__webpack_exports__);
             }
           }
         },
-        "vat": "0",
         "invoiceLines": {
           "items": [],
           "total": 0
@@ -14118,7 +14117,6 @@ __webpack_require__.r(__webpack_exports__);
       // 		address: {}
       // 	},
       // 	recipient: {},
-      // 	vat: '',
       // 	invoiceLines: {},
       // },
     };
@@ -16549,8 +16547,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.taxPercentage,
-      expression: "taxPercentage"
+      value: _vm.invoiceItem.taxPercentage,
+      expression: "invoiceItem.taxPercentage"
     }],
     attrs: {
       type: "number",
@@ -16558,13 +16556,13 @@ var render = function render() {
       placeholder: "Tax %"
     },
     domProps: {
-      value: _vm.taxPercentage
+      value: _vm.invoiceItem.taxPercentage
     },
     on: {
       change: _vm.notifyDataChange,
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.taxPercentage = $event.target.value;
+        _vm.$set(_vm.invoiceItem, "taxPercentage", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -17311,33 +17309,6 @@ var render = function render() {
       expression: "message.customer.address.country"
     }
   })], 1)])])])]), _vm._v(" "), _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-5"
-  }, [_c("label", {
-    attrs: {
-      for: "txt-vat"
-    }
-  }, [_vm._v("VAT amount:")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.message.vat,
-      expression: "message.vat"
-    }],
-    attrs: {
-      id: "txt-vat"
-    },
-    domProps: {
-      value: _vm.message.vat
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.message, "vat", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-10"
@@ -75029,4 +75000,4 @@ vue__WEBPACK_IMPORTED_MODULE_10__["default"].mixin({
 
 /******/ })()
 ;
-//# sourceMappingURL=peppolnext-main.js.map?v=31c50f1d602523300d94
+//# sourceMappingURL=peppolnext-main.js.map?v=a3d1aa8ab16cc82b95e2

@@ -331,8 +331,8 @@ class MessageApiController extends ApiController {
 						new TaxCategory($tax_category_code, $line['taxPercentage'], null, null, new TaxScheme()));
 			}
 
-			$category_taxable_amount = $line['price'] + $tax_subtotals[$tax_category_code]->getTaxableAmount()->getValue();
-			$category_tax_amount = $category_taxable_amount * $line['taxPercentage'];
+			$category_taxable_amount = $line_total + $tax_subtotals[$tax_category_code]->getTaxableAmount()->getValue();
+			$category_tax_amount = round($category_taxable_amount * $line['taxPercentage'] / 100, 2);
 			$tax_total += $category_tax_amount - $tax_subtotals[$tax_category_code]->getTaxAmount()->getValue();
 
 			$tax_subtotals[$tax_category_code]->setTaxableAmount(new Amount($currency, $category_taxable_amount));
@@ -352,7 +352,7 @@ class MessageApiController extends ApiController {
 		$invoice->setDocumentCurrencyCode($currency);
 		$invoice->setAccountingSupplierParty(new AccountingSupplierParty($seller_party));
 		$invoice->setAccountingCustomerParty(new AccountingCustomerParty($buyer_party));
-		$invoice->setTaxTotal(new TaxTotal(new Amount($currency, $message['vat']), array_values($tax_subtotals)));
+		$invoice->setTaxTotal(new TaxTotal(new Amount($currency, $tax_total), array_values($tax_subtotals)));
 		$invoice->setLegalMonetaryTotal($legal_total);
 		$invoice->setInvoiceLines($invoice_lines);
 

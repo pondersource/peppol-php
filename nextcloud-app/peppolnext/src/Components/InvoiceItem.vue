@@ -28,7 +28,7 @@
 				step="1"
 				@change="notifyDataChange"
 				placeholder="Tax %"
-				v-model="taxPercentage">
+				v-model="invoiceItem.taxPercentage">
 		</div>
 		<div class="description">
 			<v-select id="customer-address-country"

@@ -203,12 +203,6 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-5">
-					<label for="txt-vat">VAT amount:</label>
-					<input id="txt-vat" v-model="message.vat"> </input>
-				</div>
-			</div>
-			<div class="row">
 				<div class="col-10">
 					<div class="items">
 						<InvoiceItemList v-model="message.invoiceLines" row-number="1" />
@@ -430,7 +424,7 @@ export default {
 					value: 'PeppolNext',
 				},
 			],
-			message: {"orderReference":"20230118124231","type":{"id":71,"title":"Request for payment","hint":"Document/message issued by a creditor to a debtor to request payment of one or more invoices past due."},"currency":{"name":"USD","hint":"US Dollar"},"supplier":{"name":"marie","vatIdentifier":"NO999888777","address":{"line1":"l1","line2":"l2","city":"Tehran","post_code":"1234","state":"Tehran","country":{"code":"IR","name":"Iran"}}},"customer":{"name":"Client Company Name","vatIdentifier":"NO999888777","address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"recipient":{"title":"Phase4","peppolEndpoint":"9915:phase4-test-sender","relationship":1,"isLocal":true,"uid":"62db3148-e57a-40de-8bfc-5c7e014f2557","endpoint":null,"certificate":null,"address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"vat":"0","invoiceLines":{"items":[],"total":0}},
+			message: {"orderReference":"20230118124231","type":{"id":71,"title":"Request for payment","hint":"Document/message issued by a creditor to a debtor to request payment of one or more invoices past due."},"currency":{"name":"USD","hint":"US Dollar"},"supplier":{"name":"marie","vatIdentifier":"NO999888777","address":{"line1":"l1","line2":"l2","city":"Tehran","post_code":"1234","state":"Tehran","country":{"code":"IR","name":"Iran"}}},"customer":{"name":"Client Company Name","vatIdentifier":"NO999888777","address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"recipient":{"title":"Phase4","peppolEndpoint":"9915:phase4-test-sender","relationship":1,"isLocal":true,"uid":"62db3148-e57a-40de-8bfc-5c7e014f2557","endpoint":null,"certificate":null,"address":{"line1":"Lisk Center Utreht","line2":"De Burren","city":"Utreht","post_code":"3521","state":"","country":{"code":"NL","name":"Netherland"}}},"invoiceLines":{"items":[],"total":0}},
 			// message: {
 			// 	orderReference: '',
 			// 	type: '',
@@ -446,7 +440,6 @@ export default {
 			// 		address: {}
 			// 	},
 			// 	recipient: {},
-			// 	vat: '',
 			// 	invoiceLines: {},
 			// },
 		}
