@@ -32,6 +32,15 @@
 				</v-select>
 			</div>
 			<div class="row">
+				<label for="txt-due-date">Due Date:</label>
+			</div>
+			<div class="row">
+				<DatetimePicker id="txt-due-date"
+					v-model="message.dueDate"
+					class="fullwidth"
+					type="date"/>
+			</div>
+			<div class="row">
 				<label for="txt-invoice-currency">Invoice Currency:</label>
 			</div>
 			<div class="row">
@@ -224,7 +233,7 @@
 
 <script>
 import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css'
+import DatetimePicker from '@nextcloud/vue/dist/Components/DatetimePicker'
 import axios from '@nextcloud/axios'
 import InvoiceItemList from './Components/InvoiceItemList'
 
@@ -232,6 +241,7 @@ export default {
 	name: 'ComposeMessage',
 	components: {
 		vSelect,
+		DatetimePicker,
 		InvoiceItemList,
 	},
 	data: () => {
@@ -428,6 +438,7 @@ export default {
 			// message: {
 			// 	orderReference: '',
 			// 	type: '',
+			//  dueDate: '',
 			// 	currency: '',
 			// 	supplier: {
 			// 		name: '',
