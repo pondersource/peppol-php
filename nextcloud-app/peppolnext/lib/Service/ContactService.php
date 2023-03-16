@@ -8,6 +8,7 @@ use OCA\PeppolNext\Service\Model\Constants;
 use OCA\PeppolNext\Service\Model\PeppolContact;
 use OCA\PeppolNext\Service\Model\PeppolContactBuilder;
 use OCP\Contacts\IManager;
+use Psr\Log\LoggerInterface;
 
 class ContactService {
 	
@@ -22,9 +23,12 @@ class ContactService {
 	const PEPPOL_DIRECTORY_ADDRESS = 'https://directory.peppol.eu/search/1.0/json';
 
 	private IManager $contactManager;
+
+	private LoggerInterface $logger;
 	
-	public function __construct(IManager $contactManager) {
+	public function __construct(IManager $contactManager, LoggerInterface $logger) {
 		$this->contactManager = $contactManager;
+		$this->logger = $logger;
 	}
 
 	public function findContact(string $peppol_id, int $contact_relationship): ?PeppolContact {
@@ -41,7 +45,7 @@ class ContactService {
 						if ($contact_id === $peppol_id) {
 							$relationship = $contact[self::AS4_RELATIONSHIP];
 
-							if ($contact_relationship & $relationship > 0) {
+							if (($contact_relationship & $relationship) > 0) {
 								$interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
 								$address = $interpreter->getAddress()->asPeppolAddress();
 								return new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE], $address);
@@ -58,16 +62,18 @@ class ContactService {
 	public function readLocalPeppolContact(string $pattern, int $contact_relationship) :array{
 		$result = array();
 		$items = $this->contactManager->search($pattern, ['FN'], ['limit'=>10, 'types'=>true]);
+
 		foreach ($items as $contact){
 			if (isset($contact[self::SOCIAL_PROFILE_KEY])){
-
 				if (is_array($contact[self::SOCIAL_PROFILE_KEY])){
 					$peppolId = $this->getPeppolConnection($contact[self::SOCIAL_PROFILE_KEY]);
-					if($peppolId !== "") {
+
+					if ($peppolId !== "") {
 						$peppolId = substr($peppolId, 8);
 						$relationship = $contact[self::AS4_RELATIONSHIP];
+						$this->logger->error($contact_relationship . ' ' . $relationship . ' ' . ($contact_relationship & $relationship));
 
-						if ($contact_relationship & $relationship > 0) {
+						if (($contact_relationship & $relationship) > 0) {
 							$interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
 							$address = $interpreter->getAddress()->asPeppolAddress();
 							$result[] = new PeppolContact($contact['FN'], $peppolId, $relationship, true, $contact["UID"], $contact[self::AS4_DIRECT_ENDPOINT], $contact[self::AS4_DIRECT_CERTIFICATE], $address);
