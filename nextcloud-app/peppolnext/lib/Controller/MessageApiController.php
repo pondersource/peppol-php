@@ -498,12 +498,12 @@ class MessageApiController extends ApiController {
 		if (!isset($sender_contact)) {
 			$this->logger->error("Contact $sender_id not found. Checking LetsPeppol ID");
 
-			// $lets_peppol_info = $this->letsPeppolApi->getInfo();
-			$lets_peppol_info = [
-				'identity_scheme' => 'iso6523-actorid-upis',
-				'identity_value' => '9915:as4direct-63ffb647bfe85',
-				'certificate' => "-----BEGIN CERTIFICATE-----\r\nMIICujCCAaKgAwIBAgIUMMXD8Ca8lJUYF08KTpuVNSo/JyEwDQYJKoZIhvcNAQEL\r\nBQAwFzEVMBMGA1UEAwwMTGV0J3MgUGVwcG9sMB4XDTIzMDMwMTIwMzIwNloXDTI0\r\nMDMwMTIwMzIwNlowFzEVMBMGA1UEAwwMTGV0J3MgUGVwcG9sMIIBIjANBgkqhkiG\r\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvrDwbXCxnyJTfoN85ahd7F1/+I89jWulavho\r\nx9UsApgWEeamJlFXSUUwYDXOpfzqD1x401MSE4LS49W0ok6Xua98AkOGH1XTRXEB\r\nfjBxw4TzSmkCazfHDmhFK4eXNJ6ICXKZ83lfFG4pUhNmsr4JM72peQHkjsaye23p\r\nkNClndDqgJk7ZiluvAd4ezYahd4hJprqhFIbO9ElmIWL0zkRivjTla4OMACX8N2M\r\nrFXkJnPZBhb6wdxJTFa6/R/Wg1dT3FYpNy+cDkPORV5QdI5vxN3S2D6N0h9c8Taz\r\nMxMubvBXO7IV+atJQvoBwvDdfNSXcTrpwG63MM+h4yxoVeubqQIDAQABMA0GCSqG\r\nSIb3DQEBCwUAA4IBAQAZTmNlRXDzq9UkcGX0WkoEXSYU+NbH1yB1W8TEzM9nKwlp\r\nBC2WYCAKyc7/9k4tWE4QNVHqkpwSrzlDxtNHI3MUJwb6KyE7pajpcs+nJ8wrIUW0\r\nuATUNbt7ewBoVseIzHyxp5SHsU5lbVFMV8g5oLOzVCk0mFJni3Uu2EUgYtGtrWW4\r\nKO9I8rbGw9zgQxFrCdXXK2NuMe33jHzRCOTQL75Uxc7t0xaIJMAAg5icJRHSeL3L\r\nLcXoixraITYOA7kyeP45VPsWkdcHUW7wsL39fYKeEnhRekeIkqOx/12tjz05g5+x\r\nGv74ILbmXKAyhiqRe3EMVd4h16MaaoMhIDARrJFN\r\n-----END CERTIFICATE-----"
-			];
+			$lets_peppol_info = $this->letsPeppolApi->getInfo();
+			// $lets_peppol_info = [
+			// 	'identity_scheme' => 'iso6523-actorid-upis',
+			// 	'identity_value' => '9915:as4direct-63ffb647bfe85',
+			// 	'certificate' => "-----BEGIN CERTIFICATE-----\r\nMIICujCCAaKgAwIBAgIUMMXD8Ca8lJUYF08KTpuVNSo/JyEwDQYJKoZIhvcNAQEL\r\nBQAwFzEVMBMGA1UEAwwMTGV0J3MgUGVwcG9sMB4XDTIzMDMwMTIwMzIwNloXDTI0\r\nMDMwMTIwMzIwNlowFzEVMBMGA1UEAwwMTGV0J3MgUGVwcG9sMIIBIjANBgkqhkiG\r\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvrDwbXCxnyJTfoN85ahd7F1/+I89jWulavho\r\nx9UsApgWEeamJlFXSUUwYDXOpfzqD1x401MSE4LS49W0ok6Xua98AkOGH1XTRXEB\r\nfjBxw4TzSmkCazfHDmhFK4eXNJ6ICXKZ83lfFG4pUhNmsr4JM72peQHkjsaye23p\r\nkNClndDqgJk7ZiluvAd4ezYahd4hJprqhFIbO9ElmIWL0zkRivjTla4OMACX8N2M\r\nrFXkJnPZBhb6wdxJTFa6/R/Wg1dT3FYpNy+cDkPORV5QdI5vxN3S2D6N0h9c8Taz\r\nMxMubvBXO7IV+atJQvoBwvDdfNSXcTrpwG63MM+h4yxoVeubqQIDAQABMA0GCSqG\r\nSIb3DQEBCwUAA4IBAQAZTmNlRXDzq9UkcGX0WkoEXSYU+NbH1yB1W8TEzM9nKwlp\r\nBC2WYCAKyc7/9k4tWE4QNVHqkpwSrzlDxtNHI3MUJwb6KyE7pajpcs+nJ8wrIUW0\r\nuATUNbt7ewBoVseIzHyxp5SHsU5lbVFMV8g5oLOzVCk0mFJni3Uu2EUgYtGtrWW4\r\nKO9I8rbGw9zgQxFrCdXXK2NuMe33jHzRCOTQL75Uxc7t0xaIJMAAg5icJRHSeL3L\r\nLcXoixraITYOA7kyeP45VPsWkdcHUW7wsL39fYKeEnhRekeIkqOx/12tjz05g5+x\r\nGv74ILbmXKAyhiqRe3EMVd4h16MaaoMhIDARrJFN\r\n-----END CERTIFICATE-----"
+			// ];
 
 			if ($lets_peppol_info['identity_value'] === $sender_id && $lets_peppol_info['identity_scheme'] === $sender_scheme) {
 				$this->logger->error('Message was from LetsPeppol');
