@@ -10,7 +10,7 @@
 								<CounterBubble v-if="notification.messages > 0" type="outlined">{{notification.messages}}</CounterBubble>
 							</template>
 						</AppNavigationItem>
-						<AppNavigationItem icon="icon-public" title="Connection Requests" to="/connection/list">
+						<AppNavigationItem icon="icon-public" title="Connection Requests" to="/message/list/ConnectionRequests">
 							<template #counter>
 								<CounterBubble v-if="notification.connection_requests > 0" type="outlined">{{notification.connection_requests}}</CounterBubble>
 							</template>

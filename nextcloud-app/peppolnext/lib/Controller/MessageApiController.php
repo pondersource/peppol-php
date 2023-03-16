@@ -43,12 +43,15 @@ use OCA\PeppolNext\PonderSource\SMP\SMP;
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http\DataDisplayResponse;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\Contacts\IManager;
 use OCP\Files\IRootFolder;
 use OCP\IRequest;
-use OCP\Contacts\IManager;
+use OCP\IUserManager;
+use OCP\IUserSession;
 
 use phpseclib3\Crypt\{RSA, Random};
 use phpseclib3\File\X509;
+use Psr\Log\LoggerInterface;
 use JMS\Serializer\SerializerBuilder;
 use OCA\PeppolNext\PonderSource\SBD\DocumentIdentification;
 use OCA\PeppolNext\PonderSource\SBD\Identifier;
@@ -101,8 +104,11 @@ class MessageApiController extends ApiController {
 	/** @var IRootFolder */
 	private $rootFolder;
 
-	/** @var IManager */
-	private $contactManager;
+	/** @var IUserManager  */
+	private $userManager;
+
+	/** @var IUserSession  */
+	private $userSession;
 
 	/** @var MessageService */
 	private $messageService;
@@ -116,25 +122,33 @@ class MessageApiController extends ApiController {
 	/** @var LetsPeppolApi */
 	private $letsPeppolApi;
 
+	private LoggerInterface $logger;
+
 	private UploadService $uploadService;
 	use Errors;
 
 	public function __construct(IRequest $request,
 								IRootFolder $rootFolder,
+								IUserManager $userManager,
+								IUserSession $userSession,
 								MessageService $messageService,
 								UploadService $uploadService,
 								PeppolManagerService $peppolManagerService,
 								ContactService $contactService,
 								LetsPeppolApi $letsPeppolApi,
+								LoggerInterface $logger,
 								$userId) {
 		parent::__construct("peppolnext", $request);
 		$this->userId = $userId;
 		$this->rootFolder = $rootFolder;
+		$this->userManager = $userManager;
+		$this->userSession = $userSession;
 		$this->messageService = $messageService;
 		$this->uploadService = $uploadService;
 		$this->peppolManagerService = $peppolManagerService;
 		$this->contactService = $contactService;
 		$this->letsPeppolApi = $letsPeppolApi;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -471,6 +485,9 @@ class MessageApiController extends ApiController {
 			return new DataDisplayResponse('Failed to read user/receiver\'s cert store!', Http::STATUS_INTERNAL_SERVER_ERROR);
 		}
 
+		$user = $this->userManager->get($receiver_identity->getUserId());
+		$this->userSession->setUser($user);
+
 		list($envelope, $invoice, $decrypted_payload) = PayloadReader::readPayload($raw_envelope, $raw_payload, $cert, $private_key);
 
 		// Is sender a supplier?
@@ -478,9 +495,40 @@ class MessageApiController extends ApiController {
 		$sender_scheme = $sender->getType();
 		$sender_contact = $this->contactService->findContact($sender_id, ContactService::FLAG_SUPPLIER);
 
-		if ($sender_contact != null && $sender_scheme === $sender_contact->getPeppolScheme()) {
+		if (!isset($sender_contact)) {
+			$this->logger->error("Contact $sender_id not found. Checking LetsPeppol ID");
+
+			// $lets_peppol_info = $this->letsPeppolApi->getInfo();
+			$lets_peppol_info = [
+				'identity_scheme' => 'iso6523-actorid-upis',
+				'identity_value' => '9915:as4direct-63ffb647bfe85',
+				'certificate' => "-----BEGIN CERTIFICATE-----\r\nMIICujCCAaKgAwIBAgIUMMXD8Ca8lJUYF08KTpuVNSo/JyEwDQYJKoZIhvcNAQEL\r\nBQAwFzEVMBMGA1UEAwwMTGV0J3MgUGVwcG9sMB4XDTIzMDMwMTIwMzIwNloXDTI0\r\nMDMwMTIwMzIwNlowFzEVMBMGA1UEAwwMTGV0J3MgUGVwcG9sMIIBIjANBgkqhkiG\r\n9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvrDwbXCxnyJTfoN85ahd7F1/+I89jWulavho\r\nx9UsApgWEeamJlFXSUUwYDXOpfzqD1x401MSE4LS49W0ok6Xua98AkOGH1XTRXEB\r\nfjBxw4TzSmkCazfHDmhFK4eXNJ6ICXKZ83lfFG4pUhNmsr4JM72peQHkjsaye23p\r\nkNClndDqgJk7ZiluvAd4ezYahd4hJprqhFIbO9ElmIWL0zkRivjTla4OMACX8N2M\r\nrFXkJnPZBhb6wdxJTFa6/R/Wg1dT3FYpNy+cDkPORV5QdI5vxN3S2D6N0h9c8Taz\r\nMxMubvBXO7IV+atJQvoBwvDdfNSXcTrpwG63MM+h4yxoVeubqQIDAQABMA0GCSqG\r\nSIb3DQEBCwUAA4IBAQAZTmNlRXDzq9UkcGX0WkoEXSYU+NbH1yB1W8TEzM9nKwlp\r\nBC2WYCAKyc7/9k4tWE4QNVHqkpwSrzlDxtNHI3MUJwb6KyE7pajpcs+nJ8wrIUW0\r\nuATUNbt7ewBoVseIzHyxp5SHsU5lbVFMV8g5oLOzVCk0mFJni3Uu2EUgYtGtrWW4\r\nKO9I8rbGw9zgQxFrCdXXK2NuMe33jHzRCOTQL75Uxc7t0xaIJMAAg5icJRHSeL3L\r\nLcXoixraITYOA7kyeP45VPsWkdcHUW7wsL39fYKeEnhRekeIkqOx/12tjz05g5+x\r\nGv74ILbmXKAyhiqRe3EMVd4h16MaaoMhIDARrJFN\r\n-----END CERTIFICATE-----"
+			];
+
+			if ($lets_peppol_info['identity_value'] === $sender_id && $lets_peppol_info['identity_scheme'] === $sender_scheme) {
+				$this->logger->error('Message was from LetsPeppol');
+
+				$sender_certificate = $lets_peppol_info['certificate'];
+
+				$supplier_id = $invoice->getAccountingSupplierParty()->getParty()->getEndpointID();
+				$sender_id = $supplier_id->getSchemeID().':'.$supplier_id->getValue();
+
+				$this->logger->error('Supplier id from invoice is '.$sender_id);
+
+				$sender_contact = $this->contactService->findContact($sender_id, ContactService::FLAG_SUPPLIER);
+			}
+			else {
+				$this->logger->error('Message was NOT from LetsPeppol');
+			}
+		}
+
+		if ($sender_contact != null) {
+			$this->logger->error("Supplier $sender_id was found.");
+
 			// Yes -> verify signatures -> put in the inbox folder
-			$sender_certificate = $sender_contact->certificate;
+			if (!isset($sender_certificate)) {
+				$sender_certificate = $sender_contact->certificate;
+			}
 
 			if (!isset($sender_certificate)) {
 				try {
@@ -496,8 +544,11 @@ class MessageApiController extends ApiController {
 			$sender_cert->loadX509($sender_certificate);
 			$sender_public_key = $sender_cert->getPublicKey();
 
+			$this->logger->error("Public key is ".var_export($sender_public_key, true));
+
 			$verifyResult = $envelope->getHeader()->getSecurity()->getSignature()->verify($envelope, $decrypted_payload, $sender_public_key);
-			error_log('signature checked in AS4 endpoint: '.var_export($verifyResult, true));
+
+			$this->logger->error("Message verification result is $verifyResult.");
 
 			if (!$verifyResult) {
 				// This is not an authentic message!
@@ -514,6 +565,8 @@ class MessageApiController extends ApiController {
 				$decrypted_payload);
 		}
 		else {
+			$this->logger->error("Supplier $sender_id was NOT found.");
+
 			$this->messageService->saveConnectionRequest(
 				$sender_id,
 				$receiver_identity,

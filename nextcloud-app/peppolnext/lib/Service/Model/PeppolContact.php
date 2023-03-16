@@ -49,4 +49,8 @@ class PeppolContact {
 		return explode(":", $rawEndpoint)[0];
 	}
 
+	public function getEndpoint(): string {
+		return str_replace(Constants::PEPPOL_INDICATOR,"", $this->peppolEndpoint);
+	}
+
 }
