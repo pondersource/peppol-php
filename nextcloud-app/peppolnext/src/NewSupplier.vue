@@ -204,7 +204,8 @@ export default {
 			const payload = { body: this.contact }
 			axios.post('/index.php/apps/peppolnext/api/v1/contact', payload)
 				.then(function(response) {
-
+					alert('Supplier added.')
+					this.$router.push('/contact/list/suppliers')
 				}).catch(function(error) {})
 		},
 	},

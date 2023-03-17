@@ -6,7 +6,7 @@ use phpseclib3\Crypt\Common\AsymmetricKey;
 
 class LetsPeppolApi {
 
-    private const BASE_URL = 'https://8000-pondersource-cyb-rueqzbqdswa.ws-us90.gitpod.io/api';
+    private const BASE_URL = 'https://8000-pondersource-cyb-qy9o8npphpo.ws-us90.gitpod.io/api';
     private const LETS_PEPPOL_BASE_URL = self::BASE_URL.'/connector/lets_peppol';
     private const INFO_URL = self::LETS_PEPPOL_BASE_URL.'/as4direct/info';
     private const IDENTITY_URL = self::LETS_PEPPOL_BASE_URL.'/identity';

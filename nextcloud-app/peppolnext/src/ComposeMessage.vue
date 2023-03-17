@@ -482,7 +482,8 @@ export default {
 			const payload = this.message
 			axios.post('/index.php/apps/peppolnext/api/v1/message', payload)
 				.then(function(response) {
-
+					alert('Invoice sent.')
+					this.$router.push('/message/list/Outbox')
 				}).catch(function(error) {})
 		},
 		fetchOptions(search, loading, vm) {
