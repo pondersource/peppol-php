@@ -51,7 +51,7 @@ class ContactService {
 							$this->logger->error("Comparing relationships $relationship with $contact_relationship.");
 
 							if (($contact_relationship & $relationship) > 0) {
-								$interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
+								// $interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
 
 								// try {
 									// $address = $interpreter->getAddress()->asPeppolAddress();
@@ -84,7 +84,7 @@ class ContactService {
 						$relationship = $contact[self::AS4_RELATIONSHIP];
 
 						if (($contact_relationship & $relationship) > 0) {
-							$interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
+							// $interpreter = new VCardInterpreter($this->contactManager, $contact['UID']);
 
 							// try {
 								// $address = $interpreter->getAddress()->asPeppolAddress();

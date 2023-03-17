@@ -57,8 +57,8 @@ class ContactApiController extends ApiController {
 			->setFullname($payload["title"])
 			->setRelationship($payload["relationship"])
 			->setEndpoint($payload["endpoint"])
-			->setCertificate($payload["certificate"])
-			->setAddress(PostalAddress::fromPeppolAddress($payload["address"]));
+			->setCertificate($payload["certificate"]);
+			// ->setAddress(PostalAddress::fromPeppolAddress($payload["address"]));
 		$this->contactService->addContact($contact);
 		return new DataResponse([], Http::STATUS_ACCEPTED);
 	}

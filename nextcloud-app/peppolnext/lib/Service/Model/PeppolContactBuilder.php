@@ -49,7 +49,7 @@ class PeppolContactBuilder
 	{
 		return [
 			"FN" => $this->fullname,
-			"ADR" => [$this->address->asVCardAddress()],
+			// "ADR" => [$this->address->asVCardAddress()],
 			ContactService::SOCIAL_PROFILE_KEY => Constants::PEPPOL_INDICATOR.$this->peppolId,
 			ContactService::AS4_RELATIONSHIP => $this->relatipnship,
 			ContactService::AS4_DIRECT_ENDPOINT => $this->endpoint,
