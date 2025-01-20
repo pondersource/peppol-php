@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
         <li><a href="https://www.w3.org/community/timesh/">Federated Timesheets</a></li>
         <li>Integration of all the <a href="https://github.com/federatedbookkeeping/research/blob/main/api.md">proprietary billing APIs</a> we can find</li>
         <li>Integration of all the bookkeeping software platforms we can find</li>
-        <li>Novel <a href="https://prejournal.org">Prejournal</a> bookkeeping techniques</li>
+        <li>Novel <a href="https://pondersource.github.io/prejournal/">Prejournal</a> bookkeeping techniques</li>
       </ul>
       <p>The HTML code of this website is maintained through a <a href="https://github.com/pondersource/connectyourbooks.com">GitHub repo</a>.</p>
     </article>
